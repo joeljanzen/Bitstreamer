@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dpe2w6pd18hu4"]
+
+[ext_resource type="Script" uid="uid://ckq0g8lpakbsf" path="res://Scripts/bit.gd" id="1_igqlm"]
+[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_w8jum"]
+
+[node name="Bit" type="Node2D" unique_id=573621459]
+script = ExtResource("1_igqlm")
+
+[node name="Label" type="Label" parent="." unique_id=1898413816]
+offset_left = -14.0
+offset_top = -22.0
+offset_right = 123.0
+offset_bottom = 29.0
+theme = ExtResource("2_w8jum")
+text = "0"

@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://njdusa2xiafg"]
+
+[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_dtjkg"]
+[ext_resource type="Texture2D" uid="uid://b7bys77rnrih7" path="res://Resources/Sprites/placeholder_cursor.png" id="1_iti4p"]
+[ext_resource type="PackedScene" uid="uid://dpe2w6pd18hu4" path="res://Scenes/bit.tscn" id="3_eglq2"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dtjkg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_iti4p")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[node name="TestLevel" type="Node2D" unique_id=58297453]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1776457430]
+position = Vector2(960, 540)
+
+[node name="Control" type="Control" parent="." unique_id=423420865]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 288.0
+offset_top = 522.0
+offset_right = 328.0
+offset_bottom = 562.0
+
+[node name="Bit Label" type="Label" parent="Control" unique_id=1744777367]
+layout_mode = 0
+offset_top = -4.0
+offset_right = 302.0
+offset_bottom = 47.0
+theme = ExtResource("1_dtjkg")
+text = "01010001010"
+vertical_alignment = 1
+
+[node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=627972586]
+position = Vector2(594, 540)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_dtjkg")
+autoplay = "default"
+frame_progress = 0.8291995
+
+[node name="Bit" parent="." unique_id=573621459 instance=ExtResource("3_eglq2")]
+position = Vector2(810, 396)
