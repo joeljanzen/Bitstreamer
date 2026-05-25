@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_dtjkg"]
 [ext_resource type="Texture2D" uid="uid://b7bys77rnrih7" path="res://Resources/Sprites/placeholder_cursor.png" id="1_iti4p"]
-[ext_resource type="PackedScene" uid="uid://dpe2w6pd18hu4" path="res://Scenes/bit.tscn" id="3_eglq2"]
+[ext_resource type="Script" uid="uid://b2lfog7dafrx7" path="res://Scripts/cursor.gd" id="3_rsyfn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dtjkg"]
 animations = [{
@@ -27,9 +27,9 @@ position = Vector2(960, 540)
 layout_mode = 3
 anchors_preset = 0
 offset_left = 288.0
-offset_top = 522.0
+offset_top = 72.0
 offset_right = 328.0
-offset_bottom = 562.0
+offset_bottom = 112.0
 
 [node name="Bit Label" type="Label" parent="Control" unique_id=1744777367]
 layout_mode = 0
@@ -37,15 +37,27 @@ offset_top = -4.0
 offset_right = 302.0
 offset_bottom = 47.0
 theme = ExtResource("1_dtjkg")
-text = "01010001010"
+theme_override_colors/font_color = Color(0.50140655, 0.5014065, 0.5014065, 1)
 vertical_alignment = 1
 
-[node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=627972586]
-position = Vector2(594, 540)
-scale = Vector2(0.5, 0.5)
+[node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=627972586 node_paths=PackedStringArray("bit_label")]
+position = Vector2(306, 90)
+scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
 autoplay = "default"
 frame_progress = 0.8291995
+script = ExtResource("3_rsyfn")
+bit_label = NodePath("../Control/Bit Label")
 
-[node name="Bit" parent="." unique_id=573621459 instance=ExtResource("3_eglq2")]
-position = Vector2(810, 396)
+[node name="UI" type="Control" parent="." unique_id=1488377609]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI" unique_id=648851971]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme = ExtResource("1_dtjkg")
+text = "Score: 0"
