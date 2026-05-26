@@ -15,7 +15,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Cannot Enter",
-"speed": 10.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -64,14 +64,14 @@ offset_top = -4.0
 offset_right = 302.0
 offset_bottom = 47.0
 theme = ExtResource("1_dtjkg")
-theme_override_colors/font_color = Color(0.50140655, 0.5014065, 0.5014065, 1)
+theme_override_colors/font_color = Color(0.3854925, 0.38549247, 0.38549247, 1)
 vertical_alignment = 1
 
 [node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=627972586 node_paths=PackedStringArray("bit_label")]
 position = Vector2(306, 90)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
-animation = &"Enter"
+animation = &"Cannot Enter"
 autoplay = "Flicker"
 script = ExtResource("3_rsyfn")
 bit_label = NodePath("../Control/Bit Label")

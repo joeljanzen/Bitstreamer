@@ -1,6 +1,6 @@
 class_name Bit
 extends Node2D
-## a bit the player should click when it reaches the cursor
+## a bit to send to the player
 
 @onready var _label = $"Bit Label"
 @onready var _sprite = $Sprite2D
@@ -26,6 +26,7 @@ var clicked_bit = false
 
 
 func _ready() -> void:
+	# set bit appearance
 	match _value:
 		BitType.Type.ZERO:
 			_sprite.hide()
@@ -57,7 +58,7 @@ func create(value: BitType.Type, y_pos: int, speed: int = DEFAULT_SPEED) -> void
 
 
 ## click the bit
-func clicked(cursor_x: int) -> void:
+func clicked(cursor_x: float) -> void:
 	#play animation and sound idk
 	var acc = abs(position.x - cursor_x)
 	print("distance to cursor: %s" % acc)
@@ -74,12 +75,12 @@ func get_value() -> BitType.Type:
 
 ## returns if the bit is clickable
 func clickable(cursor_pos: Vector2) -> bool:
-	return position.x <= cursor_pos.x + _click_range && !missed(cursor_pos.x) && cursor_pos.y == position.y
+	return position.x <= cursor_pos.x + float(_click_range) && !missed(cursor_pos.x) && cursor_pos.y == position.y
 
 
 ## returns if the bit has been missed (it has passed the clickable window)
-func missed(cursor_x: int) -> bool:
-	return position.x < cursor_x - _click_range
+func missed(cursor_x: float) -> bool:
+	return position.x < cursor_x - float(_click_range)
 
 
 ## set the distance before/past the cursor where the bit is considered clickable

@@ -9,11 +9,11 @@ extends AnimatedSprite2D
 
 ## stack of bits currently on screen
 var bit_stream = []
-# the speed the cursor blinks while idle
+## the speed the cursor blinks while idle
 var flicker_speed = 4
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# default animation
 	if !is_playing():
 		play("Flicker")
@@ -22,11 +22,11 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("0 bit"):
 		# sound and animation here
 		play("Click")
-		click_bit(0)
+		click_bit(BitType.Type.ZERO)
 	if Input.is_action_just_pressed("1 bit"):
 		#sound and animation here
 		play("Click")
-		click_bit(1)
+		click_bit(BitType.Type.ONE)
 	if Input.is_action_just_pressed("Enter"):
 		#sound and animation here
 		if click_enter():
@@ -43,12 +43,12 @@ func _process(delta: float) -> void:
 		var missed = bit_stream.pop_front()
 		# still clicks enter if you miss it
 		if missed.get_value() == BitType.Type.ENTER:
-			play("Cannot Enter")
+			play("Enter")
 			missed.clicked(position.x)
 			bit_label.text += "\n"
 			position.y += Bit.get_height()
 			position.x = start_x_pos
-
+	
 	# DEBUG
 	if Input.is_action_just_pressed("Spawn 0 bit"):
 		send_bit(BitType.Type.ZERO, 400)
