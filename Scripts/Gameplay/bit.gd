@@ -17,6 +17,13 @@ const DEFAULT_DAMAGE = 2
 ## set to 0 to disable fade entirely
 const CLICKED_FADE_SPEED = 5
 
+# the score given for a certain accuracy of click
+const PERFECT_CLICK_SCORE = 300
+const GOOD_CLICK_SCORE = 100
+const BAD_CLICK_SCORE = 50
+## multiply the base damage by this amount on an incorrect click
+const INCORRECT_DAMAGE_MULT = 3
+
 ## how many pixels before/past the cursor where the bit is considered clickable
 var _click_range = 100
 ## where the bit starts
@@ -81,6 +88,19 @@ func clicked(cursor_x: float) -> void:
 	timer.stop()
 	
 	Signals.score.emit(acc)
+	
+	if bit_fade_effect:
+		_clicked_bit = true
+	else:
+		queue_free()
+
+
+## the player clicked, but it was the wrong bit!
+## your score decreases by the value of a perfect click, take double damage, and lose combo
+func wrong_clicked() -> void:
+	Signals.score.emit(-PERFECT_CLICK_SCORE)
+	Signals.damage.emit(_damage * INCORRECT_DAMAGE_MULT)
+	Signals.combo_break.emit()
 	
 	if bit_fade_effect:
 		_clicked_bit = true

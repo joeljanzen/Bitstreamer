@@ -17,6 +17,14 @@ var line_height = 84
 ## the current line number
 var line_num = 1
 
+## aesthetic stuff
+var entered_bit_color = "#0D4C25"
+var incorrect_bit_color = "#4c0d0d"
+
+
+func _ready() -> void:
+	bit_label.add_theme_color_override("default_color", Color(entered_bit_color))
+
 
 func _process(_delta: float) -> void:
 	# default animation
@@ -75,17 +83,27 @@ func send_bit(value: BitType.Type, speed: int = 500):
 	bit_stream.push_back(new_bit)
 
 
-## try to click the next bit in the stream, returning if it's successful
+## try to click the next bit in the stream, returning if it's successful.
+## do not pass an enter bit into this function
 func click_bit(value: BitType.Type) -> bool:
 	if !bit_stream.is_empty():
 		var curr_bit = bit_stream[0]
-		if curr_bit.get_value() == value && curr_bit.clickable(cursor.global_position):
+		
+		if curr_bit.clickable(cursor.global_position):
 			bit_stream.pop_front()
-			curr_bit.clicked(cursor.global_position.x)
-			if value == BitType.Type.ZERO:
-				bit_label.text += "0"
-			elif value == BitType.Type.ONE:
-				bit_label.text += "1"
+
+			if curr_bit.get_value() == value: 	
+				curr_bit.clicked(cursor.global_position.x)
+				if value == BitType.Type.ZERO:
+					bit_label.text += "0"
+				elif value == BitType.Type.ONE:
+					bit_label.text += "1"
+			else:
+				curr_bit.wrong_clicked()
+				if value == BitType.Type.ZERO:
+					bit_label.text += "[color=%s]0[/color]" % incorrect_bit_color
+				elif value == BitType.Type.ONE:
+					bit_label.text += "[color=%s]1[/color]" % incorrect_bit_color
 			return true
 	return false
 

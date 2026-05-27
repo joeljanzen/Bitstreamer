@@ -64,14 +64,16 @@ offset_right = 1422.0
 offset_bottom = 810.0
 color = Color(0.15487596, 0.154876, 0.15487596, 1)
 
-[node name="BitLabel" type="Label" parent="." unique_id=1881199121]
+[node name="BitLabel" type="RichTextLabel" parent="." unique_id=984305221]
 offset_left = 5.0
 offset_top = -35.0
-offset_right = 181.0
-offset_bottom = 46.0
+offset_right = 1422.0
+offset_bottom = 792.0
 theme = ExtResource("2_3d5pw")
-theme_override_colors/font_color = Color(0.3854925, 0.38549247, 0.38549247, 1)
-vertical_alignment = 1
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_constants/line_separation = 3
+bbcode_enabled = true
+scroll_active = false
 
 [node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=364053683]
 scale = Vector2(0.5, 0.5)
