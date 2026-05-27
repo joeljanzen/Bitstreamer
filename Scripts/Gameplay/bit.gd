@@ -2,14 +2,17 @@ class_name Bit
 extends Node2D
 ## a bit to send to the player
 
-@onready var _label = $"Bit Label"
+@onready var _label = $BitLabel
 @onready var _sprite = $Sprite2D
+@onready var timer = $Timer
 
 static var bit_font: Theme = load("res://Resources/Themes/bit_font.tres")
 static var bit_fade_effect = true
 
 ## default bit speed
 const DEFAULT_SPEED = 500
+## default bit damage if missed
+const DEFAULT_DAMAGE = 2
 ## how quickly the bit fades away after being clicked.
 ## set to 0 to disable fade entirely
 const CLICKED_FADE_SPEED = 5
@@ -22,7 +25,9 @@ var _starting_x = ProjectSettings.get_setting("display/window/size/viewport_widt
 var _value: BitType.Type
 ## the speed at which the bit travels across the screen
 var _speed
-var clicked_bit = false
+## how much damage missing this bit does
+var _damage
+var _clicked_bit = false
 
 
 func _ready() -> void:
@@ -39,21 +44,30 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if !clicked_bit || !bit_fade_effect:
+	if !_clicked_bit || !bit_fade_effect:
 		position.x -= _speed * delta
 	elif bit_fade_effect:
 		# decrease alpha value (opacity)
 		modulate.a -= CLICKED_FADE_SPEED * delta
+		
+	if !timer.is_stopped() && position.x < 306: # x pos of the cursor here
+		print("time to cursor: %s" % (timer.wait_time - timer.time_left))
+		timer.stop()
 	
 	# bit is offscreen
 	if position.x < -Bit.get_width() || (bit_fade_effect && modulate.a == 0):
+		Signals.combo_break.emit()
+		Signals.damage.emit(_damage)
 		queue_free()
 
 
-## set bit data before appending to scene
-func create(value: BitType.Type, y_pos: int, speed: int = DEFAULT_SPEED) -> void:
+## set bit data before appending to scene.
+## a default speed and damage will be set if no values are provided
+func create(value: BitType.Type, y_pos: int, speed: int = DEFAULT_SPEED, 
+	damage: int = DEFAULT_DAMAGE) -> void:
 	_value = value
 	_speed = speed
+	_damage = damage
 	position = Vector2(_starting_x, y_pos)
 
 
@@ -62,8 +76,24 @@ func clicked(cursor_x: float) -> void:
 	#play animation and sound idk
 	var acc = abs(position.x - cursor_x)
 	print("distance to cursor: %s" % acc)
+	
+	print("time to click: %s" % (timer.wait_time - timer.time_left))
+	timer.stop()
+	
+	Signals.score.emit(acc)
+	
 	if bit_fade_effect:
-		clicked_bit = true
+		_clicked_bit = true
+	else:
+		queue_free()
+
+
+## the game clicked the bit for you! (combo breaks and you don't get score)
+func auto_clicked() -> void:
+	Signals.combo_break.emit()
+	
+	if bit_fade_effect:
+		_clicked_bit = true
 	else:
 		queue_free()
 
@@ -91,8 +121,3 @@ func set_click_range(click_range: int) -> void:
 # NOT GOOD TO HARDCODE THESE IDK WHAT TO DO
 static func get_width() -> int:
 	return 28
-# NOT GOOD TO HARDCODE THESE IDK WHAT TO DO
-static func get_height() -> int:
-	# DOESNT WORK SADGE
-	#return bit_font.default_font_size 
-	return 54

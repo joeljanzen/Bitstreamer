@@ -1,90 +1,14 @@
 [gd_scene format=3 uid="uid://njdusa2xiafg"]
 
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_dtjkg"]
-[ext_resource type="Texture2D" uid="uid://kbqeqckojl7p" path="res://Resources/Sprites/cursor_cannot_enter.png" id="2_btda1"]
-[ext_resource type="Texture2D" uid="uid://bxalqsmxkj2j0" path="res://Resources/Sprites/cursor.png" id="2_eglq2"]
-[ext_resource type="Texture2D" uid="uid://cd67wwlog7jx3" path="res://Resources/Sprites/cursor_enter.png" id="3_7w7ni"]
-[ext_resource type="Texture2D" uid="uid://dhpg40av67qu2" path="res://Resources/Sprites/cursor_click_back.png" id="3_btda1"]
-[ext_resource type="Script" uid="uid://b2lfog7dafrx7" path="res://Scripts/cursor.gd" id="3_rsyfn"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_dtjkg"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_btda1")
-}],
-"loop": false,
-"name": &"Cannot Enter",
-"speed": 4.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_btda1")
-}],
-"loop": true,
-"name": &"Click",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_7w7ni")
-}],
-"loop": false,
-"name": &"Enter",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_eglq2")
-}, {
-"duration": 1.0,
-"texture": null
-}],
-"loop": true,
-"name": &"Flicker",
-"speed": 4.0
-}]
+[ext_resource type="PackedScene" uid="uid://bmyyd40hpvw2l" path="res://Scenes/play_area.tscn" id="2_dtjkg"]
+[ext_resource type="PackedScene" uid="uid://c0cfxinwdhxdr" path="res://Scenes/level_ui.tscn" id="7_xq3o0"]
 
 [node name="TestLevel" type="Node2D" unique_id=58297453]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1776457430]
 position = Vector2(960, 540)
 
-[node name="Control" type="Control" parent="." unique_id=423420865]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 306.0
-offset_top = 72.0
-offset_right = 346.0
-offset_bottom = 112.0
+[node name="LevelUI" parent="." unique_id=1794658101 instance=ExtResource("7_xq3o0")]
 
-[node name="Bit Label" type="Label" parent="Control" unique_id=1744777367]
-layout_mode = 0
-offset_top = -4.0
-offset_right = 302.0
-offset_bottom = 47.0
-theme = ExtResource("1_dtjkg")
-theme_override_colors/font_color = Color(0.3854925, 0.38549247, 0.38549247, 1)
-vertical_alignment = 1
-
-[node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=627972586 node_paths=PackedStringArray("bit_label")]
-position = Vector2(306, 90)
-scale = Vector2(0.3, 0.3)
-sprite_frames = SubResource("SpriteFrames_dtjkg")
-animation = &"Cannot Enter"
-autoplay = "Flicker"
-script = ExtResource("3_rsyfn")
-bit_label = NodePath("../Control/Bit Label")
-
-[node name="UI" type="Control" parent="." unique_id=1488377609]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="UI" unique_id=648851971]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-theme = ExtResource("1_dtjkg")
-text = "Score: 0"
+[node name="PlayArea" parent="." unique_id=1773739756 instance=ExtResource("2_dtjkg")]
+position = Vector2(270, 162)

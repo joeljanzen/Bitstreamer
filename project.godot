@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 BitType="*uid://bp0w2tjo3fabl"
+Signals="*uid://crtud41x335yx"
 
 [display]
 
