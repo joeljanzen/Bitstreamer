@@ -83,38 +83,35 @@ func send_bit(value: BitType.Type, speed: int = 500):
 	bit_stream.push_back(new_bit)
 
 
-## try to click the next bit in the stream, returning if it's successful.
+## try to click the next bit in the stream.
 ## do not pass an enter bit into this function
-func click_bit(value: BitType.Type) -> bool:
+func click_bit(value: BitType.Type) -> void:
 	if !bit_stream.is_empty():
 		var curr_bit = bit_stream[0]
 		
-		if curr_bit.clickable(cursor.global_position):
+		if curr_bit.click(cursor.global_position.x, value): # if this isn't true, bit is not in clickable range
 			bit_stream.pop_front()
-
+			
 			if curr_bit.get_value() == value: 	
-				curr_bit.click(cursor.global_position.x)
 				if value == BitType.Type.ZERO:
 					bit_label.text += "0"
 				elif value == BitType.Type.ONE:
 					bit_label.text += "1"
 			else:
-				curr_bit.wrong_click()
 				if value == BitType.Type.ZERO:
 					bit_label.text += "[color=%s]0[/color]" % incorrect_bit_color
 				elif value == BitType.Type.ONE:
 					bit_label.text += "[color=%s]1[/color]" % incorrect_bit_color
-			return true
-	return false
 
 
 ## try to click an enter bit, returning if the player can
 func click_enter() -> bool:
 	if !bit_stream.is_empty():
 		var curr_bit = bit_stream[0]
-		if curr_bit.clickable(cursor.global_position) && curr_bit.get_value() == BitType.Type.ENTER:
+		
+		if curr_bit.click(cursor.global_position.x, BitType.Type.ENTER):
 			bit_stream.pop_front()
-			curr_bit.click(cursor.global_position.x)
+			
 			if line_num < MAX_LINE_NUM:
 				line_num += 1
 				bit_label.text += "\n"

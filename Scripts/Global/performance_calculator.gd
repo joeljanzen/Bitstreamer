@@ -9,22 +9,32 @@ const BAD_CLICK_SCORE = 50
 var perfect_click_range = 30
 ## how many milliseconds + or - a perfect click gives you a good score
 var good_click_range = 150
-## how many milliseconds + or - a perfect click is actually clickable (and gives a bad score)
+## how many milliseconds + or - a perfect click is actually clickable (and gives a bad score).
+## WARNING: if this range is too long, the enter bit, which is supposed to be auto clicked once 
+## it's outside of this range, will not be autoclicked before it goes offscreen and bad things
+## will happen
 var clickable_range = 500
 
 ## multiply the base damage by this amount on an incorrect click
-const INCORRECT_DAMAGE_MULT = 3
+const INCORRECT_DAMAGE_MULT = 4
 
 
 ## returns if a click is close enough to the perfect click time to be clickable,
 ## given accuracy in milliseconds off the perfect click
 func is_clickable(accuracy: float) -> bool:
-	return accuracy <= clickable_range
+	return abs(accuracy) <= clickable_range
+
+
+## returns if a click has been missed entirely,
+## given accuracy in milliseconds off the perfect click
+func is_missed(accuracy: float) -> bool:
+	return !is_clickable(accuracy) && accuracy < 0 # a negative accuracy means the bit has passed the cursor already
 
 
 ## calculate the score to gain on a correct click, 
 ## given accuracy in milliseconds off the perfect click
 func get_score(accuracy: float) -> int:
+	accuracy = abs(accuracy)
 	if accuracy <= perfect_click_range:
 		return PERFECT_CLICK_SCORE
 	elif accuracy <= good_click_range:
