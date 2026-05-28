@@ -11,21 +11,14 @@ static var bit_fade_effect = true
 
 ## default bit speed
 const DEFAULT_SPEED = 500
-## default bit damage if missed
-const DEFAULT_DAMAGE = 2
 ## how quickly the bit fades away after being clicked.
 ## set to 0 to disable fade entirely
 const CLICKED_FADE_SPEED = 5
-
-# the score given for a certain accuracy of click
-const PERFECT_CLICK_SCORE = 300
-const GOOD_CLICK_SCORE = 100
-const BAD_CLICK_SCORE = 50
-## multiply the base damage by this amount on an incorrect click
-const INCORRECT_DAMAGE_MULT = 3
+## default bit damage if missed
+const DEFAULT_DAMAGE = 2
 
 ## how many pixels before/past the cursor where the bit is considered clickable
-var _click_range = 100
+var click_range = 100
 ## where the bit starts
 var _starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
 ## the value of the bit (false is 0, true is 1)
@@ -57,9 +50,9 @@ func _process(delta: float) -> void:
 		# decrease alpha value (opacity)
 		modulate.a -= CLICKED_FADE_SPEED * delta
 		
-	if !timer.is_stopped() && position.x < 306: # x pos of the cursor here
-		print("time to cursor: %s" % (timer.wait_time - timer.time_left))
-		timer.stop()
+	#if !timer.is_stopped() && position.x < 306: # x pos of the cursor here
+		#print("time to cursor: %s" % (timer.wait_time - timer.time_left))
+		#timer.stop()
 	
 	# bit is offscreen
 	if position.x < -Bit.get_width() || (bit_fade_effect && modulate.a == 0):
@@ -79,15 +72,18 @@ func create(value: BitType.Type, y_pos: int, speed: int = DEFAULT_SPEED,
 
 
 ## click the bit
-func clicked(cursor_x: float) -> void:
-	#play animation and sound idk
-	var acc = abs(position.x - cursor_x)
-	print("distance to cursor: %s" % acc)
-	
-	print("time to click: %s" % (timer.wait_time - timer.time_left))
+func click(cursor_x: float) -> void:
+	var time_to_click = timer.wait_time - timer.time_left
+	print("time to click: %s" % time_to_click)
 	timer.stop()
 	
-	Signals.score.emit(acc)
+	var distance_to_cursor = _starting_x - cursor_x # in pixels
+	var time_to_cursor = distance_to_cursor / _speed # speed is in pixels per second, so we get seconds back
+	var error_milliseconds: int = abs(round((time_to_cursor - time_to_click) * 1000))
+	print("calculated time to cursor (seconds): %s" % time_to_cursor)
+	print("calculated milliseconds off perfect click: %s" % error_milliseconds)
+	
+	Signals.score.emit(PerformanceCalculator.get_score(error_milliseconds))
 	
 	if bit_fade_effect:
 		_clicked_bit = true
@@ -97,9 +93,9 @@ func clicked(cursor_x: float) -> void:
 
 ## the player clicked, but it was the wrong bit!
 ## your score decreases by the value of a perfect click, take double damage, and lose combo
-func wrong_clicked() -> void:
-	Signals.score.emit(-PERFECT_CLICK_SCORE)
-	Signals.damage.emit(_damage * INCORRECT_DAMAGE_MULT)
+func wrong_click() -> void:
+	Signals.score.emit(PerformanceCalculator.get_score_on_incorrect())
+	Signals.damage.emit(PerformanceCalculator.get_damage_on_incorrect(_damage))
 	Signals.combo_break.emit()
 	
 	if bit_fade_effect:
@@ -109,7 +105,7 @@ func wrong_clicked() -> void:
 
 
 ## the game clicked the bit for you! (combo breaks and you don't get score)
-func auto_clicked() -> void:
+func auto_click() -> void:
 	Signals.combo_break.emit()
 	
 	if bit_fade_effect:
@@ -125,18 +121,13 @@ func get_value() -> BitType.Type:
 
 ## returns if the bit is clickable
 func clickable(cursor_pos: Vector2) -> bool:
-	return position.x <= cursor_pos.x + float(_click_range) && !missed(cursor_pos.x) && cursor_pos.y == position.y
+	return position.x <= cursor_pos.x + float(click_range) && !missed(cursor_pos.x) && cursor_pos.y == position.y
 
 
 ## returns if the bit has been missed (it has passed the clickable window)
 func missed(cursor_x: float) -> bool:
-	return position.x < cursor_x - float(_click_range)
+	return position.x < cursor_x - float(click_range)
 
-
-## set the distance before/past the cursor where the bit is considered clickable
-## (in pixels)
-func set_click_range(click_range: int) -> void:
-	_click_range = click_range
 
 # NOT GOOD TO HARDCODE THESE IDK WHAT TO DO
 static func get_width() -> int:

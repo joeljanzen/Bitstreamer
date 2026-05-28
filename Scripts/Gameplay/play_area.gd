@@ -57,7 +57,7 @@ func _process(_delta: float) -> void:
 		# still clicks enter if you miss it
 		if missed.get_value() == BitType.Type.ENTER:
 			cursor.play("Enter")
-			missed.auto_clicked()
+			missed.auto_click()
 			if line_num < MAX_LINE_NUM:
 				line_num += 1
 				bit_label.text += "\n"
@@ -93,13 +93,13 @@ func click_bit(value: BitType.Type) -> bool:
 			bit_stream.pop_front()
 
 			if curr_bit.get_value() == value: 	
-				curr_bit.clicked(cursor.global_position.x)
+				curr_bit.click(cursor.global_position.x)
 				if value == BitType.Type.ZERO:
 					bit_label.text += "0"
 				elif value == BitType.Type.ONE:
 					bit_label.text += "1"
 			else:
-				curr_bit.wrong_clicked()
+				curr_bit.wrong_click()
 				if value == BitType.Type.ZERO:
 					bit_label.text += "[color=%s]0[/color]" % incorrect_bit_color
 				elif value == BitType.Type.ONE:
@@ -111,10 +111,10 @@ func click_bit(value: BitType.Type) -> bool:
 ## try to click an enter bit, returning if the player can
 func click_enter() -> bool:
 	if !bit_stream.is_empty():
-		var curr_bit: Bit = bit_stream[0]
+		var curr_bit = bit_stream[0]
 		if curr_bit.clickable(cursor.global_position) && curr_bit.get_value() == BitType.Type.ENTER:
 			bit_stream.pop_front()
-			curr_bit.clicked(cursor.global_position.x)
+			curr_bit.click(cursor.global_position.x)
 			if line_num < MAX_LINE_NUM:
 				line_num += 1
 				bit_label.text += "\n"

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 BitType="*uid://bp0w2tjo3fabl"
 Signals="*uid://crtud41x335yx"
+PerformanceCalculator="*uid://cavskhjwn6yn1"
 
 [display]
 
@@ -60,6 +61,8 @@ Enter={
 
 [physics]
 
+common/physics_ticks_per_second=120
+common/max_physics_steps_per_frame=16
 3d/physics_engine="Jolt Physics"
 
 [rendering]
