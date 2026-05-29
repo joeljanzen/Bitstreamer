@@ -56,11 +56,11 @@ func _process(_delta: float) -> void:
 	
 	# DEBUG
 	if Input.is_action_just_pressed("spawn 0 bit"):
-		send_bit(BitType.Type.ZERO, 1200)
+		send_bit(BitType.Type.ZERO, 400)
 	elif Input.is_action_just_pressed("spawn 1 bit"):
-		send_bit(BitType.Type.ONE, 1200)
+		send_bit(BitType.Type.ONE, 400)
 	elif Input.is_action_just_pressed("spawn enter"):
-		send_bit(BitType.Type.ENTER, 1200)
+		send_bit(BitType.Type.ENTER, 400)
 
 
 ## send a bit down the current line

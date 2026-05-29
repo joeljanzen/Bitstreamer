@@ -18,9 +18,6 @@ var clickable_range = 500
 ## holds statistics for the current level
 var statistics: LevelStatistics
 
-## multiply the base damage by this amount on an incorrect click
-const INCORRECT_DAMAGE_MULT = 4
-
 
 ## connect the statistics for the current level to the performance calculator
 func connect_stats(stats: LevelStatistics):
@@ -49,8 +46,3 @@ func get_score(accuracy: float) -> int:
 		return GOOD_CLICK_SCORE
 	else:
 		return BAD_CLICK_SCORE
-
-
-## get the amount of damage to take on an incorrect click, given the base damage
-func get_damage_on_incorrect(base_damage: int) -> int:
-	return base_damage * INCORRECT_DAMAGE_MULT

@@ -83,9 +83,9 @@ func click(cursor_x: float, value: BitType.Type) -> bool:
 			# clicking enter does nothing to the other bits
 			if get_value() == BitType.Type.ENTER || value == BitType.Type.ENTER:
 				return false 
-			# score decreases, take extra damage, and lose combo
+			# take damage and lose combo, as if you missed the bit
 			elif get_value() == BitType.Type.ZERO || get_value() == BitType.Type.ONE:
-				Signals.miss.emit(PerformanceCalculator.get_damage_on_incorrect(_damage))
+				Signals.miss.emit(_damage)
 		
 		kill()
 		return true
