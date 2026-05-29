@@ -25,6 +25,7 @@ var _value: BitType.Type
 var _speed
 ## how much damage missing this bit does
 var _damage
+## if bit_fade_effect is true, this bool triggers that when true
 var _clicked_bit = false
 
 
@@ -46,10 +47,13 @@ func _process(delta: float) -> void:
 		position.x -= _speed * delta
 	elif bit_fade_effect:
 		# decrease alpha value (opacity)
-		modulate.a -= CLICKED_FADE_SPEED * delta
+		if modulate.a < 0:
+			queue_free()
+		else:
+			modulate.a -= CLICKED_FADE_SPEED * delta
 	
 	# bit is offscreen
-	if position.x < -Bit.get_width() || (bit_fade_effect && modulate.a == 0):
+	if position.x < -Bit.get_width():
 		Signals.combo_break.emit()
 		Signals.damage.emit(_damage)
 		queue_free()
@@ -86,10 +90,7 @@ func click(cursor_x: float, value: BitType.Type) -> bool:
 				Signals.damage.emit(PerformanceCalculator.get_damage_on_incorrect(_damage))
 				Signals.combo_break.emit()
 		
-		if bit_fade_effect:
-			_clicked_bit = true
-		else:
-			queue_free()
+		kill()
 		return true
 	else:
 		return false
@@ -98,11 +99,20 @@ func click(cursor_x: float, value: BitType.Type) -> bool:
 ## the game clicked the bit for you! (combo breaks and you don't get score)
 func auto_click() -> void:
 	Signals.combo_break.emit()
-	
+	kill()
+
+
+## get rid of the bit (either right away, or let it fade away)
+func kill() -> void:
 	if bit_fade_effect:
 		_clicked_bit = true
 	else:
 		queue_free()
+
+
+## returns if the bit has been missed (it has passed the clickable window)
+func missed(cursor_x: float) -> bool:
+	return PerformanceCalculator.is_missed(get_accuracy(cursor_x))
 
 
 ## get the accuracy of clicking the bit right now, in milliseconds off the perfect cursor click.
@@ -115,7 +125,7 @@ func get_accuracy(cursor_x: float) -> int:
 	var time_to_cursor = distance_to_cursor / _speed # speed is in pixels per second, so we get seconds back
 	var error_milliseconds: int = round((time_to_cursor - time_to_click) * 1000)
 	#print("calculated time to cursor (seconds): %s" % time_to_cursor)
-	print("calculated milliseconds off perfect click: %s" % error_milliseconds)
+	#print("calculated milliseconds off perfect click: %s" % error_milliseconds)
 	return error_milliseconds
 
 
@@ -124,11 +134,6 @@ func get_value() -> BitType.Type:
 	return _value
 
 
-## returns if the bit has been missed (it has passed the clickable window)
-func missed(cursor_x: float) -> bool:
-	return PerformanceCalculator.is_missed(get_accuracy(cursor_x))
-
-
-# NOT GOOD TO HARDCODE THESE IDK WHAT TO DO
+## NOT GOOD TO HARDCODE THESE IDK WHAT TO DO
 static func get_width() -> int:
 	return 28
