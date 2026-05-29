@@ -75,11 +75,16 @@ func click(cursor_x: float, value: BitType.Type) -> bool:
 		if get_value() == value:
 			Signals.score.emit(PerformanceCalculator.get_score(accuracy))
 		# clicked in time, but clicked the wrong key
-		# score decreases by the value of a perfect click, take extra damage, and lose combo
 		else:
-			Signals.score.emit(PerformanceCalculator.get_score_on_incorrect())
-			Signals.damage.emit(PerformanceCalculator.get_damage_on_incorrect(_damage))
-			Signals.combo_break.emit()
+			# enter key can only be clicked if you actually press enter, and
+			# clicking enter does nothing to the other bits
+			if get_value() == BitType.Type.ENTER || value == BitType.Type.ENTER:
+				return false 
+			# score decreases, take extra damage, and lose combo
+			elif get_value() == BitType.Type.ZERO || get_value() == BitType.Type.ONE:
+				Signals.score.emit(PerformanceCalculator.get_score_on_incorrect())
+				Signals.damage.emit(PerformanceCalculator.get_damage_on_incorrect(_damage))
+				Signals.combo_break.emit()
 		
 		if bit_fade_effect:
 			_clicked_bit = true

@@ -6,5 +6,3 @@ signal score(amount: int)
 signal combo_break
 
 signal damage(amount: int)
-
-signal heal(amount: int)

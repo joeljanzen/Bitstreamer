@@ -9,7 +9,8 @@ const BAD_CLICK_SCORE = 50
 var perfect_click_range = 30
 ## how many milliseconds + or - a perfect click gives you a good score
 var good_click_range = 150
-## how many milliseconds + or - a perfect click is actually clickable (and gives a bad score).
+## how many milliseconds + or - a perfect click is actually clickable 
+## (gives a bad score within this range).
 ## WARNING: if this range is too long, the enter bit, which is supposed to be auto clicked once 
 ## it's outside of this range, will not be autoclicked before it goes offscreen and bad things
 ## will happen

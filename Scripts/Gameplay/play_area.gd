@@ -29,102 +29,114 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# default animation
 	if !cursor.is_playing():
-		cursor.play("Flicker")
+		cursor.play("flicker")
 	
 	# input handling
 	if Input.is_action_just_pressed("0 bit"):
-		# sound and animation here
-		cursor.play("Click")
-		click_bit(BitType.Type.ZERO)
+		try_click_zero_one(click_bit(BitType.Type.ZERO))
 	if Input.is_action_just_pressed("1 bit"):
-		#sound and animation here
-		cursor.play("Click")
-		click_bit(BitType.Type.ONE)
-	if Input.is_action_just_pressed("Enter"):
-		#sound and animation here
-		if click_enter():
-			cursor.play("Enter")
-		else:
-			cursor.play("Cannot Enter")
+		try_click_zero_one(click_bit(BitType.Type.ONE))
+	if Input.is_action_just_pressed("enter"):
+		try_click_enter(click_bit(BitType.Type.ENTER))
 	
-	# let go of 1 or 0
+	# let go of 1 or 0, go back to flickering cursor
 	if Input.is_action_just_released("0 bit") || Input.is_action_just_released("1 bit"):
-		cursor.play("Flicker")
+		cursor.play("flicker")
 	
-	# delete bit if it goes offscreen
+	# check if the next bit in the stream has been missed
 	if !bit_stream.is_empty() && bit_stream[0].missed(cursor.global_position.x):
 		var missed = bit_stream.pop_front()
 		# still clicks enter if you miss it
 		if missed.get_value() == BitType.Type.ENTER:
-			cursor.play("Enter")
+			cursor.play("enter")
 			missed.auto_click()
-			if line_num < MAX_LINE_NUM:
-				line_num += 1
-				bit_label.text += "\n"
-				cursor.position.y += line_height
-				cursor.position.x = 0
-			else:
-				clear_lines()
+			after_click_enter()
 	
 	# DEBUG
-	if Input.is_action_just_pressed("Spawn 0 bit"):
+	if Input.is_action_just_pressed("spawn 0 bit"):
 		send_bit(BitType.Type.ZERO, 400)
-	elif Input.is_action_just_pressed("Spawn 1 bit"):
+	elif Input.is_action_just_pressed("spawn 1 bit"):
 		send_bit(BitType.Type.ONE, 400)
-	elif Input.is_action_just_pressed("Spawn Enter"):
+	elif Input.is_action_just_pressed("spawn enter"):
 		send_bit(BitType.Type.ENTER, 400)
 
 
 ## send a bit down the current line
-func send_bit(value: BitType.Type, speed: int = 500):
+func send_bit(value: BitType.Type, speed: int):
 	var new_bit = bit.instantiate()
 	new_bit.create(value, cursor.global_position.y, speed)
 	get_tree().root.call_deferred("add_child", new_bit)
 	bit_stream.push_back(new_bit)
 
 
+## the animations and sounds that trigger when trying to click a zero or one bit.
+## pass whether a bit was actually there to click or not
+func try_click_zero_one(clicked: bool) -> void:
+	# make these different lol
+	if clicked:
+		cursor.play("click")
+	else:
+		cursor.play("click")
+
+
+## the animations and sounds that trigger when trying to click an enter bit.
+## pass whether the enter was actually there to click or not
+func try_click_enter(clicked: bool) -> void:
+	if clicked:
+		cursor.play("enter")
+	else:
+		cursor.play("cannot_enter")
+
+
 ## try to click the next bit in the stream.
-## do not pass an enter bit into this function
-func click_bit(value: BitType.Type) -> void:
+## returns true if the click worked
+func click_bit(value: BitType.Type) -> bool:
 	if !bit_stream.is_empty():
 		var curr_bit = bit_stream[0]
 		
-		if curr_bit.click(cursor.global_position.x, value): # if this isn't true, bit is not in clickable range
+		if curr_bit.click(cursor.global_position.x, value): # if this isn't true, bit is not clickable
 			bit_stream.pop_front()
 			
-			if curr_bit.get_value() == value: 	
-				if value == BitType.Type.ZERO:
-					bit_label.text += "0"
-				elif value == BitType.Type.ONE:
-					bit_label.text += "1"
-			else:
-				if value == BitType.Type.ZERO:
-					bit_label.text += "[color=%s]0[/color]" % incorrect_bit_color
-				elif value == BitType.Type.ONE:
-					bit_label.text += "[color=%s]1[/color]" % incorrect_bit_color
-
-
-## try to click an enter bit, returning if the player can
-func click_enter() -> bool:
-	if !bit_stream.is_empty():
-		var curr_bit = bit_stream[0]
-		
-		if curr_bit.click(cursor.global_position.x, BitType.Type.ENTER):
-			bit_stream.pop_front()
-			
-			if line_num < MAX_LINE_NUM:
-				line_num += 1
-				bit_label.text += "\n"
-				cursor.position.y += line_height
-				cursor.position.x = 0
-			else: 
-				clear_lines()
+			var correct_click = curr_bit.get_value() == value
+			match value:
+				BitType.Type.ZERO:
+					after_click_zero(correct_click)
+				BitType.Type.ONE:
+					after_click_one(correct_click)
+				BitType.Type.ENTER:
+					after_click_enter()
 			return true
 	return false
 
 
-## clears all lines and resets the cursor to the top
-func clear_lines():
-	line_num = 1
-	cursor.position = Vector2.ZERO
-	bit_label.text = ""
+## update play area after zero bit was clicked 
+## (different outcome depending on correct or incorrect click)
+func after_click_zero(correct_click: bool):
+	if correct_click:
+		bit_label.text += "0"
+	else:
+		bit_label.text += "[color=%s]0[/color]" % incorrect_bit_color
+
+
+## update play area after one bit was clicked 
+## (different outcome depending on correct or incorrect click)
+func after_click_one(correct_click: bool):
+	if correct_click:
+		bit_label.text += "1"
+	else:
+		bit_label.text += "[color=%s]1[/color]" % incorrect_bit_color
+
+
+## update play area after enter bit was clicked 
+## (you cannot incorrectly click an enter bit, you either click it right, or 
+## the game clicks it for you)
+func after_click_enter():
+	if line_num < MAX_LINE_NUM:
+		line_num += 1
+		bit_label.text += "\n"
+		cursor.position.y += line_height
+		cursor.position.x = 0
+	else: ## clears all lines and resets the cursor to the top
+		line_num = 1
+		cursor.position = Vector2.ZERO
+		bit_label.text = ""

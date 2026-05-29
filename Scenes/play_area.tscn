@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b2lfog7dafrx7" path="res://Scripts/Gameplay/play_area.gd" id="1_5dgnu"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_3d5pw"]
 [ext_resource type="Texture2D" uid="uid://kbqeqckojl7p" path="res://Resources/Sprites/Cursor/cursor_cannot_enter.png" id="3_27jp8"]
+[ext_resource type="Texture2D" uid="uid://ciucl04ht3bcx" path="res://Resources/Sprites/Cursor/cursor_click_inverted.png" id="3_hwaoc"]
 [ext_resource type="Texture2D" uid="uid://dhpg40av67qu2" path="res://Resources/Sprites/Cursor/cursor_click.png" id="4_hwaoc"]
 [ext_resource type="Texture2D" uid="uid://cd67wwlog7jx3" path="res://Resources/Sprites/Cursor/cursor_enter.png" id="5_8vi7n"]
 [ext_resource type="Texture2D" uid="uid://bxalqsmxkj2j0" path="res://Resources/Sprites/Cursor/cursor.png" id="6_pcu3v"]
@@ -12,18 +13,26 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("3_hwaoc")
+}],
+"loop": false,
+"name": &"back_click",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("3_27jp8")
 }],
 "loop": false,
-"name": &"Cannot Enter",
-"speed": 4.0
+"name": &"cannot_enter",
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_hwaoc")
 }],
 "loop": true,
-"name": &"Click",
+"name": &"click",
 "speed": 10.0
 }, {
 "frames": [{
@@ -31,7 +40,7 @@ animations = [{
 "texture": ExtResource("5_8vi7n")
 }],
 "loop": false,
-"name": &"Enter",
+"name": &"enter",
 "speed": 10.0
 }, {
 "frames": [{
@@ -42,7 +51,7 @@ animations = [{
 "texture": null
 }],
 "loop": true,
-"name": &"Flicker",
+"name": &"flicker",
 "speed": 4.0
 }, {
 "frames": [{
@@ -50,8 +59,8 @@ animations = [{
 "texture": ExtResource("7_3d5pw")
 }],
 "loop": false,
-"name": &"Up Arrow idk",
-"speed": 1.0
+"name": &"up_click",
+"speed": 10.0
 }]
 
 [node name="PlayArea" type="Node2D" unique_id=1773739756]
@@ -78,5 +87,5 @@ scroll_active = false
 [node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=364053683]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
-animation = &"Flicker"
-autoplay = "Flicker"
+animation = &"cannot_enter"
+autoplay = "flicker"
