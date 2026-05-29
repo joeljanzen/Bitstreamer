@@ -15,9 +15,16 @@ var good_click_range = 150
 ## it's outside of this range, will not be autoclicked before it goes offscreen and bad things
 ## will happen
 var clickable_range = 500
+## holds statistics for the current level
+var statistics: LevelStatistics
 
 ## multiply the base damage by this amount on an incorrect click
 const INCORRECT_DAMAGE_MULT = 4
+
+
+## connect the statistics for the current level to the performance calculator
+func connect_stats(stats: LevelStatistics):
+	statistics = stats
 
 
 ## returns if a click is close enough to the perfect click time to be clickable,
@@ -33,7 +40,7 @@ func is_missed(accuracy: float) -> bool:
 
 
 ## calculate the score to gain on a correct click, 
-## given accuracy in milliseconds off the perfect click
+## given accuracy in milliseconds off a perfect click
 func get_score(accuracy: float) -> int:
 	accuracy = abs(accuracy)
 	if accuracy <= perfect_click_range:
@@ -42,11 +49,6 @@ func get_score(accuracy: float) -> int:
 		return GOOD_CLICK_SCORE
 	else:
 		return BAD_CLICK_SCORE
-
-
-## get the amount of score to lose on an incorrect click
-func get_score_on_incorrect() -> int:
-	return -PERFECT_CLICK_SCORE
 
 
 ## get the amount of damage to take on an incorrect click, given the base damage

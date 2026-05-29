@@ -54,8 +54,7 @@ func _process(delta: float) -> void:
 	
 	# bit is offscreen
 	if position.x < -Bit.get_width():
-		Signals.combo_break.emit()
-		Signals.damage.emit(_damage)
+		Signals.miss.emit(_damage)
 		queue_free()
 
 
@@ -86,9 +85,7 @@ func click(cursor_x: float, value: BitType.Type) -> bool:
 				return false 
 			# score decreases, take extra damage, and lose combo
 			elif get_value() == BitType.Type.ZERO || get_value() == BitType.Type.ONE:
-				Signals.score.emit(PerformanceCalculator.get_score_on_incorrect())
-				Signals.damage.emit(PerformanceCalculator.get_damage_on_incorrect(_damage))
-				Signals.combo_break.emit()
+				Signals.miss.emit(PerformanceCalculator.get_damage_on_incorrect(_damage))
 		
 		kill()
 		return true
@@ -98,7 +95,7 @@ func click(cursor_x: float, value: BitType.Type) -> bool:
 
 ## the game clicked the bit for you! (combo breaks and you don't get score)
 func auto_click() -> void:
-	Signals.combo_break.emit()
+	Signals.miss.emit(0) # works like a miss but you take no damage
 	kill()
 
 

@@ -25,6 +25,18 @@ text = "Score: 0"
 fit_content = true
 scroll_active = false
 
+[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer" unique_id=688530627]
+offset_left = 738.0
+offset_top = 954.0
+offset_right = 1908.0
+offset_bottom = 1062.0
+theme = ExtResource("1_gw16p")
+theme_override_font_sizes/normal_font_size = 100
+text = "Accuracy: 100%"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+
 [node name="Combo" type="RichTextLabel" parent="CanvasLayer" unique_id=286627677]
 offset_left = 1152.0
 offset_top = 18.0
