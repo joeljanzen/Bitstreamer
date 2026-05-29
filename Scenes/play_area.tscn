@@ -15,7 +15,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("3_hwaoc")
 }],
-"loop": false,
+"loop": true,
 "name": &"back_click",
 "speed": 10.0
 }, {
@@ -87,5 +87,5 @@ scroll_active = false
 [node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=364053683]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
-animation = &"cannot_enter"
+animation = &"flicker"
 autoplay = "flicker"

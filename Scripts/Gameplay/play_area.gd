@@ -27,17 +27,20 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	# default animation
+	# ensure default cursor animation
 	if !cursor.is_playing():
 		cursor.play("flicker")
 	
 	# input handling
 	if Input.is_action_just_pressed("0 bit"):
-		try_click_zero_one(click_bit(BitType.Type.ZERO))
+		if !click_bit(BitType.Type.ZERO):
+			miss_click_zero_one()
 	if Input.is_action_just_pressed("1 bit"):
-		try_click_zero_one(click_bit(BitType.Type.ONE))
+		if !click_bit(BitType.Type.ONE):
+			miss_click_zero_one()
 	if Input.is_action_just_pressed("enter"):
-		try_click_enter(click_bit(BitType.Type.ENTER))
+		if !click_bit(BitType.Type.ENTER):
+			miss_click_enter()
 	
 	# let go of 1 or 0, go back to flickering cursor
 	if Input.is_action_just_released("0 bit") || Input.is_action_just_released("1 bit"):
@@ -48,9 +51,8 @@ func _process(_delta: float) -> void:
 		var missed = bit_stream.pop_front()
 		# still clicks enter if you miss it
 		if missed.get_value() == BitType.Type.ENTER:
-			cursor.play("enter")
 			missed.auto_click()
-			after_click_enter()
+			click_enter()
 	
 	# DEBUG
 	if Input.is_action_just_pressed("spawn 0 bit"):
@@ -69,25 +71,6 @@ func send_bit(value: BitType.Type, speed: int):
 	bit_stream.push_back(new_bit)
 
 
-## the animations and sounds that trigger when trying to click a zero or one bit.
-## pass whether a bit was actually there to click or not
-func try_click_zero_one(clicked: bool) -> void:
-	# make these different lol
-	if clicked:
-		cursor.play("click")
-	else:
-		cursor.play("click")
-
-
-## the animations and sounds that trigger when trying to click an enter bit.
-## pass whether the enter was actually there to click or not
-func try_click_enter(clicked: bool) -> void:
-	if clicked:
-		cursor.play("enter")
-	else:
-		cursor.play("cannot_enter")
-
-
 ## try to click the next bit in the stream.
 ## returns true if the click worked
 func click_bit(value: BitType.Type) -> bool:
@@ -100,37 +83,54 @@ func click_bit(value: BitType.Type) -> bool:
 			var correct_click = curr_bit.get_value() == value
 			match value:
 				BitType.Type.ZERO:
-					after_click_zero(correct_click)
+					click_zero(correct_click)
 				BitType.Type.ONE:
-					after_click_one(correct_click)
+					click_one(correct_click)
 				BitType.Type.ENTER:
-					after_click_enter()
+					click_enter()
 			return true
 	return false
 
+# updating the play area in response to inputs
+# including animations and sounds
 
-## update play area after zero bit was clicked 
+## the animations and sounds that trigger when missing a zero or one bit
+func miss_click_zero_one() -> void:
+	cursor.play("click")
+
+
+## the animations and sounds that trigger when missing an enter bit
+func miss_click_enter() -> void:
+	cursor.play("cannot_enter")
+
+
+## the animations and sounds that trigger when clicking a zero bit
 ## (different outcome depending on correct or incorrect click)
-func after_click_zero(correct_click: bool):
+func click_zero(correct_click: bool):
 	if correct_click:
+		cursor.play("click")
 		bit_label.text += "0"
 	else:
+		cursor.play("back_click")
 		bit_label.text += "[color=%s]0[/color]" % incorrect_bit_color
 
 
-## update play area after one bit was clicked 
+## the animations and sounds that trigger when clicking a one bit
 ## (different outcome depending on correct or incorrect click)
-func after_click_one(correct_click: bool):
+func click_one(correct_click: bool):
 	if correct_click:
+		cursor.play("click")
 		bit_label.text += "1"
 	else:
+		cursor.play("back_click")
 		bit_label.text += "[color=%s]1[/color]" % incorrect_bit_color
 
 
-## update play area after enter bit was clicked 
-## (you cannot incorrectly click an enter bit, you either click it right, or 
+## ## the animations and sounds that trigger when clicking an enter bit
+## (you cannot incorrectly click an enter bit, you either click it right or 
 ## the game clicks it for you)
-func after_click_enter():
+func click_enter():
+	cursor.play("enter")
 	if line_num < MAX_LINE_NUM:
 		line_num += 1
 		bit_label.text += "\n"
