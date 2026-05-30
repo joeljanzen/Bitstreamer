@@ -52,7 +52,7 @@ func update_acc(raw_score: int):
 	_raw_score += raw_score
 	_max_accuracy += PerformanceCalculator.PERFECT_CLICK_SCORE
 	_accuracy = float(_raw_score) / float(_max_accuracy) * 100
-	_accuracy_label.text = "Accuracy: %d%%" % _accuracy
+	_accuracy_label.text = "Accuracy: %.2f%%" % _accuracy
 
 
 func get_current_score() -> int:
