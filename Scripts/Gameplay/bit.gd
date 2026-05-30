@@ -8,19 +8,19 @@ extends Node2D
 @onready var _timer: Timer = $Timer
 
 static var bit_font: Theme = load("res://Resources/Themes/bit_font.tres")
+## fades the bit away when it is clicked instead of disappearing instantly
 static var bit_fade_effect = true
 
 enum miss_effect_type {MOVE_OFFSCREEN, DISAPPEAR, FADE_OUT}
 ## the effect that plays when a bit is missed.
 ## FADE_OUT does the same as disappear unless bit_fade_effect is enabled
-static var miss_effect: miss_effect_type = miss_effect_type.DISAPPEAR
-
+static var miss_effect: miss_effect_type = miss_effect_type.FADE_OUT
+## how quickly the bit fades away after being clicked (default is 5).
+## set to 0 to disable fade entirely
+static var clicked_fade_speed = 5
 
 ## default bit speed
 const DEFAULT_SPEED = 500
-## how quickly the bit fades away after being clicked.
-## set to 0 to disable fade entirely
-const CLICKED_FADE_SPEED = 5
 ## default bit damage if missed
 const DEFAULT_DAMAGE = 1
 
@@ -61,7 +61,7 @@ func _process(delta: float) -> void:
 		if modulate.a < 0:
 			queue_free()
 		else:
-			modulate.a -= CLICKED_FADE_SPEED * delta
+			modulate.a -= clicked_fade_speed * delta
 	
 	# bit is missed
 	if !_is_missed && PerformanceCalculator.is_missed(get_accuracy()):
