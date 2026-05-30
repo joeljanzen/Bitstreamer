@@ -7,3 +7,6 @@ signal scored(amount: int, raw_amount: int)
 
 ## A bit has been missed. Provides the damage that is dealt as a result.
 signal missed(damage: int)
+
+## The level has been failed.
+signal failed()

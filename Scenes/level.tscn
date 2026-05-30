@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://njdusa2xiafg"]
+
+[ext_resource type="Script" uid="uid://ka4qmydvm86s" path="res://Scenes/level.gd" id="1_6phgx"]
+[ext_resource type="PackedScene" uid="uid://c0cfxinwdhxdr" path="res://Scenes/level_ui.tscn" id="2_81xng"]
+[ext_resource type="PackedScene" uid="uid://bmyyd40hpvw2l" path="res://Scenes/play_area.tscn" id="3_wqkje"]
+
+[node name="Level" type="Node2D" unique_id=58297453]
+script = ExtResource("1_6phgx")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1776457430]
+position = Vector2(960, 540)
+
+[node name="LevelUI" parent="." unique_id=1794658101 instance=ExtResource("2_81xng")]
+
+[node name="PlayArea" parent="." unique_id=1773739756 instance=ExtResource("3_wqkje")]
+position = Vector2(260, 162)

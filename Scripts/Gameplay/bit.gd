@@ -23,9 +23,6 @@ static var miss_effect: MissEffectType = MissEffectType.FADE_OUT
 ## Set to 0 to disable fade entirely.
 static var clicked_fade_speed := 5
 
-## The default bit damage when a bit is missed or incorrectly clicked.
-const DEFAULT_DAMAGE = 1
-
 ## Where the bit starts.
 var _starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
 
@@ -58,19 +55,6 @@ func get_value() -> Bit.Type:
 	return _value
 
 
-## Set the bit's appearance.
-func _ready() -> void:
-	match _value:
-		Bit.Type.ZERO:
-			_sprite.hide()
-			_label.text = "0"
-		Bit.Type.ONE:
-			_sprite.hide()
-			_label.text = "1"
-		Bit.Type.ENTER:
-			_label.hide()
-
-
 ## Update bit position and effects, and check if it has been missed.
 func _process(delta: float) -> void:
 	if !_fade_bit or !bit_fade_effect:
@@ -80,7 +64,10 @@ func _process(delta: float) -> void:
 		if modulate.a < 0:
 			queue_free()
 		else:
-			modulate.a -= clicked_fade_speed * delta
+			if clicked_fade_speed == 0:
+				process_mode = Node.PROCESS_MODE_DISABLED
+			else:
+				modulate.a -= clicked_fade_speed * delta
 	
 	# Bit is missed.
 	if !_is_missed and PerformanceCalculator.is_missed(get_accuracy()):
@@ -94,21 +81,32 @@ func _process(delta: float) -> void:
 				kill()
 	
 	# Bit is offscreen.
-	if position.x < -Bit.get_width():
+	if global_position.x < -Bit.get_width():
 		if !_is_missed:
 			Signals.missed.emit(_damage)
 		queue_free()
 
 
-## Set bit data before appending it to a scene.
-## Cursor_x position is used for accuracy calculations.
-func create(value: Bit.Type, y_pos: float, cursor_x: float, speed: int, 
-	damage: int = DEFAULT_DAMAGE) -> void:
+## Set bit data AFTER appending it to a scene as a child.
+## Send global x and y positions.
+func create(value: Bit.Type, cursor_y: float, cursor_x: float, speed: int, 
+	damage: int) -> void:
 	_value = value
 	_cursor_x = cursor_x
 	_speed = speed
 	_damage = damage
-	position = Vector2(_starting_x, y_pos)
+	global_position = Vector2(_starting_x, cursor_y)
+	
+	# Set bit visuals.
+	match _value:
+		Bit.Type.ZERO:
+			_sprite.hide()
+			_label.text = "0"
+		Bit.Type.ONE:
+			_sprite.hide()
+			_label.text = "1"
+		Bit.Type.ENTER:
+			_label.hide()
 
 
 ## Try to click the bit, returning if the player did.
@@ -152,7 +150,10 @@ func kill() -> void:
 func get_accuracy() -> int:
 	var time_to_click = _timer.wait_time - _timer.time_left
 	var distance_to_cursor = _starting_x - _cursor_x # In pixels.
+	#print("distance to cursor is %d" % distance_to_cursor)
 	var time_to_cursor = distance_to_cursor / _speed # In seconds.
+	#print("time to cursor is %f" % time_to_cursor)
+	#print("time to click is %f" % time_to_click)
 	var error_milliseconds: int = round((time_to_cursor - time_to_click) * 1000)
 	#print("calculated milliseconds off perfect click: %s" % error_milliseconds)
 	return error_milliseconds

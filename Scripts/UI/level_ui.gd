@@ -53,11 +53,14 @@ func _missed(damage: int) -> void:
 	_health_bar.value -= damage
 	
 	_update_acc(0)
+	
+	if _health_bar.value <= 0:
+		Signals.failed.emit()
 
 
 ## Updates player accuracy. raw_score is the score given for the click 
 ## before any bonuses (bad, good, or perfect click).
-func _update_acc(raw_score: int):
+func _update_acc(raw_score: int) -> void:
 	_raw_score += raw_score
 	_max_accuracy += PerformanceCalculator.PERFECT_CLICK_SCORE
 	accuracy = float(_raw_score) / float(_max_accuracy) * 100

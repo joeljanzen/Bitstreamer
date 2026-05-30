@@ -8,6 +8,9 @@ extends Node2D
 ## The speed of manually spawned bits.
 const DEBUG_BIT_SPEED := 800
 
+## The damage manually spawned bits deal.
+const DEBUG_BIT_DAMAGE := 5
+
 ## The last line before the cursor resets back to the top, 
 ## clearing the bit_label.
 const MAX_LINE_NUM := 10
@@ -60,18 +63,18 @@ func _process(_delta: float) -> void:
 	
 	# DEBUG!
 	if Input.is_action_just_pressed("spawn 0 bit"):
-		send_bit(Bit.Type.ZERO, DEBUG_BIT_SPEED)
+		send_bit(Bit.Type.ZERO, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
 	elif Input.is_action_just_pressed("spawn 1 bit"):
-		send_bit(Bit.Type.ONE, DEBUG_BIT_SPEED)
+		send_bit(Bit.Type.ONE, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
 	elif Input.is_action_just_pressed("spawn enter"):
-		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED)
+		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
 
 
 ## Send a bit down the current line.
-func send_bit(value: Bit.Type, speed: int):
+func send_bit(value: Bit.Type, speed: int, damage: int):
 	var new_bit: Bit = _bit.instantiate()
-	new_bit.create(value, _cursor.global_position.y, _cursor.global_position.x, speed)
-	get_tree().root.call_deferred("add_child", new_bit)
+	add_child(new_bit)
+	new_bit.create(value, _cursor.global_position.y, _cursor.global_position.x, speed, damage)
 	bit_stream.push_back(new_bit)
 
 
