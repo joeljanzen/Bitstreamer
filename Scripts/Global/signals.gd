@@ -1,9 +1,9 @@
 extends Node
-## global signals
+## Global signals used in gameplay.
 
-## score was gained.
-## provides the total amount of score, and the raw amount of score before any bonuses
-signal score(amount: int, raw_amount: int)
-## a bit has been missed.
-## provides the damage that is dealt as a result
-signal miss(damage: int)
+## Score was gained [Bit]. Provides the total amount of score, and the raw amount of 
+## score before any bonuses.
+signal scored(amount: int, raw_amount: int)
+
+## A bit has been missed. Provides the damage that is dealt as a result.
+signal missed(damage: int)

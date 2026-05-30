@@ -15,7 +15,7 @@ offset_bottom = 47.0
 theme = ExtResource("2_w8jum")
 text = "0"
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=658320609]
+[node name="BitSprite" type="Sprite2D" parent="." unique_id=658320609]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_bfqwx")
 
