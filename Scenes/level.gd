@@ -9,7 +9,7 @@ var _crash_screen = preload("res://Scenes/game_crash_ui.tscn")
 
 ## Connect to the failed signal.
 func _ready() -> void:
-	Signals.failed.connect(failed)
+	Signals.failed.connect(_failed)
 
 
 ## Start the level
@@ -18,7 +18,7 @@ func start() -> void:
 
 
 ## The level has been failed
-func failed() -> void:
+func _failed() -> void:
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	var crash_screen: GameCrashUI = _crash_screen.instantiate()

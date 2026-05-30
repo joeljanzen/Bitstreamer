@@ -49,8 +49,8 @@ var _is_missed = false
 ## WARNING: NOT GOOD TO HARDCODE THIS, SHOULD BE CALCULATED SOMEHOW
 static func get_width() -> int:
 	return 28
-	
-	
+
+
 func get_value() -> Bit.Type:
 	return _value
 
