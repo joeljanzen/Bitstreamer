@@ -1,0 +1,9 @@
+[gd_resource type="Theme" format=3 uid="uid://c7c1pti6lqmg4"]
+
+[sub_resource type="SystemFont" id="SystemFont_60xwf"]
+font_names = PackedStringArray("Consolas")
+
+[resource]
+default_base_scale = 1.0
+default_font = SubResource("SystemFont_60xwf")
+default_font_size = 80

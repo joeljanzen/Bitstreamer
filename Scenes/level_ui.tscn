@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://c0cfxinwdhxdr"]
+
+[ext_resource type="Script" uid="uid://d3chuwhhnot0" path="res://Scripts/UI/level_ui.gd" id="1_4mllq"]
+[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_gw16p"]
+
+[node name="LevelUI" type="Control" unique_id=1794658101]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4mllq")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=914261618]
+
+[node name="Score" type="RichTextLabel" parent="CanvasLayer" unique_id=926045344]
+offset_left = 18.0
+offset_top = 9.0
+offset_right = 1152.0
+offset_bottom = 117.0
+theme = ExtResource("1_gw16p")
+theme_override_font_sizes/normal_font_size = 100
+text = "Score: 0"
+fit_content = true
+scroll_active = false
+
+[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer" unique_id=688530627]
+offset_left = 738.0
+offset_top = 980.0
+offset_right = 1908.0
+offset_bottom = 1081.0
+theme = ExtResource("1_gw16p")
+theme_override_font_sizes/normal_font_size = 100
+text = "Accuracy: 100%"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+
+[node name="Combo" type="RichTextLabel" parent="CanvasLayer" unique_id=286627677]
+offset_left = 1152.0
+offset_top = 9.0
+offset_right = 1908.0
+offset_bottom = 117.0
+theme = ExtResource("1_gw16p")
+theme_override_font_sizes/normal_font_size = 100
+text = "Combo: 0x"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+
+[node name="ProgramHealth" type="ProgressBar" parent="CanvasLayer" unique_id=1030218865]
+offset_left = 36.0
+offset_top = 1008.0
+offset_right = 720.0
+offset_bottom = 1044.0
+value = 100.0
+rounded = true

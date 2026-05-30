@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://csvapwfyq7dhe"]
+
+[ext_resource type="Script" uid="uid://bl5peq7lqckmv" path="res://Scripts/UI/bit_click_effect.gd" id="1_xylmr"]
+[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_ys6vb"]
+
+[sub_resource type="Animation" id="Animation_xylmr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AccuracyText:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AccuracyText:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-42, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ys6vb"]
+resource_name = "fade"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AccuracyText:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.28),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AccuracyText:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-87.5, 0), Vector2(-87.5, -30)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_avm3i"]
+_data = {
+&"RESET": SubResource("Animation_xylmr"),
+&"fade": SubResource("Animation_ys6vb")
+}
+
+[node name="BitClickEffect" type="Node2D" unique_id=505687830]
+script = ExtResource("1_xylmr")
+
+[node name="AccuracyText" type="RichTextLabel" parent="." unique_id=54985892]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_right = 133.0
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_ys6vb")
+theme_override_font_sizes/normal_font_size = 32
+text = "PERFECT!"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=487828421]
+libraries/ = SubResource("AnimationLibrary_avm3i")
+autoplay = &"fade"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]

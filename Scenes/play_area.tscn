@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://bmyyd40hpvw2l"]
+
+[ext_resource type="Script" uid="uid://b2lfog7dafrx7" path="res://Scripts/Gameplay/play_area.gd" id="1_5dgnu"]
+[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_3d5pw"]
+[ext_resource type="Texture2D" uid="uid://kbqeqckojl7p" path="res://Resources/Sprites/Cursor/cursor_cannot_enter.png" id="3_27jp8"]
+[ext_resource type="Texture2D" uid="uid://ciucl04ht3bcx" path="res://Resources/Sprites/Cursor/cursor_click_inverted.png" id="3_hwaoc"]
+[ext_resource type="Texture2D" uid="uid://dhpg40av67qu2" path="res://Resources/Sprites/Cursor/cursor_click.png" id="4_hwaoc"]
+[ext_resource type="Texture2D" uid="uid://cd67wwlog7jx3" path="res://Resources/Sprites/Cursor/cursor_enter.png" id="5_8vi7n"]
+[ext_resource type="Texture2D" uid="uid://bxalqsmxkj2j0" path="res://Resources/Sprites/Cursor/cursor.png" id="6_pcu3v"]
+[ext_resource type="Texture2D" uid="uid://dfpghwucv3n7n" path="res://Resources/Sprites/Cursor/cursor_up.png" id="7_3d5pw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dtjkg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_hwaoc")
+}],
+"loop": true,
+"name": &"back_click",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_27jp8")
+}],
+"loop": false,
+"name": &"cannot_enter",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_hwaoc")
+}],
+"loop": true,
+"name": &"click",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_8vi7n")
+}],
+"loop": false,
+"name": &"enter",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_pcu3v")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"flicker",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_3d5pw")
+}],
+"loop": false,
+"name": &"up_click",
+"speed": 10.0
+}]
+
+[node name="PlayArea" type="Node2D" unique_id=1773739756]
+script = ExtResource("1_5dgnu")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=762500707]
+offset_left = -18.0
+offset_top = -54.0
+offset_right = 1440.0
+offset_bottom = 810.0
+color = Color(0.15487596, 0.154876, 0.15487596, 1)
+
+[node name="BitLabel" type="RichTextLabel" parent="." unique_id=984305221]
+offset_left = 5.0
+offset_top = -35.0
+offset_right = 1422.0
+offset_bottom = 792.0
+theme = ExtResource("2_3d5pw")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_constants/line_separation = 3
+bbcode_enabled = true
+scroll_active = false
+
+[node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=364053683]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_dtjkg")
+animation = &"flicker"
+autoplay = "flicker"
