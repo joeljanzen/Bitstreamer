@@ -6,7 +6,7 @@ extends Node2D
 @onready var _bit = preload("res://Scenes/bit.tscn")
 
 ## The speed of manually spawned bits.
-const DEBUG_BIT_SPEED := 800
+const DEBUG_BIT_SPEED := 1600
 
 ## The damage manually spawned bits deal.
 const DEBUG_BIT_DAMAGE := 5
@@ -102,15 +102,16 @@ func _click_bit(value: Bit.Type) -> bool:
 
 ## Missed a bit, so remove from the stream.
 func _missed_bit(_damage):
-	var missed: Bit = bit_stream.pop_front()
-	
-	match missed.get_value():
-		Bit.Type.ZERO:
-			_miss_zero_one()
-		Bit.Type.ONE:
-			_miss_zero_one()
-		Bit.Type.ENTER:
-			_miss_enter()
+	if !bit_stream.is_empty():
+		var missed: Bit = bit_stream.pop_front()
+		
+		match missed.get_value():
+			Bit.Type.ZERO:
+				_miss_zero_one()
+			Bit.Type.ONE:
+				_miss_zero_one()
+			Bit.Type.ENTER:
+				_miss_enter()
 
 # Updating the play area in response to inputs,
 # including animations and sounds.

@@ -34,7 +34,7 @@ var perfect_click_range := 30
 var good_click_range := 150
 ## How many milliseconds + or - a perfect click is actually clickable
 ## (gives a bad score unless the click is within the good or perfect range).
-var clickable_range := 100
+var clickable_range := 500
 
 ## Contains statistics for the current level.
 var statistics: LevelStatistics

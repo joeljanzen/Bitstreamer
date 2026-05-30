@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://770j5y6ukifv"]
 
-[ext_resource type="Script" uid="uid://dy2rtpl8ydwo1" path="res://Scenes/game_crash_ui.gd" id="1_pwu0n"]
+[ext_resource type="Script" uid="uid://dy2rtpl8ydwo1" path="res://Scripts/UI/game_crash_ui.gd" id="1_pwu0n"]
 [ext_resource type="Texture2D" uid="uid://ck0tbadym1fsj" path="res://Resources/Sprites/UI/Windows-BSOD-scaled.jpg" id="2_3m6g7"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="3_lbv4o"]
 
