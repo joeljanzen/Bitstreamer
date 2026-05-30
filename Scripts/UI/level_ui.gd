@@ -43,6 +43,9 @@ func _scored(amount: int, raw_amount: int) -> void:
 	max_combo = max(combo, max_combo)
 	_combo_label.text = "Combo: %dx" % combo
 	
+	if _health_bar.value < _health_bar.max_value:
+		_health_bar.value += PerformanceCalculator.calculate_health_gain(raw_amount)
+	
 	_update_acc(raw_amount)
 
 

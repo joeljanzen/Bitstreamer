@@ -1,20 +1,31 @@
 extends Node
 ## Calculates various performance statistics during gameplay.
 
-# The score given for a certain accuracy of click.
-## The score given for a click within the bounds of perfect_click_range.
+# The base score given for a certain accuracy of click.
+## The base score given for a click within the bounds of perfect_click_range.
 const PERFECT_CLICK_SCORE := 300
-## The score given for a click within the bounds of good_click_range.
+## The base score given for a click within the bounds of good_click_range.
 const GOOD_CLICK_SCORE := 100
-## The score given for a click within the bounds of clickable_range.
+## The base score given for a click within the bounds of clickable_range.
 const BAD_CLICK_SCORE := 50
 
-## When a combo is high enough to start granting bonus score.
-const COMBO_BONUS_START := 30
+## When a combo is high enough to start granting bonus score (inclusive).
+const COMBO_SCORE_BONUS_START := 30
 
 ## How quickly the bonus score grows once the combo bonus start has been 
 ## reached.
 const COMBO_BONUS_SCALER := 0.02
+
+# The health restored for a certain accuracy of click.
+## The health restored for a click within the bounds of perfect_click_range.
+const PERFECT_CLICK_HEAL := 6
+## The health restored for a click within the bounds of good_click_range.
+const GOOD_CLICK_HEAL := 2
+## The health restored for a click within the bounds of clickable_range.
+const BAD_CLICK_HEAL := 1
+
+## When a combo is high enough to start restoring health (inclusive).
+const COMBO_HEALTH_RESTORE_START := 5
 
 # The accuracy ranges needed to achieve each click score.
 ## How many milliseconds + or - a perfect click gives you a perfect score.
@@ -23,7 +34,7 @@ var perfect_click_range := 30
 var good_click_range := 150
 ## How many milliseconds + or - a perfect click is actually clickable
 ## (gives a bad score unless the click is within the good or perfect range).
-var clickable_range := 500
+var clickable_range := 100
 
 ## Contains statistics for the current level.
 var statistics: LevelStatistics
@@ -57,7 +68,7 @@ func get_raw_score(accuracy: float) -> int:
 	elif accuracy <= clickable_range:
 		return BAD_CLICK_SCORE
 	else:
-		push_error("tried to get the score of an accuracy outside of clickable_range!")
+		push_error("Tried to get the score of an accuracy outside of clickable_range!")
 		return 0
 
 
@@ -70,11 +81,29 @@ func get_score(accuracy: float) -> int:
 	
 	# Calculate combo bonus.
 	var multiplier := 1.0
-	if statistics.combo >= COMBO_BONUS_START:
+	if statistics.combo >= COMBO_SCORE_BONUS_START:
 		# The part of the combo considered for bonuses.
-		var considered_combo: float = statistics.combo - COMBO_BONUS_START + 1
+		var considered_combo: float = statistics.combo - COMBO_SCORE_BONUS_START + 1
 		multiplier += float(considered_combo) * COMBO_BONUS_SCALER
 	#print("multiplier is %f" % multiplier)
 	score *= multiplier
 	#print("full score is %d\n" % score)
 	return score
+
+## Calculate the amount of health regained from a click, given the raw score 
+## gained before any bonuses. Also takes into account the current combo.
+func calculate_health_gain(raw_score: int) -> int:
+	var health: int
+	# Only start healing after reaching the required combo.
+	if statistics.combo >= COMBO_HEALTH_RESTORE_START:
+		match raw_score:
+			PERFECT_CLICK_SCORE:
+				return PERFECT_CLICK_HEAL
+			GOOD_CLICK_SCORE:
+				return GOOD_CLICK_HEAL
+			BAD_CLICK_SCORE:
+				return BAD_CLICK_HEAL
+			_:
+				push_error("Tried to get the health regen for a non-standard raw score!")
+				return 0
+	return health
