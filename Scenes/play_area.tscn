@@ -69,7 +69,7 @@ script = ExtResource("1_5dgnu")
 [node name="ColorRect" type="ColorRect" parent="." unique_id=762500707]
 offset_left = -18.0
 offset_top = -54.0
-offset_right = 1422.0
+offset_right = 1440.0
 offset_bottom = 810.0
 color = Color(0.15487596, 0.154876, 0.15487596, 1)
 
