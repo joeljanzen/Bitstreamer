@@ -25,26 +25,24 @@ func scored(amount: int) -> void:
 	_score_label.text = "Score: %d" % _score
 	_combo += 1
 	_max_combo = max(_combo, _max_combo)
-		
 	_combo_label.text = "Combo: %dx" % _combo
+	
 	update_acc()
 
 
 ## the player missed a bit
 func missed(damage: int) -> void:
-	# break combo
 	_combo = 0
 	_combo_label.text = "Combo: %dx" % _combo
-	# take damage
 	_health_bar.value -= damage
+	
 	update_acc()
 
 
 ## update player accuracy
 func update_acc():
-	# update accuracy
 	_max_accuracy += PerformanceCalculator.PERFECT_CLICK_SCORE
-	_accuracy = float(_score) / _max_accuracy * 100 # only works if score does not increase with combo
+	_accuracy = float(_score) / _max_accuracy * 100 # only works if score does not increase with higher combo!
 	_accuracy_label.text = "Accuracy: %d%%" % _accuracy
 
 

@@ -11,4 +11,4 @@ position = Vector2(960, 540)
 [node name="LevelUI" parent="." unique_id=1794658101 instance=ExtResource("7_xq3o0")]
 
 [node name="PlayArea" parent="." unique_id=1773739756 instance=ExtResource("2_dtjkg")]
-position = Vector2(270, 162)
+position = Vector2(260, 162)

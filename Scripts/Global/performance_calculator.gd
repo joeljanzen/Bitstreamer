@@ -11,10 +11,7 @@ var perfect_click_range = 30
 var good_click_range = 150
 ## how many milliseconds + or - a perfect click is actually clickable 
 ## (gives a bad score within this range).
-## WARNING: if this range is too long, the enter bit, which is supposed to be auto clicked once 
-## it's outside of this range, will not be autoclicked before it goes offscreen and bad things
-## will happen
-var clickable_range = 500
+var clickable_range = 150 # 500 by default
 ## holds statistics for the current level
 var statistics: LevelStatistics
 
@@ -30,10 +27,10 @@ func is_clickable(accuracy: float) -> bool:
 	return abs(accuracy) <= clickable_range
 
 
-## returns if a click has been missed entirely,
+## returns if a click is past the cursor and not clickable,
 ## given accuracy in milliseconds off the perfect click
 func is_missed(accuracy: float) -> bool:
-	return !is_clickable(accuracy) && accuracy < 0 # a negative accuracy means the bit has passed the cursor already
+	return accuracy < 0 && !is_clickable(accuracy)
 
 
 ## calculate the score to gain on a correct click, 

@@ -16,9 +16,9 @@ script = ExtResource("1_4mllq")
 
 [node name="Score" type="RichTextLabel" parent="CanvasLayer" unique_id=926045344]
 offset_left = 18.0
-offset_top = 18.0
+offset_top = 9.0
 offset_right = 1152.0
-offset_bottom = 126.0
+offset_bottom = 117.0
 theme = ExtResource("1_gw16p")
 theme_override_font_sizes/normal_font_size = 100
 text = "Score: 0"
@@ -27,9 +27,9 @@ scroll_active = false
 
 [node name="Accuracy" type="RichTextLabel" parent="CanvasLayer" unique_id=688530627]
 offset_left = 738.0
-offset_top = 954.0
+offset_top = 980.0
 offset_right = 1908.0
-offset_bottom = 1062.0
+offset_bottom = 1081.0
 theme = ExtResource("1_gw16p")
 theme_override_font_sizes/normal_font_size = 100
 text = "Accuracy: 100%"
@@ -39,9 +39,9 @@ horizontal_alignment = 2
 
 [node name="Combo" type="RichTextLabel" parent="CanvasLayer" unique_id=286627677]
 offset_left = 1152.0
-offset_top = 18.0
+offset_top = 9.0
 offset_right = 1908.0
-offset_bottom = 126.0
+offset_bottom = 117.0
 theme = ExtResource("1_gw16p")
 theme_override_font_sizes/normal_font_size = 100
 text = "Combo: 0x"
