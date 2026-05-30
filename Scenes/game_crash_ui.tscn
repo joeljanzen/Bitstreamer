@@ -60,5 +60,17 @@ text = "Maximum Combo: 0x"
 fit_content = true
 scroll_active = false
 
+[node name="Score" type="RichTextLabel" parent="CanvasLayer" unique_id=1884251460]
+offset_left = 393.0
+offset_top = 580.0
+offset_right = 1527.0
+offset_bottom = 688.0
+theme = ExtResource("3_lbv4o")
+theme_override_font_sizes/normal_font_size = 100
+text = "Score: 0"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
 [connection signal="pressed" from="CanvasLayer/Reboot" to="." method="_on_reboot_pressed"]
 [connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]
