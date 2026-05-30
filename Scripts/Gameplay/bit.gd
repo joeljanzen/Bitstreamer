@@ -101,7 +101,8 @@ func click(value: BitType.Type) -> bool:
 	if PerformanceCalculator.is_clickable(accuracy):
 		# successfully clicked
 		if get_value() == value:
-			Signals.score.emit(PerformanceCalculator.get_score(accuracy))
+			Signals.score.emit(PerformanceCalculator.get_score(accuracy), 
+				PerformanceCalculator.get_raw_score(accuracy))
 		# clicked in time, but clicked the wrong key
 		else:
 			# enter key can only be clicked if you actually press enter, and
