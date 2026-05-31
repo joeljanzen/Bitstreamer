@@ -117,7 +117,7 @@ func get_click_quality(raw_score: int) -> ClickQuality:
 				return ClickQuality.MISS
 			_:
 				push_error("Tried to get click quality of a non-standard raw score!")
-				return 0
+				return ClickQuality.MISS
 	else:
 		return ClickQuality.ERROR
 

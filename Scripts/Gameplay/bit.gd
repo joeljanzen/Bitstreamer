@@ -189,7 +189,8 @@ func _score_animation(click_quality: PerformanceCalculator.ClickQuality) -> void
 		var effect: BitClickEffect = _bit_click_effect.instantiate()
 		get_tree().root.call_deferred("add_child", effect)
 		var pos: Vector2 = global_position
-		var pos_offset: float = effect.get_width() / 2
+		@warning_ignore("integer_division")
+		var pos_offset: int = effect.get_width() / 2
 		# bit is somewhat offscreen or entirely offscreen
 		if global_position.x < pos_offset:
 			pos = Vector2(pos_offset, global_position.y)

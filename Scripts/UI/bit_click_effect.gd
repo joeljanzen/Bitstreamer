@@ -6,9 +6,15 @@ extends Node2D
 @onready var _accuracy_label: RichTextLabel = $AccuracyText
 
 
+## The width of the effect, in pixels.
+## WARNING: NOT GOOD TO HARDCODE THIS, SHOULD BE CALCULATED SOMEHOW
+static func get_width() -> int:
+	return 100
+
+
 ## Set up the effect depending on the quality of the click.
-func create(global_position, click_quality: PerformanceCalculator.ClickQuality) -> void:
-	position = global_position
+func create(global_pos, click_quality: PerformanceCalculator.ClickQuality) -> void:
+	position = global_pos
 	
 	match click_quality:
 		PerformanceCalculator.ClickQuality.PERFECT:
@@ -30,9 +36,6 @@ func create(global_position, click_quality: PerformanceCalculator.ClickQuality) 
 			push_error("Tried to pass a non-standard click quality!")
 
 
-func get_width() -> int:
-	return 100
-
 ## Delete the effect after the animation ends.
-func _on_animation_finished(anim_name: StringName) -> void:
+func _on_animation_finished(_anim_name: StringName) -> void:
 	queue_free()
