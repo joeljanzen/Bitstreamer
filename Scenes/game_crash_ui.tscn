@@ -72,5 +72,21 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 
+[node name="Clicks" type="RichTextLabel" parent="CanvasLayer" unique_id=572128911]
+offset_left = 1368.0
+offset_top = 453.0
+offset_right = 1884.0
+offset_bottom = 741.0
+theme = ExtResource("3_lbv4o")
+theme_override_font_sizes/normal_font_size = 50
+text = "perfect:
+good:
+okay:
+miss:
+error:"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+
 [connection signal="pressed" from="CanvasLayer/Reboot" to="." method="_on_reboot_pressed"]
 [connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]

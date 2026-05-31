@@ -8,10 +8,18 @@ extends Node2D
 @onready var _bit_click_effect = preload("res://Scenes/bit_click_effect.tscn")
 
 ## The types of bits.
-enum Type {ZERO, ONE, ENTER}
+enum Type {
+	ZERO, 
+	ONE, 
+	ENTER,
+}
 
 ## The type of effects that can play when a bit is missed.
-enum MissEffectType {MOVE_OFFSCREEN, DISAPPEAR, FADE_OUT}
+enum MissEffectType {
+	MOVE_OFFSCREEN,
+	DISAPPEAR,
+	FADE_OUT,
+}
 
 ## Fades the bit away when it is clicked instead of disappearing instantly.
 static var bit_fade_effect := false
@@ -52,8 +60,6 @@ var _is_clicked = false
 var _is_missed = false
 
 
-
-
 ## The width of a bit, in pixels.
 ## WARNING: NOT GOOD TO HARDCODE THIS, SHOULD BE CALCULATED SOMEHOW
 static func get_width() -> int:
@@ -80,9 +86,9 @@ func _process(delta: float) -> void:
 	
 	# Bit is missed.
 	if !_is_missed and PerformanceCalculator.is_missed(get_accuracy()):
-		Signals.missed.emit(_damage)
+		Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.MISS)
 		_is_missed = true
-		_score_animation(0)
+		_score_animation(PerformanceCalculator.ClickQuality.MISS)
 		
 		match miss_effect:
 			MissEffectType.DISAPPEAR:
@@ -96,8 +102,8 @@ func _process(delta: float) -> void:
 		# offscreen, making sure it doesn't emit the missed signal right after 
 		# the scored signal.
 		if !_is_missed and !_is_clicked: 
-			Signals.missed.emit(_damage)
-			_score_animation(0)
+			Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.MISS)
+			_score_animation(PerformanceCalculator.ClickQuality.MISS)
 		queue_free()
 
 
@@ -134,7 +140,7 @@ func click(value: Bit.Type) -> bool:
 		if get_value() == value:
 			var raw_score = PerformanceCalculator.get_raw_score(accuracy)
 			Signals.scored.emit(PerformanceCalculator.get_score(accuracy), raw_score)
-			_score_animation(raw_score)
+			_score_animation(PerformanceCalculator.get_click_quality(raw_score))
 		# Clicked the bit in time, but clicked the wrong key.
 		else:
 			# Enter key can only be clicked if you actually press enter, and
@@ -143,8 +149,8 @@ func click(value: Bit.Type) -> bool:
 				return false 
 			# Take damage and lose combo, as if you missed the bit.
 			elif get_value() == Bit.Type.ZERO or get_value() == Bit.Type.ONE:
-				Signals.missed.emit(_damage)
-				_score_animation(-1)
+				Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.ERROR)
+				_score_animation(PerformanceCalculator.ClickQuality.ERROR)
 				_is_missed = true
 		kill()
 		return true
@@ -178,13 +184,13 @@ func get_accuracy() -> int:
 # Animations and sounds
 
 ## Play sound and animations for a correct click.
-func _score_animation(raw_score: int) -> void:
+func _score_animation(click_quality: PerformanceCalculator.ClickQuality) -> void:
 	if bit_click_effect:
 		var effect: BitClickEffect = _bit_click_effect.instantiate()
 		get_tree().root.call_deferred("add_child", effect)
 		var pos: Vector2 = global_position
-		# bit is somewhat offscreen or entirely offscreen
 		var pos_offset: float = effect.get_width() / 2
+		# bit is somewhat offscreen or entirely offscreen
 		if global_position.x < pos_offset:
 			pos = Vector2(pos_offset, global_position.y)
-		effect.call_deferred("create", pos, raw_score)
+		effect.call_deferred("create", pos, click_quality)

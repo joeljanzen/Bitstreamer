@@ -6,28 +6,28 @@ extends Node2D
 @onready var _accuracy_label: RichTextLabel = $AccuracyText
 
 
-## Set up the effect using the raw score of the click.
-## Set the raw score to negative to indicate an incorrect "error" click.
-func create(global_position, raw_score: int) -> void:
+## Set up the effect depending on the quality of the click.
+func create(global_position, click_quality: PerformanceCalculator.ClickQuality) -> void:
 	position = global_position
 	
-	if raw_score >= 0:
-		match raw_score:
-			PerformanceCalculator.PERFECT_CLICK_SCORE:
-				_accuracy_label.set("theme_override_colors/default_color", Color("2AEBE7"))
-				_accuracy_label.text = "PERFECT!"
-			PerformanceCalculator.GOOD_CLICK_SCORE:
-				_accuracy_label.set("theme_override_colors/default_color", Color("10E610"))
-				_accuracy_label.text = "GOOD!"
-			PerformanceCalculator.BAD_CLICK_SCORE:
-				_accuracy_label.set("theme_override_colors/default_color", Color("E6BE20"))
-				_accuracy_label.text = "OKAY!"
-			_:
-				_accuracy_label.set("theme_override_colors/default_color", Color("ffffff"))
-				_accuracy_label.text = "MISS!"
-	else:
-		_accuracy_label.set("theme_override_colors/default_color", Color("C21515"))
-		_accuracy_label.text = "ERROR!"
+	match click_quality:
+		PerformanceCalculator.ClickQuality.PERFECT:
+			_accuracy_label.set("theme_override_colors/default_color", Color("2AEBE7"))
+			_accuracy_label.text = "PERFECT!"
+		PerformanceCalculator.ClickQuality.GOOD:
+			_accuracy_label.set("theme_override_colors/default_color", Color("10E610"))
+			_accuracy_label.text = "GOOD!"
+		PerformanceCalculator.ClickQuality.OKAY:
+			_accuracy_label.set("theme_override_colors/default_color", Color("E6BE20"))
+			_accuracy_label.text = "OKAY!"
+		PerformanceCalculator.ClickQuality.MISS:
+			_accuracy_label.set("theme_override_colors/default_color", Color("ffffff"))
+			_accuracy_label.text = "MISS!"
+		PerformanceCalculator.ClickQuality.ERROR:
+			_accuracy_label.set("theme_override_colors/default_color", Color("C21515"))
+			_accuracy_label.text = "ERROR!"
+		_:
+			push_error("Tried to pass a non-standard click quality!")
 
 
 func get_width() -> int:

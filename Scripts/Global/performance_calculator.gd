@@ -1,13 +1,22 @@
 extends Node
 ## Calculates various performance statistics during gameplay.
 
+## The quality asssociated with a click of a certain accuracy.
+enum ClickQuality {
+	PERFECT,
+	GOOD,
+	OKAY,
+	MISS,
+	ERROR,
+}
+
 # The base score given for a certain accuracy of click.
 ## The base score given for a click within the bounds of perfect_click_range.
 const PERFECT_CLICK_SCORE := 300
 ## The base score given for a click within the bounds of good_click_range.
 const GOOD_CLICK_SCORE := 100
 ## The base score given for a click within the bounds of clickable_range.
-const BAD_CLICK_SCORE := 50
+const OKAY_CLICK_SCORE := 50
 
 ## When a combo is high enough to start granting bonus score (inclusive).
 const COMBO_SCORE_BONUS_START := 30
@@ -22,7 +31,7 @@ const PERFECT_CLICK_HEAL := 6
 ## The health restored for a click within the bounds of good_click_range.
 const GOOD_CLICK_HEAL := 2
 ## The health restored for a click within the bounds of clickable_range.
-const BAD_CLICK_HEAL := 1
+const OKAY_CLICK_HEAL := 1
 
 ## When a combo is high enough to start restoring health (inclusive).
 const COMBO_HEALTH_RESTORE_START := 5
@@ -33,7 +42,7 @@ var perfect_click_range := 30
 ## How many milliseconds + or - a perfect click gives you a good score.
 var good_click_range := 150
 ## How many milliseconds + or - a perfect click is actually clickable
-## (gives a bad score unless the click is within the good or perfect range).
+## (gives an okay score unless the click is within the good or perfect range).
 var clickable_range := 500
 
 ## Contains statistics for the current level.
@@ -66,7 +75,7 @@ func get_raw_score(accuracy: float) -> int:
 	elif accuracy <= good_click_range:
 		return GOOD_CLICK_SCORE
 	elif accuracy <= clickable_range:
-		return BAD_CLICK_SCORE
+		return OKAY_CLICK_SCORE
 	else:
 		push_error("Tried to get the score of an accuracy outside of clickable_range!")
 		return 0
@@ -90,6 +99,29 @@ func get_score(accuracy: float) -> int:
 	#print("full score is %d\n" % score)
 	return score
 
+
+## Get the click quality for a given raw score (get the raw score from the
+## get_raw_score function of this class).
+## If the score is 0, it is treated as a miss, and if it's negative, it is
+## treated as an error.
+func get_click_quality(raw_score: int) -> ClickQuality:
+	if raw_score >= 0:
+		match raw_score:
+			PERFECT_CLICK_SCORE:
+				return ClickQuality.PERFECT
+			GOOD_CLICK_SCORE:
+				return ClickQuality.GOOD
+			OKAY_CLICK_SCORE:
+				return ClickQuality.OKAY
+			0:
+				return ClickQuality.MISS
+			_:
+				push_error("Tried to get click quality of a non-standard raw score!")
+				return 0
+	else:
+		return ClickQuality.ERROR
+
+
 ## Calculate the amount of health regained from a click, given the raw score 
 ## gained before any bonuses. Also takes into account the current combo.
 func calculate_health_gain(raw_score: int) -> int:
@@ -101,8 +133,8 @@ func calculate_health_gain(raw_score: int) -> int:
 				return PERFECT_CLICK_HEAL
 			GOOD_CLICK_SCORE:
 				return GOOD_CLICK_HEAL
-			BAD_CLICK_SCORE:
-				return BAD_CLICK_HEAL
+			OKAY_CLICK_SCORE:
+				return OKAY_CLICK_HEAL
 			_:
 				push_error("Tried to get the health regen for a non-standard raw score!")
 				return 0

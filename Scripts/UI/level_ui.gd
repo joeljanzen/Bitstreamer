@@ -19,6 +19,18 @@ var max_combo: int = 0
 ## The total accuracy of all clicks in this play.
 var accuracy: float = 100
 
+# Tracking amount of each click quality.
+## The number of perfect clicks made in this play.
+var perfect_clicks: int = 0
+## The number of good clicks made in this play.
+var good_clicks: int = 0
+## The number of okay clicks made in this play.
+var okay_clicks: int = 0
+## The number of missed bits in this play.
+var missed_clicks: int = 0
+## The number of error clicks made in this play.
+var error_clicks: int = 0
+
 ## The score for this play, ignoring any combo bonuses.
 var _raw_score: int = 0
 
@@ -35,7 +47,7 @@ func _ready() -> void:
 
 ## Points have been scored. amount is the total score gained, and raw_amount is
 ## the score given for the click before any bonuses 
-## (bad, good, or perfect click).
+## (okay, good, or perfect click).
 func _scored(amount: int, raw_amount: int) -> void:
 	score += amount
 	_score_label.text = "Score: %d" % score
@@ -46,23 +58,37 @@ func _scored(amount: int, raw_amount: int) -> void:
 	if _health_bar.value < _health_bar.max_value:
 		_health_bar.value += PerformanceCalculator.calculate_health_gain(raw_amount)
 	
+	match PerformanceCalculator.get_click_quality(raw_amount):
+		PerformanceCalculator.ClickQuality.PERFECT:
+			perfect_clicks += 1
+		PerformanceCalculator.ClickQuality.GOOD:
+			good_clicks += 1
+		PerformanceCalculator.ClickQuality.OKAY:
+			okay_clicks += 1
+	
 	_update_acc(raw_amount)
 
 
 ## The player missed a bit.
-func _missed(damage: int) -> void:
+func _missed(damage: int, click_quality: PerformanceCalculator.ClickQuality) -> void:
 	combo = 0
 	_combo_label.text = "Combo: %dx" % combo
 	_health_bar.value -= damage
 	
 	_update_acc(0)
 	
+	match click_quality:
+		PerformanceCalculator.ClickQuality.MISS:
+			missed_clicks += 1
+		PerformanceCalculator.ClickQuality.ERROR:
+			error_clicks += 1
+	
 	if _health_bar.value <= 0:
 		Signals.failed.emit()
 
 
 ## Updates player accuracy. raw_score is the score given for the click 
-## before any bonuses (bad, good, or perfect click).
+## before any bonuses (okay, good, or perfect click).
 func _update_acc(raw_score: int) -> void:
 	_raw_score += raw_score
 	_max_accuracy += PerformanceCalculator.PERFECT_CLICK_SCORE

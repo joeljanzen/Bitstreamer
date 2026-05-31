@@ -101,7 +101,7 @@ func _click_bit(value: Bit.Type) -> bool:
 
 
 ## Missed a bit, so remove from the stream.
-func _missed_bit(_damage):
+func _missed_bit(_damage, _click_quality):
 	if !bit_stream.is_empty():
 		var missed: Bit = bit_stream.pop_front()
 		

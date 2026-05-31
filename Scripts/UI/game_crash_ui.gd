@@ -5,6 +5,7 @@ extends Control
 @onready var _accuracy_label: RichTextLabel = $CanvasLayer/Accuracy
 @onready var _combo_label: RichTextLabel = $CanvasLayer/Combo
 @onready var _score_label: RichTextLabel = $CanvasLayer/Score
+@onready var _clicks_label: RichTextLabel = $CanvasLayer/Clicks
 
 ## Contains statistics for the current level.
 var statistics: LevelStatistics
@@ -15,6 +16,14 @@ func _ready() -> void:
 	_score_label.text = "Score: %d" % statistics.score
 	_accuracy_label.text = "Accuracy: %.2f%%" % statistics.accuracy
 	_combo_label.text = "Maximum combo: %dx" % statistics.max_combo
+	_clicks_label.text = """perfect: %d
+	good: %d
+	okay: %d
+	miss: %d
+	error: %d
+	""" % [statistics.perfect_clicks, statistics.good_clicks, 
+			statistics.okay_clicks, statistics.missed_clicks, 
+			statistics.error_clicks]
 
 
 ## Idle animations in this screen, idk.
