@@ -8,3 +8,5 @@ Developed by Joel Janzen
 
 Insert art credits here (mostly Joel, maybe)
 Insert music credits here (also Joel, probably)
+
+CRT Shader by Flowerwall: https://github.com/Art-Michel/Flowerwall-CRT-shader-for-Godot

@@ -29,13 +29,14 @@ var _line_num := 1
 
 # Aesthetic variables.
 ## The colour displayed for correctly entered bits.
-var entered_bit_color := "#0D4C25"
+var entered_bit_color := "#12360a"
 ## The colour displayed for incorrectly entered bits.
-var incorrect_bit_color := "#4c0d0d"
+var incorrect_bit_color := "#330707"
 
 
 ## Connect to the missed (a bit) gameplay signal and set default bit colour.
 func _ready() -> void:
+	_bit_label.text = ""
 	Signals.missed.connect(_missed_bit)
 	_bit_label.add_theme_color_override("default_color", Color(entered_bit_color))
 
@@ -168,8 +169,7 @@ func _click_enter():
 		_line_num += 1
 		_bit_label.text += "\n"
 		_cursor.position.y += _line_height
-		_cursor.position.x = 0
 	else: ## clears all lines and resets the cursor to the top
 		_line_num = 1
-		_cursor.position = Vector2.ZERO
+		_cursor.position.y -= _line_height * (MAX_LINE_NUM - 1)
 		_bit_label.text = ""

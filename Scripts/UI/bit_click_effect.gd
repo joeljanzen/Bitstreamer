@@ -5,6 +5,8 @@ extends Node2D
 
 @onready var _accuracy_label: RichTextLabel = $AccuracyText
 
+## Ignore this effect entirely, only for perfect clicks.
+static var ignores_perfect_clicks = false
 
 ## The width of the effect, in pixels.
 ## WARNING: NOT GOOD TO HARDCODE THIS, SHOULD BE CALCULATED SOMEHOW
@@ -18,14 +20,17 @@ func create(global_pos, click_quality: PerformanceCalculator.ClickQuality) -> vo
 	
 	match click_quality:
 		PerformanceCalculator.ClickQuality.PERFECT:
-			_accuracy_label.set("theme_override_colors/default_color", Color("2AEBE7"))
-			_accuracy_label.text = "PERFECT!"
+			if !ignores_perfect_clicks:
+				_accuracy_label.set("theme_override_colors/default_color", Color("C347FF"))
+				_accuracy_label.text = "PERFECT!"
+			else:
+				hide()
 		PerformanceCalculator.ClickQuality.GOOD:
-			_accuracy_label.set("theme_override_colors/default_color", Color("10E610"))
-			_accuracy_label.text = "GOOD!"
+			_accuracy_label.set("theme_override_colors/default_color", Color("2665D4"))
+			_accuracy_label.text = "GOOD"
 		PerformanceCalculator.ClickQuality.OKAY:
 			_accuracy_label.set("theme_override_colors/default_color", Color("E6BE20"))
-			_accuracy_label.text = "OKAY!"
+			_accuracy_label.text = "OKAY"
 		PerformanceCalculator.ClickQuality.MISS:
 			_accuracy_label.set("theme_override_colors/default_color", Color("ffffff"))
 			_accuracy_label.text = "MISS!"

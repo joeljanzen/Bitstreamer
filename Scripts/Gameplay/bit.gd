@@ -22,7 +22,7 @@ enum MissEffectType {
 }
 
 ## Fades the bit away when it is clicked instead of disappearing instantly.
-static var bit_fade_effect := false
+static var bit_fade_effect := true
 
 ## Displays an effect indicating the acccuracy of the bit click (or miss).
 static var bit_click_effect := true
@@ -33,7 +33,7 @@ static var miss_effect: MissEffectType = MissEffectType.MOVE_OFFSCREEN
 
 ## How quickly the bit fades away after being clicked (default is 5).
 ## Set to 0 to disable fade entirely.
-static var clicked_fade_speed := 5
+static var clicked_fade_speed := 10
 
 ## Where the bit starts.
 var _starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
@@ -58,6 +58,12 @@ var _is_clicked = false
 
 ## If the bit has been missed (and also hasn't been deleted yet).
 var _is_missed = false
+
+# Aesthetic variables.
+## The colour displayed for correctly entered bits.
+var bit_color := "#00ff00"
+## The colour displayed for correctly entered bits.
+var enter_color := "#ffffff"
 
 
 ## The width of a bit, in pixels.
@@ -120,12 +126,15 @@ func create(value: Bit.Type, cursor_y: float, cursor_x: float, speed: int,
 	# Set bit visuals.
 	match _value:
 		Bit.Type.ZERO:
+			set("modulate", Color(bit_color))
 			_sprite.hide()
 			_label.text = "0"
 		Bit.Type.ONE:
+			set("modulate", Color(bit_color))
 			_sprite.hide()
 			_label.text = "1"
 		Bit.Type.ENTER:
+			set("modulate", Color(enter_color))
 			_label.hide()
 
 

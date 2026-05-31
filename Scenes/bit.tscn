@@ -4,8 +4,25 @@
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_w8jum"]
 [ext_resource type="Texture2D" uid="uid://cd67wwlog7jx3" path="res://Resources/Sprites/Cursor/cursor_enter.png" id="3_bfqwx"]
 
+[sub_resource type="Gradient" id="Gradient_bfqwx"]
+offsets = PackedFloat32Array(0, 0.6622222)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tk1ha"]
+gradient = SubResource("Gradient_bfqwx")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
 [node name="Bit" type="Node2D" unique_id=573621459]
 script = ExtResource("1_igqlm")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=769576193]
+visible = false
+energy = 0.65
+range_item_cull_mask = 2
+texture = SubResource("GradientTexture2D_tk1ha")
+texture_scale = 1.75
 
 [node name="BitLabel" type="Label" parent="." unique_id=1898413816]
 offset_left = -22.0
@@ -13,6 +30,7 @@ offset_top = -34.0
 offset_right = 115.0
 offset_bottom = 47.0
 theme = ExtResource("2_w8jum")
+theme_override_font_sizes/font_size = 80
 text = "0"
 
 [node name="BitSprite" type="Sprite2D" parent="." unique_id=658320609]

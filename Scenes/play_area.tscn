@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b2lfog7dafrx7" path="res://Scripts/Gameplay/play_area.gd" id="1_5dgnu"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_3d5pw"]
+[ext_resource type="Texture2D" uid="uid://vb80xblsapkt" path="res://Resources/Sprites/UI/PlayAreaBack.jpg" id="2_hwaoc"]
 [ext_resource type="Texture2D" uid="uid://kbqeqckojl7p" path="res://Resources/Sprites/Cursor/cursor_cannot_enter.png" id="3_27jp8"]
 [ext_resource type="Texture2D" uid="uid://ciucl04ht3bcx" path="res://Resources/Sprites/Cursor/cursor_click_inverted.png" id="3_hwaoc"]
 [ext_resource type="Texture2D" uid="uid://dhpg40av67qu2" path="res://Resources/Sprites/Cursor/cursor_click.png" id="4_hwaoc"]
@@ -41,7 +42,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"enter",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -63,29 +64,93 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_bfqwx"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_27jp8"]
+gradient = SubResource("Gradient_bfqwx")
+width = 1458
+height = 32
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hwaoc"]
+gradient = SubResource("Gradient_bfqwx")
+width = 864
+height = 32
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
 [node name="PlayArea" type="Node2D" unique_id=1773739756]
+light_mask = 3
 script = ExtResource("1_5dgnu")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=762500707]
-offset_left = -18.0
-offset_top = -54.0
-offset_right = 1440.0
-offset_bottom = 810.0
-color = Color(0.15487596, 0.154876, 0.15487596, 1)
+[node name="TextureRect" type="TextureRect" parent="." unique_id=225667967]
+light_mask = 3
+offset_right = 1465.0
+offset_bottom = 875.0
+texture = ExtResource("2_hwaoc")
 
 [node name="BitLabel" type="RichTextLabel" parent="." unique_id=984305221]
-offset_left = 5.0
-offset_top = -35.0
-offset_right = 1422.0
-offset_bottom = 792.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 1441.0
+offset_bottom = 851.0
 theme = ExtResource("2_3d5pw")
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_constants/line_separation = 3
+theme_override_font_sizes/normal_font_size = 80
 bbcode_enabled = true
+text = "010101
+0
+1
+1
+0
+
+1
+0
+1
+0010"
 scroll_active = false
 
 [node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=364053683]
+light_mask = 2
+position = Vector2(18, 58)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
 animation = &"flicker"
 autoplay = "flicker"
+
+[node name="Barlight1" type="PointLight2D" parent="." unique_id=93168830]
+visible = false
+position = Vector2(720, 18)
+rotation = 3.1415927
+color = Color(0.15322182, 0.90051466, 0.86826086, 1)
+energy = 2.0
+texture = SubResource("GradientTexture2D_27jp8")
+height = 1.0
+
+[node name="Barlight2" type="PointLight2D" parent="." unique_id=722976186]
+visible = false
+position = Vector2(720, 846)
+color = Color(0.15294118, 0.9019608, 0.8666667, 1)
+energy = 2.0
+texture = SubResource("GradientTexture2D_27jp8")
+height = 1.0
+
+[node name="Barlight3" type="PointLight2D" parent="." unique_id=735014793]
+visible = false
+position = Vector2(18, 432)
+rotation = 1.5707964
+color = Color(0.2, 0.94509804, 0.23137255, 1)
+energy = 2.0
+texture = SubResource("GradientTexture2D_hwaoc")
+height = 1.0
+
+[node name="Barlight4" type="PointLight2D" parent="." unique_id=576143567]
+visible = false
+position = Vector2(1440, 432)
+rotation = -1.5707964
+color = Color(0.2, 0.94509804, 0.23137255, 1)
+energy = 2.0
+texture = SubResource("GradientTexture2D_hwaoc")
+height = 1.0

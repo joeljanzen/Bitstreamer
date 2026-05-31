@@ -3,14 +3,40 @@
 [ext_resource type="Script" uid="uid://ka4qmydvm86s" path="res://Scripts/Gameplay/level.gd" id="1_6phgx"]
 [ext_resource type="PackedScene" uid="uid://c0cfxinwdhxdr" path="res://Scenes/level_ui.tscn" id="2_81xng"]
 [ext_resource type="PackedScene" uid="uid://bmyyd40hpvw2l" path="res://Scenes/play_area.tscn" id="3_wqkje"]
+[ext_resource type="Texture2D" uid="uid://ck0tbadym1fsj" path="res://Resources/Sprites/UI/Windows-BSOD-scaled.jpg" id="4_81xng"]
+
+[sub_resource type="Environment" id="Environment_81xng"]
+background_mode = 3
+ambient_light_source = 1
+ambient_light_color = Color(0.11598889, 0.35937062, 0.39819646, 1)
+ambient_light_energy = 4.9
+glow_enabled = true
+glow_hdr_scale = 1.0
 
 [node name="Level" type="Node2D" unique_id=58297453]
+light_mask = 0
 script = ExtResource("1_6phgx")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1776457430]
 position = Vector2(960, 540)
 
+[node name="BlackBack" type="ColorRect" parent="." unique_id=871088394]
+light_mask = 3
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.038954537, 0.058708385, 0.06430844, 1)
+
+[node name="LevelBackground" type="TextureRect" parent="." unique_id=1056580082]
+visible = false
+offset_right = 2560.0
+offset_bottom = 1440.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("4_81xng")
+
 [node name="LevelUI" parent="." unique_id=1794658101 instance=ExtResource("2_81xng")]
 
 [node name="PlayArea" parent="." unique_id=1773739756 instance=ExtResource("3_wqkje")]
-position = Vector2(260, 162)
+position = Vector2(227.5, 103)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1513700562]
+environment = SubResource("Environment_81xng")
