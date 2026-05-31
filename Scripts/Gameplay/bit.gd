@@ -136,8 +136,8 @@ func click(value: Bit.Type) -> bool:
 	
 	if PerformanceCalculator.is_clickable(accuracy):
 		# Successfully clicked the bit.
-		_is_clicked = true
 		if get_value() == value:
+			_is_clicked = true
 			var raw_score = PerformanceCalculator.get_raw_score(accuracy)
 			Signals.scored.emit(PerformanceCalculator.get_score(accuracy), raw_score)
 			_score_animation(PerformanceCalculator.get_click_quality(raw_score))
@@ -149,6 +149,7 @@ func click(value: Bit.Type) -> bool:
 				return false 
 			# Take damage and lose combo, as if you missed the bit.
 			elif get_value() == Bit.Type.ZERO or get_value() == Bit.Type.ONE:
+				_is_clicked = true
 				Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.ERROR)
 				_score_animation(PerformanceCalculator.ClickQuality.ERROR)
 				_is_missed = true
@@ -190,7 +191,7 @@ func _score_animation(click_quality: PerformanceCalculator.ClickQuality) -> void
 		get_tree().root.call_deferred("add_child", effect)
 		var pos: Vector2 = global_position
 		@warning_ignore("integer_division")
-		var pos_offset: int = effect.get_width() / 2
+		var pos_offset: int = BitClickEffect.get_width() / 2
 		# bit is somewhat offscreen or entirely offscreen
 		if global_position.x < pos_offset:
 			pos = Vector2(pos_offset, global_position.y)
