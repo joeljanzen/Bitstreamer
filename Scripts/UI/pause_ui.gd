@@ -7,7 +7,7 @@ signal resumed
 
 
 ## Idle animations in this screen, idk.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 

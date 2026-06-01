@@ -22,7 +22,7 @@ enum MissEffectType {
 }
 
 ## Fades the bit away when it is clicked instead of disappearing instantly.
-static var bit_fade_effect := true
+static var bit_fade_effect := false
 
 ## Displays an effect indicating the acccuracy of the bit click (or miss).
 static var bit_click_effect := true
