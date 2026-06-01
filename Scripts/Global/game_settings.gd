@@ -1,7 +1,11 @@
 extends Node
 
+# Aesthetic variables.
+## The strength of bloom.
+var bloom_strength := 1
+
 ## Toggles Flowerwall CRT shader.
-var _crt_effect = true
+var _crt_effect = false
 
 ## The CRT shader singleton.
 var _crt_shader: flowerwallCRT

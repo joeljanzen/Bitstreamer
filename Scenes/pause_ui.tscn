@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://c6eqexw0umdaj"]
+
+[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_bthaf"]
+[ext_resource type="Script" uid="uid://dpvq8ox1q4rjb" path="res://Scripts/UI/pause_ui.gd" id="1_srqh7"]
+
+[node name="pause_ui" type="Control" unique_id=1762296446]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_srqh7")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1799958347]
+
+[node name="Resume" type="Button" parent="CanvasLayer" unique_id=1245872889]
+offset_left = 710.0
+offset_top = 200.0
+offset_right = 1210.0
+offset_bottom = 400.0
+theme = ExtResource("1_bthaf")
+text = "Resume"
+
+[node name="Settings" type="Button" parent="CanvasLayer" unique_id=690275050]
+offset_left = 710.0
+offset_top = 440.0
+offset_right = 1210.0
+offset_bottom = 640.0
+theme = ExtResource("1_bthaf")
+text = "Settings"
+
+[node name="Quit" type="Button" parent="CanvasLayer" unique_id=873856400]
+offset_left = 710.0
+offset_top = 680.0
+offset_right = 1210.0
+offset_bottom = 880.0
+theme = ExtResource("1_bthaf")
+text = "Quit"
+
+[connection signal="pressed" from="CanvasLayer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="CanvasLayer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]

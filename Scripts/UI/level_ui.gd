@@ -2,6 +2,7 @@ class_name LevelStatistics
 extends Control
 ## Tracks statistics during gameplay and updates the level UI with it.
 
+@onready var _canvas: CanvasLayer = $CanvasLayer
 @onready var _score_label: RichTextLabel = $CanvasLayer/Score
 @onready var _combo_label: RichTextLabel = $CanvasLayer/Combo
 @onready var _health_bar: ProgressBar = $CanvasLayer/ProgramHealth
@@ -38,6 +39,29 @@ var _raw_score: int = 0
 var _max_accuracy: int = 0
 
 
+## Toggle the visibility of the entire levelUI.
+func toggle_visible() -> void:
+	if _canvas.visible:
+		_canvas.hide()
+	else:
+		_canvas.show()
+
+
+## Hide the entire levelUI.
+func hide_UI() -> void:
+	_canvas.hide()
+
+
+## Show the entire levelUI.
+func show_UI() -> void:
+	_canvas.show()
+
+
+## Returns if the UI is currently visible.
+func UI_is_visible() -> bool:
+	return _canvas.visible
+
+
 ## Share statistics with PerformanceCalculator, and connect to gameplay signals.
 func _ready() -> void:
 	PerformanceCalculator.connect_stats(self)
@@ -50,10 +74,10 @@ func _ready() -> void:
 ## (okay, good, or perfect click).
 func _scored(amount: int, raw_amount: int) -> void:
 	score += amount
-	_score_label.text = "Score: %d" % score
+	_score_label.text = "%d" % score
 	combo += 1
 	max_combo = max(combo, max_combo)
-	_combo_label.text = "Combo: %dx" % combo
+	_combo_label.text = "%dx" % combo
 	
 	if _health_bar.value < _health_bar.max_value:
 		_health_bar.value += PerformanceCalculator.calculate_health_gain(raw_amount)
@@ -72,7 +96,7 @@ func _scored(amount: int, raw_amount: int) -> void:
 ## The player missed a bit.
 func _missed(damage: int, click_quality: PerformanceCalculator.ClickQuality) -> void:
 	combo = 0
-	_combo_label.text = "Combo: %dx" % combo
+	_combo_label.text = "%dx" % combo
 	_health_bar.value -= damage
 	
 	_update_acc(0)
@@ -93,4 +117,4 @@ func _update_acc(raw_score: int) -> void:
 	_raw_score += raw_score
 	_max_accuracy += PerformanceCalculator.PERFECT_CLICK_SCORE
 	accuracy = float(_raw_score) / float(_max_accuracy) * 100
-	_accuracy_label.text = "Accuracy: %.2f%%" % accuracy
+	_accuracy_label.text = "Accuracy %.2f%%" % accuracy
