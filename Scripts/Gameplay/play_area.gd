@@ -29,9 +29,12 @@ var _line_num := 1
 
 # Aesthetic variables.
 ## The colour displayed for correctly entered bits.
-var entered_bit_color := "#12360a"
+## Change to ffffff for a cool glow, but less visibility.
+var entered_bit_color := "#454545"
 ## The colour displayed for incorrectly entered bits.
-var incorrect_bit_color := "#330707"
+var incorrect_bit_color := "#2E0606"
+## The colour displayed for incorrectly entered bits.
+var missed_bit_color := "#454545"
 
 
 ## Connect to the missed (a bit) gameplay signal and set default bit colour.
@@ -108,9 +111,11 @@ func _missed_bit(_damage, _click_quality):
 		
 		match missed.get_value():
 			Bit.Type.ZERO:
-				_miss_zero_one()
+				if _click_quality == PerformanceCalculator.ClickQuality.MISS:
+					_miss_zero_one()
 			Bit.Type.ONE:
-				_miss_zero_one()
+				if _click_quality == PerformanceCalculator.ClickQuality.MISS:
+					_miss_zero_one()
 			Bit.Type.ENTER:
 				_miss_enter()
 
@@ -128,9 +133,8 @@ func _miss_click_enter() -> void:
 
 
 ## The animations and sounds that trigger when missing a zero or one bit.
-## WARNING: this will also trigger if there is an incorrect bit click.
 func _miss_zero_one():
-	pass
+	_bit_label.text += "[color=%s]_[/color]" % missed_bit_color
 
 
 ## The animations and sounds that trigger when entirely missing an enter bit.

@@ -69,7 +69,7 @@ animations = [{
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_27jp8"]
 gradient = SubResource("Gradient_bfqwx")
 width = 1458
-height = 32
+height = 18
 fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 1)
 
@@ -121,19 +121,17 @@ animation = &"flicker"
 autoplay = "flicker"
 
 [node name="Barlight1" type="PointLight2D" parent="." unique_id=93168830]
-visible = false
-position = Vector2(720, 18)
+position = Vector2(732, 14)
 rotation = 3.1415927
-color = Color(0.15322182, 0.90051466, 0.86826086, 1)
-energy = 2.0
+color = Color(0.654902, 0.654902, 0.654902, 1)
+energy = 1.5
 texture = SubResource("GradientTexture2D_27jp8")
 height = 1.0
 
 [node name="Barlight2" type="PointLight2D" parent="." unique_id=722976186]
-visible = false
-position = Vector2(720, 846)
-color = Color(0.15294118, 0.9019608, 0.8666667, 1)
-energy = 2.0
+position = Vector2(733, 861)
+color = Color(0.654232, 0.6542321, 0.65423197, 1)
+energy = 1.5
 texture = SubResource("GradientTexture2D_27jp8")
 height = 1.0
 
