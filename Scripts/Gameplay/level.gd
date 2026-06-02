@@ -16,16 +16,13 @@ var _pause_instance: PauseUI
 ## The game is paused.
 var paused := false
 
-## True if the UI was visible before pausing.
-var _UI_was_visible := true
-
 ## The game has been failed.
 var failed := false
 
-# Level Information (all loaded from the level's file).
+# Level information (all loaded from the level's file).
 ## The name of the level.
 var level_name: String = ""
-## The beats per minute of the music (good luck if the long changes bpm).
+## The beats per minute of the music (good luck if the song changes bpm bro).
 var bpm: float = -1
 ## The speed at which bits fly across the screen, in pixels per second.
 var bit_speed: int = -1
@@ -35,7 +32,7 @@ var difficulty: int = -1
 ## The damage each bit does when missed or incorrectly clicked.
 var damage: int = -1
 
-# Level Playback.
+# Level playback.
 ## A queue of upcoming bits.
 var bit_queue: Array[Bit.Type]
 ## A queue of delays between sending bits.
@@ -45,6 +42,8 @@ var delay_queue: Array[float]
 ## Connect to the failed signal.
 func _ready() -> void:
 	Signals.failed.connect(_failed)
+	
+	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
 	# Level.
 	if load_level("tutorial"):
@@ -58,6 +57,7 @@ func _ready() -> void:
 		print("Level failed to load!")
 	
 	# Aesthetics.
+	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
 	_environment.environment.glow_bloom = GameSettings.bloom_strength
 
 
@@ -65,11 +65,17 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		if paused:
-			resumed()
+			_resumed()
 		elif not failed:
 			_paused()
-	elif event.is_action_pressed("toggle level UI") and !paused:
-		_levelUI.toggle_visible()
+	elif event.is_action_pressed("toggle level UI") and !paused and !failed:
+		if _levelUI.UI_is_visible():
+			_levelUI.hide_UI()
+		else:
+			_levelUI.show_UI()
+		
+		# Update game settings to remember if the player had UI on or not.
+		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
 
 
 ## Load a level, based on its file name.
@@ -185,13 +191,12 @@ func _start_level() -> void:
 
 
 ## The level has been unpaused.
-func resumed() -> void:
+func _resumed() -> void:
 	paused = false
 	_delay_timer.set_paused(false)
 	
 	_pause_instance.queue_free()
-	if _UI_was_visible:
-		_levelUI.toggle_visible()
+	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_play_area.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	# Disable background blur.
@@ -215,12 +220,11 @@ func _paused() -> void:
 	paused = true
 	_delay_timer.set_paused(true)
 	
-	_UI_was_visible = _levelUI.UI_is_visible()
 	_levelUI.hide_UI()
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	_pause_instance = _pause_screen.instantiate()
-	_pause_instance.resumed.connect(resumed)
+	_pause_instance.resumed.connect(_resumed)
 	add_child(_pause_instance)
 	
 	# Enable background blur.

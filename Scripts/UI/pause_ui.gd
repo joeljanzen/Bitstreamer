@@ -24,3 +24,8 @@ func _on_settings_pressed() -> void:
 ## The player has pressed the quit button.
 func _on_quit_pressed() -> void:
 	get_tree().quit(0)
+
+
+## The player has pressed the reboot button. Clearly.
+func _on_reboot_pressed() -> void:
+	get_tree().reload_current_scene()

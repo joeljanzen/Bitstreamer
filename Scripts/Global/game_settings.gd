@@ -1,11 +1,16 @@
 extends Node
+## Holds game settings for the player. These persist throughout levels.
+
+# UI options
+## Toggles the level UI
+var level_UI_enabled := true
 
 # Aesthetic variables.
 ## The strength of bloom.
 var bloom_strength := 1
 
 ## Toggles Flowerwall CRT shader.
-var _crt_effect = true
+var _crt_effect := true
 
 ## The CRT shader singleton.
 var _crt_shader: flowerwallCRT

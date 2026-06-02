@@ -39,22 +39,22 @@ var _raw_score: int = 0
 var _max_accuracy: int = 0
 
 
-## Toggle the visibility of the entire levelUI.
-func toggle_visible() -> void:
-	if _canvas.visible:
-		_canvas.hide()
-	else:
+## Set the visibility of the entire levelUI.
+func set_UI_visible(enabled: bool) -> void:
+	if enabled:
 		_canvas.show()
-
-
-## Hide the entire levelUI.
-func hide_UI() -> void:
-	_canvas.hide()
+	else:
+		_canvas.hide()
 
 
 ## Show the entire levelUI.
 func show_UI() -> void:
 	_canvas.show()
+
+
+## Hide the entire levelUI.
+func hide_UI() -> void:
+	_canvas.hide()
 
 
 ## Returns if the UI is currently visible.
