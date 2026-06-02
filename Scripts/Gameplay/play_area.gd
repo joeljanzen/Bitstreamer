@@ -1,3 +1,4 @@
+class_name PlayArea
 extends Node2D
 ## The cursor indicating to the player when to click a bit.
 
@@ -16,7 +17,7 @@ const DEBUG_BIT_DAMAGE := 5
 const MAX_LINE_NUM := 10
 
 ## The stack of bits currently on screen (commonly referred to as the "stream").
-var bit_stream = []
+var bitstream = []
 
 ## The speed the cursor blinks while idle.
 var flicker_speed := 4
@@ -79,19 +80,19 @@ func send_bit(value: Bit.Type, speed: int, damage: int):
 	var new_bit: Bit = _bit.instantiate()
 	add_child(new_bit)
 	new_bit.create(value, _cursor.global_position.y, _cursor.global_position.x, speed, damage)
-	bit_stream.push_back(new_bit)
+	bitstream.push_back(new_bit)
 
 
 ## Try to click the next bit in the stream.
 ## Returns true if the click worked.
 func _click_bit(value: Bit.Type) -> bool:
-	if !bit_stream.is_empty():
-		var curr_bit: Bit = bit_stream[0]
+	if !bitstream.is_empty():
+		var curr_bit: Bit = bitstream[0]
 		
 		if curr_bit.click(value): # if this isn't true, bit is not clickable
 			var correct_click = curr_bit.get_value() == value
 			if correct_click: # will be popped off in the missed_bit func otherwise
-				bit_stream.pop_front()
+				bitstream.pop_front()
 			
 			match value:
 				Bit.Type.ZERO:
@@ -106,8 +107,8 @@ func _click_bit(value: Bit.Type) -> bool:
 
 ## Missed a bit, so remove from the stream.
 func _missed_bit(_damage, _click_quality):
-	if !bit_stream.is_empty():
-		var missed: Bit = bit_stream.pop_front()
+	if !bitstream.is_empty():
+		var missed: Bit = bitstream.pop_front()
 		
 		match missed.get_value():
 			Bit.Type.ZERO:

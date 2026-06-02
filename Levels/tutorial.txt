@@ -1,0 +1,9 @@
+name=Tutorial Level,bpm=120,speed=1600,diff=1,dmg=25
+1,0.5
+0,0.5
+0,0.5
+enter,0.5
+0,0.5
+1,0.5
+0,0.5
+enter,0

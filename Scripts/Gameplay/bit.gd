@@ -60,9 +60,9 @@ var _is_clicked = false
 var _is_missed = false
 
 # Aesthetic variables.
-## The colour displayed for correctly entered bits.
+## The colour of zero and one bits.
 var bit_color := "#00ff00"
-## The colour displayed for correctly entered bits.
+## The colour of enter bits.
 var enter_color := "#ffffff"
 
 

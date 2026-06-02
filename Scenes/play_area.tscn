@@ -73,13 +73,6 @@ height = 18
 fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_hwaoc"]
-gradient = SubResource("Gradient_bfqwx")
-width = 864
-height = 32
-fill_from = Vector2(0.5, 0)
-fill_to = Vector2(0.5, 1)
-
 [node name="PlayArea" type="Node2D" unique_id=1773739756]
 light_mask = 3
 script = ExtResource("1_5dgnu")
@@ -133,22 +126,4 @@ position = Vector2(733, 861)
 color = Color(0.654232, 0.6542321, 0.65423197, 1)
 energy = 1.5
 texture = SubResource("GradientTexture2D_27jp8")
-height = 1.0
-
-[node name="Barlight3" type="PointLight2D" parent="." unique_id=735014793]
-visible = false
-position = Vector2(18, 432)
-rotation = 1.5707964
-color = Color(0.2, 0.94509804, 0.23137255, 1)
-energy = 2.0
-texture = SubResource("GradientTexture2D_hwaoc")
-height = 1.0
-
-[node name="Barlight4" type="PointLight2D" parent="." unique_id=576143567]
-visible = false
-position = Vector2(1440, 432)
-rotation = -1.5707964
-color = Color(0.2, 0.94509804, 0.23137255, 1)
-energy = 2.0
-texture = SubResource("GradientTexture2D_hwaoc")
 height = 1.0
