@@ -1,4 +1,4 @@
-name=Tutorial Example,bpm=200,speed=300,diff=1,dmg=1
+name=Tutorial Example,bpm=120,speed=1000,diff=1,dmg=1
 
 # Write comments with "#" and leave empty lines anywhere you want!
 # Here I use the raw float to wait 4 seconds before starting the level.

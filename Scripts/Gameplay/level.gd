@@ -19,6 +19,9 @@ var paused := false
 ## The game has been failed.
 var failed := false
 
+## The game has been completed.
+var completed := false
+
 # Level information (all loaded from the level's file).
 ## The name of the level.
 var level_name: String = ""
@@ -43,6 +46,7 @@ var delay_queue: Array[float]
 ## Connect to the failed signal.
 func _ready() -> void:
 	Signals.failed.connect(_failed)
+	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
 	if load_level("tutorial_example"):
@@ -65,9 +69,9 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		if paused:
 			_resumed()
-		elif not failed:
+		elif !failed and !completed:
 			_paused()
-	elif event.is_action_pressed("toggle level UI") and !paused and !failed:
+	elif event.is_action_pressed("toggle level UI") and !paused and !failed and !completed:
 		if _levelUI.UI_is_visible():
 			_levelUI.hide_UI()
 		else:
@@ -222,6 +226,10 @@ func _start_level() -> void:
 		var bit = bit_queue.pop_front()
 		#print("sending bit of type %d" % bit)
 		_play_area.send_bit(bit, bit_speed, damage)
+	
+	# Tell _play_area that all bits are sent, then wait for the final bit to be 
+	# clicked/missed (the no_bits_left signal will be emitted)
+	_play_area.last_bits_sent()
 
 
 ## The level has been unpaused.
@@ -236,17 +244,6 @@ func _resumed() -> void:
 	# Disable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
 	_environment.environment.glow_bloom = GameSettings.bloom_strength
-
-
-## The level has been failed.
-func _failed() -> void:
-	failed = true
-	_delay_timer.stop()
-	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
-	
-	var crash_screen: GameCrashUI = _crash_screen.instantiate()
-	crash_screen.connect_stats(_levelUI)
-	add_child(crash_screen)
 
 
 ## The level has been paused.
@@ -264,3 +261,26 @@ func _paused() -> void:
 	# Enable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
 	_environment.environment.glow_bloom = PAUSE_BLUR_STRENGTH
+
+
+## The level has been failed.
+func _failed() -> void:
+	failed = true
+	_delay_timer.stop()
+	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	var crash_screen: GameCrashUI = _crash_screen.instantiate()
+	crash_screen.connect_stats(_levelUI)
+	add_child(crash_screen)
+
+
+## The level has been completed.
+func _completed() -> void:
+	completed = true
+	_delay_timer.stop()
+	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	## MAYBE ACTUALLY INSTANTIATE A WIN SCREEN WHEN THAT EXISTS
+	var crash_screen: GameCrashUI = _crash_screen.instantiate()
+	crash_screen.connect_stats(_levelUI)
+	add_child(crash_screen)

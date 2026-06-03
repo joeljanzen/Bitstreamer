@@ -16,20 +16,23 @@ const DEBUG_BIT_DAMAGE := 5
 ## clearing the bit_label.
 const MAX_LINE_NUM := 10
 
-## The stack of bits currently on screen (commonly referred to as the "stream").
-var bitstream = []
+## All bits have been clicked or missed.
+signal no_bits_left
 
-## The speed the cursor blinks while idle.
-var flicker_speed := 4
+## The stack of bits currently on screen (commonly referred to as the "stream").
+var _bitstream = []
 
 ## How far the cursor moves to change lines (in pixels).
-var _line_height := 84
+var _line_height: int = 84
 
 ## The current line number.
-var _line_num := 1
+var _line_num: int = 1
 
 ## The starting y position of the cursor.
 var _starting_cursor_y
+
+## The last bits have been sent, prepare to send the no_bits_left signal.
+var _last_bits_sent := false
 
 # Aesthetic variables.
 ## The colour displayed for correctly entered bits.
@@ -71,6 +74,10 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_released("0 bit") or Input.is_action_just_released("1 bit"):
 		_cursor.play("flicker")
 	
+	# Signals that the level has been completed.
+	if _last_bits_sent and _bitstream.is_empty():
+		no_bits_left.emit()
+	
 	# DEBUG!
 	if Input.is_action_just_pressed("spawn 0 bit"):
 		send_bit(Bit.Type.ZERO, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
@@ -80,17 +87,23 @@ func _process(_delta: float) -> void:
 		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, 0)
 
 
+## Set the speed the cursor flickers, based on a BPM.
+func set_cursor_flicker_speed(bpm: float) -> void:
+	var FPS = bpm / 60.0
+	print("should be flickering at %f FPS" % FPS)
+	_cursor.play("flicker")
+	_cursor.get_sprite_frames().set_animation_speed("flicker", FPS)
+
+
 ## Send a bit down the current line.
 func send_bit(value: Bit.Type, speed: int, damage: int):
-	
-	
 	var new_bit: Bit = _bit.instantiate()
 	# Calculate y value based on the current line number offset from where the
 	# cursor started.
 	var y_value = _starting_cursor_y + (_line_height * (_line_num - 1))
 	add_child(new_bit)
 	new_bit.create(value, y_value, _cursor.global_position.x, speed, damage)
-	bitstream.push_back(new_bit)
+	_bitstream.push_back(new_bit)
 	
 	# Increase line number for next bit when an enter is sent:
 	if value == Bit.Type.ENTER:
@@ -100,16 +113,23 @@ func send_bit(value: Bit.Type, speed: int, damage: int):
 			_line_num = 1
 
 
+## Notify the play area that the last bits have been sent.
+## It will then emit its no_bits_left signal once there are no more bits
+## on the screen.
+func last_bits_sent() -> void:
+	_last_bits_sent = true
+
+
 ## Try to click the next bit in the stream.
 ## Returns true if the click worked.
 func _click_bit(value: Bit.Type) -> bool:
-	if !bitstream.is_empty():
-		var curr_bit: Bit = bitstream[0]
+	if !_bitstream.is_empty():
+		var curr_bit: Bit = _bitstream[0]
 		
 		if curr_bit.click(value): # if this isn't true, bit is not clickable
 			var correct_click = curr_bit.get_value() == value
 			if correct_click: # will be popped off in the missed_bit func otherwise
-				bitstream.pop_front()
+				_bitstream.pop_front()
 			
 			match value:
 				Bit.Type.ZERO:
@@ -124,8 +144,8 @@ func _click_bit(value: Bit.Type) -> bool:
 
 ## Missed a bit, so remove from the stream.
 func _missed_bit(_damage, _click_quality):
-	if !bitstream.is_empty():
-		var missed: Bit = bitstream.pop_front()
+	if !_bitstream.is_empty():
+		var missed: Bit = _bitstream.pop_front()
 		
 		match missed.get_value():
 			Bit.Type.ZERO:
