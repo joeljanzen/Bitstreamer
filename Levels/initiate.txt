@@ -1,0 +1,23 @@
+name=Initiate,bpm=128,speed=800,diff=1,dmg=10
+
+# Testing stuff still. Let's get this music to sync up.
+
+6,0
+1,0
+1,0
+1,enter
+
+5,1
+1,1
+1,1
+1,enter
+
+5,0
+1,1
+1,0
+1,enter
+
+5,1
+1,0
+1,1
+1,enter

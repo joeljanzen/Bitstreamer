@@ -5,6 +5,8 @@ extends Node2D
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 @onready var _play_area: PlayArea = $PlayArea
 @onready var _delay_timer: Timer = $DelayTimer
+@onready var _music_player: AudioStreamPlayer = $MusicPlayer
+@onready var _music_queue: Timer = $MusicQueue
 
 ## The strength of blur when the game is paused.
 const PAUSE_BLUR_STRENGTH := 0.5
@@ -42,6 +44,8 @@ var damage: int = -1
 var bit_queue: Array[Bit.Type]
 ## A queue of delays between sending bits.
 var delay_queue: Array[float]
+## The delay between a bit being sent and it reaching the cursor, in seconds.
+var bit_time_to_cursor
 
 
 ## Connect to the failed signal.
@@ -50,7 +54,7 @@ func _ready() -> void:
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
-	if load_level("tutorial_example"):
+	if load_level("memecore"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % bit_speed)
@@ -139,6 +143,7 @@ func load_level(file_name: String) -> bool:
 	
 	if !error_loading:
 		var seconds_per_beat: float = 1.0 / bpm * 60.0
+		bit_time_to_cursor = _play_area.get_time_to_cursor(bit_speed)
 		
 		for line: int in range(1, lines.size()):
 			var line_num = line + 1
@@ -218,11 +223,15 @@ func load_level(file_name: String) -> bool:
 
 ## Starts the level, provided that the level has been loaded correctly.
 func _start_level() -> void:
+	_music_queue.timeout.connect(_start_music)
+	_music_queue.start(bit_time_to_cursor)
+	
 	while !bit_queue.is_empty():
 		var delay = delay_queue.pop_front()
 		#print("waiting for %f seconds" % delay)
-		_delay_timer.start(delay)
-		await _delay_timer.timeout
+		if delay > 0:
+			_delay_timer.start(delay)
+			await _delay_timer.timeout
 		
 		var bit = bit_queue.pop_front()
 		#print("sending bit of type %d" % bit)
@@ -233,10 +242,17 @@ func _start_level() -> void:
 	_play_area.last_bits_sent()
 
 
+## Starts the music for the level. This waits for the music_queue timer to send
+## its "finished" signal.
+func _start_music() -> void:
+	_music_player.play()
+
+
 ## The level has been unpaused.
 func _resumed() -> void:
 	paused = false
 	_delay_timer.set_paused(false)
+	_music_player.stream_paused = false
 	
 	_pause_instance.queue_free()
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
@@ -251,6 +267,7 @@ func _resumed() -> void:
 func _paused() -> void:
 	paused = true
 	_delay_timer.set_paused(true)
+	_music_player.stream_paused = true
 	
 	_levelUI.hide_UI()
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED

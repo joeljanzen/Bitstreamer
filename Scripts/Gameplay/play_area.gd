@@ -113,6 +113,15 @@ func send_bit(value: Bit.Type, speed: int, damage: int):
 			_line_num = 1
 
 
+## Get the amount of time it takes for the bit to reach the cursor, in seconds
+## given the speed of the bit (in pixels per second).
+func get_time_to_cursor(speed: float) -> float:
+	# Distance in pixels.
+	var distance_to_cursor = Bit.starting_x - _cursor.global_position.x
+	#print("distance to cursor is %d" % distance_to_cursor)
+	return distance_to_cursor / speed
+
+
 ## Notify the play area that the last bits have been sent.
 ## It will then emit its no_bits_left signal once there are no more bits
 ## on the screen.

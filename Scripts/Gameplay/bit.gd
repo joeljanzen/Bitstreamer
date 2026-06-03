@@ -36,7 +36,7 @@ static var miss_effect: MissEffectType = MissEffectType.MOVE_OFFSCREEN
 static var clicked_fade_speed := 10
 
 ## Where the bit starts.
-var _starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
+static var starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
 
 ## The value of the bit.
 var _value: Bit.Type
@@ -121,7 +121,7 @@ func create(value: Bit.Type, cursor_y: float, cursor_x: float, speed: int,
 	_cursor_x = cursor_x
 	_speed = speed
 	_damage = damage
-	global_position = Vector2(_starting_x, cursor_y)
+	global_position = Vector2(starting_x, cursor_y)
 	
 	# Set bit visuals.
 	match _value:
@@ -182,7 +182,7 @@ func kill() -> void:
 ## and a negative value is late.
 func get_accuracy() -> int:
 	var time_to_click = _timer.wait_time - _timer.time_left
-	var distance_to_cursor = _starting_x - _cursor_x # In pixels.
+	var distance_to_cursor = starting_x - _cursor_x # In pixels.
 	#print("distance to cursor is %d" % distance_to_cursor)
 	var time_to_cursor = distance_to_cursor / _speed # In seconds.
 	#print("time to cursor is %f" % time_to_cursor)
