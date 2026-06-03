@@ -4,7 +4,7 @@ name=Tutorial Example,bpm=120,speed=1000,diff=1,dmg=1
 # Here I use the raw float to wait 4 seconds before starting the level.
 # The first bit sent is a "1".
 
-f2,1
+f0.5,1
 
 # If you don't put an f, it treats these values as the number of beats to wait.
 

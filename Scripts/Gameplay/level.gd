@@ -10,6 +10,7 @@ extends Node2D
 const PAUSE_BLUR_STRENGTH := 0.5
 
 var _crash_screen = preload("res://Scenes/game_crash_ui.tscn")
+var _win_screen = preload("res://Scenes/game_win_ui.tscn")
 var _pause_screen = preload("res://Scenes/pause_ui.tscn")
 var _pause_instance: PauseUI
 
@@ -49,7 +50,7 @@ func _ready() -> void:
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
-	if load_level("tutorial"):
+	if load_level("tutorial_example"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % bit_speed)
@@ -280,7 +281,12 @@ func _completed() -> void:
 	_delay_timer.stop()
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	
-	## MAYBE ACTUALLY INSTANTIATE A WIN SCREEN WHEN THAT EXISTS
-	var crash_screen: GameCrashUI = _crash_screen.instantiate()
-	crash_screen.connect_stats(_levelUI)
-	add_child(crash_screen)
+	_levelUI.hide_UI()
+	
+	# Enable background blur.
+	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
+	_environment.environment.glow_bloom = PAUSE_BLUR_STRENGTH
+	
+	var win_screen: GameWinUI = _win_screen.instantiate()
+	win_screen.connect_stats(_levelUI)
+	add_child(win_screen)

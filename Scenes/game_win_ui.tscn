@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://n7r32tmxnbxt"]
+
+[ext_resource type="Script" uid="uid://cew6oygr25lcw" path="res://Scripts/UI/game_win_ui.gd" id="1_ied5b"]
+[ext_resource type="Texture2D" uid="uid://ck0tbadym1fsj" path="res://Resources/Sprites/UI/Windows-BSOD-scaled.jpg" id="2_obi77"]
+[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="3_e04pd"]
+
+[node name="GameWinUI" type="Control" unique_id=1755645710]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ied5b")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=357287189]
+
+[node name="winbackground?" type="TextureRect" parent="CanvasLayer" unique_id=655336392]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_obi77")
+
+[node name="PlayAgain" type="Button" parent="CanvasLayer" unique_id=1823941811]
+offset_left = 310.0
+offset_top = 780.0
+offset_right = 810.0
+offset_bottom = 980.0
+theme = ExtResource("3_e04pd")
+text = "Play again"
+
+[node name="Quit" type="Button" parent="CanvasLayer" unique_id=603242436]
+offset_left = 1110.0
+offset_top = 780.0
+offset_right = 1610.0
+offset_bottom = 980.0
+theme = ExtResource("3_e04pd")
+text = "Quit"
+
+[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer" unique_id=92562157]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -585.0
+offset_top = 550.0
+offset_right = 585.0
+offset_bottom = 651.0
+grow_horizontal = 2
+theme = ExtResource("3_e04pd")
+theme_override_font_sizes/normal_font_size = 100
+text = "Accuracy: 100%"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Combo" type="RichTextLabel" parent="CanvasLayer" unique_id=1716948503]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -610.5
+offset_top = 350.0
+offset_right = 610.5
+offset_bottom = 451.0
+grow_horizontal = 2
+theme = ExtResource("3_e04pd")
+theme_override_font_sizes/normal_font_size = 100
+text = "Maximum Combo: 0x"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Score" type="RichTextLabel" parent="CanvasLayer" unique_id=1884251460]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -567.0
+offset_top = 150.0
+offset_right = 567.0
+offset_bottom = 258.0
+grow_horizontal = 2
+theme = ExtResource("3_e04pd")
+theme_override_font_sizes/normal_font_size = 100
+text = "Score: 0"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Clicks" type="RichTextLabel" parent="CanvasLayer" unique_id=572128911]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -534.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = 273.0
+grow_horizontal = 0
+theme = ExtResource("3_e04pd")
+theme_override_font_sizes/normal_font_size = 50
+text = "perfect:
+good:
+okay:
+miss:
+error:"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+
+[connection signal="pressed" from="CanvasLayer/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]
