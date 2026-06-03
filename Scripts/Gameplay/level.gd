@@ -46,7 +46,7 @@ func _ready() -> void:
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
 	# Level.
-	if load_level("tutorial"):
+	if load_level("tutorial_example"):
 		print("name: %s" % level_name)
 		print("bpm: %s" % bpm)
 		print("speed: %s" % bit_speed)
@@ -87,7 +87,9 @@ func load_level(file_name: String) -> bool:
 		return false
 	
 	var content = file.get_as_text()
-	var lines: PackedStringArray = content.split("\n", false)
+	# Will contain empty lines, only so if something goes wrong the correct line
+	# number with the error will be displayed.
+	var lines: PackedStringArray = content.split("\n") 
 	var level_data: PackedStringArray = lines[0].split(",", false)
 	
 	var error_loading := false
@@ -137,11 +139,16 @@ func load_level(file_name: String) -> bool:
 		var seconds_per_beat: float = 1.0 / bpm * 60.0
 		print("Seconds per beat is %f" % seconds_per_beat)
 		
-		for line in range(1, lines.size()):
+		for line: int in range(1, lines.size()):
+			var line_num = line + 1
+			# Ignore commented lines entirely.
+			if lines[line].begins_with("#") || lines[line].is_empty():
+				continue # This skips to the next iteration of the loop.
+			
 			var tokens := lines[line].split(",", false)
 			if tokens.size() != 2:
 				error_loading = true
-				push_error("Unexpected number of tokens in line %d" % line)
+				push_error("Unexpected number of tokens on line %d: %s" % [line_num, lines[line]])
 				break
 			
 			var delay_token: String = tokens[0]
@@ -185,7 +192,7 @@ func load_level(file_name: String) -> bool:
 					error_loading = true
 			
 			if error_loading:
-				push_error("Delay not recognized: %s" % delay_token)
+				push_error("Delay not recognized on line %d: %s" % [line_num, delay_token])
 				break
 			
 			match bit_token:
@@ -199,7 +206,7 @@ func load_level(file_name: String) -> bool:
 					bit_queue.push_back(Bit.Type.ENTER)
 				_:
 					error_loading = true
-					push_error("Bit type not recognized: %s" % bit_token)
+					push_error("Bit type not recognized on line %d: %s" % [line_num, bit_token])
 					break
 	
 	if error_loading:
