@@ -1,3 +1,23 @@
-name=Tutorial Level,bpm=120,speed=1000,diff=1,dmg=25
+name=Tutorial Level,bpm=60,speed=600,diff=1,dmg=1
 
 # Make the real tutorial level here.
+
+5,0
+1,0
+1,0
+1,enter
+
+5,1
+1,1
+1,1
+1,enter
+
+5,0
+1,1
+1,0
+1,enter
+
+5,1
+1,0
+1,1
+1,enter
