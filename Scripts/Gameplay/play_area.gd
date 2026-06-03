@@ -28,6 +28,9 @@ var _line_height := 84
 ## The current line number.
 var _line_num := 1
 
+## The starting y position of the cursor.
+var _starting_cursor_y
+
 # Aesthetic variables.
 ## The colour displayed for correctly entered bits.
 ## Change to ffffff for a cool glow, but less visibility.
@@ -43,6 +46,8 @@ func _ready() -> void:
 	_bit_label.text = ""
 	Signals.missed.connect(_missed_bit)
 	_bit_label.add_theme_color_override("default_color", Color(entered_bit_color))
+	
+	_starting_cursor_y = _cursor.global_position.y
 
 
 ## Handles inputs and animations.
@@ -77,10 +82,22 @@ func _process(_delta: float) -> void:
 
 ## Send a bit down the current line.
 func send_bit(value: Bit.Type, speed: int, damage: int):
+	
+	
 	var new_bit: Bit = _bit.instantiate()
+	# Calculate y value based on the current line number offset from where the
+	# cursor started.
+	var y_value = _starting_cursor_y + (_line_height * (_line_num - 1))
 	add_child(new_bit)
-	new_bit.create(value, _cursor.global_position.y, _cursor.global_position.x, speed, damage)
+	new_bit.create(value, y_value, _cursor.global_position.x, speed, damage)
 	bitstream.push_back(new_bit)
+	
+	# Increase line number for next bit when an enter is sent:
+	if value == Bit.Type.ENTER:
+		if _line_num < MAX_LINE_NUM:
+			_line_num += 1
+		else:
+			_line_num = 1
 
 
 ## Try to click the next bit in the stream.
@@ -171,10 +188,8 @@ func _click_one(correct_click: bool):
 func _click_enter():
 	_cursor.play("enter")
 	if _line_num < MAX_LINE_NUM:
-		_line_num += 1
 		_bit_label.text += "\n"
 		_cursor.position.y += _line_height
 	else: ## clears all lines and resets the cursor to the top
-		_line_num = 1
 		_cursor.position.y -= _line_height * (MAX_LINE_NUM - 1)
 		_bit_label.text = ""

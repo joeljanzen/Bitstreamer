@@ -30,6 +30,7 @@ var bit_speed: int = -1
 ## get a perfect score (a good, or okay score is also harder to achieve).
 var difficulty: int = -1
 ## The damage each bit does when missed or incorrectly clicked.
+## Override damage value to 0 to make the level impossible to fail.
 var damage: int = -1
 
 # Level playback.
@@ -224,16 +225,13 @@ func load_level(file_name: String) -> bool:
 func _start_level() -> void:
 	while !bit_queue.is_empty():
 		var delay = delay_queue.pop_front()
-		print("waiting for %f seconds" % delay)
+		#print("waiting for %f seconds" % delay)
 		_delay_timer.start(delay)
 		await _delay_timer.timeout
 		
 		var bit = bit_queue.pop_front()
-		print("sending bit of type %d" % bit)
+		#print("sending bit of type %d" % bit)
 		_play_area.send_bit(bit, bit_speed, damage)
-	
-	# Should actually wait for the last bit to be clicked/missed at this point.
-	print("level finished!")
 
 
 ## The level has been unpaused.

@@ -1,4 +1,4 @@
-name=Tutorial Example,bpm=120,speed=1000,diff=1,dmg=25
+name=Tutorial Example,bpm=120,speed=500,diff=1,dmg=1
 
 # Write comments with "#" and leave empty lines anywhere you want!
 # Here I use the raw float to wait 4 seconds before starting the level.
@@ -11,7 +11,7 @@ f4,1
 1,0
 1,0
 1,enter
-1,0
+1/2,0
 
 # This is where I try using some triplets.
 # Instead of writing the nasty "0.333333" I can use a fraction to indicate I
