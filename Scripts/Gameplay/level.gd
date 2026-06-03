@@ -134,6 +134,9 @@ func load_level(file_name: String) -> bool:
 	if !error_loading:
 		print("Made it to the bit loading part!")
 		
+		var seconds_per_beat: float = 1.0 / bpm * 60.0
+		print("Seconds per beat is %f" % seconds_per_beat)
+		
 		for line in range(1, lines.size()):
 			var tokens := lines[line].split(",", false)
 			if tokens.size() != 2:
@@ -141,8 +144,49 @@ func load_level(file_name: String) -> bool:
 				push_error("Unexpected number of tokens in line %d" % line)
 				break
 			
-			var bit_token = tokens[0]
-			var delay_token = tokens[1]
+			var delay_token: String = tokens[0]
+			var bit_token = tokens[1]
+			
+			# Treat token as a raw float delay (in seconds).
+			if delay_token.begins_with("f"):
+				var delay_string = delay_token.erase(0,1)
+				if delay_string.is_valid_float():
+					delay_queue.push_back(float(delay_string))
+				else:
+					error_loading = true
+			else:
+				var fractional_delay = delay_token.split("/", false)
+				if fractional_delay.size() == 1:
+					# This is just a float, which is the number of beats
+					# the delay should be.
+					if fractional_delay[0].is_valid_float():
+						var delay_value = float(fractional_delay[0])
+						delay_queue.push_back(delay_value * seconds_per_beat)
+					else:
+						error_loading = true
+				elif fractional_delay.size() == 2:
+					# This is a fraction, containing a numerator and denominator
+					# indicating the number of beats the delay should be.
+					var delay_numerator: float
+					var delay_denominator: float
+					if fractional_delay[0].is_valid_int():
+						delay_numerator = float(fractional_delay[0])
+					else:
+						error_loading = true
+					
+					if !error_loading and fractional_delay[1].is_valid_int():
+						delay_denominator = float(fractional_delay[1])
+					else:
+						error_loading = true
+					
+					if !error_loading:
+						delay_queue.push_back(delay_numerator / delay_denominator * seconds_per_beat)
+				else:
+					error_loading = true
+			
+			if error_loading:
+				push_error("Delay not recognized: %s" % delay_token)
+				break
 			
 			match bit_token:
 				"0":
@@ -157,12 +201,6 @@ func load_level(file_name: String) -> bool:
 					error_loading = true
 					push_error("Bit type not recognized: %s" % bit_token)
 					break
-			if delay_token.is_valid_float():
-				delay_queue.push_back(float(delay_token))
-			else:
-				error_loading = true
-				push_error("Delay not recognized: %s" % delay_token)
-				break
 	
 	if error_loading:
 		return false
@@ -178,14 +216,15 @@ func load_level(file_name: String) -> bool:
 ## Starts the level, provided that the level has been loaded correctly.
 func _start_level() -> void:
 	while !bit_queue.is_empty():
+		var delay = delay_queue.pop_front()
+		print("waiting for %f seconds" % delay)
+		_delay_timer.start(delay)
+		await _delay_timer.timeout
+		
 		var bit = bit_queue.pop_front()
 		print("sending bit of type %d" % bit)
 		_play_area.send_bit(bit, bit_speed, damage)
-		if !bit_queue.is_empty(): # Ignore the last delay, as the song is done.
-			var delay = delay_queue.pop_front()
-			print("waiting for %f seconds" % delay)
-			_delay_timer.start(delay)
-			await _delay_timer.timeout
+	
 	# Should actually wait for the last bit to be clicked/missed at this point.
 	print("level finished!")
 
