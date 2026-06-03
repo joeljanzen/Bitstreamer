@@ -43,16 +43,14 @@ var delay_queue: Array[float]
 ## Connect to the failed signal.
 func _ready() -> void:
 	Signals.failed.connect(_failed)
-	
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
-	# Level.
 	if load_level("tutorial_example"):
-		print("name: %s" % level_name)
-		print("bpm: %s" % bpm)
-		print("speed: %s" % bit_speed)
-		print("difficulty: %s" % difficulty)
-		print("damage: %s" % damage)
+		print("Successfully loaded level: %s" % level_name)
+		print("BPM: %s" % bpm)
+		print("Speed: %s" % bit_speed)
+		print("Difficulty: %s" % difficulty)
+		print("Damage: %s" % damage)
 		_start_level()
 	else:
 		print("Level failed to load!")
@@ -135,10 +133,7 @@ func load_level(file_name: String) -> bool:
 		push_error("Level damage could not be found!")
 	
 	if !error_loading:
-		print("Made it to the bit loading part!")
-		
 		var seconds_per_beat: float = 1.0 / bpm * 60.0
-		print("Seconds per beat is %f" % seconds_per_beat)
 		
 		for line: int in range(1, lines.size()):
 			var line_num = line + 1
@@ -213,11 +208,6 @@ func load_level(file_name: String) -> bool:
 	if error_loading:
 		return false
 	else:
-		print("Successfully loaded all bits and delays!\n")
-		print(bit_queue)
-		print()
-		print(delay_queue)
-		print()
 		return true
 
 

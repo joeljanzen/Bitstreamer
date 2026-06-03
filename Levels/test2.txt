@@ -1,9 +1,0 @@
-bpm=150,speed=2000,dmg=1,diff=2,bruh=31,name=This is a TEST!!
-1
-0
-0
-2
-0
-1
-0
-2
