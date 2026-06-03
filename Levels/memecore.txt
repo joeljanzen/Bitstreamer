@@ -1,4 +1,4 @@
-name=Memecore,bpm=119,speed=800,diff=1,dmg=10
+name=Memecore,bpm=119,speed=800,diff=1,dmg=10,song=Memecore.wav
 
 # Testing stuff still. Let's get this music to sync up.
 

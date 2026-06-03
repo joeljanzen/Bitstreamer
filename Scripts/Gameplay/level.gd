@@ -28,6 +28,8 @@ var completed := false
 # Level information (all loaded from the level's file).
 ## The name of the level.
 var level_name: String = ""
+## The name of the audio file of the song to play.
+var song_filename: String = ""
 ## The beats per minute of the music (good luck if the song changes bpm bro).
 var bpm: float = -1
 ## The speed at which bits fly across the screen, in pixels per second.
@@ -46,6 +48,8 @@ var bit_queue: Array[Bit.Type]
 var delay_queue: Array[float]
 ## The delay between a bit being sent and it reaching the cursor, in seconds.
 var bit_time_to_cursor
+## The audio stream to play out of the music_player.
+var song: AudioStream
 
 
 ## Connect to the failed signal.
@@ -121,6 +125,10 @@ func load_level(file_name: String) -> bool:
 			var check = token.erase(0,4)
 			if check.is_valid_int():
 				damage = int(check)
+		elif token.contains("song="):
+			var check = token.erase(0,5)
+			if check.is_valid_filename():
+				song_filename = check
 		else:
 			push_error("Level data not recognized: %s" % token)
 	
@@ -140,80 +148,94 @@ func load_level(file_name: String) -> bool:
 	if damage < 0:
 		error_loading = true
 		push_error("Level damage could not be found!")
+	if song_filename.is_empty():
+		error_loading = true
+		push_error("Song audio file could not be found!")
 	
-	if !error_loading:
-		var seconds_per_beat: float = 1.0 / bpm * 60.0
-		bit_time_to_cursor = _play_area.get_time_to_cursor(bit_speed)
+	if error_loading: 
+		# At least one required piece of song info could not
+		# be loaded properly.
+		return false
+	
+	# Try to load the song file.
+	song = load("res://Resources/Audio/LevelTracks/%s" % song_filename)
+	
+	if song == null:
+		push_error("Song file %s could not be found!" % song_filename)
+		return false
+	
+	var seconds_per_beat: float = 1.0 / bpm * 60.0
+	bit_time_to_cursor = _play_area.get_time_to_cursor(bit_speed)
+	
+	for line: int in range(1, lines.size()):
+		var line_num = line + 1
+		# Ignore commented lines entirely.
+		if lines[line].begins_with("#") || lines[line].is_empty():
+			continue # This skips to the next iteration of the loop.
 		
-		for line: int in range(1, lines.size()):
-			var line_num = line + 1
-			# Ignore commented lines entirely.
-			if lines[line].begins_with("#") || lines[line].is_empty():
-				continue # This skips to the next iteration of the loop.
-			
-			var tokens := lines[line].split(",", false)
-			if tokens.size() != 2:
-				error_loading = true
-				push_error("Unexpected number of tokens on line %d: %s" % [line_num, lines[line]])
-				break
-			
-			var delay_token: String = tokens[0]
-			var bit_token = tokens[1]
-			
-			# Treat token as a raw float delay (in seconds).
-			if delay_token.begins_with("f"):
-				var delay_string = delay_token.erase(0,1)
-				if delay_string.is_valid_float():
-					delay_queue.push_back(float(delay_string))
-				else:
-					error_loading = true
+		var tokens := lines[line].split(",", false)
+		if tokens.size() != 2:
+			error_loading = true
+			push_error("Unexpected number of tokens on line %d: %s" % [line_num, lines[line]])
+			break
+		
+		var delay_token: String = tokens[0]
+		var bit_token = tokens[1]
+		
+		# Treat token as a raw float delay (in seconds).
+		if delay_token.begins_with("f"):
+			var delay_string = delay_token.erase(0,1)
+			if delay_string.is_valid_float():
+				delay_queue.push_back(float(delay_string))
 			else:
-				var fractional_delay = delay_token.split("/", false)
-				if fractional_delay.size() == 1:
-					# This is just a float, which is the number of beats
-					# the delay should be.
-					if fractional_delay[0].is_valid_float():
-						var delay_value = float(fractional_delay[0])
-						delay_queue.push_back(delay_value * seconds_per_beat)
-					else:
-						error_loading = true
-				elif fractional_delay.size() == 2:
-					# This is a fraction, containing a numerator and denominator
-					# indicating the number of beats the delay should be.
-					var delay_numerator: float
-					var delay_denominator: float
-					if fractional_delay[0].is_valid_int():
-						delay_numerator = float(fractional_delay[0])
-					else:
-						error_loading = true
-					
-					if !error_loading and fractional_delay[1].is_valid_int():
-						delay_denominator = float(fractional_delay[1])
-					else:
-						error_loading = true
-					
-					if !error_loading:
-						delay_queue.push_back(delay_numerator / delay_denominator * seconds_per_beat)
+				error_loading = true
+		else:
+			var fractional_delay = delay_token.split("/", false)
+			if fractional_delay.size() == 1:
+				# This is just a float, which is the number of beats
+				# the delay should be.
+				if fractional_delay[0].is_valid_float():
+					var delay_value = float(fractional_delay[0])
+					delay_queue.push_back(delay_value * seconds_per_beat)
 				else:
 					error_loading = true
-			
-			if error_loading:
-				push_error("Delay not recognized on line %d: %s" % [line_num, delay_token])
-				break
-			
-			match bit_token:
-				"0":
-					bit_queue.push_back(Bit.Type.ZERO)
-				"1":
-					bit_queue.push_back(Bit.Type.ONE)
-				"enter":
-					bit_queue.push_back(Bit.Type.ENTER)
-				"2":
-					bit_queue.push_back(Bit.Type.ENTER)
-				_:
+			elif fractional_delay.size() == 2:
+				# This is a fraction, containing a numerator and denominator
+				# indicating the number of beats the delay should be.
+				var delay_numerator: float
+				var delay_denominator: float
+				if fractional_delay[0].is_valid_int():
+					delay_numerator = float(fractional_delay[0])
+				else:
 					error_loading = true
-					push_error("Bit type not recognized on line %d: %s" % [line_num, bit_token])
-					break
+				
+				if !error_loading and fractional_delay[1].is_valid_int():
+					delay_denominator = float(fractional_delay[1])
+				else:
+					error_loading = true
+				
+				if !error_loading:
+					delay_queue.push_back(delay_numerator / delay_denominator * seconds_per_beat)
+			else:
+				error_loading = true
+		
+		if error_loading:
+			push_error("Delay not recognized on line %d: %s" % [line_num, delay_token])
+			break
+		
+		match bit_token:
+			"0":
+				bit_queue.push_back(Bit.Type.ZERO)
+			"1":
+				bit_queue.push_back(Bit.Type.ONE)
+			"enter":
+				bit_queue.push_back(Bit.Type.ENTER)
+			"2":
+				bit_queue.push_back(Bit.Type.ENTER)
+			_:
+				error_loading = true
+				push_error("Bit type not recognized on line %d: %s" % [line_num, bit_token])
+				break
 	
 	if error_loading:
 		return false
@@ -225,6 +247,7 @@ func load_level(file_name: String) -> bool:
 func _start_level() -> void:
 	_music_queue.timeout.connect(_start_music)
 	_music_queue.start(bit_time_to_cursor)
+	print(bit_time_to_cursor)
 	
 	while !bit_queue.is_empty():
 		var delay = delay_queue.pop_front()
@@ -245,6 +268,7 @@ func _start_level() -> void:
 ## Starts the music for the level. This waits for the music_queue timer to send
 ## its "finished" signal.
 func _start_music() -> void:
+	_music_player.stream = song
 	_music_player.play()
 
 

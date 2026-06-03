@@ -1,10 +1,25 @@
-name=Tutorial Level,bpm=60,speed=600,diff=1,dmg=1
+name=Tutorial Level,bpm=100,speed=800,diff=1,dmg=1,song=Tutorial.wav
 
 # Make the real tutorial level here.
 
+4,0
+1,0
+1,0
+1,enter
+
+5,1
+1,1
+1,1
+1,enter
+
 5,0
+1,1
 1,0
+1,enter
+
+5,1
 1,0
+1,1
 1,enter
 
 5,1

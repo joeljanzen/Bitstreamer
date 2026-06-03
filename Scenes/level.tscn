@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://c0cfxinwdhxdr" path="res://Scenes/level_ui.tscn" id="2_81xng"]
 [ext_resource type="PackedScene" uid="uid://bmyyd40hpvw2l" path="res://Scenes/play_area.tscn" id="3_wqkje"]
 [ext_resource type="Texture2D" uid="uid://ck0tbadym1fsj" path="res://Resources/Sprites/UI/Windows-BSOD-scaled.jpg" id="4_81xng"]
-[ext_resource type="AudioStream" uid="uid://dvvkqot82tvup" path="res://Resources/Audio/LevelTracks/Memecore.wav" id="5_wqkje"]
 
 [sub_resource type="Environment" id="Environment_81xng"]
 background_mode = 3
@@ -42,12 +41,11 @@ position = Vector2(227.5, 103)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1513700562]
 environment = SubResource("Environment_81xng")
 
-[node name="DelayTimer" type="Timer" parent="." unique_id=639627387]
-one_shot = true
-
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1216660691]
-stream = ExtResource("5_wqkje")
 bus = &"Music"
 
 [node name="MusicQueue" type="Timer" parent="." unique_id=105400590]
+one_shot = true
+
+[node name="DelayTimer" type="Timer" parent="." unique_id=639627387]
 one_shot = true
