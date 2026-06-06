@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://8gt8sj4us0p8"
+path="res://.godot/imported/PercussionAccents EC09_76_2.wav-015e22ad7279826abd6f9e9d55f0daf7.sample"
+
+[deps]
+
+source_file="res://Resources/Audio/SFX/PercussionAccents EC09_76_2.wav"
+dest_files=["res://.godot/imported/PercussionAccents EC09_76_2.wav-015e22ad7279826abd6f9e9d55f0daf7.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

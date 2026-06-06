@@ -4,6 +4,10 @@ extends Node2D
 
 @onready var _cursor: AnimatedSprite2D = $Cursor
 @onready var _bit_label: RichTextLabel = $BitLabel
+@onready var _bit_click_sound: AudioStreamPlayer = $BitClick
+@onready var _bit_miss_sound: AudioStreamPlayer = $BitMiss
+@onready var _empty_click_sound: AudioStreamPlayer = $EmptyClick
+@onready var _line_clear_sound: AudioStreamPlayer = $LineClear
 @onready var _bit = preload("res://Scenes/bit.tscn")
 
 ## The speed of manually spawned bits.
@@ -31,8 +35,12 @@ var _line_num: int = 1
 ## The starting y position of the cursor.
 var _starting_cursor_y
 
+## Signifies when to reset the cursor back to the top.
+var _ready_for_line_clear := false
+
 ## The last bits have been sent, prepare to send the no_bits_left signal.
 var _last_bits_sent := false
+
 
 # Aesthetic variables.
 ## The colour displayed for correctly entered bits.
@@ -107,10 +115,13 @@ func send_bit(value: Bit.Type, speed: int, damage: int):
 	
 	# Increase line number for next bit when an enter is sent:
 	if value == Bit.Type.ENTER:
+		print("line num is %d before" % _line_num)
 		if _line_num < MAX_LINE_NUM:
 			_line_num += 1
 		else:
+			_ready_for_line_clear = true
 			_line_num = 1
+		print("line num is %d after" % _line_num)
 
 
 ## Get the amount of time it takes for the bit to reach the cursor, in seconds
@@ -172,53 +183,73 @@ func _missed_bit(_damage, _click_quality):
 ## The animations and sounds that trigger when miss-clicking a zero or one bit.
 func _miss_click_zero_one() -> void:
 	_cursor.play("click")
+	_empty_click_sound.play()
 
 
 ## The animations and sounds that trigger when miss-clicking an enter bit.
 func _miss_click_enter() -> void:
 	_cursor.play("cannot_enter")
+	_empty_click_sound.play()
 
 
 ## The animations and sounds that trigger when missing a zero or one bit.
-func _miss_zero_one():
+## Not the same as incorrectly clicking a zero or one bit. That still counts
+## as clicking it, see those functions below.
+func _miss_zero_one() -> void:
 	_bit_label.text += "[color=%s]_[/color]" % missed_bit_color
+	_bit_miss_sound.play()
 
 
 ## The animations and sounds that trigger when entirely missing an enter bit.
-func _miss_enter():
+func _miss_enter() -> void:
 	# Literally the same as clicking enter for now 
 	# (will play different sound and animation later).
-	_click_enter() 
+	_cursor.play("enter")
+	_bit_miss_sound.play()
+	_new_line()
 
 
 ## The animations and sounds that trigger when clicking a zero bit
 ## (different outcome depending on correct or incorrect click).
-func _click_zero(correct_click: bool):
+func _click_zero(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
+		_bit_click_sound.play()
 		_bit_label.text += "0"
 	else:
+		_bit_miss_sound.play()
 		_bit_label.text += "[color=%s]0[/color]" % incorrect_bit_color
 
 
 ## The animations and sounds that trigger when clicking a one bit
 ## (different outcome depending on correct or incorrect click).
-func _click_one(correct_click: bool):
+func _click_one(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
+		_bit_click_sound.play()
 		_bit_label.text += "1"
 	else:
+		_bit_miss_sound.play()
 		_bit_label.text += "[color=%s]1[/color]" % incorrect_bit_color
 
 
 ## The animations and sounds that trigger when clicking an enter bit
 ## (you cannot incorrectly click an enter bit, you either click it right or 
 ## the game clicks it for you).
-func _click_enter():
+func _click_enter() -> void:
 	_cursor.play("enter")
-	if _line_num < MAX_LINE_NUM:
-		_bit_label.text += "\n"
-		_cursor.position.y += _line_height
-	else: ## clears all lines and resets the cursor to the top
+	_bit_click_sound.play()
+	_new_line()
+
+
+## The animations and sounds that trigger when moving down to the next line. 
+## Triggered by an enter bit click (or miss).
+func _new_line() -> void:
+	if _ready_for_line_clear:
+		_line_clear_sound.play()
 		_cursor.position.y -= _line_height * (MAX_LINE_NUM - 1)
 		_bit_label.text = ""
+		_ready_for_line_clear = false
+	else:
+		_bit_label.text += "\n"
+		_cursor.position.y += _line_height

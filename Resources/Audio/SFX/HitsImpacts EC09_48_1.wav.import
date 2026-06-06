@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ddssc54kp7gk2"
+path="res://.godot/imported/HitsImpacts EC09_48_1.wav-209787f421479012bee73748b84c996b.sample"
+
+[deps]
+
+source_file="res://Resources/Audio/SFX/HitsImpacts EC09_48_1.wav"
+dest_files=["res://.godot/imported/HitsImpacts EC09_48_1.wav-209787f421479012bee73748b84c996b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
