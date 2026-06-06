@@ -2,6 +2,8 @@
 
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_bthaf"]
 [ext_resource type="Script" uid="uid://dpvq8ox1q4rjb" path="res://Scripts/UI/pause_ui.gd" id="1_srqh7"]
+[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_cf5hy"]
+[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_w3mym"]
 
 [node name="pause_ui" type="Control" unique_id=1762296446]
 layout_mode = 3
@@ -46,7 +48,18 @@ offset_bottom = 1000.0
 theme = ExtResource("1_bthaf")
 text = "Quit"
 
+[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1362538356]
+stream = ExtResource("3_cf5hy")
+bus = &"SFX"
+
+[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1198576290]
+stream = ExtResource("4_w3mym")
+
+[connection signal="mouse_entered" from="CanvasLayer/Resume" to="." method="_on_resume_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Reboot" to="." method="_on_reboot_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Reboot" to="." method="_on_reboot_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Settings" to="." method="_on_settings_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Quit" to="." method="_on_quit_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]

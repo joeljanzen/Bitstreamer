@@ -9,10 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://cd67wwlog7jx3" path="res://Resources/Sprites/Cursor/cursor_enter.png" id="5_8vi7n"]
 [ext_resource type="Texture2D" uid="uid://bxalqsmxkj2j0" path="res://Resources/Sprites/Cursor/cursor.png" id="6_pcu3v"]
 [ext_resource type="Texture2D" uid="uid://dfpghwucv3n7n" path="res://Resources/Sprites/Cursor/cursor_up.png" id="7_3d5pw"]
-[ext_resource type="AudioStream" uid="uid://rl8f7krqudnc" path="res://Resources/Audio/SFX/ButtonPushClick PE1090101.wav" id="10_40bvh"]
-[ext_resource type="AudioStream" uid="uid://ddssc54kp7gk2" path="res://Resources/Audio/SFX/HitsImpacts EC09_48_1.wav" id="10_pcu3v"]
-[ext_resource type="AudioStream" uid="uid://8gt8sj4us0p8" path="res://Resources/Audio/SFX/PercussionAccents EC09_76_2.wav" id="11_40bvh"]
-[ext_resource type="AudioStream" uid="uid://dwh14dbk4rfv5" path="res://Resources/Audio/SFX/el_interface_click_06_hpx.wav" id="12_40bvh"]
+[ext_resource type="AudioStream" uid="uid://rl8f7krqudnc" path="res://Resources/Audio/SFX/BitClick.wav" id="10_40bvh"]
+[ext_resource type="AudioStream" uid="uid://ddssc54kp7gk2" path="res://Resources/Audio/SFX/LineClearHit.wav" id="10_pcu3v"]
+[ext_resource type="AudioStream" uid="uid://8gt8sj4us0p8" path="res://Resources/Audio/SFX/BitMiss.wav" id="11_40bvh"]
+[ext_resource type="AudioStream" uid="uid://dwh14dbk4rfv5" path="res://Resources/Audio/SFX/EmptyClick.wav" id="12_40bvh"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dtjkg"]
 animations = [{

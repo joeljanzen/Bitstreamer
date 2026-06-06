@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://dy2rtpl8ydwo1" path="res://Scripts/UI/game_crash_ui.gd" id="1_pwu0n"]
 [ext_resource type="Texture2D" uid="uid://ck0tbadym1fsj" path="res://Resources/Sprites/UI/Windows-BSOD-scaled.jpg" id="2_3m6g7"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="3_lbv4o"]
+[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="4_rxu5j"]
+[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_4o26s"]
 
 [node name="GameCrashUI" type="Control" unique_id=1755645710]
 layout_mode = 3
@@ -88,5 +90,14 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 2
 
+[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=280739703]
+stream = ExtResource("4_rxu5j")
+bus = &"SFX"
+
+[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=2035866713]
+stream = ExtResource("5_4o26s")
+
+[connection signal="mouse_entered" from="CanvasLayer/Reboot" to="." method="_on_reboot_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Reboot" to="." method="_on_reboot_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Quit" to="." method="_on_quit_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]

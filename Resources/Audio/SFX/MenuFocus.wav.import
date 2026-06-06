@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dwyebhm5je5x6"
-path="res://.godot/imported/el_interface_click_19_hpx.wav-42570273c5abf33cc84a00618c8bb41b.sample"
+path="res://.godot/imported/MenuFocus.wav-40952220612b4fda51d2d6fae24910fa.sample"
 
 [deps]
 
-source_file="res://Resources/Audio/SFX/el_interface_click_19_hpx.wav"
-dest_files=["res://.godot/imported/el_interface_click_19_hpx.wav-42570273c5abf33cc84a00618c8bb41b.sample"]
+source_file="res://Resources/Audio/SFX/MenuFocus.wav"
+dest_files=["res://.godot/imported/MenuFocus.wav-40952220612b4fda51d2d6fae24910fa.sample"]
 
 [params]
 

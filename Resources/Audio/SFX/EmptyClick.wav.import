@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dwh14dbk4rfv5"
-path="res://.godot/imported/el_interface_click_06_hpx.wav-d8df1e2684936ea447ce55a2606fe056.sample"
+path="res://.godot/imported/EmptyClick.wav-35875d1ef589ba364fbcadee6bbd8bc5.sample"
 
 [deps]
 
-source_file="res://Resources/Audio/SFX/el_interface_click_06_hpx.wav"
-dest_files=["res://.godot/imported/el_interface_click_06_hpx.wav-d8df1e2684936ea447ce55a2606fe056.sample"]
+source_file="res://Resources/Audio/SFX/EmptyClick.wav"
+dest_files=["res://.godot/imported/EmptyClick.wav-35875d1ef589ba364fbcadee6bbd8bc5.sample"]
 
 [params]
 

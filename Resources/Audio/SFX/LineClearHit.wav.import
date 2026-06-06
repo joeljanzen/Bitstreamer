@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://ddssc54kp7gk2"
-path="res://.godot/imported/HitsImpacts EC09_48_1.wav-209787f421479012bee73748b84c996b.sample"
+path="res://.godot/imported/LineClearHit.wav-11ae53fe4339652d24a83902d5b34bf0.sample"
 
 [deps]
 
-source_file="res://Resources/Audio/SFX/HitsImpacts EC09_48_1.wav"
-dest_files=["res://.godot/imported/HitsImpacts EC09_48_1.wav-209787f421479012bee73748b84c996b.sample"]
+source_file="res://Resources/Audio/SFX/LineClearHit.wav"
+dest_files=["res://.godot/imported/LineClearHit.wav-11ae53fe4339652d24a83902d5b34bf0.sample"]
 
 [params]
 

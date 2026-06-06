@@ -6,6 +6,9 @@ extends Control
 @onready var _combo_label: RichTextLabel = $CanvasLayer/Combo
 @onready var _score_label: RichTextLabel = $CanvasLayer/Score
 @onready var _clicks_label: RichTextLabel = $CanvasLayer/Clicks
+# Sounds.
+@onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
+@onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
 ## Contains statistics for the current level.
 var statistics: LevelStatistics
@@ -38,9 +41,19 @@ func connect_stats(stats: LevelStatistics) -> void:
 
 ## The player has pressed the play again button. Clearly.
 func _on_play_again_pressed() -> void:
+	_menu_click_sound.play()
+	await _menu_click_sound.finished
 	get_tree().reload_current_scene()
 
 
 ## The player has pressed the quit button. Clearly.
 func _on_quit_pressed() -> void:
 	get_tree().quit(0)
+
+
+func _on_play_again_mouse_entered() -> void:
+	_menu_focus_sound.play()
+
+
+func _on_quit_mouse_entered() -> void:
+	_menu_focus_sound.play()
