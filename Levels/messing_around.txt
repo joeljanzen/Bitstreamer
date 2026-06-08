@@ -1,10 +1,47 @@
 name=Tutorial Level,bpm=100,speed=800,diff=1,dmg=1,song=Tutorial.wav
 
-# Make the real tutorial level here.
+# Testing some rhythms idk
 
 4,0
 1,0
 1,0
+1,enter
+
+5,1
+1/3,0
+1/3,1
+1/3,0
+1/3,1
+1/3,0
+1/3,1
+1/3,0
+1/3,1
+1/3,enter
+
+5,1
+1,1
+1,1
+1,enter
+
+5,1
+1/3,0
+1/3,1
+1/3,0
+1/3,1
+1/3,0
+1/3,1
+1/3,0
+1/3,1
+1/3,enter
+
+5,0
+1,1
+1,0
+1,enter
+
+5,1
+1,0
+1,1
 1,enter
 
 5,1
@@ -13,41 +50,11 @@ name=Tutorial Level,bpm=100,speed=800,diff=1,dmg=1,song=Tutorial.wav
 1,enter
 
 5,0
-1,0
-1,0
-1,enter
-
-5,1
-1,1
-1,1
-1,enter
-
-4,enter
-1,0
-1,0
-1,1
-1,enter
-
-5,1
 1,1
 1,0
 1,enter
 
 5,1
 1,0
-1,0
-1,enter
-
-5,1
 1,1
-1,0
 1,enter
-1,0
-1,0
-2,0
-
-1,enter
-4,enter
-3,0
-1/4,1
-3/4,enter
