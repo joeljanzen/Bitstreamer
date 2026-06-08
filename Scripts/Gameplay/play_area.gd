@@ -72,18 +72,18 @@ func _process(_delta: float) -> void:
 		_cursor.play("flicker")
 	
 	# Input handling.
-	if Input.is_action_just_pressed("0 bit"):
+	if Input.is_action_just_pressed("0_bit"):
 		if !_click_bit(Bit.Type.ZERO):
 			_miss_click_zero_one()
-	if Input.is_action_just_pressed("1 bit"):
+	if Input.is_action_just_pressed("1_bit"):
 		if !_click_bit(Bit.Type.ONE):
 			_miss_click_zero_one()
-	if Input.is_action_just_pressed("enter"):
+	if Input.is_action_just_pressed("enter_bit"):
 		if !_click_bit(Bit.Type.ENTER):
 			_miss_click_enter()
 	
 	# Go back to flickering cursor when letting go of 1 or 0.
-	if Input.is_action_just_released("0 bit") or Input.is_action_just_released("1 bit"):
+	if Input.is_action_just_released("0_bit") or Input.is_action_just_released("1_bit") or Input.is_action_just_released("enter_bit"):
 		_cursor.play("flicker")
 	
 	# Signals that the level has been completed.
@@ -91,11 +91,11 @@ func _process(_delta: float) -> void:
 		no_bits_left.emit()
 	
 	# DEBUG!
-	if Input.is_action_just_pressed("spawn 0 bit"):
+	if Input.is_action_just_pressed("spawn_0_bit"):
 		send_bit(Bit.Type.ZERO, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
-	elif Input.is_action_just_pressed("spawn 1 bit"):
+	elif Input.is_action_just_pressed("spawn_1_bit"):
 		send_bit(Bit.Type.ONE, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
-	elif Input.is_action_just_pressed("spawn enter"):
+	elif Input.is_action_just_pressed("spawn_enter"):
 		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, 0)
 
 

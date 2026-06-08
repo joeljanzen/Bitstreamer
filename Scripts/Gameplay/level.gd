@@ -79,7 +79,7 @@ func _input(event: InputEvent) -> void:
 			_resumed()
 		elif !failed and !completed:
 			_paused()
-	elif event.is_action_pressed("toggle level UI") and !paused and !failed and !completed:
+	elif event.is_action_pressed("toggle_level_UI") and !paused and !failed and !completed:
 		if _levelUI.UI_is_visible():
 			_levelUI.hide_UI()
 		else:

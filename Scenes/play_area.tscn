@@ -28,7 +28,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("3_27jp8")
 }],
-"loop": false,
+"loop": true,
 "name": &"cannot_enter",
 "speed": 10.0
 }, {
@@ -114,7 +114,7 @@ light_mask = 2
 position = Vector2(18, 58)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
-animation = &"flicker"
+animation = &"cannot_enter"
 autoplay = "flicker"
 
 [node name="Barlight1" type="PointLight2D" parent="." unique_id=93168830]
