@@ -115,13 +115,11 @@ func send_bit(value: Bit.Type, speed: int, damage: int):
 	
 	# Increase line number for next bit when an enter is sent:
 	if value == Bit.Type.ENTER:
-		print("line num is %d before" % _line_num)
 		if _line_num < MAX_LINE_NUM:
 			_line_num += 1
 		else:
 			_ready_for_line_clear = true
 			_line_num = 1
-		print("line num is %d after" % _line_num)
 
 
 ## Get the amount of time it takes for the bit to reach the cursor, in seconds
