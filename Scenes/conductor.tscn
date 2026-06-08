@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dq353n73b0cw4"]
+
+[ext_resource type="Script" uid="uid://jqasc4q5y8da" path="res://Scripts/Gameplay/conductor.gd" id="1_l17rm"]
+
+[node name="Conductor" type="AudioStreamPlayer" unique_id=1369693212]
+bus = &"Music"
+script = ExtResource("1_l17rm")

@@ -2,7 +2,7 @@ name=Memecore,bpm=119,speed=800,diff=1,dmg=10,song=Memecore.wav
 
 # Testing stuff still. Let's get this music to sync up.
 
-0,0
+8,0
 1,0
 1,0
 1,enter
