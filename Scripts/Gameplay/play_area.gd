@@ -35,6 +35,9 @@ var _line_num: int = 1
 ## The starting y position of the cursor.
 var _starting_cursor_y
 
+## The ending y position of the cursor (when it's on the last line).
+var _ending_cursor_y
+
 ## Signifies when to reset the cursor back to the top.
 var _ready_for_line_clear := false
 
@@ -59,6 +62,7 @@ func _ready() -> void:
 	_bit_label.add_theme_color_override("default_color", Color(entered_bit_color))
 	
 	_starting_cursor_y = _cursor.global_position.y
+	_ending_cursor_y = _starting_cursor_y + _line_height * (MAX_LINE_NUM - 1)
 
 
 ## Handles inputs and animations.
@@ -243,7 +247,10 @@ func _click_enter() -> void:
 ## The animations and sounds that trigger when moving down to the next line. 
 ## Triggered by an enter bit click (or miss).
 func _new_line() -> void:
-	if _ready_for_line_clear:
+	# Check for the cursor to be at the right y position, to ensure the other 
+	# enter bits before the one on the last line have all been hit/missed 
+	# already.
+	if _ready_for_line_clear and _cursor.global_position.y == _ending_cursor_y:
 		_line_clear_sound.play()
 		_cursor.position.y -= _line_height * (MAX_LINE_NUM - 1)
 		_bit_label.text = ""
