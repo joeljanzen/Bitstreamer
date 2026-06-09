@@ -22,6 +22,8 @@ name=Tutorial Level,bpm=100,speed=800,diff=1,dmg=1,song=Tutorial.wav
 1,1
 1,enter
 
+# 18.6s
+
 4,enter
 1,0
 1,0

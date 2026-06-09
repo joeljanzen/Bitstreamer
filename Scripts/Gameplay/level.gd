@@ -63,7 +63,7 @@ func _ready() -> void:
 		print("Speed: %s" % bit_speed)
 		print("Difficulty: %s" % difficulty)
 		print("Damage: %s" % damage)
-		_start_level()
+		_start_level(16)
 	else:
 		print("Level failed to load!")
 	
@@ -250,16 +250,27 @@ func load_level(file_name: String) -> bool:
 		return true
 
 
-## Starts the music for the level. This waits for the music_queue timer to send
-## its "finished" signal.
-func _start_level() -> void:
+## Starts the music for the level. Optionally, an offset in seconds can be 
+## given, which will skip to that point in the level and play from there.
+func _start_level(level_offset: float = 0) -> void:
 	_conductor.set_song(song)
 	_conductor.timed_event.connect(_receive_timed_event)
-	
-	var delay = delay_queue[0] - bit_time_to_cursor
-	_conductor.set_timed_event(delay)
 
-	_conductor.play()
+	# The total time in the song when the next bit should be sent.
+	# We want to find when the total time is greater than the offset seconds.
+	# This will also give us the delay for the initial timed event.
+	var total_time = -bit_time_to_cursor 
+	var event_index = 0
+	while total_time < level_offset and event_index < delay_queue.size():
+		total_time += delay_queue[event_index]
+		event_index += 1
+	
+	# This is done because we go one past the index that we should be starting
+	# at in the while loop.
+	event_index -= 1 
+	
+	_conductor.set_timed_event(total_time)
+	_conductor.play_with_offset(level_offset, event_index)
 
 
 ## The next timed event has been received by the conductor. Sends the next bit

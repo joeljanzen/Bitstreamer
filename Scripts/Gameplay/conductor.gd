@@ -29,6 +29,13 @@ func set_song(song: AudioStream) -> void:
 	stream = song
 
 
+## Play the song with a given offset value in seconds, and the index of the
+## next event that should be played.
+func play_with_offset(offset: float, event_index: int) -> void:
+	_timing_event_index = event_index
+	play(offset)
+
+
 ## Pause or unpause the song.
 func toggle_paused() -> void:
 	if stream_paused:
@@ -60,7 +67,8 @@ func _physics_process(delta: float) -> void:
 	if !_done_timings:
 		_time = get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
 		_time -= AudioServer.get_output_latency()
-
+		#print(_time)
+		
 		# If the difference between current time and time of delay end is within
 		# the length of time since the last time _process was called (which is the
 		# value of delta), we treat it as reaching the delay end.
