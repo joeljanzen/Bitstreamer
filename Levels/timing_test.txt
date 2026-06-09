@@ -104,7 +104,6 @@ name=Timing Test,bpm=100,speed=1000,diff=1,dmg=1,song=Tutorial.wav
 1/4,1
 1/4,0
 1/4,enter
-1/4,1
 1/4,0
 1/4,1
 1/4,0
@@ -135,4 +134,5 @@ name=Timing Test,bpm=100,speed=1000,diff=1,dmg=1,song=Tutorial.wav
 1/4,1
 1/4,0
 1/4,1
+1/4,0
 1/2,enter

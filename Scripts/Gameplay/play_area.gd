@@ -126,7 +126,7 @@ func send_bit(value: Bit.Type, speed: int, damage: int):
 			_line_num = 1
 
 
-## Get the amount of time it takes for the bit to reach the cursor, in seconds
+## Get the amount of time it takes for the bit to reach the cursor in seconds,
 ## given the speed of the bit (in pixels per second).
 func get_time_to_cursor(speed: float) -> float:
 	# Distance in pixels.

@@ -35,7 +35,7 @@ var bpm: float = -1
 var bit_speed: int = -1
 ## The difficulty of the level, AKA how accurate clicks need to be in order to
 ## get a perfect score (a good, or okay score is also harder to achieve).
-var difficulty: int = -1
+var difficulty: int = 0
 ## The damage each bit does when missed or incorrectly clicked.
 ## Override damage value to 0 to make the level impossible to fail.
 var damage: int = -1
@@ -57,13 +57,13 @@ func _ready() -> void:
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
-	if load_level("memecore"):
+	if load_level("tutorial"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % bit_speed)
 		print("Difficulty: %s" % difficulty)
 		print("Damage: %s" % damage)
-		_start_level(16)
+		_start_level()
 	else:
 		print("Level failed to load!")
 	
@@ -93,75 +93,119 @@ func _input(event: InputEvent) -> void:
 ## Returns if the level loaded successfully.
 func load_level(file_name: String) -> bool:
 	var file = FileAccess.open("res://Levels/%s.txt" % file_name, FileAccess.READ)
-	if file == null:
-		push_error("Level file could not be found!")
-		return false
-	
-	var content = file.get_as_text()
-	# Will contain empty lines, only so if something goes wrong the correct line
-	# number with the error will be displayed.
-	var lines: PackedStringArray = content.split("\n") 
-	var level_data: PackedStringArray = lines[0].split(",", false)
-	
 	var error_loading := false
 	
-	for token: String in level_data:
-		if token.contains("name="):
-			level_name = token.erase(0, 5) # Erases "name=" from the token.
-		elif token.contains("bpm="):
-			var check = token.erase(0,4)
-			if check.is_valid_float():
+	if file == null:
+		error_loading = true
+		push_error("Level file could not be found!")
+	else:
+		var content = file.get_as_text()
+		# Will contain empty lines, only so if something goes wrong the correct line
+		# number with the error will be displayed.
+		var lines: PackedStringArray = content.split("\n") 
+		
+		if !_parse_level_info(lines):
+			error_loading = true
+		elif !_parse_bits_and_delays(lines):
+			error_loading = true
+	
+	return !error_loading
+
+
+## Loads the info for a level, given the lines in the level file.
+## Returns true if there were no issues, or false otherwise.
+func _parse_level_info(lines: PackedStringArray) -> bool:
+	var level_data: PackedStringArray = lines[0].split(",", false)
+	var error_loading := false
+	
+	for tag: String in level_data:
+		if tag.contains("name="):
+			var check = tag.erase(0, 5) # Erases "name=" from the token.
+			if !check.is_empty():
+				level_name = check
+			else:
+				error_loading = true
+				push_error("Level name cannot be empty")
+				break
+		elif tag.contains("bpm="):
+			var check = tag.erase(0,4)
+			if check.is_valid_float() and float(check) > 0:
 				bpm = float(check)
-		elif token.contains("speed="):
-			var check = token.erase(0,6)
-			if check.is_valid_int():
+			else:
+				error_loading = true
+				push_error("%s is not a valid BPM" % check)
+				break
+		elif tag.contains("speed="):
+			var check = tag.erase(0,6)
+			if check.is_valid_int() and int(check) > 0:
 				bit_speed = int(check)
-		elif token.contains("diff="):
-			var check = token.erase(0,5)
-			if check.is_valid_int():
+			else:
+				error_loading = true
+				push_error("%s is not a valid speed" % check)
+				break
+		elif tag.contains("diff="):
+			var check = tag.erase(0,5)
+			if check.is_valid_int() and int(check) >= 1:
 				difficulty = int(check)
-		elif token.contains("dmg="):
-			var check = token.erase(0,4)
-			if check.is_valid_int():
+			else:
+				error_loading = true
+				push_error("%s is not a valid difficulty" % check)
+				break
+		elif tag.contains("dmg="):
+			var check = tag.erase(0,4)
+			if check.is_valid_int() and int(check) >= 0:
 				damage = int(check)
-		elif token.contains("song="):
-			var check = token.erase(0,5)
+			else:
+				error_loading = true
+				push_error("%s is not a valid bit damage" % check)
+				break
+		elif tag.contains("song="):
+			var check = tag.erase(0,5)
 			if check.is_valid_filename():
 				song_filename = check
+			else:
+				error_loading = true
+				push_error("%s is not a valid song filename" % check)
+				break
 		else:
-			push_error("Level data not recognized: %s" % token)
+			push_error("Level tag not recognized: %s" % tag)
 	
-	# Check that all data was correctly loaded.
-	if level_name.is_empty():
-		error_loading = true
-		push_error("Level name could not be found!")
-	if bpm < 0:
-		error_loading = true
-		push_error("Level BPM could not be found!")
-	if bit_speed < 0:
-		error_loading = true
-		push_error("Level bit speed could not be found!")
-	if difficulty < 0:
-		error_loading = true
-		push_error("Level difficulty could not be found!")
-	if damage < 0:
-		error_loading = true
-		push_error("Level damage could not be found!")
-	if song_filename.is_empty():
-		error_loading = true
-		push_error("Song audio file could not be found!")
+	if !error_loading:
+		# Check that all data was correctly loaded.
+		if level_name.is_empty():
+			error_loading = true
+			push_error("Level name could not be found!")
+		if bpm < 0:
+			error_loading = true
+			push_error("Level BPM could not be found!")
+		if bit_speed < 0:
+			error_loading = true
+			push_error("Level bit speed could not be found!")
+		if difficulty < 1:
+			error_loading = true
+			push_error("Level difficulty could not be found!")
+		if damage < 0:
+			error_loading = true
+			push_error("Level damage could not be found!")
+		if song_filename.is_empty():
+			error_loading = true
+			push_error("Song audio file could not be found!")
 	
-	if error_loading: 
-		# At least one required piece of song info could not
-		# be loaded properly.
-		return false
+	if !error_loading: 
+		# Try to load the song file.
+		song = load("res://Resources/Audio/LevelTracks/%s" % song_filename)
+		
+		if song == null:
+			error_loading = true
+			push_error("Song file %s could not be found!" % song_filename)
 	
-	# Try to load the song file.
-	song = load("res://Resources/Audio/LevelTracks/%s" % song_filename)
-	
-	if song == null:
-		push_error("Song file %s could not be found!" % song_filename)
-		return false
+	return !error_loading
+
+
+## Loads the info for a level, given the lines in the level file.
+## Returns true if there were no issues, or false otherwise.
+func _parse_bits_and_delays(lines: PackedStringArray) -> bool:
+	var error_loading := false
 	
 	var seconds_per_beat: float = 60.0 / bpm
 	bit_time_to_cursor = _play_area.get_time_to_cursor(bit_speed)
@@ -244,10 +288,7 @@ func load_level(file_name: String) -> bool:
 				push_error("Bit type not recognized on line %d: %s" % [line_num, bit_token])
 				break
 	
-	if error_loading:
-		return false
-	else:
-		return true
+	return !error_loading
 
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
@@ -278,7 +319,10 @@ func _start_level(level_offset: float = 0) -> void:
 func _receive_timed_event(event_index: int) -> void:
 	#print("TIMED EVENT OF INDEX %d RECEIVED AT %s" % [event_index, _conductor.get_time()])
 	var bit = bit_queue[event_index]
-	_play_area.send_bit(bit, bit_speed, damage)
+	var dmg = damage
+	if bit == Bit.Type.ENTER:
+		dmg = 0
+	_play_area.send_bit(bit, bit_speed, dmg)
 	
 	var delay_queue_index = event_index + 1
 	if delay_queue_index < delay_queue.size():
