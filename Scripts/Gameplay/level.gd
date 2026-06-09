@@ -256,7 +256,7 @@ func _start_level() -> void:
 	_conductor.set_song(song)
 	_conductor.timed_event.connect(_receive_timed_event)
 	
-	var delay = delay_queue.pop_front() - bit_time_to_cursor
+	var delay = delay_queue[0] - bit_time_to_cursor
 	_conductor.set_timed_event(delay)
 
 	_conductor.play()
@@ -264,13 +264,14 @@ func _start_level() -> void:
 
 ## The next timed event has been received by the conductor. Sends the next bit
 ## and sets up the delay to the next timed event.
-func _receive_timed_event() -> void:
-	#print("NEW TIMED EVENT RECEIVED AT %s" % _conductor.get_time())
-	var bit = bit_queue.pop_front()
+func _receive_timed_event(event_index: int) -> void:
+	#print("TIMED EVENT OF INDEX %d RECEIVED AT %s" % [event_index, _conductor.get_time()])
+	var bit = bit_queue[event_index]
 	_play_area.send_bit(bit, bit_speed, damage)
 	
-	if !delay_queue.is_empty():
-		var delay = delay_queue.pop_front()
+	var delay_queue_index = event_index + 1
+	if delay_queue_index < delay_queue.size():
+		var delay = delay_queue[delay_queue_index]
 		_conductor.set_timed_event(delay)
 	else:
 		# Tell play_area that all bits are sent, then wait for the final bit to

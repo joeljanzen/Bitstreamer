@@ -3,20 +3,25 @@ extends AudioStreamPlayer
 ## Controls the timing 
 
 ## A precisely timed event trigger, set to be emitted after a given delay by the
-## set_timed_event function.
-signal timed_event
+## set_timed_event function. The index, starting at 0, indicates a specific
+## timed event in the song, allowing the ability to send timed events for any
+## point in the song, not just in order from the start.
+signal timed_event(event_index: int)
 
 ## The current time in the song being played.
-var time: float
+var _time: float
 
 ## The time in the song being played that a timed_event should be triggered.
-var time_delay_ends := 0.0
+var _time_delay_ends := 0.0
 
 ## Signifies that there is actually a delay that needs to emit a timed_event.
-var waiting_for_delay := false
+var _waiting_for_delay := false
 
 ## No more timing events are to be sent, so we can stop checking.
 var _done_timings = false
+
+## The index of the timing event to be sent out next.
+var _timing_event_index: int = 0
 
 
 ## Set the song to play.
@@ -34,14 +39,14 @@ func toggle_paused() -> void:
 
 ## Returns the current position in the song.
 func get_time() -> float:
-	return time
+	return _time
 
 
 ## Given a delay, sends out the delay_end signal once after the delay has 
 ## passed.
 func set_timed_event(delay: float) -> void:
-	waiting_for_delay = true
-	time_delay_ends += delay
+	_waiting_for_delay = true
+	_time_delay_ends += delay
 
 
 ## Tell the conductor it doesn't need to time any more events.
@@ -53,13 +58,14 @@ func done_timings() -> void:
 ## on that time.
 func _physics_process(delta: float) -> void:
 	if !_done_timings:
-		time = get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
-		time -= AudioServer.get_output_latency()
+		_time = get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
+		_time -= AudioServer.get_output_latency()
 
 		# If the difference between current time and time of delay end is within
 		# the length of time since the last time _process was called (which is the
 		# value of delta), we treat it as reaching the delay end.
-		var difference = abs(time - time_delay_ends)
-		if difference <= delta and waiting_for_delay:
-			waiting_for_delay = false
-			timed_event.emit()
+		var difference = abs(_time - _time_delay_ends)
+		if difference <= delta and _waiting_for_delay:
+			_waiting_for_delay = false
+			timed_event.emit(_timing_event_index)
+			_timing_event_index += 1
