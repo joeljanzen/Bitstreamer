@@ -10,3 +10,5 @@ Insert art credits here (mostly Joel, maybe)
 Insert music credits here (also Joel, probably)
 
 CRT Shader by Flowerwall: https://github.com/Art-Michel/Flowerwall-CRT-shader-for-Godot
+
+Inspiration for some game mechanics come from osu!

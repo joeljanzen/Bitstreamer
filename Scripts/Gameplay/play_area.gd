@@ -66,7 +66,7 @@ func _ready() -> void:
 
 
 ## Handles inputs and animations.
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# Ensure default cursor animation.
 	if !_cursor.is_playing():
 		_cursor.play("flicker")

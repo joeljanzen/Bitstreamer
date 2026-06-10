@@ -38,12 +38,12 @@ const COMBO_HEALTH_RESTORE_START := 5
 
 # The accuracy ranges needed to achieve each click score.
 ## How many milliseconds + or - a perfect click gives you a perfect score.
-var perfect_click_range := 30
+var perfect_click_range: float = 80
 ## How many milliseconds + or - a perfect click gives you a good score.
-var good_click_range := 150
+var good_click_range: float = 140
 ## How many milliseconds + or - a perfect click is actually clickable
 ## (gives an okay score unless the click is within the good or perfect range).
-var clickable_range := 500
+var clickable_range: float = 200
 
 ## Contains statistics for the current level.
 var statistics: LevelStatistics
@@ -52,6 +52,16 @@ var statistics: LevelStatistics
 ## Connects the statistics for the current level to the PerformanceCalculator.
 func connect_stats(stats: LevelStatistics) -> void:
 	statistics = stats
+
+
+## Set the difficulty for the performance calculator to use during gameplay.
+func set_difficulty(difficulty: float) -> void:
+	perfect_click_range = 80 - 6 * difficulty
+	good_click_range = 140 - 8 * difficulty
+	clickable_range = 200 - 10 * difficulty
+	print("Perfect hit window: +- %.2f ms" % perfect_click_range)
+	print("Good hit window: +- %.2f ms" % good_click_range)
+	print("Okay hit window: +- %.2f ms" % clickable_range)
 
 
 ## Returns if a click is close enough to the perfect click time to be clickable,

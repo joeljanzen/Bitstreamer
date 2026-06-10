@@ -1,4 +1,4 @@
-name=Tutorial Level,bpm=100,speed=800,diff=1,dmg=1,song=Tutorial.wav
+name=Tutorial Level,bpm=100,speed=800,diff=3,dmg=1,song=Tutorial.wav
 
 # Make the real tutorial level here.
 

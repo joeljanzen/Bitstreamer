@@ -77,7 +77,7 @@ func get_value() -> Bit.Type:
 
 
 ## Update bit position and effects, and check if it has been missed.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if !_fade_bit or !bit_fade_effect:
 		position.x -= _speed * delta
 	elif bit_fade_effect:
@@ -142,6 +142,7 @@ func create(value: Bit.Type, cursor_y: float, cursor_x: float, speed: int,
 ## If not, the bit keeps going and can try to be clicked again.
 func click(value: Bit.Type) -> bool:
 	var accuracy = get_accuracy()
+	#print("Click accuracy: %.2f ms" % accuracy)
 	
 	if PerformanceCalculator.is_clickable(accuracy):
 		# Successfully clicked the bit.
@@ -183,15 +184,10 @@ func kill() -> void:
 func get_accuracy() -> int:
 	var time_to_click = _timer.wait_time - _timer.time_left
 	var distance_to_cursor = starting_x - _cursor_x # In pixels.
-	#print("distance to cursor is %d" % distance_to_cursor)
 	var time_to_cursor = distance_to_cursor / _speed # In seconds.
-	#print("time to cursor is %f" % time_to_cursor)
-	#print("time to click is %f" % time_to_click)
 	var error_milliseconds: int = round((time_to_cursor - time_to_click) * 1000)
-	#print("calculated milliseconds off perfect click: %s" % error_milliseconds)
 	return error_milliseconds
 
-# Animations and sounds
 
 ## Play sound and animations for a correct click.
 func _score_animation(click_quality: PerformanceCalculator.ClickQuality) -> void:

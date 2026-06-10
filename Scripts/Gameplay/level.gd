@@ -10,6 +10,9 @@ extends Node2D
 ## The strength of blur when the game is paused.
 const PAUSE_BLUR_STRENGTH := 0.5
 
+## The maximum difficulty value a level can have.
+const DIFFICULTY_MAX = 12
+
 var _crash_screen = preload("res://Scenes/game_crash_ui.tscn")
 var _win_screen = preload("res://Scenes/game_win_ui.tscn")
 var _pause_screen = preload("res://Scenes/pause_ui.tscn")
@@ -34,8 +37,8 @@ var bpm: float = -1
 ## The speed at which bits fly across the screen, in pixels per second.
 var bit_speed: int = -1
 ## The difficulty of the level, AKA how accurate clicks need to be in order to
-## get a perfect score (a good, or okay score is also harder to achieve).
-var difficulty: int = 0
+## get a perfect score (a good or okay score is also harder to achieve).
+var difficulty: float = -1
 ## The damage each bit does when missed or incorrectly clicked.
 ## Override damage value to 0 to make the level impossible to fail.
 var damage: int = -1
@@ -57,7 +60,7 @@ func _ready() -> void:
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
-	if load_level("tutorial"):
+	if load_level("memecore"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % bit_speed)
@@ -66,6 +69,7 @@ func _ready() -> void:
 		_start_level()
 	else:
 		print("Level failed to load!")
+		PerformanceCalculator.set_difficulty(12.5)
 	
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
@@ -108,7 +112,8 @@ func load_level(file_name: String) -> bool:
 			error_loading = true
 		elif !_parse_bits_and_delays(lines):
 			error_loading = true
-	
+		else: # We successfully loaded everything.
+			PerformanceCalculator.set_difficulty(difficulty)
 	return !error_loading
 
 
@@ -145,8 +150,8 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				break
 		elif tag.contains("diff="):
 			var check = tag.erase(0,5)
-			if check.is_valid_int() and int(check) >= 1:
-				difficulty = int(check)
+			if check.is_valid_float() and float(check) >= 0 and float(check) <= DIFFICULTY_MAX:
+				difficulty = float(check)
 			else:
 				error_loading = true
 				push_error("%s is not a valid difficulty" % check)
@@ -181,7 +186,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		if bit_speed < 0:
 			error_loading = true
 			push_error("Level bit speed could not be found!")
-		if difficulty < 1:
+		if difficulty < 0:
 			error_loading = true
 			push_error("Level difficulty could not be found!")
 		if damage < 0:
@@ -293,6 +298,7 @@ func _parse_bits_and_delays(lines: PackedStringArray) -> bool:
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
 ## given, which will skip to that point in the level and play from there.
+## Must successfully call load_level with no errors for this func to work.
 func _start_level(level_offset: float = 0) -> void:
 	_conductor.set_song(song)
 	_conductor.timed_event.connect(_receive_timed_event)

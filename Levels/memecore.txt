@@ -1,4 +1,4 @@
-name=Memecore,bpm=119,speed=1000,diff=1,dmg=10,song=Memecore.wav
+name=Memecore,bpm=119,speed=1000,diff=3.5,dmg=10,song=Memecore.wav
 
 # First official level after the tutorial, maybe?
 
