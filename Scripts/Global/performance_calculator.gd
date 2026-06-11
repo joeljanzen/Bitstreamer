@@ -45,6 +45,10 @@ var good_click_range: float = 140
 ## (gives an okay score unless the click is within the good or perfect range).
 var clickable_range: float = 200
 
+## How much time it takes for a bit to reach the cursor after being sent, in
+## seconds.
+var approach_time: float
+
 ## Contains statistics for the current level.
 var statistics: LevelStatistics
 
@@ -62,6 +66,17 @@ func set_difficulty(difficulty: float) -> void:
 	print("Perfect hit window: +- %.2f ms" % perfect_click_range)
 	print("Good hit window: +- %.2f ms" % good_click_range)
 	print("Okay hit window: +- %.2f ms" % clickable_range)
+
+
+## Sets and returns the approach time of bits given a speed.
+func set_approach_time(speed: float) -> float:
+	if speed <= 10:
+		approach_time = 3 - 0.25 * (speed - 1)
+	else:
+		approach_time = 0.75 - 0.125 * (speed - 10)
+	
+	print("Approach time: %.2f ms" % (approach_time * 1000))
+	return approach_time
 
 
 ## Returns if a click is close enough to the perfect click time to be clickable,

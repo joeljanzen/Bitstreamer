@@ -44,7 +44,10 @@ var _value: Bit.Type
 ## The x position of the cursor.
 var _cursor_x: float
 
-## The speed at which the bit travels across the screen.
+## The time it takes the bit to reach the cursor after being sent.
+var _time_to_cursor: float
+
+## The speed at which the bit travels across the screen, in pixels per second.
 var _speed: int
 
 ## How much damage missing this bit does.
@@ -115,11 +118,13 @@ func _physics_process(delta: float) -> void:
 
 ## Set bit data AFTER appending it to a scene as a child.
 ## Send global x and y positions.
-func create(value: Bit.Type, cursor_y: float, cursor_x: float, speed: int, 
+func create(value: Bit.Type, cursor_y: float, cursor_x: float, time_to_cursor: float, 
 	damage: int) -> void:
 	_value = value
 	_cursor_x = cursor_x
-	_speed = speed
+	_time_to_cursor = time_to_cursor
+	var distance_to_cursor = starting_x - cursor_x # In pixels.
+	_speed = distance_to_cursor / time_to_cursor
 	_damage = damage
 	global_position = Vector2(starting_x, cursor_y)
 	
@@ -183,10 +188,7 @@ func kill() -> void:
 ## and a negative value is late.
 func get_accuracy() -> int:
 	var time_to_click = _timer.wait_time - _timer.time_left
-	var distance_to_cursor = starting_x - _cursor_x # In pixels.
-	var time_to_cursor = distance_to_cursor / _speed # In seconds.
-	var error_milliseconds: int = round((time_to_cursor - time_to_click) * 1000)
-	return error_milliseconds
+	return round((_time_to_cursor - time_to_click) * 1000)
 
 
 ## Play sound and animations for a correct click.

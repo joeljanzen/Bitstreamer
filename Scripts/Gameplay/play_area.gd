@@ -110,13 +110,13 @@ func set_cursor_flicker_speed(bpm: float) -> void:
 
 
 ## Send a bit down the current line.
-func send_bit(value: Bit.Type, speed: int, damage: int):
+func send_bit(value: Bit.Type, time_to_cursor: float, damage: int):
 	var new_bit: Bit = _bit.instantiate()
 	# Calculate y value based on the current line number offset from where the
 	# cursor started.
 	var y_value = _starting_cursor_y + (_line_height * (_line_num - 1))
 	add_child(new_bit)
-	new_bit.create(value, y_value, _cursor.global_position.x, speed, damage)
+	new_bit.create(value, y_value, _cursor.global_position.x, time_to_cursor, damage)
 	_bitstream.push_back(new_bit)
 	
 	# Increase line number for next bit when an enter is sent:
@@ -126,15 +126,6 @@ func send_bit(value: Bit.Type, speed: int, damage: int):
 		else:
 			_ready_for_line_clear = true
 			_line_num = 1
-
-
-## Get the amount of time it takes for the bit to reach the cursor in seconds,
-## given the speed of the bit (in pixels per second).
-func get_time_to_cursor(speed: float) -> float:
-	# Distance in pixels.
-	var distance_to_cursor = Bit.starting_x - _cursor.global_position.x
-	#print("distance to cursor is %d" % distance_to_cursor)
-	return distance_to_cursor / speed
 
 
 ## Notify the play area that the last bits have been sent.

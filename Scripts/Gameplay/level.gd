@@ -12,6 +12,8 @@ const PAUSE_BLUR_STRENGTH := 0.5
 
 ## The maximum difficulty value a level can have.
 const DIFFICULTY_MAX = 12
+## The maximum speed value a level can have.
+const SPEED_MAX = 12
 
 var _crash_screen = preload("res://Scenes/game_crash_ui.tscn")
 var _win_screen = preload("res://Scenes/game_win_ui.tscn")
@@ -34,8 +36,8 @@ var level_name: String = ""
 var song_filename: String = ""
 ## The beats per minute of the music (good luck if the song changes bpm bro).
 var bpm: float = -1
-## The speed at which bits fly across the screen, in pixels per second.
-var bit_speed: int = -1
+## The speed at which bits fly across the screen.
+var speed: float = -1
 ## The difficulty of the level, AKA how accurate clicks need to be in order to
 ## get a perfect score (a good or okay score is also harder to achieve).
 var difficulty: float = -1
@@ -49,7 +51,7 @@ var bit_queue: Array[Bit.Type]
 ## A queue of delays between sending bits.
 var delay_queue: Array[float]
 ## The delay between a bit being sent and it reaching the cursor, in seconds.
-var bit_time_to_cursor
+var bit_time_to_cursor: float
 ## The audio stream to play out of the music_player.
 var song: AudioStream
 
@@ -60,10 +62,10 @@ func _ready() -> void:
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
-	if load_level("memecore"):
+	if load_level("tutorial_example"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
-		print("Speed: %s" % bit_speed)
+		print("Speed: %s" % speed)
 		print("Difficulty: %s" % difficulty)
 		print("Damage: %s" % damage)
 		_start_level()
@@ -142,8 +144,8 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				break
 		elif tag.contains("speed="):
 			var check = tag.erase(0,6)
-			if check.is_valid_int() and int(check) > 0:
-				bit_speed = int(check)
+			if check.is_valid_float() and float(check) >= 1 and float(check) <= SPEED_MAX:
+				speed = float(check)
 			else:
 				error_loading = true
 				push_error("%s is not a valid speed" % check)
@@ -183,7 +185,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		if bpm < 0:
 			error_loading = true
 			push_error("Level BPM could not be found!")
-		if bit_speed < 0:
+		if speed < 1:
 			error_loading = true
 			push_error("Level bit speed could not be found!")
 		if difficulty < 0:
@@ -213,7 +215,7 @@ func _parse_bits_and_delays(lines: PackedStringArray) -> bool:
 	var error_loading := false
 	
 	var seconds_per_beat: float = 60.0 / bpm
-	bit_time_to_cursor = _play_area.get_time_to_cursor(bit_speed)
+	bit_time_to_cursor = PerformanceCalculator.set_approach_time(speed)
 	
 	for line: int in range(1, lines.size()):
 		var line_num = line + 1
@@ -324,11 +326,11 @@ func _start_level(level_offset: float = 0) -> void:
 ## and sets up the delay to the next timed event.
 func _receive_timed_event(event_index: int) -> void:
 	#print("TIMED EVENT OF INDEX %d RECEIVED AT %s" % [event_index, _conductor.get_time()])
-	var bit = bit_queue[event_index]
-	var dmg = damage
+	var bit: Bit.Type = bit_queue[event_index]
+	var dmg: int = damage
 	if bit == Bit.Type.ENTER:
 		dmg = 0
-	_play_area.send_bit(bit, bit_speed, dmg)
+	_play_area.send_bit(bit, bit_time_to_cursor, dmg)
 	
 	var delay_queue_index = event_index + 1
 	if delay_queue_index < delay_queue.size():

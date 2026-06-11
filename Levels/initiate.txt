@@ -1,4 +1,4 @@
-name=Initiate,bpm=128,speed=800,diff=3.5,dmg=10,song=Initiate.wav
+name=Initiate,bpm=128,speed=6,diff=3.5,dmg=10,song=Initiate.wav
 
 # Testing stuff still. Let's get this music to sync up.
 
