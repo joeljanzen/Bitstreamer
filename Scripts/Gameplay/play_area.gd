@@ -65,37 +65,39 @@ func _ready() -> void:
 	_ending_cursor_y = _starting_cursor_y + _line_height * (MAX_LINE_NUM - 1)
 
 
-## Handles inputs and animations.
+## Poll for level completion and ensure the cursor plays default animation.
 func _physics_process(_delta: float) -> void:
-	# Ensure default cursor animation.
+	# Needed when the enter bit is missed, but an animation still plays.
+	# After that animation ends, this code brings us back to "flicker".
 	if !_cursor.is_playing():
-		_cursor.play("flicker")
-	
-	# Input handling.
-	if Input.is_action_just_pressed("0_bit"):
-		if !_click_bit(Bit.Type.ZERO):
-			_miss_click_zero_one()
-	if Input.is_action_just_pressed("1_bit"):
-		if !_click_bit(Bit.Type.ONE):
-			_miss_click_zero_one()
-	if Input.is_action_just_pressed("enter_bit"):
-		if !_click_bit(Bit.Type.ENTER):
-			_miss_click_enter()
-	
-	# Go back to flickering cursor when letting go of 1 or 0.
-	if Input.is_action_just_released("0_bit") or Input.is_action_just_released("1_bit") or Input.is_action_just_released("enter_bit"):
 		_cursor.play("flicker")
 	
 	# Signals that the level has been completed.
 	if _last_bits_sent and _bitstream.is_empty():
 		no_bits_left.emit()
+
+
+## Input handling.
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("0_bit"):
+		if !_click_bit(Bit.Type.ZERO):
+			_miss_click_zero_one()
+	if event.is_action_pressed("1_bit"):
+		if !_click_bit(Bit.Type.ONE):
+			_miss_click_zero_one()
+	if event.is_action_pressed("enter_bit"):
+		if !_click_bit(Bit.Type.ENTER):
+			_miss_click_enter()
+	
+	if event.is_action_released("0_bit") or event.is_action_released("1_bit") or event.is_action_released("enter_bit"):
+		_cursor.play("flicker")
 	
 	# DEBUG!
-	if Input.is_action_just_pressed("spawn_0_bit"):
+	if event.is_action_pressed("spawn_0_bit"):
 		send_bit(Bit.Type.ZERO, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
-	elif Input.is_action_just_pressed("spawn_1_bit"):
+	elif event.is_action_pressed("spawn_1_bit"):
 		send_bit(Bit.Type.ONE, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
-	elif Input.is_action_just_pressed("spawn_enter"):
+	elif event.is_action_pressed("spawn_enter"):
 		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, 0)
 
 

@@ -69,7 +69,7 @@ func _ready() -> void:
 		_start_level()
 	else:
 		print("Level failed to load!")
-		PerformanceCalculator.set_difficulty(12.5)
+		PerformanceCalculator.set_difficulty(3)
 	
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
