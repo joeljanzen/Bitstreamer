@@ -62,7 +62,7 @@ func _ready() -> void:
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
-	if load_level("tutorial_example"):
+	if load_level("memecore"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % speed)
@@ -116,6 +116,8 @@ func load_level(file_name: String) -> bool:
 			error_loading = true
 		else: # We successfully loaded everything.
 			PerformanceCalculator.set_difficulty(difficulty)
+			print("level length is %.2f" % _calc_level_length(delay_queue))
+			
 	return !error_loading
 
 
@@ -296,6 +298,11 @@ func _parse_bits_and_delays(lines: PackedStringArray) -> bool:
 				break
 	
 	return !error_loading
+
+
+## Returns the length of the level, given its delay queue.
+func _calc_level_length(level_delay_queue: Array[float]) -> float:
+	return level_delay_queue.reduce(func(sum, number): return sum + number, 0)
 
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
