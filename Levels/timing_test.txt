@@ -1,4 +1,4 @@
-name=Timing Test,bpm=100,speed=7.5,diff=10,dmg=1,song=Tutorial.wav
+name=Timing Test,bpm=100,speed=7.5,diff=10,dmg=1,song=Tutorial.wav,length=40.8
 
 # Simply for testing that timing and accuracy is accurate enough
 # (among other things this may prove useful for)

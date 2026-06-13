@@ -44,6 +44,10 @@ var difficulty: float = -1
 ## The damage each bit does when missed or incorrectly clicked.
 ## Override damage value to 0 to make the level impossible to fail.
 var damage: int = -1
+## The length of the level in seconds (how long the gameplay lasts).
+var level_length: float = -1
+## The number of bits that will be sent in the level.
+var bitstream_length: int
 
 # Level playback.
 ## A queue of upcoming bits.
@@ -62,13 +66,15 @@ func _ready() -> void:
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 
-	if load_level("memecore"):
+	if load_level("tutorial"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % speed)
 		print("Difficulty: %s" % difficulty)
 		print("Damage: %s" % damage)
-		_start_level()
+		print("Length: %d seconds" % ceil(level_length))
+		print("Bitstream length: %d" % bitstream_length)
+		start_level()
 	else:
 		print("Level failed to load!")
 		PerformanceCalculator.set_difficulty(3)
@@ -95,7 +101,7 @@ func _input(event: InputEvent) -> void:
 		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
 
 
-## Load a level, based on its file name.
+## Load a level, based on its file name (omit .txt from the file name you give).
 ## Returns if the level loaded successfully.
 func load_level(file_name: String) -> bool:
 	var file = FileAccess.open("res://Levels/%s.txt" % file_name, FileAccess.READ)
@@ -106,18 +112,27 @@ func load_level(file_name: String) -> bool:
 		push_error("Level file could not be found!")
 	else:
 		var content = file.get_as_text()
-		# Will contain empty lines, only so if something goes wrong the correct line
-		# number with the error will be displayed.
+		file.close()
+		
+		# Will contain empty lines, only so if something goes wrong the correct 
+		# line number with the error will be displayed.
 		var lines: PackedStringArray = content.split("\n") 
 		
 		if !_parse_level_info(lines):
 			error_loading = true
 		elif !_parse_bits_and_delays(lines):
 			error_loading = true
-		else: # We successfully loaded everything.
+		else: # We successfully loaded almost everything.
 			PerformanceCalculator.set_difficulty(difficulty)
-			print("level length is %.2f" % _calc_level_length(delay_queue))
 			
+			bitstream_length = bit_queue.size()
+			
+			if level_length < 0:
+				# Calculate the level length and store it in the file, since the
+				# file didn't have it yet.
+				level_length = _calc_level_length(delay_queue)
+				if !_save_level_length(file_name, level_length):
+					error_loading = true
 	return !error_loading
 
 
@@ -176,6 +191,15 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("%s is not a valid song filename" % check)
 				break
+		elif tag.contains("length="):
+			var check = tag.erase(0,7)
+			if check.is_valid_float() and float(check) > 0:
+				level_length = float(check)
+				
+			else:
+				error_loading = true
+				push_error("%s is not a valid level length" % check)
+				break
 		else:
 			push_error("Level tag not recognized: %s" % tag)
 	
@@ -199,6 +223,10 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		if song_filename.is_empty():
 			error_loading = true
 			push_error("Song audio file could not be found!")
+		# Do not check for the level length to be empty here, but we will later, 
+		# once the delay queue is loaded. This is because in the case that level
+		# length has not been loaded (is not in the file) we can calculate it
+		# ourselves using the delay queue values.
 	
 	if !error_loading: 
 		# Try to load the song file.
@@ -301,14 +329,45 @@ func _parse_bits_and_delays(lines: PackedStringArray) -> bool:
 
 
 ## Returns the length of the level, given its delay queue.
+## Uses 3 decimal places of precision.
 func _calc_level_length(level_delay_queue: Array[float]) -> float:
-	return level_delay_queue.reduce(func(sum, number): return sum + number, 0)
+	var length = level_delay_queue.reduce(func(sum, number): return sum + number, 0)
+	return snapped(length, 0.001)
+
+
+## Saves the level length to the specified level file, returning if the length
+## was saved successfully.
+func _save_level_length(file_name: String, length: float) -> bool:
+	var file = FileAccess.open("res://Levels/%s.txt" % file_name, FileAccess.READ_WRITE)
+	var error_loading := false
+	
+	if file == null:
+		error_loading = true
+		push_error("Level file could not be found!")
+	else:
+		var first_line: String = file.get_line()
+		file.seek(0) # Go back to the start of the file after getting that line.
+		var content: String = file.get_as_text()
+		
+		# Erase the first line entirely from content (it will be replaced later)
+		content = content.erase(0, content.find("\n", 0) + 1)
+		
+		# Write over the first line of the file, now with the level length.
+		var updated_first_line = first_line + ",length=" + str(length) + "\n"
+		
+		# Append the first line back and store everything back into the file.
+		var full_file = content.insert(0, updated_first_line)
+		if !file.store_string(full_file):
+			error_loading = true
+			push_error("Level length could not be saved to file!")
+	file.close()
+	return !error_loading
 
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
 ## given, which will skip to that point in the level and play from there.
 ## Must successfully call load_level with no errors for this func to work.
-func _start_level(level_offset: float = 0) -> void:
+func start_level(level_offset: float = 0) -> void:
 	_conductor.set_song(song)
 	_conductor.timed_event.connect(_receive_timed_event)
 
