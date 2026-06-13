@@ -76,7 +76,7 @@ func _ready() -> void:
 		print("Damage: %s" % damage)
 		print("Length: %d seconds" % ceil(level_length))
 		print("Bitstream length: %d" % bitstream_length)
-		start_level(15)
+		start_level()
 	else:
 		print("Level failed to load!")
 		PerformanceCalculator.set_difficulty(3)
@@ -378,14 +378,29 @@ func start_level(level_offset: float = 0) -> void:
 	# We want to find when the total time is greater than the offset seconds.
 	# This will also give us the delay for the initial timed event.
 	var total_time = -bit_time_to_cursor 
-	var event_index = 0
+	var event_index = -1
+	var curr_line = 1
+	var next_enters = [] # the times the upcoming enters are considered clicked
 	while total_time < level_offset and event_index < delay_queue.size():
-		total_time += delay_queue[event_index]
 		event_index += 1
+		
+		# An enter is far enough along that it will not be sent so we must
+		# consider it clicked.
+		if !next_enters.is_empty() and total_time >= next_enters[0]:
+			next_enters.pop_front()
+			curr_line += 1
+			if curr_line > _play_area.MAX_LINE_NUM:
+				curr_line = 1
+		
+		total_time += delay_queue[event_index]
+		
+		if bit_queue[event_index] == Bit.Type.ENTER:
+			# Cannot understand how this appears to work ngl.
+			next_enters.push_back(total_time - bit_time_to_cursor)
 	
-	# This is done because we go one past the index that we should be starting
-	# at in the while loop.
-	event_index -= 1 
+	 # This sets the cursor to the exact line it would be at that point in the
+	 # level.
+	_play_area.override_line_num(curr_line)
 	
 	conductor.set_timed_event(total_time)
 	conductor.play_with_offset(level_offset, event_index)
