@@ -1,4 +1,4 @@
-class_name LevelStatistics
+class_name GameplayStatistics
 extends Control
 ## Tracks statistics during gameplay and updates the level UI with it.
 
@@ -7,6 +7,7 @@ extends Control
 @onready var _combo_label: RichTextLabel = $CanvasLayer/Combo
 @onready var _health_bar: ProgressBar = $CanvasLayer/ProgramHealth
 @onready var _accuracy_label: RichTextLabel = $CanvasLayer/Accuracy
+@onready var _progress_circle: TextureProgressBar = $CanvasLayer/LevelProgress
 
 ## The score for this play, including all bonuses.
 var score: int = 0
@@ -38,6 +39,20 @@ var _raw_score: int = 0
 ## The maximum raw score obtainable in this play.
 var _max_accuracy: int = 0
 
+## Contains statistics for the current level.
+var _level: GameLevel
+
+
+## Connects the current level to the level UI.
+func connect_level(level: GameLevel) -> void:
+	_level = level
+
+
+## Set the length of the level, used for the progress circle.
+## If it is not set, the progress circle will never update itself.
+func set_level_length(length: float) -> void:
+	_progress_circle.max_value = length
+
 
 ## Set the visibility of the entire levelUI.
 func set_UI_visible(enabled: bool) -> void:
@@ -64,9 +79,14 @@ func UI_is_visible() -> bool:
 
 ## Share statistics with PerformanceCalculator, and connect to gameplay signals.
 func _ready() -> void:
-	PerformanceCalculator.connect_stats(self)
+	PerformanceCalculator.connect_gameplay_stats(self)
 	Signals.scored.connect(_scored)
 	Signals.missed.connect(_missed)
+
+
+## Updates the level progress circle.
+func _process(_delta: float) -> void:
+	_progress_circle.value = _level.conductor.get_time()
 
 
 ## Points have been scored. amount is the total score gained, and raw_amount is

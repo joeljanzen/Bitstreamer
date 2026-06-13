@@ -1,11 +1,12 @@
+class_name GameLevel
 extends Node2D
 ## A game level, where gameplay occurs and all that jazz.
 
-@onready var _levelUI: LevelStatistics = $LevelUI
+@onready var _levelUI: GameplayStatistics = $LevelUI
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 @onready var _play_area: PlayArea = $PlayArea
-@onready var _conductor: Conductor = $Conductor
 @onready var _music_queue: Timer = $MusicQueue
+@onready var conductor: Conductor = $Conductor
 
 ## The strength of blur when the game is paused.
 const PAUSE_BLUR_STRENGTH := 0.5
@@ -60,11 +61,12 @@ var bit_time_to_cursor: float
 var song: AudioStream
 
 
-## Connect to the failed signal.
+## Connect to the failed signal and share level statistics with levelUI.
 func _ready() -> void:
 	Signals.failed.connect(_failed)
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
+	_levelUI.connect_level(self)
 
 	if load_level("tutorial"):
 		print("Successfully loaded level: %s" % level_name)
@@ -74,7 +76,7 @@ func _ready() -> void:
 		print("Damage: %s" % damage)
 		print("Length: %d seconds" % ceil(level_length))
 		print("Bitstream length: %d" % bitstream_length)
-		start_level()
+		start_level(15)
 	else:
 		print("Level failed to load!")
 		PerformanceCalculator.set_difficulty(3)
@@ -368,8 +370,9 @@ func _save_level_length(file_name: String, length: float) -> bool:
 ## given, which will skip to that point in the level and play from there.
 ## Must successfully call load_level with no errors for this func to work.
 func start_level(level_offset: float = 0) -> void:
-	_conductor.set_song(song)
-	_conductor.timed_event.connect(_receive_timed_event)
+	_levelUI.set_level_length(level_length)
+	conductor.set_song(song)
+	conductor.timed_event.connect(_receive_timed_event)
 
 	# The total time in the song when the next bit should be sent.
 	# We want to find when the total time is greater than the offset seconds.
@@ -384,8 +387,8 @@ func start_level(level_offset: float = 0) -> void:
 	# at in the while loop.
 	event_index -= 1 
 	
-	_conductor.set_timed_event(total_time)
-	_conductor.play_with_offset(level_offset, event_index)
+	conductor.set_timed_event(total_time)
+	conductor.play_with_offset(level_offset, event_index)
 
 
 ## The next timed event has been received by the conductor. Sends the next bit
@@ -401,7 +404,7 @@ func _receive_timed_event(event_index: int) -> void:
 	var delay_queue_index = event_index + 1
 	if delay_queue_index < delay_queue.size():
 		var delay = delay_queue[delay_queue_index]
-		_conductor.set_timed_event(delay)
+		conductor.set_timed_event(delay)
 	else:
 		# Tell play_area that all bits are sent, then wait for the final bit to
 		# be clicked/missed (the no_bits_left signal will be emitted).
@@ -412,10 +415,11 @@ func _receive_timed_event(event_index: int) -> void:
 func _resumed() -> void:
 	paused = false
 	_music_queue.set_paused(false)
-	_conductor.toggle_paused()
+	conductor.toggle_paused()
 	
 	_pause_instance.queue_free()
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
+	_levelUI.process_mode = Node.PROCESS_MODE_INHERIT
 	_play_area.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	# Disable background blur.
@@ -427,9 +431,10 @@ func _resumed() -> void:
 func _paused() -> void:
 	paused = true
 	_music_queue.set_paused(true)
-	_conductor.toggle_paused()
+	conductor.toggle_paused()
 	
 	_levelUI.hide_UI()
+	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	_pause_instance = _pause_screen.instantiate()
@@ -444,19 +449,21 @@ func _paused() -> void:
 ## The level has been failed.
 func _failed() -> void:
 	failed = true
+	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
-	_conductor.done_timings()
+	conductor.done_timings()
 	
 	var crash_screen: GameCrashUI = _crash_screen.instantiate()
-	crash_screen.connect_stats(_levelUI)
+	crash_screen.connect_gameplay_stats(_levelUI)
 	add_child(crash_screen)
 
 
 ## The level has been completed.
 func _completed() -> void:
 	completed = true
+	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
-	_conductor.done_timings()
+	conductor.done_timings()
 	
 	_levelUI.hide_UI()
 	
@@ -465,5 +472,5 @@ func _completed() -> void:
 	_environment.environment.glow_bloom = PAUSE_BLUR_STRENGTH
 	
 	var win_screen: GameWinUI = _win_screen.instantiate()
-	win_screen.connect_stats(_levelUI)
+	win_screen.connect_gameplay_stats(_levelUI)
 	add_child(win_screen)

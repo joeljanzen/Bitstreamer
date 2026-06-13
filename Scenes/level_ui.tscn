@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://d3chuwhhnot0" path="res://Scripts/UI/level_ui.gd" id="1_4mllq"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_gw16p"]
+[ext_resource type="Texture2D" uid="uid://cytythe5xeqtr" path="res://Resources/Sprites/UI/ProgressCircle/under.png" id="3_2qe5m"]
+[ext_resource type="Texture2D" uid="uid://bhxbtam7q8gb6" path="res://Resources/Sprites/UI/ProgressCircle/over.png" id="4_ao4gj"]
+[ext_resource type="Texture2D" uid="uid://lmyx2wl1xbin" path="res://Resources/Sprites/UI/ProgressCircle/progress.png" id="5_ai2e2"]
 
 [sub_resource type="Gradient" id="Gradient_xdjqv"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -69,6 +72,19 @@ text = "Accuracy 100.00%"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 2
+
+[node name="LevelProgress" type="TextureProgressBar" parent="CanvasLayer" unique_id=1693336910]
+offset_left = 60.0
+offset_top = 18.0
+offset_right = 560.0
+offset_bottom = 518.0
+scale = Vector2(0.2, 0.2)
+max_value = 0.0
+step = 0.0
+fill_mode = 4
+texture_under = ExtResource("3_2qe5m")
+texture_over = ExtResource("4_ao4gj")
+texture_progress = ExtResource("5_ai2e2")
 
 [node name="ProgramHealth" type="ProgressBar" parent="CanvasLayer" unique_id=1030218865]
 modulate = Color(0.85882354, 0.13725491, 0.42352942, 1)

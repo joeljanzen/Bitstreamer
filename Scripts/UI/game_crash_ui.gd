@@ -10,8 +10,8 @@ extends Control
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
-## Contains statistics for the current level.
-var statistics: LevelStatistics
+## Contains statistics for the current play.
+var statistics: GameplayStatistics
 
 
 ## Display statistics for the play.
@@ -34,8 +34,8 @@ func _process(_delta: float) -> void:
 	pass
 
 
-## Connects the statistics for the current level to the GameCrashUI.
-func connect_stats(stats: LevelStatistics) -> void:
+## Connects the statistics for the current play to the GameCrashUI.
+func connect_gameplay_stats(stats: GameplayStatistics) -> void:
 	statistics = stats
 
 

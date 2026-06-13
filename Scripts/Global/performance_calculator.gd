@@ -49,12 +49,12 @@ var clickable_range: float = 200
 ## seconds.
 var approach_time: float
 
-## Contains statistics for the current level.
-var statistics: LevelStatistics
+## Contains statistics for the current play.
+var statistics: GameplayStatistics
 
 
-## Connects the statistics for the current level to the PerformanceCalculator.
-func connect_stats(stats: LevelStatistics) -> void:
+## Connects the statistics for the current play to the PerformanceCalculator.
+func connect_gameplay_stats(stats: GameplayStatistics) -> void:
 	statistics = stats
 
 
