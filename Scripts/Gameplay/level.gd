@@ -76,7 +76,7 @@ func _ready() -> void:
 		print("Damage: %s" % damage)
 		print("Length: %d seconds" % ceil(level_length))
 		print("Bitstream length: %d" % bitstream_length)
-		start_level()
+		start_level(78)
 	else:
 		print("Level failed to load!")
 		PerformanceCalculator.set_difficulty(3)
@@ -381,7 +381,7 @@ func start_level(level_offset: float = 0) -> void:
 	var event_index = -1
 	var curr_line = 1
 	var next_enters = [] # the times the upcoming enters are considered clicked
-	while total_time < level_offset and event_index < delay_queue.size():
+	while total_time < level_offset and event_index < delay_queue.size() - 1:
 		event_index += 1
 		
 		# An enter is far enough along that it will not be sent so we must
@@ -398,12 +398,15 @@ func start_level(level_offset: float = 0) -> void:
 			# Cannot understand how this appears to work ngl.
 			next_enters.push_back(total_time - bit_time_to_cursor)
 	
-	 # This sets the cursor to the exact line it would be at that point in the
-	 # level.
-	_play_area.override_line_num(curr_line)
-	
-	conductor.set_timed_event(total_time)
-	conductor.play_with_offset(level_offset, event_index)
+	if total_time < level_offset:
+		push_error("An offset of %.2f goes past the entire level!" % level_offset)
+	else:
+		 # This sets the cursor to the exact line it would be at that point in the
+		 # level.
+		_play_area.override_line_num(curr_line)
+		
+		conductor.set_timed_event(total_time)
+		conductor.play_with_offset(level_offset, event_index)
 
 
 ## The next timed event has been received by the conductor. Sends the next bit

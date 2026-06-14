@@ -23,6 +23,7 @@ var _done_timings = false
 ## The index of the timing event to be sent out next.
 var _timing_event_index: int = 0
 
+var TEST = 0
 
 ## Set the song to play.
 func set_song(song: AudioStream) -> void:
@@ -54,6 +55,7 @@ func get_time() -> float:
 func set_timed_event(delay: float) -> void:
 	_waiting_for_delay = true
 	_time_delay_ends += delay
+	print("set timed event to occur at %f" % _time_delay_ends)
 
 
 ## Tell the conductor it doesn't need to time any more events.
@@ -64,16 +66,26 @@ func done_timings() -> void:
 ## Most accurately measures the current song time and sends timed events based
 ## on that time.
 func _physics_process(delta: float) -> void:
-	if !_done_timings:
+	if !_done_timings and playing:
 		_time = get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
 		_time -= AudioServer.get_output_latency()
-		#print(_time)
 		
-		# If the difference between current time and time of delay end is within
-		# the length of time since the last time _process was called (which is the
-		# value of delta), we treat it as reaching the delay end.
-		var difference = abs(_time - _time_delay_ends)
-		if difference <= delta and _waiting_for_delay:
-			_waiting_for_delay = false
-			timed_event.emit(_timing_event_index)
-			_timing_event_index += 1
+		if _time > 0:
+			# If the difference between current time and time of delay end is within
+			# the length of time since the last time _process was called (which is the
+			# value of delta), we treat it as reaching the delay end.
+			
+			if TEST % 100 == 0:
+				print("%d: time is %f and delay is set to %f" % [TEST, _time, _time_delay_ends])
+			
+			var difference = abs(_time - _time_delay_ends)
+			
+			if TEST % 100 == 0:
+				print("%d: difference between current time and time delay ends is: %f" % [TEST, difference])
+			TEST += 1
+			
+			if (difference <= delta || _time > _time_delay_ends) and _waiting_for_delay:
+				_waiting_for_delay = false
+				timed_event.emit(_timing_event_index)
+				print("sending timed event at %f" % _time)
+				_timing_event_index += 1
