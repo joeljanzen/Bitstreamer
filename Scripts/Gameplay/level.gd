@@ -76,7 +76,7 @@ func _ready() -> void:
 		print("Damage: %s" % damage)
 		print("Length: %d seconds" % ceil(level_length))
 		print("Bitstream length: %d" % bitstream_length)
-		start_level(78)
+		start_level()
 	else:
 		print("Level failed to load!")
 		PerformanceCalculator.set_difficulty(3)
