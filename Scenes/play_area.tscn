@@ -114,7 +114,7 @@ light_mask = 2
 position = Vector2(18, 58)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
-animation = &"back"
+animation = &"flicker"
 autoplay = "flicker"
 
 [node name="Barlight1" type="PointLight2D" parent="." unique_id=93168830]

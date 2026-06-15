@@ -26,11 +26,17 @@ signal no_bits_left
 ## The stack of bits currently on screen (commonly referred to as the "stream").
 var _bitstream = []
 
+## An array of all 10 lines that the cursor types bits onto.
+var _label_lines = []
+
 ## How far the cursor moves to change lines (in pixels).
 var _line_height: int = 84
 
 ## The current line number.
 var _line_num: int = 1
+
+## The line number to send the next bit down.
+var _bit_send_line_num: int = 1
 
 ## The starting y position of the cursor.
 var _starting_cursor_y
@@ -47,7 +53,8 @@ var _last_bits_sent := false
 
 ## Connect to the missed (a bit) gameplay signal and set default bit colour.
 func _ready() -> void:
-	_bit_label.text = ""
+	_label_lines.resize(MAX_LINE_NUM)
+	_clear_bit_label_lines()
 	Signals.missed.connect(_missed_bit)
 	_bit_label.add_theme_color_override("default_color", Color(GameSettings.entered_bit_colour))
 	
@@ -114,21 +121,21 @@ func send_bit(value: Bit.Type, time_to_cursor: float, damage: int):
 	var new_bit: Bit = _bit.instantiate()
 	# Calculate y value based on the current line number offset from where the
 	# cursor started.
-	var y_value = _starting_cursor_y + (_line_height * (_line_num - 1))
+	var y_value = _starting_cursor_y + (_line_height * (_bit_send_line_num - 1))
 	add_child(new_bit)
 	new_bit.create(value, y_value, _cursor.global_position.x, time_to_cursor, damage)
 	_bitstream.push_back(new_bit)
 	
 	# Increase line number for next bit when an enter is sent:
 	if value == Bit.Type.ENTER:
-		if _line_num < MAX_LINE_NUM:
-			_line_num += 1
+		if _bit_send_line_num < MAX_LINE_NUM:
+			_bit_send_line_num += 1
 		else:
 			_ready_for_line_clear = true
-			_line_num = 1
+			_bit_send_line_num = 1
 	if value == Bit.Type.BACK:
-		if _line_num > 1:
-			_line_num -= 1
+		if _bit_send_line_num > 1:
+			_bit_send_line_num -= 1
 
 
 ## Notify the play area that the last bits have been sent.
@@ -146,15 +153,14 @@ func override_line_num(override_value: int) -> void:
 	elif override_value < 0:
 		override_value = 0
 		
-	if override_value != _line_num:
+	if override_value != _bit_send_line_num:
 		# Set proper cursor position.
-		var cursor_line_offset = override_value - _line_num
+		var cursor_line_offset = override_value - _bit_send_line_num
 		_cursor.position.y += _line_height * cursor_line_offset
 		
-		var new_line := "\n"
-		_bit_label.text += new_line.repeat(cursor_line_offset)
-		
 		_line_num = override_value
+		
+		_bit_send_line_num = override_value
 
 
 ## Try to click the next bit in the stream.
@@ -218,7 +224,8 @@ func _miss_click_enter_back() -> void:
 ## Not the same as incorrectly clicking a zero or one bit. That still counts
 ## as clicking it, see those functions below.
 func _miss_zero_one() -> void:
-	_bit_label.text += "[color=%s]_[/color]" % GameSettings.missed_bit_colour
+	_label_lines[_line_num - 1] += "[color=%s]_[/color]" % GameSettings.missed_bit_colour
+	_fill_bit_label_lines()
 	_bit_miss_sound.play()
 
 
@@ -242,10 +249,11 @@ func _click_zero(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
 		_bit_click_sound.play()
-		_bit_label.text += "0"
+		_label_lines[_line_num - 1] += "0"
 	else:
 		_bit_miss_sound.play()
-		_bit_label.text += "[color=%s]0[/color]" % GameSettings.incorrect_bit_colour
+		_label_lines[_line_num - 1] += "[color=%s]0[/color]" % GameSettings.incorrect_bit_colour
+	_fill_bit_label_lines()
 
 
 ## The animations and sounds that trigger when clicking a one bit
@@ -254,10 +262,11 @@ func _click_one(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
 		_bit_click_sound.play()
-		_bit_label.text += "1"
+		_label_lines[_line_num - 1] += "1"
 	else:
 		_bit_miss_sound.play()
-		_bit_label.text += "[color=%s]1[/color]" % GameSettings.incorrect_bit_colour
+		_label_lines[_line_num - 1] += "[color=%s]1[/color]" % GameSettings.incorrect_bit_colour
+	_fill_bit_label_lines()
 
 
 ## The animations and sounds that trigger when clicking an enter bit
@@ -288,10 +297,27 @@ func _new_line(move_down: bool) -> void:
 	if _ready_for_line_clear and _cursor.global_position.y == _ending_cursor_y and move_down:
 		_line_clear_sound.play()
 		_cursor.position.y -= _line_height * (MAX_LINE_NUM - 1)
-		_bit_label.text = ""
 		_ready_for_line_clear = false
+		_clear_bit_label_lines()
+		_line_num = 1
 	elif move_down:
-		_bit_label.text += "\n"
 		_cursor.position.y += _line_height
+		_line_num += 1
 	elif _cursor.global_position.y != _starting_cursor_y: # Move up.
 		_cursor.position.y -= _line_height
+		_line_num -= 1
+
+
+## Fills in the bit label using the values in the _label_lines array.
+func _fill_bit_label_lines() -> void:
+	_bit_label.text = ""
+	
+	for index in range(_label_lines.size()):
+		var curr_line = _label_lines[index]
+		_bit_label.text += curr_line + "\n"
+
+
+## Reset the bit label and _label_lines array to empty.
+func _clear_bit_label_lines() -> void:
+	_label_lines.fill("")
+	_bit_label.text = ""

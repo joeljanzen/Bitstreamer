@@ -3,32 +3,6 @@ name=Literally whatever,bpm=100,speed=7,diff=1,dmg=1,song=Tutorial.wav,length=59
 # Testing some rhythms idk
 
 4,0
-1,enter
-1,1
-1,1
-1,enter
-1,1
-1,1
-1,1
-1,back
-1,1
-1,1
-1,1
-1,enter
-1,1
-1,1
-1,1
-1,back
-1,1
-1,1
-1,1
-1,back
-1,1
-1,1
-1,1
-1,enter
-
-4,0
 1,0
 1,0
 1,enter
