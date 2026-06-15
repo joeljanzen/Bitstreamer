@@ -21,21 +21,21 @@ func create(global_pos, click_quality: PerformanceCalculator.ClickQuality) -> vo
 	match click_quality:
 		PerformanceCalculator.ClickQuality.PERFECT:
 			if !ignores_perfect_clicks:
-				_accuracy_label.set("theme_override_colors/default_color", Color("C347FF"))
+				_accuracy_label.set("theme_override_colors/default_color", Color(GameSettings.perfect_click_colour))
 				_accuracy_label.text = "PERFECT!"
 			else:
 				hide()
 		PerformanceCalculator.ClickQuality.GOOD:
-			_accuracy_label.set("theme_override_colors/default_color", Color("2665D4"))
+			_accuracy_label.set("theme_override_colors/default_color", Color(GameSettings.good_click_colour))
 			_accuracy_label.text = "GOOD"
 		PerformanceCalculator.ClickQuality.OKAY:
-			_accuracy_label.set("theme_override_colors/default_color", Color("E6BE20"))
+			_accuracy_label.set("theme_override_colors/default_color", Color(GameSettings.okay_click_colour))
 			_accuracy_label.text = "OKAY"
 		PerformanceCalculator.ClickQuality.MISS:
-			_accuracy_label.set("theme_override_colors/default_color", Color("ffffff"))
+			_accuracy_label.set("theme_override_colors/default_color", Color(GameSettings.missed_click_colour))
 			_accuracy_label.text = "MISS!"
 		PerformanceCalculator.ClickQuality.ERROR:
-			_accuracy_label.set("theme_override_colors/default_color", Color("C21515"))
+			_accuracy_label.set("theme_override_colors/default_color", Color(GameSettings.incorrect_click_colour))
 			_accuracy_label.text = "ERROR!"
 		_:
 			push_error("Tried to pass a non-standard click quality!")

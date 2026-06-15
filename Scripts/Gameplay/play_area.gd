@@ -45,21 +45,11 @@ var _ready_for_line_clear := false
 var _last_bits_sent := false
 
 
-# Aesthetic variables.
-## The colour displayed for correctly entered bits.
-## Change to ffffff for a cool glow, but less visibility.
-var entered_bit_color := "#454545"
-## The colour displayed for incorrectly entered bits.
-var incorrect_bit_color := "#2E0606"
-## The colour displayed for incorrectly entered bits.
-var missed_bit_color := "#454545"
-
-
 ## Connect to the missed (a bit) gameplay signal and set default bit colour.
 func _ready() -> void:
 	_bit_label.text = ""
 	Signals.missed.connect(_missed_bit)
-	_bit_label.add_theme_color_override("default_color", Color(entered_bit_color))
+	_bit_label.add_theme_color_override("default_color", Color(GameSettings.entered_bit_colour))
 	
 	_starting_cursor_y = _cursor.global_position.y
 	_ending_cursor_y = _starting_cursor_y + _line_height * (MAX_LINE_NUM - 1)
@@ -210,7 +200,7 @@ func _miss_click_enter() -> void:
 ## Not the same as incorrectly clicking a zero or one bit. That still counts
 ## as clicking it, see those functions below.
 func _miss_zero_one() -> void:
-	_bit_label.text += "[color=%s]_[/color]" % missed_bit_color
+	_bit_label.text += "[color=%s]_[/color]" % GameSettings.missed_bit_colour
 	_bit_miss_sound.play()
 
 
@@ -232,7 +222,7 @@ func _click_zero(correct_click: bool) -> void:
 		_bit_label.text += "0"
 	else:
 		_bit_miss_sound.play()
-		_bit_label.text += "[color=%s]0[/color]" % incorrect_bit_color
+		_bit_label.text += "[color=%s]0[/color]" % GameSettings.incorrect_bit_colour
 
 
 ## The animations and sounds that trigger when clicking a one bit
@@ -244,7 +234,7 @@ func _click_one(correct_click: bool) -> void:
 		_bit_label.text += "1"
 	else:
 		_bit_miss_sound.play()
-		_bit_label.text += "[color=%s]1[/color]" % incorrect_bit_color
+		_bit_label.text += "[color=%s]1[/color]" % GameSettings.incorrect_bit_colour
 
 
 ## The animations and sounds that trigger when clicking an enter bit

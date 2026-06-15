@@ -57,7 +57,7 @@ var bit_queue: Array[Bit.Type]
 var delay_queue: Array[float]
 ## The delay between a bit being sent and it reaching the cursor, in seconds.
 var bit_time_to_cursor: float
-## The audio stream to play out of the music_player.
+## The audio stream to play out of the conductor.
 var song: AudioStream
 
 
