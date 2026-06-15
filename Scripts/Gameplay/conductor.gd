@@ -55,7 +55,7 @@ func get_time() -> float:
 func set_timed_event(delay: float) -> void:
 	_waiting_for_delay = true
 	_time_delay_ends += delay
-	print("set timed event to occur at %f" % _time_delay_ends)
+	#print("set timed event to occur at %f" % _time_delay_ends)
 
 
 ## Tell the conductor it doesn't need to time any more events.
@@ -74,18 +74,9 @@ func _physics_process(delta: float) -> void:
 			# If the difference between current time and time of delay end is within
 			# the length of time since the last time _process was called (which is the
 			# value of delta), we treat it as reaching the delay end.
-			
-			if TEST % 100 == 0:
-				print("%d: time is %f and delay is set to %f" % [TEST, _time, _time_delay_ends])
-			
 			var difference = abs(_time - _time_delay_ends)
-			
-			if TEST % 100 == 0:
-				print("%d: difference between current time and time delay ends is: %f" % [TEST, difference])
-			TEST += 1
-			
 			if (difference <= delta || _time > _time_delay_ends) and _waiting_for_delay:
 				_waiting_for_delay = false
 				timed_event.emit(_timing_event_index)
-				print("sending timed event at %f" % _time)
+				#print("sending timed event at %f" % _time)
 				_timing_event_index += 1
