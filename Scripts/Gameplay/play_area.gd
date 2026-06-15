@@ -145,22 +145,21 @@ func last_bits_sent() -> void:
 	_last_bits_sent = true
 
 
-## Manually change the line number of the cursor. This will affect where the 
-## next bits will spawn. Can only be used to increase the line position.
+## Manually set the line number of the cursor. This will affect where the 
+## next bits will spawn.
 func override_line_num(override_value: int) -> void:
 	if override_value > MAX_LINE_NUM:
 		override_value = MAX_LINE_NUM
-	elif override_value < 0:
-		override_value = 0
+	elif override_value < 1:
+		override_value = 1
 		
 	if override_value != _bit_send_line_num:
 		# Set proper cursor position.
 		var cursor_line_offset = override_value - _bit_send_line_num
 		_cursor.position.y += _line_height * cursor_line_offset
 		
-		_line_num = override_value
-		
 		_bit_send_line_num = override_value
+		_line_num = override_value
 
 
 ## Try to click the next bit in the stream.

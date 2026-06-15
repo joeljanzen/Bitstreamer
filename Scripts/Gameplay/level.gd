@@ -68,7 +68,7 @@ func _ready() -> void:
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.connect_level(self)
 
-	if load_level("enters_backs"):
+	if load_level("tutorial"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % speed)
@@ -380,29 +380,38 @@ func start_level(level_offset: float = 0) -> void:
 	var total_time = -bit_time_to_cursor 
 	var event_index = -1
 	var curr_line = 1
-	var next_enters = [] # the times the upcoming enters are considered clicked
+	# Keep track up enter and back bits, since they cannot be counted as clicked
+	# right away.
+	var enter_next = false
+	var back_next = false
 	while total_time < level_offset and event_index < delay_queue.size() - 1:
 		event_index += 1
 		
-		# An enter is far enough along that it will not be sent so we must
-		# consider it clicked.
-		if !next_enters.is_empty() and total_time >= next_enters[0]:
-			next_enters.pop_front()
+		# An enter or back bit is far enough along that it will not be sent so 
+		# we must consider it clicked.
+		if enter_next:
 			curr_line += 1
 			if curr_line > _play_area.MAX_LINE_NUM:
 				curr_line = 1
+			enter_next = false
+		if back_next:
+			curr_line -= 1
+			if curr_line < 1:
+				curr_line = 1
+			back_next = false
 		
 		total_time += delay_queue[event_index]
 		
 		if bit_queue[event_index] == Bit.Type.ENTER:
-			# Cannot understand how this appears to work ngl.
-			next_enters.push_back(total_time - bit_time_to_cursor)
+			enter_next = true
+		if bit_queue[event_index] == Bit.Type.BACK:
+			back_next = true
 	
 	if total_time < level_offset:
 		push_error("An offset of %.2f goes past the entire level!" % level_offset)
 	else:
-		 # This sets the cursor to the exact line it would be at that point in the
-		 # level.
+		 # This sets the cursor to the exact line it would be at that point in 
+		 # the level.
 		_play_area.override_line_num(curr_line)
 		
 		conductor.set_timed_event(total_time)
