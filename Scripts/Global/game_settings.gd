@@ -21,6 +21,8 @@ var zero_bit_colour := "#00FF00"
 var one_bit_colour := "#DB236C"
 ## The colour of enter bits. Default is "#FFFFFF"
 var enter_bit_colour := "#FFFFFF"
+## The colour of back bits. Default is "#FFFFFF"
+var back_bit_colour := "#FFFFFF"
 
 ## The colour displayed for correctly entered bits on the terminal.
 ## Default is "#454545"

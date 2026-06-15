@@ -2,16 +2,19 @@ class_name Bit
 extends Node2D
 ## A bit to send to the player to click.
 
-@onready var _label: Label = $BitLabel
-@onready var _sprite: Sprite2D = $BitSprite
+@onready var _bit_label: Label = $BitLabel
+@onready var _bit_sprite: Sprite2D = $BitSprite
 @onready var _timer: Timer = $Timer
 @onready var _bit_click_effect = preload("res://Scenes/bit_click_effect.tscn")
+## Used to swap from the enter texture which is on by default.
+@onready var _back_texture = preload("res://Resources/Sprites/Cursor/cursor_up.png")
 
 ## The types of bits.
 enum Type {
 	ZERO, 
 	ONE, 
 	ENTER,
+	BACK,
 }
 
 ## The type of effects that can play when a bit is missed.
@@ -122,19 +125,27 @@ func create(value: Bit.Type, cursor_y: float, cursor_x: float, time_to_cursor: f
 	_damage = damage
 	global_position = Vector2(starting_x, cursor_y)
 	
-	# Set bit visuals.
-	match _value:
+	set_bit_visuals(value)
+
+
+## Set how the bit will appear on screen, based on its type.
+func set_bit_visuals(type: Type) -> void:
+	match type:
 		Bit.Type.ZERO:
 			set("modulate", Color(GameSettings.zero_bit_colour))
-			_sprite.hide()
-			_label.text = "0"
+			_bit_sprite.hide()
+			_bit_label.text = "0"
 		Bit.Type.ONE:
 			set("modulate", Color(GameSettings.one_bit_colour))
-			_sprite.hide()
-			_label.text = "1"
+			_bit_sprite.hide()
+			_bit_label.text = "1"
 		Bit.Type.ENTER:
 			set("modulate", Color(GameSettings.enter_bit_colour))
-			_label.hide()
+			_bit_label.hide()
+		Bit.Type.BACK:
+			set("modulate", Color(GameSettings.back_bit_colour))
+			_bit_label.hide()
+			_bit_sprite.texture = _back_texture
 
 
 ## Try to click the bit, returning if the player did.
@@ -152,10 +163,13 @@ func click(value: Bit.Type) -> bool:
 			_score_animation(PerformanceCalculator.get_click_quality(raw_score))
 		# Clicked the bit in time, but clicked the wrong key.
 		else:
-			# Enter key can only be clicked if you actually press enter, and
+			# Enter bit can only be clicked if you actually press enter, and
 			# clicking enter does nothing to the other bits.
 			if get_value() == Bit.Type.ENTER or value == Bit.Type.ENTER:
-				return false 
+				return false
+			# Back bit behaves the same as the enter key.
+			if get_value() == Bit.Type.BACK or value == Bit.Type.BACK:
+				return false
 			# Take damage and lose combo, as if you missed the bit.
 			elif get_value() == Bit.Type.ZERO or get_value() == Bit.Type.ONE:
 				_is_clicked = true

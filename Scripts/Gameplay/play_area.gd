@@ -77,9 +77,17 @@ func _input(event: InputEvent) -> void:
 			_miss_click_zero_one()
 	if event.is_action_pressed("enter_bit"):
 		if !_click_bit(Bit.Type.ENTER):
-			_miss_click_enter()
+			_miss_click_enter_back()
+	if event.is_action_pressed("back_bit"):
+		if !_click_bit(Bit.Type.BACK):
+			_miss_click_enter_back()
 	
-	if event.is_action_released("0_bit") or event.is_action_released("1_bit") or event.is_action_released("enter_bit"):
+	if (
+				event.is_action_released("0_bit") or 
+				event.is_action_released("1_bit") or 
+				event.is_action_released("enter_bit") or 
+				event.is_action_released("back_bit")
+	):
 		_cursor.play("flicker")
 	
 	# DEBUG!
@@ -89,6 +97,8 @@ func _input(event: InputEvent) -> void:
 		send_bit(Bit.Type.ONE, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
 	elif event.is_action_pressed("spawn_enter"):
 		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, 0)
+	elif event.is_action_pressed("spawn_back"):
+		send_bit(Bit.Type.BACK, DEBUG_BIT_SPEED, 0)
 
 
 ## Set the speed the cursor flickers, based on a BPM.
@@ -116,6 +126,9 @@ func send_bit(value: Bit.Type, time_to_cursor: float, damage: int):
 		else:
 			_ready_for_line_clear = true
 			_line_num = 1
+	if value == Bit.Type.BACK:
+		if _line_num > 1:
+			_line_num -= 1
 
 
 ## Notify the play area that the last bits have been sent.
@@ -125,8 +138,8 @@ func last_bits_sent() -> void:
 	_last_bits_sent = true
 
 
-## Manually change the current line number of the cursor. Will also affect where
-## the next bits will spawn. Can only be used to increase the line position.
+## Manually change the line number of the cursor. This will affect where the 
+## next bits will spawn. Can only be used to increase the line position.
 func override_line_num(override_value: int) -> void:
 	if override_value > MAX_LINE_NUM:
 		override_value = MAX_LINE_NUM
@@ -162,6 +175,8 @@ func _click_bit(value: Bit.Type) -> bool:
 					_click_one(correct_click)
 				Bit.Type.ENTER:
 					_click_enter()
+				Bit.Type.BACK:
+					_click_back()
 			return true
 	return false # bit stream was empty
 
@@ -180,6 +195,8 @@ func _missed_bit(_damage, _click_quality):
 					_miss_zero_one()
 			Bit.Type.ENTER:
 				_miss_enter()
+			Bit.Type.BACK:
+				_miss_back()
 
 # Updating the play area in response to inputs,
 # including animations and sounds.
@@ -190,8 +207,9 @@ func _miss_click_zero_one() -> void:
 	_empty_click_sound.play()
 
 
-## The animations and sounds that trigger when miss-clicking an enter bit.
-func _miss_click_enter() -> void:
+## The animations and sounds that trigger when miss-clicking an enter or back 
+## bit.
+func _miss_click_enter_back() -> void:
 	_cursor.play("cannot_enter")
 	_empty_click_sound.play()
 
@@ -206,11 +224,16 @@ func _miss_zero_one() -> void:
 
 ## The animations and sounds that trigger when entirely missing an enter bit.
 func _miss_enter() -> void:
-	# Literally the same as clicking enter for now 
-	# (will play different sound and animation later).
 	_cursor.play("enter")
 	_bit_miss_sound.play()
-	_new_line()
+	_new_line(true)
+
+
+## The animations and sounds that trigger when entirely missing a back bit.
+func _miss_back() -> void:
+	_cursor.play("back")
+	_bit_miss_sound.play()
+	_new_line(false)
 
 
 ## The animations and sounds that trigger when clicking a zero bit
@@ -243,20 +266,32 @@ func _click_one(correct_click: bool) -> void:
 func _click_enter() -> void:
 	_cursor.play("enter")
 	_bit_click_sound.play()
-	_new_line()
+	_new_line(true)
 
 
-## The animations and sounds that trigger when moving down to the next line. 
-## Triggered by an enter bit click (or miss).
-func _new_line() -> void:
+## The animations and sounds that trigger when clicking a back bit
+## (you cannot incorrectly click a back bit, you either click it right or 
+## the game clicks it for you).
+func _click_back() -> void:
+	_cursor.play("back")
+	_bit_click_sound.play()
+	_new_line(false)
+
+
+## The animations and sounds that trigger when moving to the next line. Moves 
+## down if passed true, or up otherwise.
+## Triggered by an enter or back bit click (or miss).
+func _new_line(move_down: bool) -> void:
 	# Check for the cursor to be at the right y position, to ensure the other 
 	# enter bits before the one on the last line have all been hit/missed 
 	# already.
-	if _ready_for_line_clear and _cursor.global_position.y == _ending_cursor_y:
+	if _ready_for_line_clear and _cursor.global_position.y == _ending_cursor_y and move_down:
 		_line_clear_sound.play()
 		_cursor.position.y -= _line_height * (MAX_LINE_NUM - 1)
 		_bit_label.text = ""
 		_ready_for_line_clear = false
-	else:
+	elif move_down:
 		_bit_label.text += "\n"
 		_cursor.position.y += _line_height
+	elif _cursor.global_position.y != _starting_cursor_y: # Move up.
+		_cursor.position.y -= _line_height

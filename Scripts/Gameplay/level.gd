@@ -68,7 +68,7 @@ func _ready() -> void:
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.connect_level(self)
 
-	if load_level("tutorial"):
+	if load_level("messing_around"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % speed)
@@ -320,8 +320,8 @@ func _parse_bits_and_delays(lines: PackedStringArray) -> bool:
 				bit_queue.push_back(Bit.Type.ONE)
 			"enter":
 				bit_queue.push_back(Bit.Type.ENTER)
-			"2":
-				bit_queue.push_back(Bit.Type.ENTER)
+			"back":
+				bit_queue.push_back(Bit.Type.BACK)
 			_:
 				error_loading = true
 				push_error("Bit type not recognized on line %d: %s" % [line_num, bit_token])
