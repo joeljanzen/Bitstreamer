@@ -68,7 +68,7 @@ func _ready() -> void:
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.connect_level(self)
 
-	if load_level("tutorial"):
+	if load_level("memecore"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % speed)
