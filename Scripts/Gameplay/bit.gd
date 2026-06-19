@@ -21,22 +21,7 @@ enum Type {
 enum MissEffectType {
 	MOVE_OFFSCREEN,
 	DISAPPEAR,
-	FADE_OUT,
 }
-
-## Fades the bit away when it is clicked instead of disappearing instantly.
-static var bit_fade_effect := false
-
-## Displays an effect indicating the acccuracy of the bit click (or miss).
-static var bit_click_effect := true
-
-## The effect that plays when a bit is missed.
-## FADE_OUT does the same as DISAPPEAR unless bit_fade_effect is set to true.
-static var miss_effect: MissEffectType = MissEffectType.MOVE_OFFSCREEN
-
-## How quickly the bit fades away after being clicked (default is 5).
-## Set to 0 to disable fade entirely.
-static var clicked_fade_speed := 5
 
 ## Where the bit starts.
 static var starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
@@ -56,7 +41,8 @@ var _speed: int
 ## How much damage missing this bit does.
 var _damage: int
 
-## Dictates when the bit should fade, if bit_fade_effect is set to true.
+## Dictates when the bit should fade (this is only a thing when game settings
+## have disabled the bit click effect).
 var _fade_bit = false
 
 ## If the bit has been clicked (and also hasn't been deleted yet).
@@ -78,17 +64,18 @@ func get_value() -> Bit.Type:
 
 ## Update bit position and effects, and check if it has been missed.
 func _physics_process(delta: float) -> void:
-	if !_fade_bit or !bit_fade_effect:
+	if !_fade_bit:
 		position.x -= _speed * delta
-	elif bit_fade_effect:
+	else:
 		# Decrease alpha value (opacity).
 		if modulate.a < 0:
 			queue_free()
 		else:
-			if clicked_fade_speed == 0:
+			var fade_time := GameSettings.clicked_fade_time
+			if fade_time == 0:
 				process_mode = Node.PROCESS_MODE_DISABLED
 			else:
-				modulate.a -= clicked_fade_speed * delta
+				modulate.a -= delta / fade_time
 	
 	# Bit is missed.
 	if !_is_missed and PerformanceCalculator.is_missed(get_accuracy()):
@@ -96,11 +83,15 @@ func _physics_process(delta: float) -> void:
 		_is_missed = true
 		_score_animation(PerformanceCalculator.ClickQuality.MISS)
 		
-		match miss_effect:
-			MissEffectType.DISAPPEAR:
+		if GameSettings.miss_effect == MissEffectType.DISAPPEAR:
+			if !GameSettings.bit_click_effect:
+				# This triggers a fade out instead of instant deletion, since we
+				# want a fade when the bit click effect is not active.
+				kill(false)
+			else:
+				# Since the bit click effect is active, we want the bit gone
+				# right away so the "miss" text can display with no obstructions.
 				queue_free()
-			MissEffectType.FADE_OUT:
-				kill()
 	
 	# Bit is offscreen.
 	if global_position.x < -Bit.get_width():
@@ -153,6 +144,7 @@ func set_bit_visuals(type: Type) -> void:
 func click(value: Bit.Type) -> bool:
 	var accuracy = get_accuracy()
 	#print("Click accuracy: %.2f ms" % accuracy)
+	var is_perfect_click = false
 	
 	if PerformanceCalculator.is_clickable(accuracy):
 		# Successfully clicked the bit.
@@ -160,7 +152,12 @@ func click(value: Bit.Type) -> bool:
 			_is_clicked = true
 			var raw_score = PerformanceCalculator.get_raw_score(accuracy)
 			Signals.scored.emit(PerformanceCalculator.get_score(accuracy), raw_score)
-			_score_animation(PerformanceCalculator.get_click_quality(raw_score))
+			var click_quality: PerformanceCalculator.ClickQuality = PerformanceCalculator.get_click_quality(raw_score)
+			_score_animation(click_quality)
+			
+			if click_quality == PerformanceCalculator.ClickQuality.PERFECT:
+				is_perfect_click = true
+			
 		# Clicked the bit in time, but clicked the wrong key.
 		else:
 			# Enter bit can only be clicked if you actually press enter, and
@@ -176,16 +173,19 @@ func click(value: Bit.Type) -> bool:
 				Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.ERROR)
 				_score_animation(PerformanceCalculator.ClickQuality.ERROR)
 				_is_missed = true
-		kill()
+		kill(is_perfect_click)
 		return true
 	else:
 		return false
 
 
 ## Get rid of the bit (either right away, or let it fade away).
-func kill() -> void:
+## Pass if the bit was a perfect click, in the event that we need to fade the
+## bit away instead of queue_free it when the bit click effect is being 
+## ignored for perfect clicks (this is a game setting).
+func kill(is_perfect_click: bool) -> void:
 	_timer.paused = true
-	if bit_fade_effect:
+	if !GameSettings.bit_click_effect or (GameSettings.ignores_perfect_clicks and is_perfect_click):
 		_fade_bit = true
 	else:
 		queue_free()
@@ -199,9 +199,9 @@ func get_accuracy() -> int:
 	return round((_time_to_cursor - time_to_click) * 1000)
 
 
-## Play sound and animations for a correct click.
+## Play animations for a correct click.
 func _score_animation(click_quality: PerformanceCalculator.ClickQuality) -> void:
-	if bit_click_effect:
+	if GameSettings.bit_click_effect:
 		var effect: BitClickEffect = _bit_click_effect.instantiate()
 		get_tree().root.call_deferred("add_child", effect)
 		var pos: Vector2 = global_position

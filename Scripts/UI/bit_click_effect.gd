@@ -5,9 +5,6 @@ extends Node2D
 
 @onready var _accuracy_label: RichTextLabel = $AccuracyText
 
-## Ignore this effect entirely, only for perfect clicks.
-static var ignores_perfect_clicks = false
-
 ## The width of the effect, in pixels.
 ## WARNING: NOT GOOD TO HARDCODE THIS, SHOULD BE CALCULATED SOMEHOW
 static func get_width() -> int:
@@ -20,7 +17,7 @@ func create(global_pos, click_quality: PerformanceCalculator.ClickQuality) -> vo
 	
 	match click_quality:
 		PerformanceCalculator.ClickQuality.PERFECT:
-			if !ignores_perfect_clicks:
+			if !GameSettings.ignores_perfect_clicks:
 				_accuracy_label.set("theme_override_colors/default_color", Color(GameSettings.perfect_click_colour))
 				_accuracy_label.text = "PERFECT!"
 			else:

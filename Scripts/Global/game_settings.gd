@@ -1,6 +1,29 @@
 extends Node
 ## Holds game settings for the player. These persist throughout levels.
 
+# Gameplay options
+## Displays an effect indicating the acccuracy of the bit click (or miss).
+## If disabled, bits just fade away when clicked.
+var bit_click_effect := true
+
+## Ignores the bit click effect for perfect clicks, regardless of the bit click 
+## effect being enabled.
+var ignores_perfect_clicks = false
+
+## The effect that plays when a bit is missed, displaying the quality of the
+## click to the player.
+var miss_effect: Bit.MissEffectType = Bit.MissEffectType.DISAPPEAR
+
+## How quickly the bit fades away after being clicked (in seconds).
+## Setting to 0 disables fade entirely.
+## Make sure to disable the bit click effect for all bits to fade instead of 
+## disappear. This affects perfect clicks regardless of the effect being 
+## enabled if perfect clicks are set to be ignored.
+var clicked_fade_time: float = 0.15
+
+## The cursor flickers like a real cursor. Set false to disable flickering.
+var cursor_flicker := true
+
 # UI options
 ## Toggles the level UI
 var level_UI_enabled := true
@@ -51,15 +74,6 @@ var missed_click_colour := "FFFFFF"
 var incorrect_click_colour := "C21515"
 
 
-## Sets the default values that are set with functions (these values are not stored
-## here)
-func _ready() -> void:
-	set_bit_click_effect(true)
-	set_effect_ignores_perfect_clicks(false)
-	set_bit_fade_effect(false)
-	set_bit_miss_effect(Bit.MissEffectType.MOVE_OFFSCREEN)
-
-
 ## Connect the Flowerwall CRT script when it is loaded.
 func connect_crt_shader(crt_shader: flowerwallCRT) -> void:
 	_crt_shader = crt_shader
@@ -73,24 +87,3 @@ func set_crt_effect(enabled: bool) -> void:
 		_crt_shader.enable_shader()
 	elif _crt_shader.is_enabled:
 		_crt_shader.disable_shader()
-
-
-## Set the effect indicating the acccuracy of the bit click (or miss) on or off.
-func set_bit_click_effect(enabled: bool) -> void:
-	Bit.bit_click_effect = enabled
-
-
-## Set ignoring perfect clicks with the bit click effect on or off.
-func set_effect_ignores_perfect_clicks(enabled: bool) -> void:
-	BitClickEffect.ignores_perfect_clicks = enabled
-
-
-## Set the effect that fades the bit away on or off.
-func set_bit_fade_effect(enabled: bool) -> void:
-	Bit.bit_fade_effect = enabled
-
-
-## Set the effect that plays when a bit is missed on or off.
-## FADE_OUT does the same as DISAPPEAR unless the bit fade effect is enabled.
-func set_bit_miss_effect(effect: Bit.MissEffectType) -> void:
-	Bit.miss_effect = effect

@@ -58,16 +58,22 @@ func _ready() -> void:
 	Signals.missed.connect(_missed_bit)
 	_bit_label.add_theme_color_override("default_color", Color(GameSettings.entered_bit_colour))
 	
+	if !GameSettings.cursor_flicker:
+		_cursor.play("static")
+	
 	_starting_cursor_y = _cursor.global_position.y
 	_ending_cursor_y = _starting_cursor_y + _line_height * (MAX_LINE_NUM - 1)
 
 
 ## Poll for level completion and ensure the cursor plays default animation.
 func _physics_process(_delta: float) -> void:
-	# Needed when the enter bit is missed, but an animation still plays.
-	# After that animation ends, this code brings us back to "flicker".
+	# Needed when the enter or back bit is missed, but an animation still plays.
+	# After that animation ends, this code brings us back to "flicker" or "static"
 	if !_cursor.is_playing():
-		_cursor.play("flicker")
+		if GameSettings.cursor_flicker:
+			_cursor.play("flicker")
+		elif _cursor.animation != "static":
+			_cursor.play("static")
 	
 	# Signals that the level has been completed.
 	if _last_bits_sent and _bitstream.is_empty():
@@ -95,7 +101,10 @@ func _input(event: InputEvent) -> void:
 				event.is_action_released("enter_bit") or 
 				event.is_action_released("back_bit")
 	):
-		_cursor.play("flicker")
+		if GameSettings.cursor_flicker:
+			_cursor.play("flicker")
+		else:
+			_cursor.play("static")
 	
 	# DEBUG!
 	if event.is_action_pressed("spawn_0_bit"):
@@ -106,14 +115,6 @@ func _input(event: InputEvent) -> void:
 		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, 0)
 	elif event.is_action_pressed("spawn_back"):
 		send_bit(Bit.Type.BACK, DEBUG_BIT_SPEED, 0)
-
-
-## Set the speed the cursor flickers, based on a BPM.
-func set_cursor_flicker_speed(bpm: float) -> void:
-	var FPS = bpm / 60.0
-	print("should be flickering at %f FPS" % FPS)
-	_cursor.play("flicker")
-	_cursor.get_sprite_frames().set_animation_speed("flicker", FPS)
 
 
 ## Send a bit down the current line.

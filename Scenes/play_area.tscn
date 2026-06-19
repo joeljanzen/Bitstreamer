@@ -66,6 +66,14 @@ animations = [{
 "loop": true,
 "name": &"reverse_click",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_pcu3v")
+}],
+"loop": false,
+"name": &"static",
+"speed": 5.0
 }]
 
 [sub_resource type="Gradient" id="Gradient_bfqwx"]
