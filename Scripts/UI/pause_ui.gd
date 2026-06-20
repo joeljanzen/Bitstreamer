@@ -4,14 +4,21 @@ extends Control
 
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
+@onready var _canvas = $CanvasLayer
 
 ## Emitted when the resume button is pressed.
 signal resumed
 
+var _settings_screen = preload("res://Scenes/settings_ui.tscn")
 
-## Idle animations in this screen, idk.
-func _process(_delta: float) -> void:
-	pass
+var settings_open := false
+
+
+## Input handling.
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_close_dialog"):
+		accept_event()
+		resumed.emit()
 
 
 ## The player has pressed the resume button.
@@ -23,8 +30,19 @@ func _on_resume_pressed() -> void:
 
 ## The player has pressed the settings button.
 func _on_settings_pressed() -> void:
+	settings_open = true
 	_menu_click_sound.play()
-	# Instantiate settings scene here!
+	
+	var settings: SettingsUI = _settings_screen.instantiate()
+	settings.settings_closed.connect(_settings_left)
+	_canvas.hide()
+	add_child(settings)
+
+
+## The player has left settings.
+func _settings_left() -> void:
+	settings_open = false
+	_canvas.show()
 
 
 ## The player has pressed the quit button.

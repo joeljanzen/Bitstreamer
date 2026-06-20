@@ -5,11 +5,13 @@
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_cf5hy"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_w3mym"]
 
-[node name="pause_ui" type="Control" unique_id=1762296446]
+[node name="PauseUI" type="Control" unique_id=1762296446]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_srqh7")
@@ -50,10 +52,12 @@ text = "Quit"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1362538356]
 stream = ExtResource("3_cf5hy")
+volume_db = -8.0
 bus = &"SFX"
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1198576290]
 stream = ExtResource("4_w3mym")
+bus = &"SFX"
 
 [connection signal="mouse_entered" from="CanvasLayer/Resume" to="." method="_on_resume_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Resume" to="." method="_on_resume_pressed"]
