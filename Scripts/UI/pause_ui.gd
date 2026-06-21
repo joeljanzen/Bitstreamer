@@ -11,8 +11,6 @@ signal resumed
 
 var _settings_screen = preload("res://Scenes/settings_ui.tscn")
 
-var settings_open := false
-
 
 ## Input handling.
 func _unhandled_input(event: InputEvent) -> void:
@@ -30,18 +28,17 @@ func _on_resume_pressed() -> void:
 
 ## The player has pressed the settings button.
 func _on_settings_pressed() -> void:
-	settings_open = true
-	_menu_click_sound.play()
+	# When other settings are set, it actually already plays a click sound lol.
+	#_menu_click_sound.play()
 	
 	var settings: SettingsUI = _settings_screen.instantiate()
-	settings.settings_closed.connect(_settings_left)
+	settings.settings_closed.connect(_settings_closed)
 	_canvas.hide()
 	add_child(settings)
 
 
 ## The player has left settings.
-func _settings_left() -> void:
-	settings_open = false
+func _settings_closed() -> void:
 	_canvas.show()
 
 

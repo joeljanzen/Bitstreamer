@@ -446,6 +446,8 @@ func _resumed() -> void:
 	_levelUI.process_mode = Node.PROCESS_MODE_INHERIT
 	_play_area.process_mode = Node.PROCESS_MODE_INHERIT
 	
+	_play_area.set_cursor_animation(GameSettings.cursor_flicker)
+	
 	# Disable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
 	_environment.environment.glow_bloom = GameSettings.bloom_strength

@@ -18,21 +18,18 @@ func _ready() -> void:
 	_sound_slider.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("SFX"))
 
 
-## Update Master bus volume.
 func _on_master_volume_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(value))
 	var percentage: int = round(value * 100)
 	_master_label.text = " ".repeat(get_padding(percentage)) + str(percentage)+ "%"
 
 
-## Update Music bus volume.
 func _on_music_volume_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(value))
 	var percentage: int = round(value * 100)
 	_music_label.text = " ".repeat(get_padding(percentage)) + str(percentage)+ "%"
 
 
-## Update SFX bus volume.
 func _on_sound_volume_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(value))
 	var percentage: int = round(value * 100)

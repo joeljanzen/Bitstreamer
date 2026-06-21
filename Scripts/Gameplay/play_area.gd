@@ -58,8 +58,7 @@ func _ready() -> void:
 	Signals.missed.connect(_missed_bit)
 	_bit_label.add_theme_color_override("default_color", Color(GameSettings.entered_bit_colour))
 	
-	if !GameSettings.cursor_flicker:
-		_cursor.play("static")
+	set_cursor_animation(GameSettings.cursor_flicker)
 	
 	_starting_cursor_y = _cursor.global_position.y
 	_ending_cursor_y = _starting_cursor_y + _line_height * (MAX_LINE_NUM - 1)
@@ -115,6 +114,13 @@ func _input(event: InputEvent) -> void:
 		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, 0)
 	elif event.is_action_pressed("spawn_back"):
 		send_bit(Bit.Type.BACK, DEBUG_BIT_SPEED, 0)
+
+
+func set_cursor_animation(flicker: bool) -> void:
+	if flicker:
+		_cursor.play("flicker")
+	else:
+		_cursor.play("static")
 
 
 ## Send a bit down the current line.

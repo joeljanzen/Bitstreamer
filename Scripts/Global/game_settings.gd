@@ -34,7 +34,7 @@ var bloom_strength: float = 1.0
 
 ## Toggles Flowerwall CRT shader. Use set_crt_effect() to change it, do not
 ## manually change this value!
-var _crt_effect := true
+var crt_filter := true
 ## The CRT shader singleton.
 var _crt_shader: flowerwallCRT
 
@@ -77,12 +77,13 @@ var incorrect_click_colour := "C21515"
 ## Connect the Flowerwall CRT script when it is loaded.
 func connect_crt_shader(crt_shader: flowerwallCRT) -> void:
 	_crt_shader = crt_shader
-	if !_crt_effect:
+	if !crt_filter:
 		_crt_shader.disable_shader()
 
 
-## Set the CRT effect on or off.
-func set_crt_effect(enabled: bool) -> void:
+## Set the CRT filter on or off.
+func set_crt_filter(enabled: bool) -> void:
+	crt_filter = enabled
 	if enabled and !_crt_shader.is_enabled:
 		_crt_shader.enable_shader()
 	elif _crt_shader.is_enabled:
