@@ -35,7 +35,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_gnwwx")
 tab_alignment = 1
-current_tab = 2
+current_tab = 0
 clip_tabs = false
 tab_focus_mode = 0
 tab_0/title = "   Video   "
@@ -45,7 +45,6 @@ tab_3/title = "  Controls  "
 tab_4/title = " x "
 
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
-visible = false
 layout_mode = 2
 script = ExtResource("3_dm6ou")
 metadata/_tab_index = 0
@@ -174,6 +173,7 @@ layout_mode = 2
 text = " 100%"
 
 [node name="Gameplay" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=702599717]
+visible = false
 layout_mode = 2
 script = ExtResource("5_gnwwx")
 metadata/_tab_index = 2
