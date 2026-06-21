@@ -30,7 +30,7 @@ var level_UI_enabled := true
 
 # Aesthetic variables.
 ## The strength of bloom.
-var bloom_strength := 1
+var bloom_strength: float = 1.0
 
 ## Toggles Flowerwall CRT shader. Use set_crt_effect() to change it, do not
 ## manually change this value!

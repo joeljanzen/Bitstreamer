@@ -34,16 +34,15 @@ theme_override_constants/margin_bottom = 100
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_1k4ne")
-current_tab = 2
+current_tab = 0
 clip_tabs = false
-tab_focus_mode = 1
+tab_focus_mode = 0
 tab_0/title = "   Video   "
 tab_1/title = "   Audio   "
 tab_2/title = "  Gameplay  "
 tab_3/title = " x "
 
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
-visible = false
 layout_mode = 2
 script = ExtResource("3_dm6ou")
 metadata/_tab_index = 0
@@ -70,12 +69,21 @@ layout_mode = 2
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer" unique_id=571491933]
 layout_mode = 2
 theme = ExtResource("2_1k4ne")
-text = "Bloom "
+text = "Bloom Strength "
 
 [node name="BloomLevel" type="HSlider" parent="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1548370385]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+max_value = 2.0
+step = 0.5
+tick_count = 5
+ticks_position = 3
+
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer" unique_id=743348753]
+layout_mode = 2
+theme = ExtResource("2_1k4ne")
+text = " 4"
 
 [node name="Audio" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1114140775]
 visible = false
@@ -116,7 +124,12 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("2_1k4ne")
 max_value = 1.0
-step = 0.0
+step = 0.01
+
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer1" unique_id=1376676376]
+layout_mode = 2
+theme = ExtResource("2_1k4ne")
+text = " 100%"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer" unique_id=257730787]
 layout_mode = 2
@@ -130,7 +143,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 max_value = 1.0
-step = 0.0
+step = 0.01
+
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1429923415]
+layout_mode = 2
+theme = ExtResource("2_1k4ne")
+text = " 100%"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer" unique_id=2103118181]
 layout_mode = 2
@@ -148,9 +166,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("2_1k4ne")
 max_value = 1.0
-step = 0.0
+step = 0.01
+
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=160395987]
+layout_mode = 2
+theme = ExtResource("2_1k4ne")
+text = " 100%"
 
 [node name="Gameplay" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=702599717]
+visible = false
 layout_mode = 2
 script = ExtResource("5_gnwwx")
 metadata/_tab_index = 2
@@ -210,6 +234,11 @@ bus = &"SFX"
 [connection signal="tab_clicked" from="CanvasLayer/MarginContainer/TabContainer" to="." method="_on_tab_container_tab_clicked"]
 [connection signal="tab_hovered" from="CanvasLayer/MarginContainer/TabContainer" to="." method="_on_tab_container_tab_hovered"]
 [connection signal="tab_selected" from="CanvasLayer/MarginContainer/TabContainer" to="." method="_on_tab_container_tab_selected"]
+[connection signal="drag_started" from="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer/BloomLevel" to="CanvasLayer/MarginContainer/TabContainer/Video" method="_on_bloom_level_drag_started"]
+[connection signal="value_changed" from="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer/BloomLevel" to="CanvasLayer/MarginContainer/TabContainer/Video" method="_on_bloom_level_value_changed"]
+[connection signal="drag_started" from="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer1/MasterVolume" to="CanvasLayer/MarginContainer/TabContainer/Audio" method="_on_master_volume_drag_started"]
 [connection signal="value_changed" from="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer1/MasterVolume" to="CanvasLayer/MarginContainer/TabContainer/Audio" method="_on_master_volume_value_changed"]
+[connection signal="drag_started" from="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer2/MusicVolume" to="CanvasLayer/MarginContainer/TabContainer/Audio" method="_on_music_volume_drag_started"]
 [connection signal="value_changed" from="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer2/MusicVolume" to="CanvasLayer/MarginContainer/TabContainer/Audio" method="_on_music_volume_value_changed"]
+[connection signal="drag_started" from="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer3/SoundVolume" to="CanvasLayer/MarginContainer/TabContainer/Audio" method="_on_sound_volume_drag_started"]
 [connection signal="value_changed" from="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer/VBoxContainer/HBoxContainer3/SoundVolume" to="CanvasLayer/MarginContainer/TabContainer/Audio" method="_on_sound_volume_value_changed"]
