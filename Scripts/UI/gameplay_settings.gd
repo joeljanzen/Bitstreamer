@@ -6,6 +6,7 @@ extends Control
 @onready var _fade_slider = $MarginContainer/VBoxContainer/HBoxContainer3/FadeTime
 @onready var _cursor_flicker_toggle = $MarginContainer/VBoxContainer/HBoxContainer4/CursorFlicker
 @onready var _level_ui_toggle = $MarginContainer/VBoxContainer/HBoxContainer5/LevelUI
+@onready var _bit_miss_effect_toggle = $MarginContainer/VBoxContainer/HBoxContainer6/MissEffect
 
 @onready var _fade_label = $MarginContainer/VBoxContainer/HBoxContainer3/Label2
 
@@ -19,6 +20,7 @@ func _ready() -> void:
 	_fade_slider.value = GameSettings.clicked_fade_time
 	_cursor_flicker_toggle.set_pressed_no_signal(GameSettings.cursor_flicker)
 	_level_ui_toggle.set_pressed_no_signal(GameSettings.level_UI_enabled)
+	_bit_miss_effect_toggle.set_pressed_no_signal(GameSettings.move_offscreen_on_bit_miss)
 
 
 func _on_bit_click_effect_toggled(toggled_on: bool) -> void:
@@ -67,3 +69,8 @@ func _on_cursor_flicker_toggled(toggled_on: bool) -> void:
 func _on_level_ui_toggled(toggled_on: bool) -> void:
 	_menu_click_sound.play()
 	GameSettings.level_UI_enabled = toggled_on
+
+
+func _on_miss_effect_toggled(toggled_on: bool) -> void:
+	_menu_click_sound.play()
+	GameSettings.move_offscreen_on_bit_miss = toggled_on

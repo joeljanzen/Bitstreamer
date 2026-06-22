@@ -227,6 +227,14 @@ step = 0.05
 layout_mode = 2
 text = " 0"
 
+[node name="HBoxContainer6" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer" unique_id=237050327]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="MissEffect" type="CheckButton" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=118765599]
+layout_mode = 2
+text = "Missed Bit Moves Offscreen "
+
 [node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer" unique_id=865818855]
 layout_mode = 2
 
@@ -278,5 +286,6 @@ bus = &"SFX"
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer2/IgnoresPerfectClicks" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_ignores_perfect_clicks_toggled"]
 [connection signal="drag_started" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer3/FadeTime" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_fade_time_drag_started"]
 [connection signal="value_changed" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer3/FadeTime" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_fade_time_value_changed"]
+[connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer6/MissEffect" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_miss_effect_toggled"]
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer4/CursorFlicker" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_cursor_flicker_toggled"]
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer5/LevelUI" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_level_ui_toggled"]

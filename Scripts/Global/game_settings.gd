@@ -10,9 +10,8 @@ var bit_click_effect := true
 ## effect being enabled.
 var ignores_perfect_clicks = false
 
-## The effect that plays when a bit is missed, displaying the quality of the
-## click to the player.
-var miss_effect: Bit.MissEffectType = Bit.MissEffectType.DISAPPEAR
+## When true if a bit is missed it moves off screen. Otherwise it disappears.
+var move_offscreen_on_bit_miss := true
 
 ## How quickly the bit fades away after being clicked (in seconds).
 ## Setting to 0 disables fade entirely.

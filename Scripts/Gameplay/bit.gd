@@ -17,12 +17,6 @@ enum Type {
 	BACK,
 }
 
-## The type of effects that can play when a bit is missed.
-enum MissEffectType {
-	MOVE_OFFSCREEN,
-	DISAPPEAR,
-}
-
 ## Where the bit starts.
 static var starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
 
@@ -83,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		_is_missed = true
 		_score_animation(PerformanceCalculator.ClickQuality.MISS)
 		
-		if GameSettings.miss_effect == MissEffectType.DISAPPEAR:
+		if !GameSettings.move_offscreen_on_bit_miss:
 			if !GameSettings.bit_click_effect:
 				# This triggers a fade out instead of instant deletion, since we
 				# want a fade when the bit click effect is not active.
