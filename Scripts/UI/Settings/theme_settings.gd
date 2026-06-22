@@ -7,6 +7,7 @@ extends Control
 @onready var _back_bit_color_selector = $MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor
 
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
+@onready var _menu_focus_sound: AudioStreamPlayer = $"../../../../MenuFocus"
 @onready var _color_click_sound: AudioStreamPlayer = $"../../../../ColorClick"
 
 
@@ -52,3 +53,19 @@ func _on_enter_bit_color_pressed() -> void:
 
 func _on_back_bit_color_pressed() -> void:
 	_menu_click_sound.play()
+
+
+func _on_zero_bit_color_mouse_entered() -> void:
+	_menu_focus_sound.play()
+
+
+func _on_one_bit_color_mouse_entered() -> void:
+	_menu_focus_sound.play()
+
+
+func _on_enter_bit_color_mouse_entered() -> void:
+	_menu_focus_sound.play()
+
+
+func _on_back_bit_color_mouse_entered() -> void:
+	_menu_focus_sound.play()

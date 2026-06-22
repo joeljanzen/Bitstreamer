@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://mrx3y4y7fgem" path="res://Scripts/UI/Settings/video_settings.gd" id="3_7p8ph"]
 [ext_resource type="Script" uid="uid://borjw6w2ey2pp" path="res://Scripts/UI/Settings/audio_settings.gd" id="4_4ws3r"]
 [ext_resource type="Script" uid="uid://dn8pescend2an" path="res://Scripts/UI/Settings/gameplay_settings.gd" id="5_o3mvw"]
+[ext_resource type="Script" uid="uid://dl1yrbxq1qtwl" path="res://Scenes/UI/controls_settings.gd" id="6_4ws3r"]
 [ext_resource type="Script" uid="uid://b101e07ttbgf" path="res://Scripts/UI/Settings/theme_settings.gd" id="6_ijavf"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="7_xoqkd"]
 [ext_resource type="PackedScene" uid="uid://btn2epedit6s3" path="res://Scenes/UI/color_button.tscn" id="7_ym2e5"]
@@ -38,7 +39,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_ym2e5")
 tab_alignment = 1
-current_tab = 4
+current_tab = 3
 clip_tabs = false
 tab_focus_mode = 0
 tab_0/title = "   Video   "
@@ -64,7 +65,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 150
+theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer" unique_id=1317892370]
@@ -114,7 +115,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 150
+theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Audio/MarginContainer" unique_id=853493677]
@@ -193,7 +194,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 150
+theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer" unique_id=1237976513]
@@ -255,12 +256,196 @@ layout_mode = 2
 text = "Level Interface "
 
 [node name="Controls" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=29722946]
-visible = false
 layout_mode = 2
+script = ExtResource("6_4ws3r")
 metadata/_tab_index = 3
 metadata/_tab_name = "  Controls  "
 
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls" unique_id=2121401645]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer" unique_id=933063746]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer" unique_id=1628834083]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1469274341]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 25
+
+[node name="GameplaySeparator" type="Panel" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=563523029]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="GameplayLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/GameplaySeparator" unique_id=239067558]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.0
+offset_top = -23.0
+offset_right = 99.0
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Gameplay"
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1435447413]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="KeybindButton" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2003695086]
+layout_mode = 2
+
+[node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton" unique_id=1589276085]
+layout_mode = 2
+mouse_filter = 1
+text = "Click Zero Bit"
+
+[node name="ZeroBitClick" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton" unique_id=1034372986]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+focus_mode = 0
+theme = ExtResource("2_ym2e5")
+text = " 0 "
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton" unique_id=820208534]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="KeybindButton2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1156175079]
+layout_mode = 2
+
+[node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton2" unique_id=355181695]
+layout_mode = 2
+mouse_filter = 1
+text = "Click One Bit"
+
+[node name="OneBitClick" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton2" unique_id=1870582109]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+focus_mode = 0
+theme = ExtResource("2_ym2e5")
+text = " 1 "
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton2" unique_id=698205072]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="KeybindButton3" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=105171814]
+layout_mode = 2
+
+[node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3" unique_id=367014669]
+layout_mode = 2
+mouse_filter = 1
+text = "Click Enter Bit"
+
+[node name="EnterBitClick" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3" unique_id=1228514475]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+focus_mode = 0
+theme = ExtResource("2_ym2e5")
+text = " Enter "
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3" unique_id=1920111676]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="KeybindButton4" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1664406226]
+layout_mode = 2
+
+[node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4" unique_id=17418925]
+layout_mode = 2
+mouse_filter = 1
+text = "Click Back Bit"
+
+[node name="BackBitClick" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4" unique_id=154096359]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+focus_mode = 0
+theme = ExtResource("2_ym2e5")
+text = " Up "
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4" unique_id=221678346]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1352130963]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="InterfaceSeparator" type="Panel" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=263771924]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="InterfaceLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/InterfaceSeparator" unique_id=368261289]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.0
+offset_top = -23.0
+offset_right = 99.0
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Interface"
+
+[node name="Spacer3" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=692727898]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="KeybindButton5" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=972426781]
+layout_mode = 2
+
+[node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5" unique_id=635441574]
+layout_mode = 2
+mouse_filter = 1
+text = "Toggle Level Interface"
+
+[node name="ToggleLevelUI" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5" unique_id=501388197]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+focus_mode = 0
+theme = ExtResource("2_ym2e5")
+text = " Tab "
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5" unique_id=1249089136]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
 [node name="Theme" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1071803890]
+visible = false
 layout_mode = 2
 script = ExtResource("6_ijavf")
 metadata/_tab_index = 4
@@ -275,7 +460,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 150
+theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer" unique_id=226267684]
@@ -365,11 +550,25 @@ bus = &"SFX"
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer6/MissEffect" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_miss_effect_toggled"]
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer4/CursorFlicker" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_cursor_flicker_toggled"]
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer5/LevelUI" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_level_ui_toggled"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton/ZeroBitClick" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_zero_bit_click_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton/ZeroBitClick" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_zero_bit_click_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton2/OneBitClick" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_one_bit_click_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton2/OneBitClick" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_one_bit_click_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3/EnterBitClick" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_enter_bit_click_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3/EnterBitClick" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_enter_bit_click_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4/BackBitClick" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_back_bit_click_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4/BackBitClick" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_back_bit_click_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_toggle_level_ui_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_toggle_level_ui_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_color_changed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2/OneBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_one_bit_color_color_changed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2/OneBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_one_bit_color_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2/OneBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_one_bit_color_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_enter_bit_color_color_changed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_enter_bit_color_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_enter_bit_color_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_color_changed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_pressed"]
