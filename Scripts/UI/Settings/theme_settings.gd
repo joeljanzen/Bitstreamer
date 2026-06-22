@@ -7,43 +7,48 @@ extends Control
 @onready var _back_bit_color_selector = $MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor
 
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
+@onready var _color_click_sound: AudioStreamPlayer = $"../../../../ColorClick"
 
 
 ## Set all theme settings to their current states.
 func _ready() -> void:
-	_zero_bit_color_selector.color = GameSettings.zero_bit_colour
-	_one_bit_color_selector.color = GameSettings.one_bit_colour
-	_enter_bit_color_selector.color = GameSettings.enter_bit_colour
-	_back_bit_color_selector.color = GameSettings.back_bit_colour
+	_zero_bit_color_selector.set_color(GameSettings.zero_bit_colour)
+	_one_bit_color_selector.set_color(GameSettings.one_bit_colour)
+	_enter_bit_color_selector.set_color(GameSettings.enter_bit_colour)
+	_back_bit_color_selector.set_color(GameSettings.back_bit_colour)
 
 
 func _on_zero_bit_color_color_changed(color: Color) -> void:
+	_color_click_sound.play()
 	GameSettings.zero_bit_colour = color
 
 
 func _on_one_bit_color_color_changed(color: Color) -> void:
+	_color_click_sound.play()
 	GameSettings.one_bit_colour = color
 
 
 func _on_enter_bit_color_color_changed(color: Color) -> void:
+	_color_click_sound.play()
 	GameSettings.enter_bit_colour = color
 
 
 func _on_back_bit_color_color_changed(color: Color) -> void:
+	_color_click_sound.play()
 	GameSettings.back_bit_colour = color
 
 
-func _on_zero_bit_color_picker_created() -> void:
+func _on_zero_bit_color_pressed() -> void:
 	_menu_click_sound.play()
 
 
-func _on_one_bit_color_picker_created() -> void:
+func _on_one_bit_color_pressed() -> void:
 	_menu_click_sound.play()
 
 
-func _on_enter_bit_color_picker_created() -> void:
+func _on_enter_bit_color_pressed() -> void:
 	_menu_click_sound.play()
 
 
-func _on_back_bit_color_picker_created() -> void:
+func _on_back_bit_color_pressed() -> void:
 	_menu_click_sound.play()

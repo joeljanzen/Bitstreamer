@@ -58,19 +58,19 @@ var incorrect_bit_colour := "#2E0606"
 
 ## The colour associated with perfect clicks.
 ## Default is "C347FF"
-var perfect_click_colour := "C347FF"
+var perfect_click_colour := "FF66FF"
 ## The colour associated with good clicks.
-## Default is "2665D4"
-var good_click_colour := "2665D4"
+## Default is "0066FF"
+var good_click_colour := "0066FF"
 ## The colour associated with okay clicks.
-## Default is "E6BE20"
-var okay_click_colour := "E6BE20"
+## Default is "FFCC00"
+var okay_click_colour := "FFCC00"
 ## The colour associated with missed clicks.
 ## Default is "FFFFFF"
 var missed_click_colour := "FFFFFF"
 ## The colour associated with incorrect clicks.
-## Default is "C21515"
-var incorrect_click_colour := "C21515"
+## Default is "FF0000"
+var incorrect_click_colour := "FF0000"
 
 
 ## Connect the Flowerwall CRT script when it is loaded.
