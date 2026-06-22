@@ -20,6 +20,10 @@ const DEBUG_BIT_DAMAGE := 5
 ## clearing the bit_label.
 const MAX_LINE_NUM := 10
 
+## The number of bits shown on the terminal before additional bits are ignored.
+## It's good practice to move to the next line before this limit is reached.
+const MAX_BITS_DISPLAYED_PER_LINE := 32
+
 ## All bits have been clicked or missed.
 signal no_bits_left
 
@@ -230,7 +234,7 @@ func _miss_click_enter_back() -> void:
 ## Not the same as incorrectly clicking a zero or one bit. That still counts
 ## as clicking it, see those functions below.
 func _miss_zero_one() -> void:
-	_label_lines[_line_num - 1] += "[color=%s]_[/color]" % GameSettings.missed_bit_colour
+	_add_to_bit_label_line("[color=%s]_[/color]" % GameSettings.missed_bit_colour)
 	_fill_bit_label_lines()
 	_bit_miss_sound.play()
 
@@ -255,10 +259,10 @@ func _click_zero(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
 		_bit_click_sound.play()
-		_label_lines[_line_num - 1] += "0"
+		_add_to_bit_label_line("0")
 	else:
 		_bit_miss_sound.play()
-		_label_lines[_line_num - 1] += "[color=%s]0[/color]" % GameSettings.incorrect_bit_colour
+		_add_to_bit_label_line("[color=%s]0[/color]" % GameSettings.incorrect_bit_colour)
 	_fill_bit_label_lines()
 
 
@@ -268,10 +272,10 @@ func _click_one(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
 		_bit_click_sound.play()
-		_label_lines[_line_num - 1] += "1"
+		_add_to_bit_label_line("1")
 	else:
 		_bit_miss_sound.play()
-		_label_lines[_line_num - 1] += "[color=%s]1[/color]" % GameSettings.incorrect_bit_colour
+		_add_to_bit_label_line("[color=%s]1[/color]" % GameSettings.incorrect_bit_colour)
 	_fill_bit_label_lines()
 
 
@@ -312,6 +316,13 @@ func _new_line(move_down: bool) -> void:
 	elif _cursor.global_position.y != _starting_cursor_y: # Move up.
 		_cursor.position.y -= _line_height
 		_line_num -= 1
+
+
+## Add a string to the current active line on the terminal (the bit label).
+func _add_to_bit_label_line(string: String) -> void:
+	var curr_line = _line_num - 1
+	if _label_lines[curr_line].length() < MAX_BITS_DISPLAYED_PER_LINE:
+		_label_lines[curr_line] += string
 
 
 ## Fills in the bit label using the values in the _label_lines array.
