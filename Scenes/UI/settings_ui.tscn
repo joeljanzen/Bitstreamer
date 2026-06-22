@@ -39,7 +39,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_ym2e5")
 tab_alignment = 1
-current_tab = 3
+current_tab = 0
 clip_tabs = false
 tab_focus_mode = 0
 tab_0/title = "   Video   "
@@ -50,7 +50,6 @@ tab_4/title = "  Theme  "
 tab_5/title = " x "
 
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
-visible = false
 layout_mode = 2
 script = ExtResource("3_7p8ph")
 metadata/_tab_index = 0
@@ -256,6 +255,7 @@ layout_mode = 2
 text = "Level Interface "
 
 [node name="Controls" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=29722946]
+visible = false
 layout_mode = 2
 script = ExtResource("6_4ws3r")
 metadata/_tab_index = 3
@@ -533,7 +533,6 @@ bus = &"SFX"
 
 [connection signal="tab_clicked" from="CanvasLayer/MarginContainer/TabContainer" to="." method="_on_tab_container_tab_clicked"]
 [connection signal="tab_hovered" from="CanvasLayer/MarginContainer/TabContainer" to="." method="_on_tab_container_tab_hovered"]
-[connection signal="tab_selected" from="CanvasLayer/MarginContainer/TabContainer" to="." method="_on_tab_container_tab_selected"]
 [connection signal="drag_started" from="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer/BloomLevel" to="CanvasLayer/MarginContainer/TabContainer/Video" method="_on_bloom_level_drag_started"]
 [connection signal="value_changed" from="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer/BloomLevel" to="CanvasLayer/MarginContainer/TabContainer/Video" method="_on_bloom_level_value_changed"]
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer2/CRTFilter" to="CanvasLayer/MarginContainer/TabContainer/Video" method="_on_crt_filter_toggled"]
