@@ -16,9 +16,9 @@ const DIFFICULTY_MAX = 12
 ## The maximum speed value a level can have.
 const SPEED_MAX = 12
 
-var _crash_screen = preload("res://Scenes/game_crash_ui.tscn")
-var _win_screen = preload("res://Scenes/game_win_ui.tscn")
-var _pause_screen = preload("res://Scenes/pause_ui.tscn")
+var _crash_screen = preload("res://Scenes/UI/game_crash_ui.tscn")
+var _win_screen = preload("res://Scenes/UI/game_win_ui.tscn")
+var _pause_screen = preload("res://Scenes/UI/pause_ui.tscn")
 var _pause_instance: PauseUI
 
 ## The game is paused.
@@ -68,7 +68,7 @@ func _ready() -> void:
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.connect_level(self)
 
-	if load_level("timing_test"):
+	if load_level("memecore"):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % speed)

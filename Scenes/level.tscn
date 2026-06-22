@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://njdusa2xiafg"]
 
 [ext_resource type="Script" uid="uid://ka4qmydvm86s" path="res://Scripts/Gameplay/level.gd" id="1_6phgx"]
-[ext_resource type="PackedScene" uid="uid://c0cfxinwdhxdr" path="res://Scenes/level_ui.tscn" id="2_81xng"]
+[ext_resource type="PackedScene" uid="uid://c0cfxinwdhxdr" path="res://Scenes/UI/level_ui.tscn" id="2_81xng"]
 [ext_resource type="PackedScene" uid="uid://bmyyd40hpvw2l" path="res://Scenes/play_area.tscn" id="3_wqkje"]
 [ext_resource type="Texture2D" uid="uid://ck0tbadym1fsj" path="res://Resources/Sprites/UI/Windows-BSOD-scaled.jpg" id="4_81xng"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="5_wqkje"]

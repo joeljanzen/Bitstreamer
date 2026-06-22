@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://c1afnax3tdr8o"]
 
-[ext_resource type="Script" uid="uid://cdkv22hq3ky6u" path="res://Scripts/UI/settings_ui.gd" id="1_picqr"]
-[ext_resource type="Theme" uid="uid://b0xyga1pvvmxr" path="res://Resources/Themes/settings_theme.tres" id="2_gnwwx"]
-[ext_resource type="Script" uid="uid://borjw6w2ey2pp" path="res://Scripts/UI/audio_settings.gd" id="3_a4fwd"]
-[ext_resource type="Script" uid="uid://mrx3y4y7fgem" path="res://Scripts/UI/video_settings.gd" id="3_dm6ou"]
-[ext_resource type="Script" uid="uid://dn8pescend2an" path="res://Scripts/UI/gameplay_settings.gd" id="5_gnwwx"]
-[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_tx62x"]
-[ext_resource type="Script" uid="uid://b101e07ttbgf" path="res://Scenes/theme_settings.gd" id="6_2xaif"]
-[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="6_gnwwx"]
+[ext_resource type="Script" uid="uid://cdkv22hq3ky6u" path="res://Scripts/UI/Settings/settings_ui.gd" id="1_548mi"]
+[ext_resource type="Theme" uid="uid://b0xyga1pvvmxr" path="res://Resources/Themes/settings_theme.tres" id="2_ym2e5"]
+[ext_resource type="Script" uid="uid://mrx3y4y7fgem" path="res://Scripts/UI/Settings/video_settings.gd" id="3_7p8ph"]
+[ext_resource type="Script" uid="uid://borjw6w2ey2pp" path="res://Scripts/UI/Settings/audio_settings.gd" id="4_4ws3r"]
+[ext_resource type="Script" uid="uid://dn8pescend2an" path="res://Scripts/UI/Settings/gameplay_settings.gd" id="5_o3mvw"]
+[ext_resource type="Script" uid="uid://b101e07ttbgf" path="res://Scripts/UI/Settings/theme_settings.gd" id="6_ijavf"]
+[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="7_xoqkd"]
+[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="8_ct0jw"]
 
 [node name="SettingsUI" type="Control" unique_id=939637920]
 layout_mode = 3
@@ -16,7 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_picqr")
+script = ExtResource("1_548mi")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=584380099]
 
@@ -34,7 +34,7 @@ theme_override_constants/margin_bottom = 100
 [node name="TabContainer" type="TabContainer" parent="CanvasLayer/MarginContainer" unique_id=956638905]
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("2_gnwwx")
+theme = ExtResource("2_ym2e5")
 tab_alignment = 1
 current_tab = 4
 clip_tabs = false
@@ -49,7 +49,7 @@ tab_5/title = " x "
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
 visible = false
 layout_mode = 2
-script = ExtResource("3_dm6ou")
+script = ExtResource("3_7p8ph")
 metadata/_tab_index = 0
 metadata/_tab_name = "   Video   "
 
@@ -99,7 +99,7 @@ text = "CRT Filter "
 [node name="Audio" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1114140775]
 visible = false
 layout_mode = 2
-script = ExtResource("3_a4fwd")
+script = ExtResource("4_4ws3r")
 metadata/_tab_index = 1
 metadata/_tab_name = "   Audio   "
 
@@ -178,7 +178,7 @@ text = " 100%"
 [node name="Gameplay" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=702599717]
 visible = false
 layout_mode = 2
-script = ExtResource("5_gnwwx")
+script = ExtResource("5_o3mvw")
 metadata/_tab_index = 2
 metadata/_tab_name = "  Gameplay  "
 
@@ -260,7 +260,7 @@ metadata/_tab_name = "  Controls  "
 
 [node name="Theme" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1071803890]
 layout_mode = 2
-script = ExtResource("6_2xaif")
+script = ExtResource("6_ijavf")
 metadata/_tab_index = 4
 metadata/_tab_name = "  Theme  "
 
@@ -339,11 +339,11 @@ metadata/_tab_index = 5
 metadata/_tab_name = " x "
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=560583228]
-stream = ExtResource("5_tx62x")
+stream = ExtResource("7_xoqkd")
 bus = &"SFX"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=683666101]
-stream = ExtResource("6_gnwwx")
+stream = ExtResource("8_ct0jw")
 volume_db = -8.0
 bus = &"SFX"
 

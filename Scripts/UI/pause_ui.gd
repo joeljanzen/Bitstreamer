@@ -9,7 +9,7 @@ extends Control
 ## Emitted when the resume button is pressed.
 signal resumed
 
-var _settings_screen = preload("res://Scenes/settings_ui.tscn")
+var _settings_screen = preload("res://Scenes/UI/settings_ui.tscn")
 
 
 ## Input handling.
