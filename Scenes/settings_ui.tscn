@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://mrx3y4y7fgem" path="res://Scripts/UI/video_settings.gd" id="3_dm6ou"]
 [ext_resource type="Script" uid="uid://dn8pescend2an" path="res://Scripts/UI/gameplay_settings.gd" id="5_gnwwx"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_tx62x"]
+[ext_resource type="Script" uid="uid://b101e07ttbgf" path="res://Scenes/theme_settings.gd" id="6_2xaif"]
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="6_gnwwx"]
 
 [node name="SettingsUI" type="Control" unique_id=939637920]
@@ -35,16 +36,18 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_gnwwx")
 tab_alignment = 1
-current_tab = 0
+current_tab = 4
 clip_tabs = false
 tab_focus_mode = 0
 tab_0/title = "   Video   "
 tab_1/title = "   Audio   "
 tab_2/title = "  Gameplay  "
 tab_3/title = "  Controls  "
-tab_4/title = " x "
+tab_4/title = "  Theme  "
+tab_5/title = " x "
 
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
+visible = false
 layout_mode = 2
 script = ExtResource("3_dm6ou")
 metadata/_tab_index = 0
@@ -255,10 +258,84 @@ layout_mode = 2
 metadata/_tab_index = 3
 metadata/_tab_name = "  Controls  "
 
+[node name="Theme" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1071803890]
+layout_mode = 2
+script = ExtResource("6_2xaif")
+metadata/_tab_index = 4
+metadata/_tab_name = "  Theme  "
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/TabContainer/Theme" unique_id=902723507]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer" unique_id=226267684]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer" unique_id=1990709635]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer" unique_id=109924548]
+layout_mode = 2
+text = "0 Bit Colour "
+
+[node name="ZeroBitColor" type="ColorPickerButton" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1031730829]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+color = Color(0.73300546, 0.7330054, 0.7330054, 1)
+edit_alpha = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer" unique_id=1998450233]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=194411347]
+layout_mode = 2
+text = "1 Bit Colour "
+
+[node name="OneBitColor" type="ColorPickerButton" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=564110228]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+color = Color(0.73300546, 0.7330054, 0.7330054, 1)
+edit_alpha = false
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer" unique_id=511927737]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1809711678]
+layout_mode = 2
+text = "Enter Bit Colour "
+
+[node name="EnterBitColor" type="ColorPickerButton" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1401338708]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+color = Color(0.73300546, 0.7330054, 0.7330054, 1)
+edit_alpha = false
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer" unique_id=711840236]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=919301138]
+layout_mode = 2
+text = "Back Bit Colour "
+
+[node name="BackBitColor" type="ColorPickerButton" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=2144082187]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+color = Color(0.73300546, 0.7330054, 0.7330054, 1)
+edit_alpha = false
+
 [node name="x" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1288011058]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 4
+metadata/_tab_index = 5
 metadata/_tab_name = " x "
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=560583228]
@@ -289,3 +366,11 @@ bus = &"SFX"
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer6/MissEffect" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_miss_effect_toggled"]
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer4/CursorFlicker" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_cursor_flicker_toggled"]
 [connection signal="toggled" from="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer5/LevelUI" to="CanvasLayer/MarginContainer/TabContainer/Gameplay" method="_on_level_ui_toggled"]
+[connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_color_changed"]
+[connection signal="picker_created" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_picker_created"]
+[connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2/OneBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_one_bit_color_color_changed"]
+[connection signal="picker_created" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2/OneBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_one_bit_color_picker_created"]
+[connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_enter_bit_color_color_changed"]
+[connection signal="picker_created" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_enter_bit_color_picker_created"]
+[connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_color_changed"]
+[connection signal="picker_created" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_picker_created"]

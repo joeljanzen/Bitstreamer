@@ -8,7 +8,7 @@ extends Control
 ## Emitted when the close button is pressed, or esc is pressed.
 signal settings_closed
 
-const exit_tab_index = 4
+const exit_tab_index = 5
 
 
 ## Input handling.

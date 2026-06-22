@@ -38,13 +38,13 @@ var crt_filter := true
 var _crt_shader: flowerwallCRT
 
 ## The colour of zero bits. Default is "#00FF00"
-var zero_bit_colour := "#00FF00"
+var zero_bit_colour := Color("00FF00")
 ## The colour of one bits. Default is "#DB236C"
-var one_bit_colour := "#DB236C"
+var one_bit_colour := Color("#DB236C")
 ## The colour of enter bits. Default is "#FFFFFF"
-var enter_bit_colour := "#FFFFFF"
+var enter_bit_colour := Color("#FFFFFF")
 ## The colour of back bits. Default is "#FFFFFF"
-var back_bit_colour := "#FFFFFF"
+var back_bit_colour := Color("#FFFFFF")
 
 ## The colour displayed for correctly entered bits on the terminal.
 ## Default is "#454545"

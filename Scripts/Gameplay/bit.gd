@@ -117,18 +117,18 @@ func create(value: Bit.Type, cursor_y: float, cursor_x: float, time_to_cursor: f
 func set_bit_visuals(type: Type) -> void:
 	match type:
 		Bit.Type.ZERO:
-			set("modulate", Color(GameSettings.zero_bit_colour))
+			set("modulate", GameSettings.zero_bit_colour)
 			_bit_sprite.hide()
 			_bit_label.text = "0"
 		Bit.Type.ONE:
-			set("modulate", Color(GameSettings.one_bit_colour))
+			set("modulate", GameSettings.one_bit_colour)
 			_bit_sprite.hide()
 			_bit_label.text = "1"
 		Bit.Type.ENTER:
-			set("modulate", Color(GameSettings.enter_bit_colour))
+			set("modulate", GameSettings.enter_bit_colour)
 			_bit_label.hide()
 		Bit.Type.BACK:
-			set("modulate", Color(GameSettings.back_bit_colour))
+			set("modulate", GameSettings.back_bit_colour)
 			_bit_label.hide()
 			_bit_sprite.texture = _back_texture
 
