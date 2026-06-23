@@ -4,6 +4,7 @@ extends Control
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 @onready var _canvas = $CanvasLayer
 @onready var _title = $MarginContainer/Title
+@onready var _splash_text_label = $SplashTextLabel
 @onready var _conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
@@ -29,6 +30,8 @@ const TITLE_PULSE_RATE: int = 2
 ## The strength of blur when in the game settings.
 const BACKGROUND_BLUR_STRENGTH: float = 0.5
 
+const splash_text_filepath = "res://Resources/Text/splash_text.json"
+
 var _level_scene = preload("res://Scenes/level.tscn")
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 var _bit = preload("res://Scenes/bit.tscn")
@@ -39,13 +42,19 @@ var _bit_interval = 2
 
 var _pulse_started := false
 var _pulse_title := false
-
 var _pulse_interval = 0
+
+## Dictionary of splash text messages.
+var splash_text: Array
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Bit.in_main_menu = true
+	
+	splash_text = _load_splash_text(splash_text_filepath)
+	_splash_text_label.text = splash_text[randi_range(0, splash_text.size() - 1)]
+	_splash_text_label.text = splash_text[10]
 	
 	# Music.
 	_conductor.set_timed_event(0)
@@ -62,7 +71,7 @@ func _process(delta: float) -> void:
 	if _pulse_started and _title.modulate.a > 0.5:
 		# Divide by 2 since we're only fading to an alpha of 0.5, not 0.
 		_title.modulate.a -= delta / BEAT_TIME / TITLE_PULSE_RATE / 2
-
+	
 	if _pulse_title: # The conductor send a timing event!
 		_pulse_title = false
 		# Reset alpha so we can compare this color with the other colors to
@@ -119,6 +128,17 @@ func _send_random_bit() -> void:
 	new_bit.create(bit_type, y_value, 0, BIT_TIME_TO_CROSS_SCREEN, 0)
 
 
+## Loads the array of splash text messages. Returns nothing if it fails.
+func _load_splash_text(filePath: String):
+	if FileAccess.file_exists(filePath):
+		var data = FileAccess.open(filePath, FileAccess.READ)
+		var parsed = JSON.parse_string(data.get_as_text())
+		if parsed is Array:
+			return parsed
+		else:
+			push_error("Splash text failed to load!")
+
+
 func _on_play_button_pressed() -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
@@ -135,6 +155,7 @@ func _on_settings_button_pressed() -> void:
 	settings.settings_closed.connect(_settings_closed)
 	_canvas.hide()
 	_title.hide()
+	_splash_text_label.hide()
 	add_child(settings)
 	
 	# Enable background blur.
@@ -145,6 +166,7 @@ func _on_settings_button_pressed() -> void:
 func _settings_closed() -> void:
 	_canvas.show()
 	_title.show()
+	_splash_text_label.show()
 	
 	# Disable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN

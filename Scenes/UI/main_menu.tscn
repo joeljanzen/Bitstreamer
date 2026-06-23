@@ -89,8 +89,23 @@ z_as_relative = false
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_i2xx2")
-theme_override_font_sizes/font_size = 150
+theme_override_font_sizes/font_size = 120
 text = "Bitstreamer"
+
+[node name="SplashTextLabel" type="Label" parent="." unique_id=2052261070]
+z_index = 1
+clip_contents = true
+layout_mode = 0
+offset_left = 60.0
+offset_top = 200.0
+offset_right = 543.83185
+offset_bottom = 507.9391
+rotation = -0.06981317
+theme = ExtResource("1_i2xx2")
+theme_override_font_sizes/font_size = 35
+text = "funny splash text"
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
 stream = ExtResource("4_4pqbp")
