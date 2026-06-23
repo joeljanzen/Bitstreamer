@@ -9,7 +9,9 @@ extends Control
 ## Emitted when the resume button is pressed.
 signal resumed
 
-var _settings_screen = preload("res://Scenes/UI/settings_ui.tscn")
+
+var _main_menu_scene = preload("res://Scenes/UI/main_menu.tscn")
+var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 
 
 ## Input handling.
@@ -28,10 +30,11 @@ func _on_resume_pressed() -> void:
 
 ## The player has pressed the settings button.
 func _on_settings_pressed() -> void:
-	# When other settings are set, it actually already plays a click sound lol.
+	# The bloom slider actually plays the click sound when it's set to the 
+	# current value of bloom so we don't need to play it again lol!
 	#_menu_click_sound.play()
 	
-	var settings: SettingsUI = _settings_screen.instantiate()
+	var settings: SettingsUI = _settings_scene.instantiate()
 	settings.settings_closed.connect(_settings_closed)
 	_canvas.hide()
 	add_child(settings)
@@ -42,9 +45,11 @@ func _settings_closed() -> void:
 	_canvas.show()
 
 
-## The player has pressed the quit button.
+## Return to the main menu.
 func _on_quit_pressed() -> void:
-	get_tree().quit(0)
+	_menu_click_sound.play()
+	await _menu_click_sound.finished
+	get_tree().change_scene_to_node(_main_menu_scene.instantiate())
 
 
 ## The player has pressed the reboot button. Clearly.

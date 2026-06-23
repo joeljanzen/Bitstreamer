@@ -10,6 +10,8 @@ extends Control
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
+var _main_menu_scene = preload("res://Scenes/UI/main_menu.tscn")
+
 ## Contains statistics for the current play.
 var statistics: GameplayStatistics
 
@@ -46,9 +48,11 @@ func _on_play_again_pressed() -> void:
 	get_tree().reload_current_scene()
 
 
-## The player has pressed the quit button. Clearly.
+## Return to the main menu.
 func _on_quit_pressed() -> void:
-	get_tree().quit(0)
+	_menu_click_sound.play()
+	await _menu_click_sound.finished
+	get_tree().change_scene_to_node(_main_menu_scene.instantiate())
 
 
 func _on_play_again_mouse_entered() -> void:

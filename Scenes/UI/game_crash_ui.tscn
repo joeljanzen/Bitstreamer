@@ -29,7 +29,7 @@ offset_top = 780.0
 offset_right = 810.0
 offset_bottom = 980.0
 theme = ExtResource("3_lbv4o")
-text = "Reboot"
+text = "Restart"
 
 [node name="Quit" type="Button" parent="CanvasLayer" unique_id=603242436]
 offset_left = 1110.0

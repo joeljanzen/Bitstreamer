@@ -1,0 +1,167 @@
+extends Control
+
+@onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
+@onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
+@onready var _canvas = $CanvasLayer
+@onready var _title = $MarginContainer/Title
+@onready var _conductor = $Conductor
+@onready var _environment: WorldEnvironment = $WorldEnvironment
+
+# Constants for animations that sync to the music.
+const MUSIC_BPM: float = 128
+const SECONDS_PER_BEAT: float = 60.0 / MUSIC_BPM
+## How often the conductor sends out beat timing events.
+const BEAT_TIME: float = SECONDS_PER_BEAT / 2
+## How many beats it takes for the bit to cross the screen.
+const BIT_TIME_TO_CROSS_SCREEN: float = BEAT_TIME * 8
+## The number of pixels below the top of screen/above the bottom of screen that 
+## bits can spawn.
+const BIT_SPAWN_MARGIN: int = 75
+## Once this many bits have been sent, send an enter bit across the screen and 
+## reset the interval.
+const ENTER_BIT_INTERVAL: int = 15
+## Which beat (given by BEAT_TIME) to start pulsing the title.
+const START_TITLE_PULSE: int = 12
+## Title pulse rate, as the number of beats (given by BEAT_TIME) that have to 
+## pass before another title pulse occurs. Cannot be lower than 1.
+const TITLE_PULSE_RATE: int = 2
+
+## The strength of blur when in the game settings.
+const BACKGROUND_BLUR_STRENGTH: float = 0.5
+
+var _level_scene = preload("res://Scenes/level.tscn")
+var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
+var _bit = preload("res://Scenes/bit.tscn")
+
+## The number of bits that have been sent since the last enter bit.
+## Start at a different value than zero to offset when the first enter is sent.
+var _bit_interval = 2
+
+var _pulse_started := false
+var _pulse_title := false
+
+var _pulse_interval = 0
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	Bit.in_main_menu = true
+	
+	# Music.
+	_conductor.set_timed_event(0)
+	_conductor.play()
+	_conductor.connect("timed_event", _timed_event)
+	
+	# Aesthetics.
+	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
+	_environment.environment.glow_bloom = GameSettings.bloom_strength
+
+
+## Controls title bit flickering.
+func _process(delta: float) -> void:
+	if _pulse_started and _title.modulate.a > 0.5:
+		# Divide by 2 since we're only fading to an alpha of 0.5, not 0.
+		_title.modulate.a -= delta / BEAT_TIME / TITLE_PULSE_RATE / 2
+
+	if _pulse_title: # The conductor send a timing event!
+		_pulse_title = false
+		# Reset alpha so we can compare this color with the other colors to
+		# choose from next (randomly, but with no repeats).
+		_title.modulate.a = 1
+		
+		# Chose a random color from the colors selected for 0, 1, and enter bits.
+		var title_colors = [GameSettings.zero_bit_colour, GameSettings.one_bit_colour, GameSettings.enter_bit_colour]
+		# Remove the current color from the array.
+		title_colors.remove_at(title_colors.find(_title.modulate))
+		# The same color could exist multiple times, in which case we remove it one
+		# more time.
+		var double_check = title_colors.find(_title.modulate)
+		if double_check != -1:
+			title_colors.remove_at(double_check)
+		
+		_title.modulate = title_colors[randi_range(0, title_colors.size() - 1)]
+
+
+## Play effects in time with the menu music.
+func _timed_event(event_index: int) -> void:
+	_send_random_bit()
+	
+	# Send the first pulse
+	if event_index == START_TITLE_PULSE:
+		_pulse_started = true
+		_pulse_title = true
+	elif event_index >= START_TITLE_PULSE:
+		_pulse_interval += 1
+		if !_pulse_title and _pulse_interval >= TITLE_PULSE_RATE:
+			_pulse_title = true
+			_pulse_interval = 0
+	
+	_conductor.set_timed_event(BEAT_TIME)
+
+
+## Sends a random bit across the screen, or an enter bit at regular intervals.
+func _send_random_bit() -> void:
+	var new_bit: Bit = _bit.instantiate()
+	# Calculate y value based on the current line number offset from where the
+	# cursor started.
+	var viewport_height = ProjectSettings.get_setting("display/window/size/viewport_height")
+	var y_value = randi_range(BIT_SPAWN_MARGIN, viewport_height - BIT_SPAWN_MARGIN)
+	
+	var bit_type
+	if _bit_interval < ENTER_BIT_INTERVAL:
+		_bit_interval += 1
+		bit_type = randi_range(0, 1)
+	else:
+		bit_type = Bit.Type.ENTER
+		_bit_interval = 0
+	
+	add_child(new_bit)
+	new_bit.create(bit_type, y_value, 0, BIT_TIME_TO_CROSS_SCREEN, 0)
+
+
+func _on_play_button_pressed() -> void:
+	_menu_click_sound.play()
+	await _menu_click_sound.finished
+	Bit.in_main_menu = false
+	get_tree().change_scene_to_node(_level_scene.instantiate())
+
+
+func _on_settings_button_pressed() -> void:
+	# The bloom slider actually plays the click sound when it's set to the 
+	# current value of bloom so we don't need to play it again lol!
+	#_menu_click_sound.play()
+	
+	var settings: SettingsUI = _settings_scene.instantiate()
+	settings.settings_closed.connect(_settings_closed)
+	_canvas.hide()
+	_title.hide()
+	add_child(settings)
+	
+	# Enable background blur.
+	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
+	_environment.environment.glow_bloom = BACKGROUND_BLUR_STRENGTH
+
+
+func _settings_closed() -> void:
+	_canvas.show()
+	_title.show()
+	
+	# Disable background blur.
+	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
+	_environment.environment.glow_bloom = GameSettings.bloom_strength
+
+
+func _on_shutdown_button_pressed() -> void:
+	get_tree().quit(0)
+
+
+func _on_play_button_mouse_entered() -> void:
+	_menu_focus_sound.play()
+
+
+func _on_settings_button_mouse_entered() -> void:
+	_menu_focus_sound.play()
+
+
+func _on_shutdown_button_mouse_entered() -> void:
+	_menu_focus_sound.play()

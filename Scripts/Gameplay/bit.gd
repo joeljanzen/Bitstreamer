@@ -20,6 +20,9 @@ enum Type {
 ## Where the bit starts.
 static var starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
 
+## Slightly changes bit behaviour when in the main menu (disable bit effects)
+static var in_main_menu := false
+
 ## The value of the bit.
 var _value: Bit.Type
 
@@ -195,7 +198,7 @@ func get_accuracy() -> int:
 
 ## Play animations for a correct click.
 func _score_animation(click_quality: PerformanceCalculator.ClickQuality) -> void:
-	if GameSettings.bit_click_effect:
+	if GameSettings.bit_click_effect and !in_main_menu:
 		var effect: BitClickEffect = _bit_click_effect.instantiate()
 		get_tree().root.call_deferred("add_child", effect)
 		var pos: Vector2 = global_position

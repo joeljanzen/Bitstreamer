@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://dnfywj5sxt1r3"]
+
+[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_i2xx2"]
+[ext_resource type="Script" uid="uid://dmhxr0lxqlsk6" path="res://Scripts/UI/main_menu.gd" id="1_mrfpk"]
+[ext_resource type="Theme" uid="uid://b0xyga1pvvmxr" path="res://Resources/Themes/settings_theme.tres" id="2_o14dv"]
+[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="4_4pqbp"]
+[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_gih0s"]
+[ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
+[ext_resource type="AudioStream" uid="uid://cav124sfcdoeg" path="res://Resources/Audio/LevelTracks/Initiate.wav" id="7_k33u3"]
+
+[sub_resource type="Environment" id="Environment_gih0s"]
+background_mode = 3
+ambient_light_source = 1
+ambient_light_color = Color(0.11598889, 0.35937062, 0.39819646, 1)
+ambient_light_energy = 4.9
+glow_enabled = true
+glow_bloom = 1.0
+glow_hdr_scale = 1.0
+
+[node name="MainMenu" type="Control" unique_id=903022407]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mrfpk")
+
+[node name="BlackBack" type="ColorRect" parent="." unique_id=1087180401]
+light_mask = 3
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.038954537, 0.058708385, 0.06430844, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1806771198]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1691941615]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_o14dv")
+theme_override_constants/margin_top = 300
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer" unique_id=1250772523]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 30
+
+[node name="PlayButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1666786679]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_i2xx2")
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1261688561]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_i2xx2")
+text = "Settings"
+
+[node name="ShutdownButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1682418373]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_i2xx2")
+text = "Shut down"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1644140178]
+environment = SubResource("Environment_gih0s")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1021198617]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 221.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 100
+
+[node name="Title" type="Label" parent="MarginContainer" unique_id=1923581684]
+z_index = 1
+z_as_relative = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_i2xx2")
+theme_override_font_sizes/font_size = 150
+text = "Bitstreamer"
+
+[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
+stream = ExtResource("4_4pqbp")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=767961663]
+stream = ExtResource("5_gih0s")
+bus = &"SFX"
+
+[node name="Conductor" parent="." unique_id=1369693212 instance=ExtResource("6_gih0s")]
+stream = ExtResource("7_k33u3")
+
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_pressed"]
