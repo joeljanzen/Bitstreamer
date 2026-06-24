@@ -54,7 +54,6 @@ func _ready() -> void:
 	
 	splash_text = _load_splash_text(splash_text_filepath)
 	_splash_text_label.text = splash_text[randi_range(0, splash_text.size() - 1)]
-	_splash_text_label.text = splash_text[10]
 	
 	# Music.
 	_conductor.set_timed_event(0)
