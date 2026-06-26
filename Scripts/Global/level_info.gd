@@ -165,6 +165,9 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		if song_filename.is_empty():
 			error_loading = true
 			push_error("Song audio file could not be found!")
+		if length < 0:
+			error_loading = true
+			push_error("Level length could not be found!")
 		# Do not check for the level length to be empty here, but we will later, 
 		# once the delay queue is loaded. This is because in the case that level
 		# length has not been loaded (is not in the file) we can calculate it

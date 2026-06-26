@@ -345,7 +345,7 @@ func _calc_level_length(level_delay_queue: Array[float]) -> float:
 ## Saves the level length to the specified level file, returning if the length
 ## was saved successfully.
 func _save_level_length(file_name: String, length: float) -> bool:
-	var file = FileAccess.open("res://Levels/%s.txt" % file_name, FileAccess.READ_WRITE)
+	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ_WRITE)
 	var error_loading := false
 	
 	if file == null:

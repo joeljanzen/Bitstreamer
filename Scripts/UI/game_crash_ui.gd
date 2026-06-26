@@ -52,7 +52,9 @@ func _on_reboot_pressed() -> void:
 func _on_quit_pressed() -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
-	get_tree().change_scene_to_node(_main_menu_scene.instantiate())
+	var menu_scene = _main_menu_scene.instantiate()
+	menu_scene.start_in_level_select = true
+	get_tree().change_scene_to_node(menu_scene)
 
 
 func _on_reboot_mouse_entered() -> void:

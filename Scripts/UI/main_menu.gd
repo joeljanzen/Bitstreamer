@@ -36,6 +36,8 @@ var _level_select_scene = preload("res://Scenes/UI/level_select.tscn")
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 var _bit = preload("res://Scenes/bit.tscn")
 
+var level_select_node: Control
+
 ## The number of bits that have been sent since the last enter bit.
 ## Start at a different value than zero to offset when the first enter is sent.
 var _bit_interval = 2
@@ -46,6 +48,10 @@ var _pulse_interval = 0
 
 ## Dictionary of splash text messages.
 var splash_text: Array
+
+## When reloading the menu, will start in the level selection screen if this is
+## true.
+var start_in_level_select := false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -63,6 +69,18 @@ func _ready() -> void:
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
 	_environment.environment.glow_bloom = GameSettings.bloom_strength
+	
+	if start_in_level_select:
+		_open_level_select()
+	
+
+
+## Input handling.
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_close_dialog") and level_select_node != null:
+		if level_select_node.UI_is_visible():
+			level_select_node.hide_UI()
+			_show_menu()
 
 
 ## Controls title bit flickering.
@@ -138,11 +156,24 @@ func _load_splash_text(filePath: String):
 			push_error("Splash text failed to load!")
 
 
+## Go into the level select scene. (call this when switching to the menu scene
+## to start in the level select scene).
+func _open_level_select() -> void:
+	_hide_menu()
+	
+	if level_select_node == null:
+		level_select_node = _level_select_scene.instantiate()
+		level_select_node.connect("selection_closed", _show_menu)
+	else:
+		level_select_node.show_UI()
+	
+	add_child(level_select_node)
+
+
 func _on_play_button_pressed() -> void:
 	_menu_click_sound.play()
-	await _menu_click_sound.finished
-	Bit.in_main_menu = false
-	get_tree().change_scene_to_node(_level_select_scene.instantiate())
+	
+	_open_level_select()
 
 
 func _on_settings_button_pressed() -> void:
@@ -150,22 +181,27 @@ func _on_settings_button_pressed() -> void:
 	# current value of bloom so we don't need to play it again lol!
 	#_menu_click_sound.play()
 	
+	_hide_menu()
+	
 	var settings: SettingsUI = _settings_scene.instantiate()
-	settings.settings_closed.connect(_settings_closed)
-	_canvas.hide()
-	_title.hide()
-	_splash_text_label.hide()
+	settings.settings_closed.connect(_show_menu)
 	add_child(settings)
+
+
+## Hide the menu when something else is shown (settings, credits, level select
+## etc).
+func _hide_menu() -> void:
+	_canvas.hide()
 	
 	# Enable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
 	_environment.environment.glow_bloom = BACKGROUND_BLUR_STRENGTH
 
 
-func _settings_closed() -> void:
+## Show the menu again. Reverses the effects of _hide_menu(). Displays new 
+## splash text.
+func _show_menu() -> void:
 	_canvas.show()
-	_title.show()
-	_splash_text_label.show()
 	
 	# Disable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN

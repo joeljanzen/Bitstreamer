@@ -1,4 +1,4 @@
-name=Tutorial Example,bpm=120,speed=1,diff=1,dmg=1,song=Sentience.wav
+name=Tutorial Example,bpm=120,speed=1,diff=1,dmg=1,song=Sentience.wav,length=9.125
 
 # Write comments with "#" and leave empty lines anywhere you want!
 # Here I use the raw float to wait 4 seconds before starting the level.
