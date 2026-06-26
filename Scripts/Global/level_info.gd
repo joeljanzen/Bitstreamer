@@ -11,7 +11,7 @@ const SPEED_MAX = 12
 ## instakills, so it's really the max damage that should be saved.
 const DAMAGE_MAX = 100
 
-## Stores a refrence to the level info of the last level played.
+## Stores a reference to the level info of the last level played.
 ## Useful for restarting levels.
 static var last_played: LevelInfo
 

@@ -34,3 +34,13 @@ func _on_tab_container_tab_hovered(_tab: int) -> void:
 func _close_settings() -> void:
 	settings_closed.emit()
 	queue_free()
+
+
+func _on_back_button_pressed() -> void:
+	_menu_click_sound.play()
+	await _menu_click_sound.finished
+	_close_settings()
+
+
+func _on_back_button_mouse_entered() -> void:
+	_menu_focus_sound.play()
