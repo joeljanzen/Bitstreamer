@@ -32,6 +32,17 @@ var damage: int = -1
 ## The length of the level in seconds (how long the gameplay lasts).
 var length: float = -1
 
+# Level playback information (not loaded by default).
+## A queue of upcoming bits.
+var _bit_queue: Array[Bit.Type]
+## A queue of delays between sending bits.
+var _delay_queue: Array[float]
+## The delay between a bit being sent and it reaching the cursor, in seconds.
+var _bit_time_to_cursor: float
+
+## Determines if the level information is valid after it's loaded.
+var _is_valid := false
+
 
 ## Initialize the level button, given its full filename.
 func _init(filename: String) -> void:
@@ -49,7 +60,9 @@ func _init(filename: String) -> void:
 		# line number with the error will be displayed.
 		var lines: PackedStringArray = content.split("\n") 
 		
-		_parse_level_info(lines)
+		if _parse_level_info(lines):
+			_is_valid = true
+		
 		#if _parse_level_info(lines):
 			#if _parse_bits_and_delays(lines):
 				## We successfully loaded everything.
@@ -166,3 +179,30 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 			push_error("Song file %s could not be found!" % song_filename)
 	
 	return !error_loading
+
+
+## Load the bit and delay queues.
+func _parse_bits_and_delays() -> void:
+	## Copy code from level script here later, then remove from level.
+	pass
+
+
+## Verify that the level information is valid before using it.
+func is_valid() -> bool:
+	return _is_valid
+
+
+## Returns the queue of upcoming bits.
+func get_bit_queue() -> Array[Bit.Type]:
+	if _bit_queue == null:
+		_parse_bits_and_delays()
+	
+	return _bit_queue
+
+
+## Returns the queue of delays between each bit.
+func get_delay_queue() -> Array[float]:
+	if _delay_queue == null:
+		_parse_bits_and_delays()
+	
+	return _delay_queue

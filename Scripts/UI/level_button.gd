@@ -8,8 +8,8 @@ extends Control
 @onready var _speed_label = $CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/SpeedPanel/SpeedLabel
 @onready var _damage_label = $CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/DamagePanel/DamageLabel
 
-## The level has been selected to play.
-signal button_pressed
+## This level has been selected to play.
+signal button_pressed(level_info: LevelInfo)
 signal button_focused
 
 ## Level info for this button.
@@ -50,7 +50,7 @@ func _trim_decimals(value: float) -> String:
 
 
 func _on_play_button_pressed() -> void:
-	button_pressed.emit()
+	button_pressed.emit(level_info)
 
 
 func _on_play_button_mouse_entered() -> void:
