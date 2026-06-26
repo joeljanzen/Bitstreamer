@@ -37,7 +37,15 @@ func _float_as_time(level_length: float) -> String:
 	var total_seconds = round(level_length)
 	var minutes: int = floor(level_length / 60.0)
 	var seconds: int = total_seconds - (minutes * 60)
-	return str(minutes) + "m " + str(seconds) + "s"
+	
+	var string = ""
+	if minutes > 0:
+		string = str(minutes) + "m "
+	
+	if seconds > 0:
+		string +=str(seconds) + "s"
+	
+	return string
 
 
 ## If the float has decimal places, it rounds to 2 places. Otherwise, it 
