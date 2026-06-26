@@ -18,6 +18,8 @@ var _levels: Array[LevelInfo]
 
 ## Load all levels and create buttons for them.
 func _ready() -> void:
+	_scroll_box.set_deferred("scroll_horizontal", GameSettings.last_level_select_position)
+	
 	# Load all level info
 	var level_filenames: PackedStringArray = DirAccess.get_files_at("res://Levels")
 	
@@ -42,6 +44,8 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 	level_info.load_level_bits_and_delays()
 	
 	if level_info.is_valid():
+		GameSettings.last_level_select_position = _scroll_box.scroll_horizontal
+		
 		var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
 		level_scene.set_level(level_info)
 		Bit.in_main_menu = false
@@ -59,7 +63,10 @@ func _level_button_focused() -> void:
 func hide_UI():
 	_back_button.hide()
 	_level_button_container.hide()
+	
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_IGNORE
+	GameSettings.last_level_select_position = _scroll_box.scroll_horizontal
+	print("saved last pos as %d" % GameSettings.last_level_select_position)
 
 
 ## Shows the level select UI.
@@ -72,6 +79,10 @@ func show_UI():
 	LevelButton.current_color_index = 0
 	for button: LevelButton in _level_button_container.get_children():
 		button.update_button_colors()
+	
+	# For some reason scroll pos isn't set properly unless you wait for this.
+	await get_tree().process_frame
+	_scroll_box.scroll_horizontal = GameSettings.last_level_select_position
 
 
 ## Returns if the UI is currently visible.
