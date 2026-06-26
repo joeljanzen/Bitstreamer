@@ -70,7 +70,10 @@ func _ready() -> void:
 	_play_area.no_bits_left.connect(_completed)
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.connect_level(self)
-
+	
+	if TEMPORARY_FILENAME == null:
+		TEMPORARY_FILENAME = LevelInfo.last_played.file_name
+	
 	if load_level(TEMPORARY_FILENAME):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)

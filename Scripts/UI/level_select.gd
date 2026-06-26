@@ -43,6 +43,7 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 	var level_scene: GameLevel = _level_scene.instantiate()
 	level_scene.set_level(level_info.file_name)
 	Bit.in_main_menu = false
+	LevelInfo.last_played = level_info
 	get_tree().change_scene_to_node(level_scene)
 
 

@@ -164,10 +164,9 @@ func _open_level_select() -> void:
 	if level_select_node == null:
 		level_select_node = _level_select_scene.instantiate()
 		level_select_node.connect("selection_closed", _show_menu)
+		add_child(level_select_node)
 	else:
 		level_select_node.show_UI()
-	
-	add_child(level_select_node)
 
 
 func _on_play_button_pressed() -> void:
