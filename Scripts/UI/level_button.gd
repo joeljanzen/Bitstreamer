@@ -110,9 +110,10 @@ func _set_play_button_text_color() -> void:
 		theme_colors.remove_at(theme_colors.find(_play_button.get_theme_color("font_hover_color")))
 		# The same color could exist multiple times, in which case we remove it one
 		# more time.
-		var double_check = theme_colors.find(_play_button.get_theme_color("font_hover_color"))
-		if double_check > -1:
-			theme_colors.remove_at(double_check)
+		if theme_colors.size() > 1:
+			var final_check = theme_colors.find(_play_button.get_theme_color("font_hover_color"))
+			if final_check > -1:
+				theme_colors.remove_at(final_check)
 	
 	_play_button.add_theme_color_override("font_hover_color", theme_colors[randi_range(0, theme_colors.size() - 1)])
 

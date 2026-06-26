@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3kaqq8o6a8py"
-path="res://.godot/imported/progress.png-6611bbec72a7e71a0807f3717c59ddb6.ctex"
+uid="uid://burp58chu6ad4"
+path="res://.godot/imported/play_area_background.jpg-db0d51383072634d2d08863b6bce05ca.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Sprites/UI/ProgressCircle/progress.png"
-dest_files=["res://.godot/imported/progress.png-6611bbec72a7e71a0807f3717c59ddb6.ctex"]
+source_file="res://Resources/Sprites/UI/play_area_background.jpg"
+dest_files=["res://.godot/imported/play_area_background.jpg-db0d51383072634d2d08863b6bce05ca.ctex"]
 
 [params]
 

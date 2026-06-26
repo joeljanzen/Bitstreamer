@@ -4,7 +4,7 @@
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_gw16p"]
 [ext_resource type="Texture2D" uid="uid://cytythe5xeqtr" path="res://Resources/Sprites/UI/ProgressCircle/under.png" id="3_2qe5m"]
 [ext_resource type="Texture2D" uid="uid://bhxbtam7q8gb6" path="res://Resources/Sprites/UI/ProgressCircle/over.png" id="4_ao4gj"]
-[ext_resource type="Texture2D" uid="uid://6n0jc8x0jph5" path="res://Resources/Sprites/UI/ProgressCircle/progress.png" id="5_m0wgp"]
+[ext_resource type="Texture2D" uid="uid://c3kaqq8o6a8py" path="res://Resources/Sprites/UI/ProgressCircle/progress.png" id="5_m0wgp"]
 
 [sub_resource type="Gradient" id="Gradient_xdjqv"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -103,6 +103,7 @@ rounded = true
 show_percentage = false
 
 [node name="Barlight2" type="PointLight2D" parent="CanvasLayer/ProgramHealth" unique_id=122787077]
+visible = false
 position = Vector2(1000, 20)
 color = Color(0.9855049, 0.16399086, 0.37631115, 1)
 energy = 5.0
