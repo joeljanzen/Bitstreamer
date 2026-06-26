@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://3lxad050esl2"]
+
+[ext_resource type="Script" uid="uid://bps4r7xs057l3" path="res://Scripts/UI/level_select.gd" id="1_2wnai"]
+[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_1i34c"]
+[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_40fl8"]
+
+[node name="LevelSelect" type="Control" unique_id=1472628101]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_2wnai")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1268261778]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer" unique_id=878674155]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ScrollContainer" unique_id=768856825]
+layout_mode = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
+
+[node name="LevelButtonContainer" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/MarginContainer" unique_id=1129383610]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 100
+
+[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=564885747]
+stream = ExtResource("3_1i34c")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=723314131]
+stream = ExtResource("4_40fl8")
+bus = &"SFX"

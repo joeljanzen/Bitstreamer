@@ -4,32 +4,27 @@
 [ext_resource type="Script" uid="uid://c0dcx5ksg78n5" path="res://Scripts/UI/level_button.gd" id="1_iq6la"]
 
 [node name="LevelButton" type="Control" unique_id=1822112030]
+custom_minimum_size = Vector2(720, 880)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_iq6la")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1732266085]
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1638538951]
+[node name="Panel" type="Panel" parent="." unique_id=1266196469]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme = ExtResource("1_bbr4g")
-theme_override_constants/margin_left = 600
-theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 600
-theme_override_constants/margin_bottom = 100
 
-[node name="Panel" type="Panel" parent="CanvasLayer/MarginContainer" unique_id=1266196469]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/Panel" unique_id=1823341588]
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1823341588]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,19 +36,20 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Panel/MarginContainer" unique_id=226793183]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=226793183]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="NamePanel" type="Panel" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=547449358]
+[node name="NamePanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=547449358]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 1
 
-[node name="NameLabel" type="Label" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/NamePanel" unique_id=992663357]
+[node name="NameLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/NamePanel" unique_id=992663357]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -68,25 +64,26 @@ vertical_alignment = 1
 autowrap_mode = 3
 clip_text = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1009278135]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1009278135]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="LengthLabel" type="Label" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2082293783]
+[node name="LengthLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2082293783]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Length: 42s"
 
-[node name="BPMLabel" type="Label" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1654100771]
+[node name="BPMLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1654100771]
 layout_mode = 2
 text = "100 BPM"
 
-[node name="DifficultyPanel" type="Panel" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=61150594]
+[node name="DifficultyPanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=61150594]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 1
 
-[node name="DifficultyLabel" type="Label" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/DifficultyPanel" unique_id=1360617629]
+[node name="DifficultyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DifficultyPanel" unique_id=1360617629]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -104,12 +101,13 @@ text = "Difficulty: 7"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpeedPanel" type="Panel" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=729764941]
+[node name="SpeedPanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=729764941]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 1
 
-[node name="SpeedLabel" type="Label" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/SpeedPanel" unique_id=1514991487]
+[node name="SpeedLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/SpeedPanel" unique_id=1514991487]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -127,12 +125,13 @@ text = "Speed: 7"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DamagePanel" type="Panel" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1308391746]
+[node name="DamagePanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=1308391746]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 size_flags_vertical = 4
+mouse_filter = 1
 
-[node name="DamageLabel" type="Label" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/DamagePanel" unique_id=642316699]
+[node name="DamageLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DamagePanel" unique_id=642316699]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -150,12 +149,13 @@ text = "Damage: 1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayButton" type="Button" parent="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer" unique_id=1418447274]
+[node name="PlayButton" type="Button" parent="Panel/MarginContainer/VBoxContainer" unique_id=1418447274]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_vertical = 8
+mouse_filter = 1
 theme_override_font_sizes/font_size = 60
 text = "Play"
 
-[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]

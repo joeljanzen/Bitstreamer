@@ -60,6 +60,9 @@ var bit_time_to_cursor: float
 ## The audio stream to play out of the conductor.
 var song: AudioStream
 
+# REMOVE THIS LATER AND INSTEAD TAKE IN THE LEVEL INFO OBJECT AND DONT LOAD
+# EVERYTHING AGAIN.
+var TEMPORARY_FILENAME
 
 ## Connect to the failed signal and share level statistics with levelUI.
 func _ready() -> void:
@@ -68,7 +71,7 @@ func _ready() -> void:
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.connect_level(self)
 
-	if load_level("memecore"):
+	if load_level(TEMPORARY_FILENAME):
 		print("Successfully loaded level: %s" % level_name)
 		print("BPM: %s" % bpm)
 		print("Speed: %s" % speed)
@@ -100,15 +103,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
 
 
+## Set which level to play when the scene loads.
+func set_level(filename) -> void:
+	TEMPORARY_FILENAME = filename
+
+
 ## Load a level, based on its file name (omit .txt from the file name you give).
 ## Returns if the level loaded successfully.
 func load_level(file_name: String) -> bool:
-	var file = FileAccess.open("res://Levels/%s.txt" % file_name, FileAccess.READ)
+	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)
 	var error_loading := false
 	
 	if file == null:
 		error_loading = true
-		push_error("Level file could not be found!")
+		push_error('Level file "%s" could not be found!' % file_name)
 	else:
 		var content = file.get_as_text()
 		file.close()

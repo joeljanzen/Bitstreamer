@@ -32,7 +32,7 @@ const BACKGROUND_BLUR_STRENGTH: float = 0.5
 
 const splash_text_filepath = "res://Resources/Text/splash_text.json"
 
-var _level_scene = preload("res://Scenes/level.tscn")
+var _level_select_scene = preload("res://Scenes/UI/level_select.tscn")
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 var _bit = preload("res://Scenes/bit.tscn")
 
@@ -142,7 +142,7 @@ func _on_play_button_pressed() -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
 	Bit.in_main_menu = false
-	get_tree().change_scene_to_node(_level_scene.instantiate())
+	get_tree().change_scene_to_node(_level_select_scene.instantiate())
 
 
 func _on_settings_button_pressed() -> void:

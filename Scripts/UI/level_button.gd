@@ -1,12 +1,12 @@
 class_name LevelButton
 extends Control
 
-@onready var _name_label = $CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/NamePanel/NameLabel
-@onready var _length_label = $CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/LengthLabel
-@onready var _bpm_label = $CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/BPMLabel
-@onready var _difficulty_label = $CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/DifficultyPanel/DifficultyLabel
-@onready var _speed_label = $CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/SpeedPanel/SpeedLabel
-@onready var _damage_label = $CanvasLayer/MarginContainer/Panel/MarginContainer/VBoxContainer/DamagePanel/DamageLabel
+@onready var _name_label = $Panel/MarginContainer/VBoxContainer/NamePanel/NameLabel
+@onready var _length_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/LengthLabel
+@onready var _bpm_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/BPMLabel
+@onready var _difficulty_label = $Panel/MarginContainer/VBoxContainer/DifficultyPanel/DifficultyLabel
+@onready var _speed_label = $Panel/MarginContainer/VBoxContainer/SpeedPanel/SpeedLabel
+@onready var _damage_label = $Panel/MarginContainer/VBoxContainer/DamagePanel/DamageLabel
 
 ## This level has been selected to play.
 signal button_pressed(level_info: LevelInfo)

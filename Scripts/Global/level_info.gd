@@ -48,7 +48,7 @@ var _is_valid := false
 func _init(filename: String) -> void:
 	file_name = filename
 	
-	var file = FileAccess.open("res://Levels/%s.txt" % filename, FileAccess.READ)
+	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)
 	
 	if file == null:
 		push_error("Level file could not be found!")
