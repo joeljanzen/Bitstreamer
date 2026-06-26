@@ -67,6 +67,11 @@ func show_UI():
 	_back_button.show()
 	_level_button_container.show()
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_STOP
+	
+	# In the event that the theme colors changed.
+	LevelButton.current_color_index = 0
+	for button: LevelButton in _level_button_container.get_children():
+		button.update_button_colors()
 
 
 ## Returns if the UI is currently visible.

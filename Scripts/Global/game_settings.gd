@@ -87,3 +87,9 @@ func set_crt_filter(enabled: bool) -> void:
 		_crt_shader.enable_shader()
 	elif _crt_shader.is_enabled:
 		_crt_shader.disable_shader()
+
+
+## Returns an array of all theme colors used in UI, in order of primary, 
+## secondary, and so on.
+func get_theme_colors() -> Array[Color]:
+	return [zero_bit_colour, one_bit_colour, enter_bit_colour]

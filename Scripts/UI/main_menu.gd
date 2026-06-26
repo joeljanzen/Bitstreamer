@@ -97,17 +97,17 @@ func _process(delta: float) -> void:
 		# choose from next (randomly, but with no repeats).
 		_title.modulate.a = 1
 		
-		# Chose a random color from the colors selected for 0, 1, and enter bits.
-		var title_colors = [GameSettings.zero_bit_colour, GameSettings.one_bit_colour, GameSettings.enter_bit_colour]
+		# Choose a random theme color for the title text.
+		var theme_colors = GameSettings.get_theme_colors()
 		# Remove the current color from the array.
-		title_colors.remove_at(title_colors.find(_title.modulate))
+		theme_colors.remove_at(theme_colors.find(_title.modulate))
 		# The same color could exist multiple times, in which case we remove it one
 		# more time.
-		var double_check = title_colors.find(_title.modulate)
+		var double_check = theme_colors.find(_title.modulate)
 		if double_check != -1:
-			title_colors.remove_at(double_check)
+			theme_colors.remove_at(double_check)
 		
-		_title.modulate = title_colors[randi_range(0, title_colors.size() - 1)]
+		_title.modulate = theme_colors[randi_range(0, theme_colors.size() - 1)]
 
 
 ## Play effects in time with the menu music.

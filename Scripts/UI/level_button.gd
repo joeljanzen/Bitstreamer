@@ -7,6 +7,9 @@ extends Control
 @onready var _difficulty_label = $Panel/MarginContainer/VBoxContainer/DifficultyPanel/DifficultyLabel
 @onready var _speed_label = $Panel/MarginContainer/VBoxContainer/SpeedPanel/SpeedLabel
 @onready var _damage_label = $Panel/MarginContainer/VBoxContainer/DamagePanel/DamageLabel
+@onready var _play_button = $Panel/MarginContainer/VBoxContainer/PlayButton
+
+@onready var _hover_button_sound = $HoverButton
 
 ## This level has been selected to play.
 signal button_pressed(level_info: LevelInfo)
@@ -14,6 +17,9 @@ signal button_focused
 
 ## Level info for this button.
 var level_info: LevelInfo
+
+## Cycle through the theme colors each time a new level button is made.
+static var current_color_index: int = 0
 
 
 ## Setup the level button with all level details. Call this after instantiation 
@@ -30,6 +36,23 @@ func _ready() -> void:
 	_difficulty_label.text = "Difficulty: " + _trim_decimals(level_info.difficulty)
 	_speed_label.text = "Speed: " + _trim_decimals(level_info.speed)
 	_damage_label.text = "Damage: " + str(level_info.damage)
+	
+	# Aesthetics
+	# Chose a random color from the colors selected for 0, 1, and enter bits.
+	var theme_colors = GameSettings.get_theme_colors()
+	_name_label.modulate = theme_colors[current_color_index % theme_colors.size()]
+	
+	current_color_index += 1
+	
+	_set_play_button_text_color()
+
+
+## Update the title color as the theme colors may have been changed.
+func update_button_colors() -> void:
+	var theme_colors = GameSettings.get_theme_colors()
+	_name_label.modulate = theme_colors[current_color_index % theme_colors.size()]
+	
+	current_color_index += 1
 
 
 ## Converts the level length in seconds to a string in minutes and seconds.
@@ -58,8 +81,48 @@ func _trim_decimals(value: float) -> String:
 
 
 func _on_play_button_pressed() -> void:
+	current_color_index = 0 # Resets the theme coloring cycle.
 	button_pressed.emit(level_info)
 
 
 func _on_play_button_mouse_entered() -> void:
+	_set_play_button_text_color()
+	
 	button_focused.emit()
+
+
+## Set the hover color of the button text.
+func _set_play_button_text_color() -> void:
+	# Choose a random theme color for the button text.
+	var theme_colors = GameSettings.get_theme_colors()
+	
+	# Ideally white should never be chosen as the hover color.
+	if theme_colors.size() > 1:
+		var white_index = theme_colors.find(Color("ffffff"))
+		if white_index > -1:
+			theme_colors.remove_at(white_index)
+			white_index = theme_colors.find(Color("ffffff"))
+			if white_index > -1:
+				theme_colors.remove_at(white_index)
+	
+	# Remove the current color from the array, if there are still multiple colors.
+	if theme_colors.size() > 1:
+		theme_colors.remove_at(theme_colors.find(_play_button.get_theme_color("font_hover_color")))
+		# The same color could exist multiple times, in which case we remove it one
+		# more time.
+		var double_check = theme_colors.find(_play_button.get_theme_color("font_hover_color"))
+		if double_check > -1:
+			theme_colors.remove_at(double_check)
+	
+	_play_button.add_theme_color_override("font_hover_color", theme_colors[randi_range(0, theme_colors.size() - 1)])
+
+
+func _on_mouse_entered() -> void:
+	_hover_button_sound.play()
+	scale = Vector2(1.03, 1.03)
+	rotation_degrees = randf_range(-1, 1)
+
+
+func _on_mouse_exited() -> void:
+	scale = Vector2(1, 1)
+	rotation = 0
