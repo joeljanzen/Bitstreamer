@@ -40,7 +40,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_ym2e5")
 tab_alignment = 1
-current_tab = 0
+current_tab = 4
 clip_tabs = false
 tab_focus_mode = 0
 tab_0/title = "   Video   "
@@ -51,6 +51,7 @@ tab_4/title = "  Theme  "
 tab_5/title = " x "
 
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
+visible = false
 layout_mode = 2
 script = ExtResource("3_7p8ph")
 metadata/_tab_index = 0
@@ -446,7 +447,6 @@ custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
 [node name="Theme" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1071803890]
-visible = false
 layout_mode = 2
 script = ExtResource("6_ijavf")
 metadata/_tab_index = 4
@@ -473,18 +473,21 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer" unique_id=109924548]
 layout_mode = 2
-text = "0 Bit Colour "
+size_flags_horizontal = 3
+text = "Zero Bit Colour (Primary) "
 
 [node name="ZeroBitColor" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1858436475 instance=ExtResource("7_ym2e5")]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
+size_flags_horizontal = 8
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer" unique_id=1998450233]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=194411347]
 layout_mode = 2
-text = "1 Bit Colour "
+size_flags_horizontal = 3
+text = "One Bit Colour (Secondary) "
 
 [node name="OneBitColor" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=382580455 instance=ExtResource("7_ym2e5")]
 custom_minimum_size = Vector2(300, 0)
@@ -495,7 +498,8 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1809711678]
 layout_mode = 2
-text = "Enter Bit Colour "
+size_flags_horizontal = 3
+text = "Enter Bit Colour (Tertiary) "
 
 [node name="EnterBitColor" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=993254860 instance=ExtResource("7_ym2e5")]
 custom_minimum_size = Vector2(300, 0)
@@ -506,6 +510,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=919301138]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Back Bit Colour "
 
 [node name="BackBitColor" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1879702794 instance=ExtResource("7_ym2e5")]
