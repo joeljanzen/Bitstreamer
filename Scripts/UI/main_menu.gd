@@ -32,6 +32,8 @@ const BACKGROUND_BLUR_STRENGTH: float = 0.5
 
 const splash_text_filepath = "res://Resources/Text/splash_text.json"
 
+# WARNING: if not preloaded this scene can cause a noticable delay (it has to
+# load all the level files and display the info).
 var _level_select_scene = preload("res://Scenes/UI/level_select.tscn")
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 var _bit = preload("res://Scenes/bit.tscn")

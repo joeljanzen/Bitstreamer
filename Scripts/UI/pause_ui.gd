@@ -9,8 +9,6 @@ extends Control
 ## Emitted when the resume button is pressed.
 signal resumed
 
-
-var _main_menu_scene = preload("res://Scenes/UI/main_menu.tscn")
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 
 
@@ -49,7 +47,7 @@ func _settings_closed() -> void:
 func _on_quit_pressed() -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
-	var menu_scene = _main_menu_scene.instantiate()
+	var menu_scene = load("res://Scenes/UI/main_menu.tscn").instantiate()
 	menu_scene.start_in_level_select = true
 	get_tree().change_scene_to_node(menu_scene)
 

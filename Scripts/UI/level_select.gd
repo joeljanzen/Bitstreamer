@@ -10,7 +10,6 @@ extends Control
 ## Emitted when the close button is pressed, or esc is pressed.
 signal selection_closed
 
-var _level_scene = preload("res://Scenes/level.tscn")
 var _level_button_scene = preload("res://Scenes/UI/level_button.tscn")
 
 ## An array of all level info
@@ -40,11 +39,16 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
 	
-	var level_scene: GameLevel = _level_scene.instantiate()
-	level_scene.set_level(level_info.file_name)
-	Bit.in_main_menu = false
-	LevelInfo.last_played = level_info
-	get_tree().change_scene_to_node(level_scene)
+	level_info.load_level_bits_and_delays()
+	
+	if level_info.is_valid():
+		var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
+		level_scene.set_level(level_info)
+		Bit.in_main_menu = false
+		LevelInfo.last_played = level_info
+		get_tree().change_scene_to_node(level_scene)
+	else:
+		push_error("Failed to load the level!")
 
 
 func _level_button_focused() -> void:

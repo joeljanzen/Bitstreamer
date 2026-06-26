@@ -38,9 +38,9 @@ var length: float = -1
 
 # Level playback information (not loaded by default).
 ## A queue of upcoming bits.
-var _bit_queue: Array[Bit.Type]
+var bit_queue: Array[Bit.Type]
 ## A queue of delays between sending bits.
-var _delay_queue: Array[float]
+var delay_queue: Array[float]
 ## The delay between a bit being sent and it reaching the cursor, in seconds.
 var _bit_time_to_cursor: float
 
@@ -66,20 +66,6 @@ func _init(filename: String) -> void:
 		
 		if _parse_level_info(lines):
 			_is_valid = true
-		
-		#if _parse_level_info(lines):
-			#if _parse_bits_and_delays(lines):
-				## We successfully loaded everything.
-				#PerformanceCalculator.set_difficulty(difficulty)
-				#
-				#bitstream_length = bit_queue.size()
-				#
-				#if level_length < 0:
-					## Calculate the level length and store it in the file, since the
-					## file didn't have it yet.
-					#level_length = _calc_level_length(delay_queue)
-					#if !_save_level_length(file_name, level_length):
-						#error_loading = true
 
 
 ## Loads the info for a level, given the lines in the level file.
@@ -188,28 +174,112 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 	return !error_loading
 
 
-## Load the bit and delay queues.
-func _parse_bits_and_delays() -> void:
-	## Copy code from level script here later, then remove from level.
-	pass
+## Loads the required bit and delay queues to play a level. Returns true if 
+## there were no issues, or false otherwise.
+func load_level_bits_and_delays() -> bool:
+	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)
+	var lines: PackedStringArray
+	
+	if file == null:
+		push_error("Level file could not be found!")
+		return false
+	else:
+		var content = file.get_as_text()
+		file.close()
+		
+		# Will contain empty lines, only so if something goes wrong the correct 
+		# line number with the error will be displayed.
+		lines = content.split("\n") 
+	
+	var error_loading := false
+	
+	var seconds_per_beat: float = 60.0 / bpm
+	_bit_time_to_cursor = PerformanceCalculator.set_approach_time(speed)
+	
+	for line: int in range(1, lines.size()):
+		var line_num = line + 1
+		# Ignore commented lines entirely.
+		if lines[line].begins_with("#") || lines[line].is_empty():
+			continue # This skips to the next iteration of the loop.
+		
+		var tokens := lines[line].split(",", false)
+		if tokens.size() != 2:
+			error_loading = true
+			push_error("Unexpected number of tokens on line %d: %s" % [line_num, lines[line]])
+			break
+		
+		var delay_token: String = tokens[0]
+		var bit_token = tokens[1]
+		
+		# Treat token as a raw float delay (in seconds).
+		if delay_token.begins_with("f"):
+			var delay_string = delay_token.erase(0,1)
+			if delay_string.is_valid_float():
+				delay_queue.push_back(float(delay_string))
+			else:
+				error_loading = true
+		else:
+			var fractional_delay = delay_token.split("/", false)
+			if fractional_delay.size() == 1:
+				# This is just a float, which is the number of beats
+				# the delay should be.
+				if fractional_delay[0].is_valid_float():
+					var delay_value = float(fractional_delay[0]) 
+					delay_queue.push_back(delay_value * seconds_per_beat)
+				else:
+					error_loading = true
+			elif fractional_delay.size() == 2:
+				# This is a fraction, containing a numerator and denominator
+				# indicating the number of beats the delay should be.
+				var delay_numerator: float
+				var delay_denominator: float
+				if fractional_delay[0].is_valid_int():
+					delay_numerator = float(fractional_delay[0])
+				else:
+					error_loading = true
+				
+				if !error_loading and fractional_delay[1].is_valid_int():
+					delay_denominator = float(fractional_delay[1])
+				else:
+					error_loading = true
+				
+				if !error_loading:
+					delay_queue.push_back(delay_numerator / delay_denominator * seconds_per_beat)
+			else:
+				error_loading = true
+		
+		if error_loading:
+			push_error("Delay not recognized on line %d: %s" % [line_num, delay_token])
+			break
+		
+		if delay_queue.size() == 1:
+			var difference = delay_queue[0] - _bit_time_to_cursor
+			if difference < 0:
+				error_loading = true
+				push_error("First delay of %.2f beats or %.2f seconds on line %d is not long enough due to the bit speed being too low. It should be at least %.2f beats or %.2f seconds long." % 
+						[(delay_queue[0] / seconds_per_beat), delay_queue[0], line_num, (_bit_time_to_cursor / seconds_per_beat), _bit_time_to_cursor])
+				break
+		
+		match bit_token:
+			"0":
+				bit_queue.push_back(Bit.Type.ZERO)
+			"1":
+				bit_queue.push_back(Bit.Type.ONE)
+			"enter":
+				bit_queue.push_back(Bit.Type.ENTER)
+			"back":
+				bit_queue.push_back(Bit.Type.BACK)
+			_:
+				error_loading = true
+				push_error("Bit type not recognized on line %d: %s" % [line_num, bit_token])
+				break
+	
+	if error_loading:
+		_is_valid = false
+	
+	return !error_loading
 
 
 ## Verify that the level information is valid before using it.
 func is_valid() -> bool:
 	return _is_valid
-
-
-## Returns the queue of upcoming bits.
-func get_bit_queue() -> Array[Bit.Type]:
-	if _bit_queue == null:
-		_parse_bits_and_delays()
-	
-	return _bit_queue
-
-
-## Returns the queue of delays between each bit.
-func get_delay_queue() -> Array[float]:
-	if _delay_queue == null:
-		_parse_bits_and_delays()
-	
-	return _delay_queue

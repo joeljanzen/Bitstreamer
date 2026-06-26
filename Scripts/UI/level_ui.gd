@@ -40,12 +40,12 @@ var _raw_score: int = 0
 var _max_accuracy: int = 0
 
 ## Contains statistics for the current level.
-var _level: GameLevel
+var _conductor: Conductor
 
 
 ## Connects the current level to the level UI.
-func connect_level(level: GameLevel) -> void:
-	_level = level
+func connect_conductor(conductor: Conductor) -> void:
+	_conductor = conductor
 
 
 ## Set the length of the level, used for the progress circle.
@@ -86,7 +86,7 @@ func _ready() -> void:
 
 ## Updates the level progress circle.
 func _process(_delta: float) -> void:
-	_progress_circle.value = _level.conductor.get_time()
+	_progress_circle.value = _conductor.get_time()
 
 
 ## Points have been scored. amount is the total score gained, and raw_amount is
