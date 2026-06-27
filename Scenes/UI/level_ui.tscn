@@ -28,6 +28,50 @@ script = ExtResource("1_4mllq")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=914261618]
 
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=2141488554]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_gw16p")
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Combo" type="Label" parent="CanvasLayer/MarginContainer" unique_id=414718411]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "0x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer" unique_id=1812975553]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/MarginContainer" unique_id=714599301]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Accuracy" type="Label" parent="CanvasLayer/MarginContainer/MarginContainer" unique_id=2048735439]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 40
+text = "Accuracy 100.00%"
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarginContainer" unique_id=38904613]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 97
+
 [node name="Combo" type="RichTextLabel" parent="CanvasLayer" unique_id=286627677]
 anchors_preset = 3
 anchor_left = 1.0
@@ -74,9 +118,9 @@ scroll_active = false
 horizontal_alignment = 2
 
 [node name="LevelProgress" type="TextureProgressBar" parent="CanvasLayer" unique_id=1693336910]
-offset_left = 60.0
+offset_left = 61.25
 offset_top = 18.0
-offset_right = 560.0
+offset_right = 561.25
 offset_bottom = 518.0
 scale = Vector2(0.2, 0.2)
 max_value = 0.0
@@ -92,9 +136,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = -6.0
-offset_top = -71.0
+offset_top = -68.0
 offset_right = 1394.0
-offset_bottom = -32.0
+offset_bottom = -29.0
 grow_vertical = 0
 theme = ExtResource("1_gw16p")
 theme_override_font_sizes/font_size = 35

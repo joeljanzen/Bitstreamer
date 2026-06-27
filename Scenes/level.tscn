@@ -36,9 +36,6 @@ texture = ExtResource("4_81xng")
 
 [node name="LevelUI" parent="." unique_id=1794658101 instance=ExtResource("2_81xng")]
 
-[node name="PlayArea" parent="." unique_id=1773739756 instance=ExtResource("3_wqkje")]
-position = Vector2(227.5, 103)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1513700562]
 environment = SubResource("Environment_81xng")
 
@@ -46,3 +43,6 @@ environment = SubResource("Environment_81xng")
 
 [node name="MusicQueue" type="Timer" parent="." unique_id=105400590]
 one_shot = true
+
+[node name="PlayArea" parent="." unique_id=1773739756 instance=ExtResource("3_wqkje")]
+position = Vector2(222.5, 97.5)
