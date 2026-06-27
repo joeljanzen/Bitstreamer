@@ -68,13 +68,17 @@ func set_difficulty(difficulty: float) -> void:
 	print("Okay hit window: +- %.2f ms" % clickable_range)
 
 
+## Get the approach time of bits given a speed.
+func calculate_approach_time(speed: float) -> float:
+	if speed <= 10:
+		return 3 - 0.25 * (speed - 1)
+	else:
+		return 0.75 - 0.125 * (speed - 10)
+
+
 ## Sets and returns the approach time of bits given a speed.
 func set_approach_time(speed: float) -> float:
-	if speed <= 10:
-		approach_time = 3 - 0.25 * (speed - 1)
-	else:
-		approach_time = 0.75 - 0.125 * (speed - 10)
-	
+	approach_time = calculate_approach_time(speed)
 	print("Approach time: %.2f ms" % (approach_time * 1000))
 	return approach_time
 
