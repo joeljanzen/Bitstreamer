@@ -328,7 +328,14 @@ func _new_line(move_down: bool) -> void:
 ## Add a string to the current active line on the terminal (the bit label).
 func _add_to_bit_label_line(string: String) -> void:
 	var curr_line = _line_num - 1
-	if _label_lines[curr_line].length() < MAX_BITS_DISPLAYED_PER_LINE:
+	
+	# Need to remove potential BBCode markup from the string to get its 
+	# actual length (error bits are colored with BBCode markup).
+	var temp_label = RichTextLabel.new()
+	temp_label.bbcode_enabled = true
+	temp_label.text = _label_lines[curr_line]
+	
+	if temp_label.get_parsed_text().length() < MAX_BITS_DISPLAYED_PER_LINE:
 		_label_lines[curr_line] += string
 
 
