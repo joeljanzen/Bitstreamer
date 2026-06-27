@@ -172,7 +172,7 @@ offset_bottom = 45.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-color = Color(0.4, 1, 1, 1)
+color = Color(0.2, 1, 1, 1)
 
 [node name="Button7" type="Button" parent="CanvasLayer/Panel/GridContainer" unique_id=657517328]
 custom_minimum_size = Vector2(100, 100)
@@ -195,7 +195,7 @@ offset_bottom = 45.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-color = Color(0, 0.4, 1, 1)
+color = Color(0.2, 0.6, 1, 1)
 
 [node name="Button8" type="Button" parent="CanvasLayer/Panel/GridContainer" unique_id=2037121171]
 custom_minimum_size = Vector2(100, 100)
@@ -218,7 +218,7 @@ offset_bottom = 45.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-color = Color(0, 0, 1, 1)
+color = Color(0, 0.2, 1, 1)
 
 [node name="Button9" type="Button" parent="CanvasLayer/Panel/GridContainer" unique_id=338021933]
 custom_minimum_size = Vector2(100, 100)
@@ -241,7 +241,7 @@ offset_bottom = 45.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-color = Color(0.4, 0.2, 1, 1)
+color = Color(0.6, 0, 1, 1)
 
 [node name="Button10" type="Button" parent="CanvasLayer/Panel/GridContainer" unique_id=323914717]
 custom_minimum_size = Vector2(100, 100)
@@ -287,7 +287,7 @@ offset_bottom = 45.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-color = Color(0.85882354, 0.13725491, 0.42352942, 1)
+color = Color(1, 0, 0.4, 1)
 
 [node name="Button12" type="Button" parent="CanvasLayer/Panel/GridContainer" unique_id=59414856]
 custom_minimum_size = Vector2(100, 100)

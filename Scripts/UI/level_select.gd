@@ -66,7 +66,6 @@ func hide_UI():
 	
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_IGNORE
 	GameSettings.last_level_select_position = _scroll_box.scroll_horizontal
-	print("saved last pos as %d" % GameSettings.last_level_select_position)
 
 
 ## Shows the level select UI.

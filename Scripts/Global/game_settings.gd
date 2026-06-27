@@ -37,39 +37,31 @@ var crt_filter := true
 ## The CRT shader singleton.
 var _crt_shader: flowerwallCRT
 
-## The colour of zero bits. Default is "#00FF00"
+## The colour of zero bits.
 var zero_bit_colour := Color("00FF00")
-## The colour of one bits. Default is "#DB236C"
-var one_bit_colour := Color("#DB236C")
-## The colour of enter bits. Default is "#FFFFFF"
+## The colour of one bits.
+var one_bit_colour := Color("#FF0066")
+## The colour of enter bits.
 var enter_bit_colour := Color("#FFFFFF")
-## The colour of back bits. Default is "#FFFFFF"
+## The colour of back bits.
 var back_bit_colour := Color("#FFFFFF")
 
 ## The colour displayed for correctly entered bits on the terminal.
-## Default is "#454545"
 var entered_bit_colour := "#454545"
 ## The colour displayed for incorrectly entered bits on the terminal.
-## Default is "#454545"
 var missed_bit_colour := "#454545"
 ## The colour displayed for incorrectly entered bits on the terminal.
-## Default is "#2E0606"
-var incorrect_bit_colour := "#2E0606"
+var incorrect_bit_colour := "#330000"
 
 ## The colour associated with perfect clicks.
-## Default is "C347FF"
 var perfect_click_colour := "FF66FF"
 ## The colour associated with good clicks.
-## Default is "0066FF"
-var good_click_colour := "0066FF"
+var good_click_colour := "3399FF"
 ## The colour associated with okay clicks.
-## Default is "FFCC00"
 var okay_click_colour := "FFCC00"
 ## The colour associated with missed clicks.
-## Default is "FFFFFF"
 var missed_click_colour := "FFFFFF"
 ## The colour associated with incorrect clicks.
-## Default is "FF0000"
 var incorrect_click_colour := "FF0000"
 
 # Other globals
