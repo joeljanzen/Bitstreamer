@@ -40,7 +40,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_ym2e5")
 tab_alignment = 1
-current_tab = 4
+current_tab = 0
 clip_tabs = false
 tab_focus_mode = 0
 tab_0/title = "   Video   "
@@ -51,7 +51,6 @@ tab_4/title = "  Theme  "
 tab_5/title = " x "
 
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
-visible = false
 layout_mode = 2
 script = ExtResource("3_7p8ph")
 metadata/_tab_index = 0
@@ -99,6 +98,7 @@ layout_mode = 2
 [node name="CRTFilter" type="CheckButton" parent="CanvasLayer/MarginContainer/TabContainer/Video/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=678862133]
 layout_mode = 2
 text = "CRT Filter "
+expand_icon = true
 
 [node name="Audio" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1114140775]
 visible = false
@@ -447,6 +447,7 @@ custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
 [node name="Theme" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1071803890]
+visible = false
 layout_mode = 2
 script = ExtResource("6_ijavf")
 metadata/_tab_index = 4

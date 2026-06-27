@@ -68,7 +68,7 @@ func show_UI() -> void:
 	
 	# In the event that theme colors were changed.
 	_health_bar.modulate = GameSettings.one_bit_colour
-	_progress_circle.tint_progress = GameSettings.zero_bit_colour
+	_progress_circle.tint_progress = GameSettings.one_bit_colour
 
 
 ## Hide the entire levelUI.
@@ -87,13 +87,7 @@ func _ready() -> void:
 	Signals.scored.connect(_scored)
 	Signals.missed.connect(_missed)
 	
-	
-	_progress_circle.tint_progress = GameSettings.zero_bit_colour
-	#var progress_image: Image = _progress_circle.texture_progress.get_image()
-	#
-	#progress_image.fill(GameSettings.back_bit_colour)
-	#progress_image.modul
-	#_progress_circle.texture_progress = ImageTexture.create_from_image(progress_image)
+	#_progress_circle.tint_progress = GameSettings.zero_bit_colour
 
 
 ## Updates the level progress circle.

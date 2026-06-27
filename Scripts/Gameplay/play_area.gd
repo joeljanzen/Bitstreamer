@@ -4,6 +4,7 @@ extends Node2D
 
 @onready var _cursor: AnimatedSprite2D = $Cursor
 @onready var _bit_label: RichTextLabel = $BitLabel
+@onready var _border: ColorRect = $Border
 @onready var _bit_click_sound: AudioStreamPlayer = $BitClick
 @onready var _bit_miss_sound: AudioStreamPlayer = $BitMiss
 @onready var _empty_click_sound: AudioStreamPlayer = $EmptyClick
@@ -61,6 +62,7 @@ func _ready() -> void:
 	_clear_bit_label_lines()
 	Signals.missed.connect(_missed_bit)
 	_bit_label.add_theme_color_override("default_color", Color(GameSettings.entered_bit_colour))
+	_border.color = GameSettings.zero_bit_colour
 	
 	set_cursor_animation(GameSettings.cursor_flicker)
 	
@@ -118,6 +120,11 @@ func _input(event: InputEvent) -> void:
 		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, 0)
 	elif event.is_action_pressed("spawn_back"):
 		send_bit(Bit.Type.BACK, DEBUG_BIT_SPEED, 0)
+
+
+## Updates the border color, in the event of theme color changes.
+func update_border_color() -> void:
+	_border.color = GameSettings.zero_bit_colour
 
 
 func set_cursor_animation(flicker: bool) -> void:
