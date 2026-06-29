@@ -70,8 +70,8 @@ func _ready() -> void:
 	_ending_cursor_y = _starting_cursor_y + _line_height * (MAX_LINE_NUM - 1)
 
 
-## Poll for level completion and ensure the cursor plays default animation.
-func _physics_process(_delta: float) -> void:
+## Ensure the cursor plays default animation and poll for level completion.
+func _process(_delta: float) -> void:
 	# Needed when the enter or back bit is missed, but an animation still plays.
 	# After that animation ends, this code brings us back to "flicker" or "static"
 	if !_cursor.is_playing():
@@ -80,7 +80,6 @@ func _physics_process(_delta: float) -> void:
 		elif _cursor.animation != "static":
 			_cursor.play("static")
 	
-	# Signals that the level has been completed.
 	if _last_bits_sent and _bitstream.is_empty():
 		no_bits_left.emit()
 
@@ -110,16 +109,6 @@ func _input(event: InputEvent) -> void:
 			_cursor.play("flicker")
 		else:
 			_cursor.play("static")
-	
-	# DEBUG!
-	if event.is_action_pressed("spawn_0_bit"):
-		send_bit(Bit.Type.ZERO, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
-	elif event.is_action_pressed("spawn_1_bit"):
-		send_bit(Bit.Type.ONE, DEBUG_BIT_SPEED, DEBUG_BIT_DAMAGE)
-	elif event.is_action_pressed("spawn_enter"):
-		send_bit(Bit.Type.ENTER, DEBUG_BIT_SPEED, 0)
-	elif event.is_action_pressed("spawn_back"):
-		send_bit(Bit.Type.BACK, DEBUG_BIT_SPEED, 0)
 
 
 ## Updates the border color, in the event of theme color changes.
