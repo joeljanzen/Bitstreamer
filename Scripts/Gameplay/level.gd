@@ -76,42 +76,6 @@ func set_level(level_information: LevelInfo) -> void:
 	level_info = level_information
 
 
-## Returns the length of the level, given its delay queue.
-## Uses 3 decimal places of precision.
-func _calc_level_length(level_delay_queue: Array[float]) -> float:
-	var length = level_delay_queue.reduce(func(sum, number): return sum + number, 0)
-	return snapped(length, 0.001)
-
-
-## Saves the level length to the specified level file, returning if the length
-## was saved successfully.
-func _save_level_length(file_name: String, length: float) -> bool:
-	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ_WRITE)
-	var error_loading := false
-	
-	if file == null:
-		error_loading = true
-		push_error("Level file could not be found!")
-	else:
-		var first_line: String = file.get_line()
-		file.seek(0) # Go back to the start of the file after getting that line.
-		var content: String = file.get_as_text()
-		
-		# Erase the first line entirely from content (it will be replaced later)
-		content = content.erase(0, content.find("\n", 0) + 1)
-		
-		# Write over the first line of the file, now with the level length.
-		var updated_first_line = first_line + ",length=" + str(length) + "\n"
-		
-		# Append the first line back and store everything back into the file.
-		var full_file = content.insert(0, updated_first_line)
-		if !file.store_string(full_file):
-			error_loading = true
-			push_error("Level length could not be saved to file!")
-	file.close()
-	return !error_loading
-
-
 ## Starts the music for the level. Optionally, an offset in seconds can be 
 ## given, which will skip to that point in the level and play from there.
 ## Must successfully call load_level with no errors for this func to work.

@@ -155,13 +155,18 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		if song_filename.is_empty():
 			error_loading = true
 			push_error("Song audio file could not be found!")
-		if length < 0:
+	
+	# Check this regardless of other errors, since this may be fixed by 
+	# recalculating the level length (otherwise it will push another error).
+	if length < 0:
+		if !_calculate_level_length():
 			error_loading = true
-			push_error("Level length could not be found!")
-		# Do not check for the level length to be empty here, but we will later, 
-		# once the delay queue is loaded. This is because in the case that level
-		# length has not been loaded (is not in the file) we can calculate it
-		# ourselves using the delay queue values.
+			push_error("Level length could not be calculated!")
+		elif length < 0:
+			error_loading = true
+			push_error("Level length calculated as %f was invalid!" % length)
+		else: # We calculated a valid length, save it to file.
+			_save_level_length()
 	
 	if !error_loading: 
 		# Try to load the song file.
@@ -172,6 +177,71 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 			push_error("Song file %s could not be found!" % song_filename)
 	
 	return !error_loading
+
+
+## Sets the length of the level, using its delay queue, returning if it was
+## successful. First calls load_level_bits_and_delays if those have not yet been
+## loaded. Uses 3 decimal places of precision.
+## Usually, the level length is already stored in the file, but in the event 
+## that the level length is not yet known or has changed, this will 
+## set the current level length.
+func _calculate_level_length() -> bool:
+	var loaded_delay_queue := true
+	if delay_queue.is_empty():
+		loaded_delay_queue = load_level_bits_and_delays()
+	
+	if loaded_delay_queue:
+		var level_length = delay_queue.reduce(func(sum, number): return sum + number, 0)
+		level_length = snapped(level_length, 0.001)
+		length = level_length
+		return true
+	else:
+		push_error("Level length could not be calculated!")
+		return false
+
+
+## Saves the level length to the this level's file, returning if the length
+## was saved successfully. Ensure the value of length is set before calling!
+## If a length tag (or even, multiple length tags) already exist in the file, 
+## it will replace all of those with the updated length tag.
+func _save_level_length() -> bool:
+	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ_WRITE)
+	var error_loading := false
+	
+	if file == null:
+		error_loading = true
+		push_error("Level file could not be found!")
+	else:
+		var first_line: String = file.get_line()
+		var content: String = file.get_as_text()
+		
+		# Erase the first line entirely from content (it will be replaced later)
+		content = content.erase(0, content.find("\n", 0) + 1)
+		
+		# Check if a length tag was already saved in the line to clear.
+		var line_tags: PackedStringArray = first_line.split(",")
+		for tag in line_tags:
+			if tag.begins_with("length="):
+				first_line = first_line.replace("," + tag, "")
+		
+		# Append the new level length to the end of the first line of the file.
+		var updated_first_line = first_line + ",length=" + str(length) + "\n"
+		
+		# Append the first line back and store everything back into the file.
+		var full_file = content.insert(0, updated_first_line)
+		
+		file.seek(0) # Go back to the start of the file after getting that line.
+		if !file.store_string(full_file):
+			error_loading = true
+			push_error("Level length could not be saved to file!")
+	file.close()
+	return !error_loading
+
+
+## Recalculates the length of this level and updates its file.
+func update_level_length() -> void:
+	_calculate_level_length()
+	_save_level_length()
 
 
 ## Loads the required bit and delay queues to play a level. Returns true if 
