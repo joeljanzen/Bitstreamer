@@ -25,6 +25,7 @@ var _timing_event_index: int = 0
 
 var TEST = 0
 
+
 ## Set the song to play.
 func set_song(song: AudioStream) -> void:
 	stream = song
@@ -32,7 +33,10 @@ func set_song(song: AudioStream) -> void:
 
 ## Play the song with a given offset value in seconds, and the index of the
 ## next event that should be played.
-func play_with_offset(offset: float, event_index: int) -> void:
+## Use this function to play the conductor with no offset by passing no 
+## arguments, instead of calling the inherited play() function.
+func play_with_offset(offset: float = 0, event_index: int = 0) -> void:
+	_time_delay_ends = 0
 	_timing_event_index = event_index
 	play(offset)
 

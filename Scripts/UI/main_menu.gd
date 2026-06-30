@@ -9,6 +9,7 @@ extends Control
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
 # Constants for animations that sync to the music.
+const SONG: AudioStream = preload("res://Resources/Audio/LevelTracks/Initiate.wav")
 const MUSIC_BPM: float = 128
 const SECONDS_PER_BEAT: float = 60.0 / MUSIC_BPM
 ## How often the conductor sends out beat timing events.
@@ -64,9 +65,9 @@ func _ready() -> void:
 	_splash_text_label.text = splash_text[randi_range(0, splash_text.size() - 1)]
 	
 	# Music.
-	_conductor.set_timed_event(0)
-	_conductor.play()
 	_conductor.connect("timed_event", _timed_event)
+	_conductor.connect("finished", _start_song)
+	_start_song()
 	
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
@@ -74,7 +75,6 @@ func _ready() -> void:
 	
 	if start_in_level_select:
 		_open_level_select()
-	
 
 
 ## Input handling.
@@ -83,6 +83,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		if level_select_node.UI_is_visible():
 			level_select_node.hide_UI()
 			_show_menu()
+
+
+## Start the song to play in the main menu.
+func _start_song() -> void:
+	_conductor.set_song(SONG)
+	_conductor.set_timed_event(0)
+	_conductor.play_with_offset()
 
 
 ## Controls title bit flickering.
