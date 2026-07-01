@@ -5,6 +5,7 @@ extends Control
 @onready var _canvas = $CanvasLayer
 @onready var _title = $MarginContainer/Title
 @onready var _splash_text_label = $SplashTextLabel
+@onready var _now_playing_label = $NowPlayingLabel
 @onready var _conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
@@ -81,6 +82,8 @@ func _unhandled_input(event: InputEvent) -> void:
 ## Start the song to play in the main menu.
 func _start_song() -> void:
 	var info: LevelInfo = LevelInfo.get_random_level_info()
+	
+	_now_playing_label.text = "Now playing\n\n" + info.song_name
 	
 	seconds_per_beat = 60.0 / info.bpm
 	beat_time = seconds_per_beat / 2

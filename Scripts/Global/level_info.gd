@@ -21,6 +21,8 @@ var file_name: String
 var level_name: String = ""
 ## The name of the audio file of the song to play.
 var song_filename: String = ""
+## THe name of the song (taken from the song filename).
+var song_name: String = ""
 ## The actual audio stream for the song of the level.
 var song: AudioStream
 ## The beats per minute of the music (good luck if the song changes bpm bro).
@@ -119,6 +121,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 			var check = tag.erase(0,5)
 			if check.is_valid_filename():
 				song_filename = check
+				song_name = check.trim_suffix(".wav")
 			else:
 				error_loading = true
 				push_error("%s is not a valid song filename" % check)

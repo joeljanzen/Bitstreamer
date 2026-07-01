@@ -98,13 +98,31 @@ clip_contents = true
 layout_mode = 0
 offset_left = 60.0
 offset_top = 200.0
-offset_right = 543.83185
-offset_bottom = 507.9391
+offset_right = 543.0
+offset_bottom = 500.0
 rotation = -0.06981317
 theme = ExtResource("1_i2xx2")
 theme_override_font_sizes/font_size = 35
 text = "funny splash text"
 horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="NowPlayingLabel" type="Label" parent="." unique_id=282127241]
+z_index = 1
+clip_contents = true
+layout_mode = 0
+offset_left = 1417.0
+offset_top = 760.0
+offset_right = 1900.0
+offset_bottom = 1060.0
+pivot_offset = Vector2(483, 300)
+theme = ExtResource("1_i2xx2")
+theme_override_font_sizes/font_size = 35
+text = "NOW PLAYING
+
+ur mother"
+horizontal_alignment = 2
+vertical_alignment = 2
 autowrap_mode = 3
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
