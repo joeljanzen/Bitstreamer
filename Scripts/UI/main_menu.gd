@@ -8,23 +8,10 @@ extends Control
 @onready var _conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
-# Constants for animations that sync to the music.
-const SONG: AudioStream = preload("res://Resources/Audio/LevelTracks/Initiate.wav")
-const MUSIC_BPM: float = 128
-const SECONDS_PER_BEAT: float = 60.0 / MUSIC_BPM
-## How often the conductor sends out beat timing events.
-const BEAT_TIME: float = SECONDS_PER_BEAT / 2
-## How many beats it takes for the bit to cross the screen.
-const BIT_TIME_TO_CROSS_SCREEN: float = BEAT_TIME * 8
 ## The number of pixels below the top of screen/above the bottom of screen that 
 ## bits can spawn.
 const BIT_SPAWN_MARGIN: int = 75
-## Once this many bits have been sent, send an enter bit across the screen and 
-## reset the interval.
-const ENTER_BIT_INTERVAL: int = 15
-## Which beat (given by BEAT_TIME) to start pulsing the title.
-const START_TITLE_PULSE: int = 12
-## Title pulse rate, as the number of beats (given by BEAT_TIME) that have to 
+## Title pulse rate, as the number of beats (given by beat_time var) that have to 
 ## pass before another title pulse occurs. Cannot be lower than 1.
 const TITLE_PULSE_RATE: int = 2
 
@@ -41,13 +28,19 @@ var _bit = preload("res://Scenes/bit.tscn")
 
 var level_select_node: Control
 
-## The number of bits that have been sent since the last enter bit.
-## Start at a different value than zero to offset when the first enter is sent.
-var _bit_interval = 2
+# Used in animations that sync to the music.
+## How many seconds pass between each beat
+var seconds_per_beat: float
+## How often the conductor sends out beat timing events.
+var beat_time: float
+## How many beats it takes for the bit to cross the screen.
+var bit_time_to_cross_screen: float
 
-var _pulse_started := false
-var _pulse_title := false
-var _pulse_interval = 0
+## The number of bits that have been sent since the last enter bit.
+var _bit_interval: int = 0
+## Once this many bits have been sent, send an enter bit across the screen and 
+## reset the interval to a new, slightly randomized value.
+var _enter_bit_interval: int = 15
 
 ## Dictionary of splash text messages.
 var splash_text: Array
@@ -87,23 +80,29 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## Start the song to play in the main menu.
 func _start_song() -> void:
-	_conductor.set_song(SONG)
-	_conductor.set_timed_event(0)
-	_conductor.play_with_offset()
-
-
-## Controls title bit flickering.
-func _process(delta: float) -> void:
-	if _pulse_started and _title.modulate.a > 0.5:
-		# Divide by 2 since we're only fading to an alpha of 0.5, not 0.
-		_title.modulate.a -= delta / BEAT_TIME / TITLE_PULSE_RATE / 2
+	var info: LevelInfo = LevelInfo.get_random_level_info()
 	
-	if _pulse_title: # The conductor send a timing event!
-		_pulse_title = false
+	seconds_per_beat = 60.0 / info.bpm
+	beat_time = seconds_per_beat / 2
+	bit_time_to_cross_screen = beat_time * 8
+	
+	_conductor.set_song(info.song)
+	_conductor.play_with_offset()
+	_conductor.set_timed_event(0)
+
+
+## Fades title bit alpha. When title pulses its alpha is reset.
+func _process(delta: float) -> void:
+	_title.modulate.a -= delta / beat_time / TITLE_PULSE_RATE / 2
+
+
+## Trigger a title pulse.
+func _pulse_title(event_index: int) -> void:
+	if event_index % TITLE_PULSE_RATE == 0:
 		# Reset alpha so we can compare this color with the other colors to
 		# choose from next (randomly, but with no repeats).
 		_title.modulate.a = 1
-		
+	
 		# Choose a random theme color for the title text.
 		var theme_colors = GameSettings.get_theme_colors()
 		# Remove the current color from the array.
@@ -120,18 +119,9 @@ func _process(delta: float) -> void:
 ## Play effects in time with the menu music.
 func _timed_event(event_index: int) -> void:
 	_send_random_bit()
+	_pulse_title(event_index)
 	
-	# Send the first pulse
-	if event_index == START_TITLE_PULSE:
-		_pulse_started = true
-		_pulse_title = true
-	elif event_index >= START_TITLE_PULSE:
-		_pulse_interval += 1
-		if !_pulse_title and _pulse_interval >= TITLE_PULSE_RATE:
-			_pulse_title = true
-			_pulse_interval = 0
-	
-	_conductor.set_timed_event(BEAT_TIME)
+	_conductor.set_timed_event(beat_time)
 
 
 ## Sends a random bit across the screen, or an enter bit at regular intervals.
@@ -143,15 +133,17 @@ func _send_random_bit() -> void:
 	var y_value = randi_range(BIT_SPAWN_MARGIN, viewport_height - BIT_SPAWN_MARGIN)
 	
 	var bit_type
-	if _bit_interval < ENTER_BIT_INTERVAL:
+	if _bit_interval < _enter_bit_interval:
 		_bit_interval += 1
 		bit_type = randi_range(0, 1)
 	else:
 		bit_type = Bit.Type.ENTER
 		_bit_interval = 0
+		_enter_bit_interval = randi_range(4,16)
+		
 	
 	add_child(new_bit)
-	new_bit.create(bit_type, y_value, 0, BIT_TIME_TO_CROSS_SCREEN, 0)
+	new_bit.create(bit_type, y_value, 0, bit_time_to_cross_screen, 0)
 
 
 ## Loads the array of splash text messages. Returns nothing if it fails.

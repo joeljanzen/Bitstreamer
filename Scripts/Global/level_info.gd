@@ -238,6 +238,26 @@ func _save_level_length() -> bool:
 	return !error_loading
 
 
+## Returns the info for a random level. Will never return the same level twice.
+## This sets the value of the static variable last_played to whatever it 
+## returns.
+static func get_random_level_info() -> LevelInfo:
+	# Load all level info filenames
+	var level_filenames: PackedStringArray = DirAccess.get_files_at("res://Levels")
+	
+	# Pick one
+	var random_index = randi_range(0, level_filenames.size() - 1)
+	
+	# Ensure you never get the same one twice in a row.
+	if last_played != null:
+		while level_filenames[random_index] == last_played.file_name:
+			level_filenames.remove_at(random_index)
+			random_index = randi_range(0, level_filenames.size() - 1)
+	
+	last_played = LevelInfo.new(level_filenames[random_index])
+	return last_played
+
+
 ## Recalculates the length of this level and updates its file.
 func update_level_length() -> void:
 	_calculate_level_length()
