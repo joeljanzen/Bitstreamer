@@ -107,23 +107,34 @@ text = "funny splash text"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="NowPlayingLabel" type="Label" parent="." unique_id=282127241]
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=146589177]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="NowPlayingLabel" type="RichTextLabel" parent="MarginContainer2" unique_id=128567502]
 z_index = 1
-clip_contents = true
-layout_mode = 0
-offset_left = 1417.0
-offset_top = 760.0
-offset_right = 1900.0
-offset_bottom = 1060.0
-pivot_offset = Vector2(483, 300)
+layout_mode = 2
+size_flags_vertical = 8
 theme = ExtResource("1_i2xx2")
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/normal_font_size = 35
 text = "NOW PLAYING
 
 ur mother"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 2
 vertical_alignment = 2
-autowrap_mode = 3
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
 stream = ExtResource("4_4pqbp")

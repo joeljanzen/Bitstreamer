@@ -5,7 +5,7 @@ extends Control
 @onready var _canvas = $CanvasLayer
 @onready var _title = $MarginContainer/Title
 @onready var _splash_text_label = $SplashTextLabel
-@onready var _now_playing_label = $NowPlayingLabel
+@onready var _now_playing_label = $MarginContainer2/NowPlayingLabel
 @onready var _conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
