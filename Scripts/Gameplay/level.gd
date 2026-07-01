@@ -129,8 +129,8 @@ func start_level(level_offset: float = 0) -> void:
 		 # the level.
 		_play_area.override_line_num(curr_line)
 		
-		conductor.set_timed_event(total_time)
 		conductor.play_with_offset(level_offset, event_index)
+		conductor.set_timed_event(total_time)
 
 
 ## The next timed event has been received by the conductor. Sends the next bit

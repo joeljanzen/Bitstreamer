@@ -55,7 +55,8 @@ func get_time() -> float:
 
 
 ## Given a delay, sends out the delay_end signal once after the delay has 
-## passed.
+## passed. WARNING: You must first call play_with_offset before setting any 
+## timed events!
 func set_timed_event(delay: float) -> void:
 	_waiting_for_delay = true
 	_time_delay_ends += delay
