@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bmyyd40hpvw2l"]
 
 [ext_resource type="Script" uid="uid://b2lfog7dafrx7" path="res://Scripts/Gameplay/play_area.gd" id="1_5dgnu"]
+[ext_resource type="Texture2D" uid="uid://cang3sh4d8huq" path="res://Resources/Sprites/UI/play_area_background.jpg" id="2_2f6dp"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_3d5pw"]
-[ext_resource type="Texture2D" uid="uid://d015jsa3p8wuf" path="res://Resources/Sprites/UI/play_area_background_no_border.jpg" id="3_1mtkj"]
 [ext_resource type="Texture2D" uid="uid://kbqeqckojl7p" path="res://Resources/Sprites/Cursor/cursor_cannot_enter.png" id="3_27jp8"]
 [ext_resource type="Texture2D" uid="uid://ciucl04ht3bcx" path="res://Resources/Sprites/Cursor/cursor_click_inverted.png" id="3_hwaoc"]
 [ext_resource type="Texture2D" uid="uid://dhpg40av67qu2" path="res://Resources/Sprites/Cursor/cursor_click.png" id="4_hwaoc"]
@@ -81,9 +81,9 @@ light_mask = 3
 script = ExtResource("1_5dgnu")
 
 [node name="Border" type="ColorRect" parent="." unique_id=1944301161]
-custom_minimum_size = Vector2(1475, 885)
-offset_right = 1465.0
-offset_bottom = 875.0
+custom_minimum_size = Vector2(1505, 915)
+offset_right = 1505.0
+offset_bottom = 915.0
 pivot_offset = Vector2(732.5, 437.5)
 color = Color(0, 1, 0, 1)
 
@@ -91,35 +91,35 @@ color = Color(0, 1, 0, 1)
 light_mask = 3
 offset_left = 5.0
 offset_top = 5.0
-offset_right = 1470.0
-offset_bottom = 736.0
-texture = ExtResource("3_1mtkj")
+offset_right = 1500.0
+offset_bottom = 910.0
+texture = ExtResource("2_2f6dp")
 
 [node name="BitLabel" type="RichTextLabel" parent="." unique_id=984305221]
-offset_left = 35.0
-offset_top = 29.0
-offset_right = 1444.0
-offset_bottom = 856.0
+offset_left = 50.0
+offset_top = 44.0
+offset_right = 1459.0
+offset_bottom = 871.0
 theme = ExtResource("2_3d5pw")
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_constants/line_separation = 3
 theme_override_font_sizes/normal_font_size = 80
 bbcode_enabled = true
-text = "01010101010010010101010100101011
+text = "10
 0
 1
-1
+
 0
+1
 
 1
 0
-1
-0010"
+1"
 scroll_active = false
 
 [node name="Cursor" type="AnimatedSprite2D" parent="." unique_id=364053683]
 light_mask = 2
-position = Vector2(23, 63)
+position = Vector2(38, 78)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
 animation = &"flicker"
