@@ -39,16 +39,14 @@ theme_override_constants/margin_bottom = 100
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_ym2e5")
-tab_alignment = 1
 current_tab = 0
 clip_tabs = false
-tab_focus_mode = 0
+switch_on_drag_hover = false
 tab_0/title = "   Video   "
 tab_1/title = "   Audio   "
 tab_2/title = "  Gameplay  "
 tab_3/title = "  Controls  "
 tab_4/title = "  Theme  "
-tab_5/title = " x "
 
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
 layout_mode = 2
@@ -325,7 +323,6 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
-focus_mode = 0
 theme = ExtResource("2_ym2e5")
 text = " 0 "
 
@@ -346,7 +343,6 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
-focus_mode = 0
 theme = ExtResource("2_ym2e5")
 text = " 1 "
 
@@ -367,7 +363,6 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
-focus_mode = 0
 theme = ExtResource("2_ym2e5")
 text = " Enter "
 
@@ -388,7 +383,6 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
-focus_mode = 0
 theme = ExtResource("2_ym2e5")
 text = " Up "
 
@@ -438,7 +432,6 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
-focus_mode = 0
 theme = ExtResource("2_ym2e5")
 text = " Tab "
 
@@ -517,12 +510,6 @@ text = "Back Bit Colour "
 [node name="BackBitColor" parent="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1879702794 instance=ExtResource("7_ym2e5")]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-
-[node name="x" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1288011058]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 5
-metadata/_tab_name = " x "
 
 [node name="BackButton" type="Button" parent="CanvasLayer" unique_id=1920771885]
 z_index = 3

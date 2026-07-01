@@ -2,6 +2,8 @@ class_name SettingsUI
 extends Control
 ## Allows the player to change settings while paused or in the main menu.
 
+@onready var _tab_container = $CanvasLayer/MarginContainer/TabContainer
+
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
@@ -9,6 +11,11 @@ extends Control
 signal settings_closed
 
 const exit_tab_index = 5
+
+
+## Set the tab to whatever it last was on load.
+func _ready() -> void:
+	_tab_container.current_tab = GameSettings.last_settings_tab
 
 
 ## Input handling.
@@ -19,19 +26,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 ## A tab was clicked.
-func _on_tab_container_tab_clicked(tab: int) -> void:
+func _on_tab_container_tab_clicked(_tab: int) -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
-	if tab == exit_tab_index:
-		_close_settings()
 
 
 func _on_tab_container_tab_hovered(_tab: int) -> void:
 	_menu_focus_sound.play()
 
 
-## Closes the settings tab.
+## Closes the settings tab (also saves the last tab the user was in).
 func _close_settings() -> void:
+	GameSettings.last_settings_tab = _tab_container.current_tab
 	settings_closed.emit()
 	queue_free()
 

@@ -68,6 +68,7 @@ var incorrect_click_colour := "FF0000"
 ## The last position the player was on the level selection menu (on the 
 ## scrollbar).
 var last_level_select_position: int = 0
+var last_settings_tab: int = 0
 
 
 ## Connect the Flowerwall CRT script when it is loaded.
