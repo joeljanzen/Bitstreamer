@@ -77,7 +77,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 	var error_loading := false
 	
 	for tag: String in level_data:
-		if tag.contains("name="):
+		if tag.begins_with("name="):
 			var check = tag.erase(0, 5) # Erases "name=" from the token.
 			if !check.is_empty():
 				level_name = check
@@ -85,7 +85,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("Level name cannot be empty")
 				break
-		elif tag.contains("bpm="):
+		elif tag.begins_with("bpm="):
 			var check = tag.erase(0,4)
 			if check.is_valid_float() and float(check) > 0:
 				bpm = float(check)
@@ -93,7 +93,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("%s is not a valid BPM" % check)
 				break
-		elif tag.contains("speed="):
+		elif tag.begins_with("speed="):
 			var check = tag.erase(0,6)
 			if check.is_valid_float() and float(check) >= 1 and float(check) <= SPEED_MAX:
 				speed = float(check)
@@ -101,7 +101,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("%s is not a valid speed" % check)
 				break
-		elif tag.contains("diff="):
+		elif tag.begins_with("diff="):
 			var check = tag.erase(0,5)
 			if check.is_valid_float() and float(check) >= 0 and float(check) <= DIFFICULTY_MAX:
 				difficulty = float(check)
@@ -109,7 +109,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("%s is not a valid difficulty" % check)
 				break
-		elif tag.contains("dmg="):
+		elif tag.begins_with("dmg="):
 			var check = tag.erase(0,4)
 			if check.is_valid_int() and int(check) >= 0:
 				damage = min(int(check), DAMAGE_MAX)
@@ -117,20 +117,26 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("%s is not a valid bit damage" % check)
 				break
-		elif tag.contains("song="):
+		elif tag.begins_with("song="):
 			var check = tag.erase(0,5)
 			if check.is_valid_filename():
 				song_filename = check
-				song_name = check.trim_suffix(".wav")
 			else:
 				error_loading = true
 				push_error("%s is not a valid song filename" % check)
 				break
-		elif tag.contains("length="):
+		elif tag.begins_with("song_name="):
+			var check = tag.erase(0,10)
+			if !check.is_empty():
+				song_name = check
+			else:
+				error_loading = true
+				push_error("Level song name should not be empty")
+				break
+		elif tag.begins_with("length="):
 			var check = tag.erase(0,7)
 			if check.is_valid_float() and float(check) > 0:
 				length = float(check)
-				
 			else:
 				error_loading = true
 				push_error("%s is not a valid level length" % check)
@@ -158,6 +164,13 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		if song_filename.is_empty():
 			error_loading = true
 			push_error("Song audio file could not be found!")
+		if song_name.is_empty():
+			if !song_filename.is_empty():
+				push_error("Song name could not be found! It will be substituted with the song filename.")
+				song_name = song_filename.trim_suffix(".wav").trim_suffix(".mp3")
+			else:
+				push_error("Song name could not be found!")
+				error_loading = true
 	
 	# Check this regardless of other errors, since this may be fixed by 
 	# recalculating the level length (otherwise it will push another error).

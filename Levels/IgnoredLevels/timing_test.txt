@@ -1,40 +1,39 @@
-name=Enters Test,bpm=100,speed=7.5,diff=10,dmg=1,song=Tutorial.wav,length=43.2
+name=Timing Test,bpm=100,speed=7.5,diff=10,dmg=1,song=Tutorial.wav,song_name=timingtestsong,length=40.8
 
-# Simply for testing what happens when you spam a ton of enters.
-# The zeroes should always be sent at the first line, otherwise something went
-# wrong.
+# Simply for testing that timing and accuracy is accurate enough
+# (among other things this may prove useful for)
 
-8,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
+4,0
 1,0
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
 1,0
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
-1,enter
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
+1,0
 1,enter
 
 # Faster!
