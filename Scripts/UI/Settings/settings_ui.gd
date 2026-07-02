@@ -12,10 +12,11 @@ signal settings_closed
 
 const exit_tab_index = 5
 
+static var _last_settings_tab: int = 0
 
 ## Set the tab to whatever it last was on load.
 func _ready() -> void:
-	_tab_container.current_tab = GameSettings.last_settings_tab
+	_tab_container.current_tab = _last_settings_tab
 
 
 ## Input handling.
@@ -37,7 +38,7 @@ func _on_tab_container_tab_hovered(_tab: int) -> void:
 
 ## Closes the settings tab (also saves the last tab the user was in).
 func _close_settings() -> void:
-	GameSettings.last_settings_tab = _tab_container.current_tab
+	_last_settings_tab = _tab_container.current_tab
 	settings_closed.emit()
 	queue_free()
 
