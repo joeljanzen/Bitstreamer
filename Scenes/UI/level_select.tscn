@@ -35,9 +35,9 @@ scroll_deadzone = 35
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/ScrollContainer" unique_id=768856825]
 layout_mode = 2
-theme_override_constants/margin_left = 200
+theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 200
+theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 100
 
 [node name="LevelButtonContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/ScrollContainer/MarginContainer" unique_id=1129383610]

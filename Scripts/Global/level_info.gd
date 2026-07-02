@@ -17,11 +17,11 @@ static var last_played: LevelInfo
 
 ## The file storing the info for this level.
 var file_name: String
-## The name of the level.
-var level_name: String = ""
+## The version of the level (used to distinguish levels that use the same song).
+var version: String = "Normal"
 ## The name of the audio file of the song to play.
 var song_filename: String = ""
-## THe name of the song (taken from the song filename).
+## THe name of the song.
 var song_name: String = ""
 ## The actual audio stream for the song of the level.
 var song: AudioStream
@@ -84,13 +84,30 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 	var error_loading := false
 	
 	for tag: String in level_data:
-		if tag.begins_with("name="):
-			var check = tag.erase(0, 5) # Erases "name=" from the token.
+		if tag.begins_with("song_name="): 
+			var check = tag.erase(0,10) # Erases "song_name=" from the token.
 			if !check.is_empty():
-				level_name = check
+				song_name = check
 			else:
 				error_loading = true
-				push_error("Level name cannot be empty")
+				push_error("Level song name should not be empty")
+				break
+		elif tag.begins_with("song="):
+			var check = tag.erase(0,5)
+			if check.is_valid_filename():
+				song_filename = check
+			else:
+				error_loading = true
+				push_error("%s is not a valid song filename" % check)
+				break
+		# This tag is optional (default version is "Normal").
+		elif tag.begins_with("version="):
+			var check = tag.erase(0, 8) 
+			if !check.is_empty():
+				version = check
+			else:
+				error_loading = true
+				push_error("Level version cannot be empty")
 				break
 		elif tag.begins_with("bpm="):
 			var check = tag.erase(0,4)
@@ -124,22 +141,6 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("%s is not a valid bit damage" % check)
 				break
-		elif tag.begins_with("song="):
-			var check = tag.erase(0,5)
-			if check.is_valid_filename():
-				song_filename = check
-			else:
-				error_loading = true
-				push_error("%s is not a valid song filename" % check)
-				break
-		elif tag.begins_with("song_name="):
-			var check = tag.erase(0,10)
-			if !check.is_empty():
-				song_name = check
-			else:
-				error_loading = true
-				push_error("Level song name should not be empty")
-				break
 		elif tag.begins_with("length="):
 			var check = tag.erase(0,7)
 			if check.is_valid_float() and float(check) > 0:
@@ -161,9 +162,13 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 	
 	if !error_loading:
 		# Check that all data was correctly loaded.
-		if level_name.is_empty():
-			error_loading = true
-			push_error("Level name could not be found!")
+		if song_name.is_empty():
+			if !song_filename.is_empty():
+				push_error("Song name could not be found! It will be substituted with the song filename.")
+				song_name = song_filename.trim_suffix(".wav").trim_suffix(".mp3")
+			else:
+				push_error("Song name could not be found!")
+				error_loading = true
 		if bpm < 0:
 			error_loading = true
 			push_error("Level BPM could not be found!")
@@ -179,13 +184,6 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		if song_filename.is_empty():
 			error_loading = true
 			push_error("Song audio file could not be found!")
-		if song_name.is_empty():
-			if !song_filename.is_empty():
-				push_error("Song name could not be found! It will be substituted with the song filename.")
-				song_name = song_filename.trim_suffix(".wav").trim_suffix(".mp3")
-			else:
-				push_error("Song name could not be found!")
-				error_loading = true
 	
 	# Check this regardless of other errors, since this may be fixed by 
 	# recalculating the level length (otherwise it will push another error).
