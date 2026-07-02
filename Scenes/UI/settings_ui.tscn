@@ -39,7 +39,7 @@ theme_override_constants/margin_bottom = 100
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_ym2e5")
-current_tab = 0
+current_tab = 2
 clip_tabs = false
 switch_on_drag_hover = false
 tab_0/title = "   Video   "
@@ -49,6 +49,7 @@ tab_3/title = "  Controls  "
 tab_4/title = "  Theme  "
 
 [node name="Video" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=1716415834]
+visible = false
 layout_mode = 2
 script = ExtResource("3_7p8ph")
 metadata/_tab_index = 0
@@ -178,7 +179,6 @@ layout_mode = 2
 text = " 100%"
 
 [node name="Gameplay" type="Control" parent="CanvasLayer/MarginContainer/TabContainer" unique_id=702599717]
-visible = false
 layout_mode = 2
 script = ExtResource("5_o3mvw")
 metadata/_tab_index = 2
@@ -205,14 +205,14 @@ layout_mode = 2
 
 [node name="BitClickEffect" type="CheckButton" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer" unique_id=200676618]
 layout_mode = 2
-text = "Bit Click Effect "
+text = "Click Accuracy Indicator "
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer" unique_id=1980666664]
 layout_mode = 2
 
 [node name="IgnoresPerfectClicks" type="CheckButton" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=704691199]
 layout_mode = 2
-text = "Ignore Effect For Perfect Clicks "
+text = "Accuracy Indicator Ignores Perfect Clicks "
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer" unique_id=684171159]
 layout_mode = 2
