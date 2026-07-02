@@ -74,7 +74,7 @@ func _init(filename: String) -> void:
 		
 		# Uncomment this line to reload the level length and bit count of every 
 		# single level and write it back to file.
-		update_level_length_and_bit_count()
+		#update_level_length_and_bit_count()
 
 
 ## Loads the info for a level, given the lines in the level file.

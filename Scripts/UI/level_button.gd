@@ -2,6 +2,7 @@ class_name LevelButton
 extends Control
 
 @onready var _name_label = $Panel/MarginContainer/VBoxContainer/NamePanel/NameLabel
+@onready var _bit_count_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/BitCountLabel
 @onready var _length_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/LengthLabel
 @onready var _bpm_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/BPMLabel
 @onready var _difficulty_label = $Panel/MarginContainer/VBoxContainer/DifficultyPanel/DifficultyLabel
@@ -31,6 +32,7 @@ func setup(level_information: LevelInfo) -> void:
 ## Fills all label text with level info.
 func _ready() -> void:
 	_name_label.text = level_info.level_name
+	_bit_count_label.text = str(level_info.bit_count) + " bits"
 	_length_label.text = _float_as_time(level_info.length)
 	_bpm_label.text = _trim_decimals(level_info.bpm) + " BPM"
 	_difficulty_label.text = "Difficulty: " + _trim_decimals(level_info.difficulty)

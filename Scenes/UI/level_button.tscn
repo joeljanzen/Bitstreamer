@@ -70,13 +70,19 @@ clip_text = true
 layout_mode = 2
 size_flags_vertical = 4
 
+[node name="BitCountLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1127836204]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "42 bits"
+
 [node name="LengthLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2082293783]
 layout_mode = 2
-size_flags_horizontal = 2
-text = "Length: 42s"
+size_flags_horizontal = 6
+text = "42s"
 
 [node name="BPMLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1654100771]
 layout_mode = 2
+size_flags_horizontal = 6
 text = "100 BPM"
 
 [node name="DifficultyPanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=61150594]
