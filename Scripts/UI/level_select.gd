@@ -34,6 +34,21 @@ func _ready() -> void:
 			level_button.connect("button_pressed", _level_button_pressed)
 			level_button.connect("button_focused", _level_button_focused)
 			_level_button_container.add_child(level_button)
+	
+	_sort_levels_by_comparator(_compare_level_difficulty)
+
+
+## Rearranges the children of the button container based on the comparator 
+## function passed (it should take 2 array elements and return if the first 
+## should come before the second).
+func _sort_levels_by_comparator(comparator: Callable) -> void:
+	var children: Array[Node] = _level_button_container.get_children()
+	
+	children.sort_custom(comparator)
+	
+	# Rearrange children appropriately
+	for i in range(children.size()):
+		_level_button_container.move_child(children[i], i)
 
 
 ## Start the level that has been selected.
@@ -97,3 +112,34 @@ func _on_back_button_pressed() -> void:
 
 func _on_back_button_mouse_entered() -> void:
 	_menu_focus_sound.play()
+
+# Various comparator functions, for sorting levels by various properties.
+
+## Compares 2 levels based on their name, in alphabetical order.
+func _compare_level_name(a: LevelButton, b: LevelButton) -> bool:
+	return a.level_info.song_name < b.level_info.song_name
+
+
+## Compares 2 levels based on their speed, from low to high.
+func _compare_level_speed(a: LevelButton, b: LevelButton) -> bool:
+	return a.level_info.speed < b.level_info.speed
+
+
+## Compares 2 levels based on their difficulty, from low to high.
+func _compare_level_difficulty(a: LevelButton, b: LevelButton) -> bool:
+	return a.level_info.difficulty < b.level_info.difficulty
+
+
+## Compares 2 levels based on their damage, from low to high.
+func _compare_level_damage(a: LevelButton, b: LevelButton) -> bool:
+	return a.level_info.damage < b.level_info.damage
+
+
+## Compares 2 levels based on their length (in seconds), from low to high.
+func _compare_level_length(a: LevelButton, b: LevelButton) -> bool:
+	return a.level_info.length < b.level_info.length
+
+
+## Compares 2 levels based on their bit count, from low to high.
+func _compare_level_bit_count(a: LevelButton, b: LevelButton) -> bool:
+	return a.level_info.bit_count < b.level_info.bit_count
