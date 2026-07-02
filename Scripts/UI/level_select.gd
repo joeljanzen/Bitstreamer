@@ -3,12 +3,17 @@ extends Control
 @onready var _level_button_container = $CanvasLayer/HBoxContainer/ScrollContainer/MarginContainer/LevelButtonContainer
 @onready var _back_button = $CanvasLayer/BackButton
 @onready var _scroll_box = $CanvasLayer/HBoxContainer/ScrollContainer
+@onready var _filters_panel = $CanvasLayer/FiltersPanel
+@onready var _filters_button = $CanvasLayer/FiltersButton
 
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
 ## Emitted when the close button is pressed, or esc is pressed.
 signal selection_closed
+
+## The last comparator function used to sort levels.
+static var _last_filter_used: Callable = _compare_level_difficulty
 
 var _level_button_scene = preload("res://Scenes/UI/level_button.tscn")
 
@@ -35,13 +40,15 @@ func _ready() -> void:
 			level_button.connect("button_focused", _level_button_focused)
 			_level_button_container.add_child(level_button)
 	
-	_sort_levels_by_comparator(_compare_level_difficulty)
+	_sort_levels_by_comparator(_last_filter_used)
 
 
 ## Rearranges the children of the button container based on the comparator 
 ## function passed (it should take 2 array elements and return if the first 
 ## should come before the second).
 func _sort_levels_by_comparator(comparator: Callable) -> void:
+	_last_filter_used = comparator
+	
 	var children: Array[Node] = _level_button_container.get_children()
 	
 	children.sort_custom(comparator)
@@ -77,6 +84,7 @@ func _level_button_focused() -> void:
 ## Hides the level select UI.
 func hide_UI():
 	_back_button.hide()
+	_filters_button.hide()
 	_level_button_container.hide()
 	
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_IGNORE
@@ -86,6 +94,7 @@ func hide_UI():
 ## Shows the level select UI.
 func show_UI():
 	_back_button.show()
+	_filters_button.show()
 	_level_button_container.show()
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_STOP
 	
@@ -113,33 +122,77 @@ func _on_back_button_pressed() -> void:
 func _on_back_button_mouse_entered() -> void:
 	_menu_focus_sound.play()
 
+
+## Show the filters panel.
+func _on_filters_button_mouse_entered() -> void:
+	_menu_focus_sound.play()
+	_filters_panel.show()
+	_filters_button.hide()
+
+
+## Close the filters panel.
+func _on_filters_panel_mouse_exited() -> void:
+	_filters_panel.hide()
+	_filters_button.show()
+
 # Various comparator functions, for sorting levels by various properties.
 
 ## Compares 2 levels based on their name, in alphabetical order.
-func _compare_level_name(a: LevelButton, b: LevelButton) -> bool:
+static func _compare_level_name(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.song_name < b.level_info.song_name
 
 
 ## Compares 2 levels based on their speed, from low to high.
-func _compare_level_speed(a: LevelButton, b: LevelButton) -> bool:
+static func _compare_level_speed(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.speed < b.level_info.speed
 
 
 ## Compares 2 levels based on their difficulty, from low to high.
-func _compare_level_difficulty(a: LevelButton, b: LevelButton) -> bool:
+static func _compare_level_difficulty(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.difficulty < b.level_info.difficulty
 
 
 ## Compares 2 levels based on their damage, from low to high.
-func _compare_level_damage(a: LevelButton, b: LevelButton) -> bool:
+static func _compare_level_damage(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.damage < b.level_info.damage
 
 
 ## Compares 2 levels based on their length (in seconds), from low to high.
-func _compare_level_length(a: LevelButton, b: LevelButton) -> bool:
+static func _compare_level_length(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.length < b.level_info.length
 
 
 ## Compares 2 levels based on their bit count, from low to high.
-func _compare_level_bit_count(a: LevelButton, b: LevelButton) -> bool:
+static func _compare_level_bit_count(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.bit_count < b.level_info.bit_count
+
+# Various level filtering buttons.
+
+func _on_name_pressed() -> void:
+	_menu_click_sound.play()
+	_sort_levels_by_comparator(_compare_level_name)
+
+
+func _on_difficulty_pressed() -> void:
+	_menu_click_sound.play()
+	_sort_levels_by_comparator(_compare_level_difficulty)
+
+
+func _on_speed_pressed() -> void:
+	_menu_click_sound.play()
+	_sort_levels_by_comparator(_compare_level_speed)
+
+
+func _on_damage_pressed() -> void:
+	_menu_click_sound.play()
+	_sort_levels_by_comparator(_compare_level_damage)
+
+
+func _on_length_pressed() -> void:
+	_menu_click_sound.play()
+	_sort_levels_by_comparator(_compare_level_length)
+
+
+func _on_bit_count_pressed() -> void:
+	_menu_click_sound.play()
+	_sort_levels_by_comparator(_compare_level_bit_count)
