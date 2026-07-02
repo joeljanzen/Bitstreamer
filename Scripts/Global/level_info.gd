@@ -37,6 +37,9 @@ var difficulty: float = -1
 var damage: int = -1
 ## The length of the level in seconds (how long the gameplay lasts).
 var length: float = -1
+## The total number of bits the level contains.
+var bit_count: int = -1
+
 
 # Level playback information (not loaded by default).
 ## A queue of upcoming bits.
@@ -68,6 +71,10 @@ func _init(filename: String) -> void:
 		
 		if _parse_level_info(lines):
 			_is_valid = true
+		
+		# Uncomment this line to reload the level length and bit count of every 
+		# single level and write it back to file.
+		update_level_length_and_bit_count()
 
 
 ## Loads the info for a level, given the lines in the level file.
@@ -141,6 +148,14 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("%s is not a valid level length" % check)
 				break
+		elif tag.begins_with("bit_count="):
+			var check = tag.erase(0,10)
+			if check.is_valid_int() and int(check) > 0:
+				bit_count = int(check)
+			else:
+				error_loading = true
+				push_error("%s is not a valid bit count" % check)
+				break
 		else:
 			push_error("Level tag not recognized: %s" % tag)
 	
@@ -182,7 +197,16 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 			error_loading = true
 			push_error("Level length calculated as %f was invalid!" % length)
 		else: # We calculated a valid length, save it to file.
-			_save_level_length()
+			_save_tag_to_file("length", length)
+	if bit_count < 0:
+		if !_calculate_bit_count():
+			error_loading = true
+			push_error("Level bit count could not be calculated!")
+		elif bit_count < 0:
+			error_loading = true
+			push_error("Level bit count calculated as %d was invalid!" % bit_count)
+		else: # We calculated a valid bit count, save it to file.
+			_save_tag_to_file("bit_count", bit_count)
 	
 	if !error_loading: 
 		# Try to load the song file.
@@ -216,12 +240,27 @@ func _calculate_level_length() -> bool:
 		return false
 
 
-## Saves the level length to the this level's file, returning if the length
-## was saved successfully. Ensure the value of length is set before calling!
-## If a length tag (or even, multiple length tags) already exist in the file, 
-## it will replace all of those with the updated length tag.
-func _save_level_length() -> bool:
-	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ_WRITE)
+## Calculates the number of bits the level contains.
+func _calculate_bit_count() -> bool:
+	var loaded_bit_queue := true
+	if bit_queue.is_empty():
+		loaded_bit_queue = load_level_bits_and_delays()
+	
+	if loaded_bit_queue:
+		bit_count = bit_queue.size()
+		return true
+	else:
+		push_error("Level bit count could not be calculated!")
+		return false
+
+
+## Saves data for a given tag to this level's file, returning if it was saved
+## successfully. If a file tag of the given type already exists in the file, it 
+## will replace its current data with this data.
+## For example, to save the level length to file, pass the tag "length" and 
+## then the float representing the length as the data.
+func _save_tag_to_file(file_tag: String, data: Variant) -> bool:
+	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)
 	var error_loading := false
 	
 	if file == null:
@@ -230,6 +269,7 @@ func _save_level_length() -> bool:
 	else:
 		var first_line: String = file.get_line()
 		var content: String = file.get_as_text()
+		file.close()
 		
 		# Erase the first line entirely from content (it will be replaced later)
 		content = content.erase(0, content.find("\n", 0) + 1)
@@ -237,20 +277,22 @@ func _save_level_length() -> bool:
 		# Check if a length tag was already saved in the line to clear.
 		var line_tags: PackedStringArray = first_line.split(",")
 		for tag in line_tags:
-			if tag.begins_with("length="):
+			if tag.begins_with(file_tag + "="):
 				first_line = first_line.replace("," + tag, "")
 		
 		# Append the new level length to the end of the first line of the file.
-		var updated_first_line = first_line + ",length=" + str(length) + "\n"
+		var updated_first_line = first_line + "," + file_tag + "=" + str(data) + "\n"
 		
-		# Append the first line back and store everything back into the file.
+		# Insert the updated first line back into the start of the file.
 		var full_file = content.insert(0, updated_first_line)
 		
-		file.seek(0) # Go back to the start of the file after getting that line.
+		# reopen file, clearing it entirely, then write in the new file.
+		file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.WRITE)
 		if !file.store_string(full_file):
 			error_loading = true
-			push_error("Level length could not be saved to file!")
-	file.close()
+			push_error("%s file tag of value %s could not be saved to file!"
+					% [file_tag, data])
+		file.close()
 	return !error_loading
 
 
@@ -274,10 +316,13 @@ static func get_random_level_info() -> LevelInfo:
 	return last_played
 
 
-## Recalculates the length of this level and updates its file.
-func update_level_length() -> void:
+## Recalculates values of this level that typically change during level 
+## creation, updating its file.
+func update_level_length_and_bit_count() -> void:
 	_calculate_level_length()
-	_save_level_length()
+	_calculate_bit_count()
+	_save_tag_to_file("length", length)
+	_save_tag_to_file("bit_count", bit_count)
 
 
 ## Loads the required bit and delay queues to play a level. Returns true if 

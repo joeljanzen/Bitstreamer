@@ -1,4 +1,4 @@
-name=Sentience,bpm=140,speed=7,diff=3.5,dmg=10,song=Sentience.wav,song_name=Sentience,length=27.429
+name=Sentience,bpm=140,speed=7,diff=3.5,dmg=10,song=Sentience.wav,song_name=Sentience,length=27.429,bit_count=36
 
 8,0
 8,1
