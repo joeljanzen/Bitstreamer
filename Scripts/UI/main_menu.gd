@@ -138,7 +138,7 @@ func _send_random_bit() -> void:
 		_enter_bit_interval = randi_range(4,16)
 	
 	add_child(new_bit)
-	new_bit.create(bit_type, y_value, 0, bit_time_to_cross_screen, 0)
+	new_bit.create(bit_type, y_value, 0, bit_time_to_cross_screen, 0, _conductor)
 
 
 ## Trigger a title pulse.

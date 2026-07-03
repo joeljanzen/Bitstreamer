@@ -141,7 +141,7 @@ func _recieve_timed_event(event_index: int) -> void:
 	var dmg: int = level_info.damage
 	if bit == Bit.Type.ENTER:
 		dmg = 0
-	_play_area.send_bit(bit, bit_time_to_cursor, dmg)
+	_play_area.send_bit(bit, bit_time_to_cursor, dmg, conductor)
 	
 	var delay_queue_index = event_index + 1
 	if delay_queue_index < delay_queue.size():

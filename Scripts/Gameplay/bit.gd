@@ -4,7 +4,6 @@ extends Node2D
 
 @onready var _bit_label: Label = $BitLabel
 @onready var _bit_sprite: Sprite2D = $BitSprite
-@onready var _timer: Timer = $Timer
 @onready var _bit_click_effect = preload("res://Scenes/bit_click_effect.tscn")
 ## Used to swap from the enter texture which is on by default.
 @onready var _back_texture = preload("res://Resources/Sprites/Cursor/cursor_up.png")
@@ -20,7 +19,8 @@ enum Type {
 ## Where the bit starts.
 static var starting_x = ProjectSettings.get_setting("display/window/size/viewport_width") + Bit.get_width()
 
-## Slightly changes bit behaviour when in the main menu (disable bit effects)
+## Slightly changes bit behaviour when in the main menu (disable bit effects
+## and don't do as much in physics process)
 static var in_main_menu := false
 
 ## The value of the bit.
@@ -31,6 +31,12 @@ var _cursor_x: float
 
 ## The time it takes the bit to reach the cursor after being sent.
 var _time_to_cursor: float
+
+## The point in the song considered the perfect time to click this bit.
+var _time_of_perfect_click: float
+
+## The conductor playing the music, used to determine bit click accuracy.
+var _conductor: Conductor
 
 ## The speed at which the bit travels across the screen, in pixels per second.
 var _speed: int
@@ -75,20 +81,21 @@ func _physics_process(delta: float) -> void:
 				modulate.a -= delta / fade_time
 	
 	# Bit is missed.
-	if !_is_missed and PerformanceCalculator.is_missed(get_accuracy()):
-		Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.MISS)
-		_is_missed = true
-		_score_animation(PerformanceCalculator.ClickQuality.MISS)
-		
-		if !GameSettings.move_offscreen_on_bit_miss:
-			if !GameSettings.bit_click_effect:
-				# This triggers a fade out instead of instant deletion, since we
-				# want a fade when the bit click effect is not active.
-				kill(false)
-			else:
-				# Since the bit click effect is active, we want the bit gone
-				# right away so the "miss" text can display with no obstructions.
-				queue_free()
+	if !in_main_menu:
+		if !_is_missed and PerformanceCalculator.is_missed(get_accuracy()):
+			Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.MISS)
+			_is_missed = true
+			_score_animation(PerformanceCalculator.ClickQuality.MISS)
+			
+			if !GameSettings.move_offscreen_on_bit_miss:
+				if !GameSettings.bit_click_effect:
+					# This triggers a fade out instead of instant deletion, since we
+					# want a fade when the bit click effect is not active.
+					kill(false)
+				else:
+					# Since the bit click effect is active, we want the bit gone
+					# right away so the "miss" text can display with no obstructions.
+					queue_free()
 	
 	# Bit is offscreen.
 	if global_position.x < -Bit.get_width():
@@ -103,16 +110,19 @@ func _physics_process(delta: float) -> void:
 
 ## Set bit data AFTER appending it to a scene as a child.
 ## Send global x and y positions.
-func create(value: Bit.Type, cursor_y: float, cursor_x: float, time_to_cursor: float, 
-	damage: int) -> void:
+func create(value: Bit.Type, cursor_y: float, cursor_x: float, 
+		time_to_cursor: float, damage: int, conductor: Conductor) -> void:
 	_value = value
 	_cursor_x = cursor_x
 	_time_to_cursor = time_to_cursor
 	var distance_to_cursor = starting_x - cursor_x # In pixels.
 	_speed = distance_to_cursor / time_to_cursor
 	_damage = damage
-	global_position = Vector2(starting_x, cursor_y)
+	_conductor = conductor
 	
+	_time_of_perfect_click = conductor.get_time() + time_to_cursor
+	
+	global_position = Vector2(starting_x, cursor_y)
 	set_bit_visuals(value)
 
 
@@ -181,7 +191,6 @@ func click(value: Bit.Type) -> bool:
 ## bit away instead of queue_free it when the bit click effect is being 
 ## ignored for perfect clicks (this is a game setting).
 func kill(is_perfect_click: bool) -> void:
-	_timer.paused = true
 	if !GameSettings.bit_click_effect or (GameSettings.ignores_perfect_clicks and is_perfect_click):
 		_fade_bit = true
 	else:
@@ -192,8 +201,8 @@ func kill(is_perfect_click: bool) -> void:
 ## perfect cursor click. A positive value is early by that many milliseconds, 
 ## and a negative value is late.
 func get_accuracy() -> int:
-	var time_to_click = _timer.wait_time - _timer.time_left
-	return round((_time_to_cursor - time_to_click) * 1000)
+	var time_of_click = _conductor.get_time()
+	return round((_time_of_perfect_click - time_of_click) * 1000)
 
 
 ## Play animations for a correct click.

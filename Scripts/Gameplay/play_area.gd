@@ -124,13 +124,15 @@ func set_cursor_animation(flicker: bool) -> void:
 
 
 ## Send a bit down the current line.
-func send_bit(value: Bit.Type, time_to_cursor: float, damage: int):
+func send_bit(value: Bit.Type, time_to_cursor: float, damage: int, 
+		conductor: Conductor):
 	var new_bit: Bit = _bit.instantiate()
 	# Calculate y value based on the current line number offset from where the
 	# cursor started.
 	var y_value = _starting_cursor_y + (_line_height * (_bit_send_line_num - 1))
 	add_child(new_bit)
-	new_bit.create(value, y_value, _cursor.global_position.x, time_to_cursor, damage)
+	new_bit.create(value, y_value, _cursor.global_position.x, time_to_cursor, 
+			damage, conductor)
 	_bitstream.push_back(new_bit)
 	
 	# Increase line number for next bit when an enter is sent:
