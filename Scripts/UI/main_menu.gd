@@ -6,15 +6,26 @@ extends Control
 @onready var _title = $MarginContainer/Title
 @onready var _splash_text_label = $SplashTextLabel
 @onready var _now_playing_label = $MarginContainer2/NowPlayingLabel
-@onready var _conductor = $Conductor
+@onready var _conductor: Conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
 ## The number of pixels below the top of screen/above the bottom of screen that 
 ## bits can spawn.
 const BIT_SPAWN_MARGIN: int = 75
-## Title pulse rate, as the number of beats (given by beat_time var) that have to 
-## pass before another title pulse occurs. Cannot be lower than 1.
-const TITLE_PULSE_RATE: int = 2
+
+## Multiplies itself with the beat speed (given by the song's bpm). A value of 2
+## means the beat is registered at twice its normal speed. Bits are sent at this
+## speed, while the title pulses in relation to this speed given the 
+## TITLE_PULSE_RATE.
+const BEAT_COEFFICIENT: int = 2
+
+## Title pulse rate, as the number of beats (affected by the beat coefficient) 
+## that have to pass before another title pulse occurs. Cannot be lower than 0.
+const TITLE_PULSE_RATE: int = 1
+
+## How much the title fades before it will pulse again. 1 means it fades 
+## entirely, while 0 would mean it never fades at all.
+const TITLE_FADE_COEFFICIENT: float = 0.5
 
 ## The strength of blur when in the game settings.
 const BACKGROUND_BLUR_STRENGTH: float = 0.5
@@ -30,18 +41,17 @@ var _bit = preload("res://Scenes/bit.tscn")
 var level_select_node: Control
 
 # Used in animations that sync to the music.
-## How many seconds pass between each beat
-var seconds_per_beat: float
-## How often the conductor sends out beat timing events.
+## How often the conductor sends out beats.
 var beat_time: float
 ## How many beats it takes for the bit to cross the screen.
 var bit_time_to_cross_screen: float
-
 ## The number of bits that have been sent since the last enter bit.
 var _bit_interval: int = 0
 ## Once this many bits have been sent, send an enter bit across the screen and 
 ## reset the interval to a new, slightly randomized value.
 var _enter_bit_interval: int = 15
+## Track how often title pulses.
+var title_pulse_interval: int = 0
 
 ## Dictionary of splash text messages.
 var splash_text: Array
@@ -59,7 +69,7 @@ func _ready() -> void:
 	_splash_text_label.text = splash_text[randi_range(0, splash_text.size() - 1)]
 	
 	# Music.
-	_conductor.connect("timed_event", _timed_event)
+	_conductor.connect("beat", _on_beat)
 	_conductor.connect("finished", _start_song)
 	_start_song()
 	
@@ -85,46 +95,29 @@ func _start_song() -> void:
 	
 	_now_playing_label.text = "Now playing\n\n" + info.song_name
 	
-	seconds_per_beat = 60.0 / info.bpm
-	beat_time = seconds_per_beat / 2
+	beat_time = _conductor.set_beat_signal(info.bpm, BEAT_COEFFICIENT)
 	bit_time_to_cross_screen = beat_time * 8
 	
 	_conductor.set_song(info.song)
 	_conductor.play_with_offset()
-	_conductor.set_timed_event(0)
 
 
-## Fades title bit alpha. When title pulses its alpha is reset.
+## Fades title bit alpha. When the title pulses its alpha is reset.
 func _process(delta: float) -> void:
-	_title.modulate.a -= delta / beat_time / TITLE_PULSE_RATE / 2
-
-
-## Trigger a title pulse.
-func _pulse_title(event_index: int) -> void:
-	if event_index % TITLE_PULSE_RATE == 0:
-		# Reset alpha so we can compare this color with the other colors to
-		# choose from next (randomly, but with no repeats).
-		_title.modulate.a = 1
-	
-		# Choose a random theme color for the title text.
-		var theme_colors = GameSettings.get_theme_colors()
-		# Remove the current color from the array.
-		theme_colors.remove_at(theme_colors.find(_title.modulate))
-		# The same color could exist multiple times, in which case we remove it one
-		# more time.
-		var double_check = theme_colors.find(_title.modulate)
-		if double_check != -1:
-			theme_colors.remove_at(double_check)
-		
-		_title.modulate = theme_colors[randi_range(0, theme_colors.size() - 1)]
+	_title.modulate.a -= delta / beat_time / (TITLE_PULSE_RATE + 1) * TITLE_FADE_COEFFICIENT
 
 
 ## Play effects in time with the menu music.
-func _timed_event(event_index: int) -> void:
+func _on_beat() -> void:
 	_send_random_bit()
-	_pulse_title(event_index)
 	
-	_conductor.set_timed_event(beat_time)
+	if title_pulse_interval == 0:
+		_pulse_title()
+	
+	if title_pulse_interval < TITLE_PULSE_RATE:
+		title_pulse_interval += 1
+	else:
+		title_pulse_interval = 0
 
 
 ## Sends a random bit across the screen, or an enter bit at regular intervals.
@@ -143,10 +136,28 @@ func _send_random_bit() -> void:
 		bit_type = Bit.Type.ENTER
 		_bit_interval = 0
 		_enter_bit_interval = randi_range(4,16)
-		
 	
 	add_child(new_bit)
 	new_bit.create(bit_type, y_value, 0, bit_time_to_cross_screen, 0)
+
+
+## Trigger a title pulse.
+func _pulse_title() -> void:
+	# Reset alpha so we can compare this color with the other colors to
+	# choose from next (randomly, but with no repeats).
+	_title.modulate.a = 1
+
+	# Choose a random theme color for the title text.
+	var theme_colors = GameSettings.get_theme_colors()
+	# Remove the current color from the array.
+	theme_colors.remove_at(theme_colors.find(_title.modulate))
+	# The same color could exist multiple times, in which case we remove it one
+	# more time.
+	var double_check = theme_colors.find(_title.modulate)
+	if double_check != -1:
+		theme_colors.remove_at(double_check)
+	
+	_title.modulate = theme_colors[randi_range(0, theme_colors.size() - 1)]
 
 
 ## Loads the array of splash text messages. Returns nothing if it fails.

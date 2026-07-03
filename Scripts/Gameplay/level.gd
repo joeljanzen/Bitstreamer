@@ -86,7 +86,7 @@ func start_level(level_offset: float = 0) -> void:
 	bit_time_to_cursor = PerformanceCalculator.set_approach_time(level_info.speed)
 	
 	conductor.set_song(level_info.song)
-	conductor.timed_event.connect(_receive_timed_event)
+	conductor.timed_event.connect(_recieve_timed_event)
 
 	# The total time in the song when the next bit should be sent.
 	# We want to find when the total time is greater than the offset seconds.
@@ -133,9 +133,9 @@ func start_level(level_offset: float = 0) -> void:
 		conductor.set_timed_event(total_time)
 
 
-## The next timed event has been received by the conductor. Sends the next bit
+## The next timed event has been recieved by the conductor. Sends the next bit
 ## and sets up the delay to the next timed event.
-func _receive_timed_event(event_index: int) -> void:
+func _recieve_timed_event(event_index: int) -> void:
 	#print("TIMED EVENT OF INDEX %d RECEIVED AT %s" % [event_index, _conductor.get_time()])
 	var bit: Bit.Type = bit_queue[event_index]
 	var dmg: int = level_info.damage

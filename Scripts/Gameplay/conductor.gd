@@ -8,11 +8,24 @@ extends AudioStreamPlayer
 ## point in the song, not just in order from the start.
 signal timed_event(event_index: int)
 
+## Active only after set_beat_signal has been called, it is a timed event sent 
+## regularly every beat of the song. This signal is distinct and unaffected by 
+## the timed_event signal and set_timed_event function.
+signal beat
+
+## The seconds per beat (the time between beat signal emissions).
+## If this value is zero, no beat signals are being sent.
+var seconds_per_beat: float = 0
+
+## The time in the song being played that the next beat occurs, if 
+## seconds_per_beat has been set.
+var _time_of_next_beat: float = 0
+
 ## The current time in the song being played.
 var _time: float
 
 ## The time in the song being played that a timed_event should be triggered.
-var _time_delay_ends := 0.0
+var _time_delay_ends: float = 0
 
 ## Signifies that there is actually a delay that needs to emit a timed_event.
 var _waiting_for_delay := false
@@ -23,12 +36,20 @@ var _done_timings = false
 ## The index of the timing event to be sent out next.
 var _timing_event_index: int = 0
 
-var TEST = 0
-
 
 ## Set the song to play.
 func set_song(song: AudioStream) -> void:
 	stream = song
+
+
+## Sets up the beat signal given a bpm and returns the seconds per beat (how 
+## much time will pass between each beat signal emission). The beat frequency is 
+## multiplied by the beat coefficient. If you want the beat signal to occur 
+## twice as often as the actual beat does, set the coefficient to 2. If you want
+## beats to send at half of their normal speed, set the coefficient to 0.5.
+func set_beat_signal(bpm: float,  beat_coefficient: float = 1) -> float:
+	seconds_per_beat = 60 / bpm / beat_coefficient
+	return seconds_per_beat
 
 
 ## Play the song with a given offset value in seconds, and the index of the
@@ -37,6 +58,7 @@ func set_song(song: AudioStream) -> void:
 ## arguments, instead of calling the inherited play() function.
 func play_with_offset(offset: float = 0, event_index: int = 0) -> void:
 	_time_delay_ends = 0
+	_time_of_next_beat = 0
 	_timing_event_index = event_index
 	play(offset)
 
@@ -63,7 +85,8 @@ func set_timed_event(delay: float) -> void:
 	#print("set timed event to occur at %f" % _time_delay_ends)
 
 
-## Tell the conductor it doesn't need to time any more events.
+## Tell the conductor it doesn't need to time any more events. This does not 
+## affect the beat signal, which continues to the end of the song.
 func done_timings() -> void:
 	_done_timings = true
 
@@ -85,3 +108,10 @@ func _physics_process(delta: float) -> void:
 				timed_event.emit(_timing_event_index)
 				#print("sending timed event at %f" % _time)
 				_timing_event_index += 1
+	
+	# Beat signal, which is only active if seconds_per_beat has been set.
+	if seconds_per_beat > 0 and playing:
+		var difference = abs(_time - _time_of_next_beat)
+		if difference <= delta || _time > _time_of_next_beat:
+			beat.emit()
+			_time_of_next_beat += seconds_per_beat
