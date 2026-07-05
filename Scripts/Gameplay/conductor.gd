@@ -98,6 +98,9 @@ func _physics_process(delta: float) -> void:
 		_time = get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
 		_time -= AudioServer.get_output_latency()
 		
+		if _time < 0:
+			_time = 0
+		
 		if _time > 0:
 			# If the difference between current time and time of delay end is within
 			# the length of time since the last time _process was called (which is the
