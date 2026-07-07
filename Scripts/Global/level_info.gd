@@ -15,6 +15,9 @@ const DAMAGE_MAX = 100
 ## Useful for restarting levels.
 static var last_played: LevelInfo
 
+## The last level music played in the menu.
+static var last_played_in_menu: LevelInfo
+
 ## The file storing the info for this level.
 var file_name: String
 ## The version of the level (used to distinguish levels that use the same song).
@@ -294,9 +297,9 @@ func _save_tag_to_file(file_tag: String, data: Variant) -> bool:
 	return !error_loading
 
 
-## Returns the info for a random level. Will never return the same level twice.
-## This sets the value of the static variable last_played to whatever it 
-## returns.
+## Returns the info for a random level. Will never return the same level twice or
+## the last played level in the menu either. This sets the value of the static 
+## variable last_played to whatever it returns.
 static func get_random_level_info() -> LevelInfo:
 	# Load all level info filenames
 	var level_filenames: PackedStringArray = DirAccess.get_files_at("res://Levels")
@@ -306,7 +309,12 @@ static func get_random_level_info() -> LevelInfo:
 	
 	# Ensure you never get the same one twice in a row.
 	if last_played != null:
-		while level_filenames[random_index] == last_played.file_name:
+		if level_filenames[random_index] == last_played.file_name:
+			level_filenames.remove_at(random_index)
+			random_index = randi_range(0, level_filenames.size() - 1)
+	
+	if last_played_in_menu != null:
+		if level_filenames[random_index] == last_played_in_menu.file_name:
 			level_filenames.remove_at(random_index)
 			random_index = randi_range(0, level_filenames.size() - 1)
 	

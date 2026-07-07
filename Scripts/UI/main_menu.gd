@@ -93,6 +93,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _start_song() -> void:
 	var info: LevelInfo = LevelInfo.get_random_level_info()
 	
+	LevelInfo.last_played_in_menu = info
+	
 	_now_playing_label.text = "Now playing\n\n" + info.song_name
 	
 	beat_time = _conductor.set_beat_signal(info.bpm, BEAT_COEFFICIENT)
