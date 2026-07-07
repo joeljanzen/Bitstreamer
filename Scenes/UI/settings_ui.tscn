@@ -537,7 +537,6 @@ bus = &"SFX"
 
 [node name="ColorClick" type="AudioStreamPlayer" parent="." unique_id=1978047853]
 stream = ExtResource("10_7p8ph")
-volume_db = -8.0
 bus = &"SFX"
 
 [connection signal="tab_clicked" from="CanvasLayer/MarginContainer/TabContainer" to="." method="_on_tab_container_tab_clicked"]
