@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dmhxr0lxqlsk6" path="res://Scripts/UI/main_menu.gd" id="1_mrfpk"]
 [ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="2_gih0s"]
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="4_4pqbp"]
+[ext_resource type="Texture2D" uid="uid://dvtx834d5ab72" path="res://Resources/Sprites/UI/next_song_button.png" id="4_k33u3"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_gih0s"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
 [ext_resource type="AudioStream" uid="uid://cav124sfcdoeg" path="res://Resources/Audio/LevelTracks/Initiate.wav" id="7_k33u3"]
@@ -14,7 +15,7 @@ ambient_light_source = 1
 ambient_light_color = Color(0.11598889, 0.35937062, 0.39819646, 1)
 ambient_light_energy = 4.9
 glow_enabled = true
-glow_bloom = 1.0
+glow_bloom = 0.2
 glow_hdr_scale = 1.0
 
 [node name="MainMenu" type="Control" unique_id=903022407]
@@ -41,6 +42,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("2_gih0s")
 theme_override_constants/margin_top = 300
 theme_override_constants/margin_bottom = 100
@@ -81,6 +83,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 221.0
 grow_horizontal = 2
+mouse_filter = 2
 theme_override_constants/margin_top = 100
 
 [node name="Title" type="Label" parent="MarginContainer" unique_id=1923581684]
@@ -114,27 +117,37 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -232.0
+offset_top = -90.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="NowPlayingLabel" type="RichTextLabel" parent="MarginContainer2" unique_id=128567502]
-z_index = 1
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2" unique_id=912316431]
 layout_mode = 2
 size_flags_vertical = 8
+theme_override_constants/separation = 20
+
+[node name="NowPlayingLabel" type="RichTextLabel" parent="MarginContainer2/HBoxContainer" unique_id=128567502]
+z_index = 1
+layout_mode = 2
+size_flags_vertical = 4
 theme = ExtResource("1_i2xx2")
 theme_override_font_sizes/normal_font_size = 35
-text = "NOW PLAYING
-
+text = "Now playing
 ur mother"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 2
 vertical_alignment = 2
+
+[node name="NextSongButton" type="Button" parent="MarginContainer2/HBoxContainer" unique_id=1189630906]
+layout_mode = 2
+size_flags_vertical = 4
+icon = ExtResource("4_k33u3")
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
 stream = ExtResource("4_4pqbp")
@@ -154,3 +167,4 @@ stream = ExtResource("7_k33u3")
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_pressed"]
+[connection signal="pressed" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_pressed"]

@@ -5,7 +5,7 @@ extends Control
 @onready var _canvas = $CanvasLayer
 @onready var _title = $MarginContainer/Title
 @onready var _splash_text_label = $SplashTextLabel
-@onready var _now_playing_label = $MarginContainer2/NowPlayingLabel
+@onready var _now_playing_label = $MarginContainer2/HBoxContainer/NowPlayingLabel
 @onready var _conductor: Conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
@@ -95,7 +95,7 @@ func _start_song() -> void:
 	
 	LevelInfo.last_played_in_menu = info
 	
-	_now_playing_label.text = "Now playing\n\n" + info.song_name
+	_now_playing_label.text = "Now playing:\n" + info.song_name
 	
 	beat_time = _conductor.set_beat_signal(info.bpm, BEAT_COEFFICIENT)
 	bit_time_to_cross_screen = beat_time * 8
@@ -238,3 +238,7 @@ func _on_settings_button_mouse_entered() -> void:
 
 func _on_shutdown_button_mouse_entered() -> void:
 	_menu_focus_sound.play()
+
+
+func _on_next_song_button_pressed() -> void:
+	_start_song()
