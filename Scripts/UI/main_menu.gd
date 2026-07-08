@@ -7,6 +7,7 @@ extends Control
 @onready var _splash_text_label = $SplashTextLabel
 @onready var _now_playing_label = $MarginContainer2/HBoxContainer/NowPlayingLabel
 @onready var _song_icon = $MarginContainer2/HBoxContainer/SongIcon
+@onready var _next_song_button = $MarginContainer2/HBoxContainer/NextSongButton
 @onready var _conductor: Conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
@@ -249,3 +250,25 @@ func _on_shutdown_button_mouse_entered() -> void:
 
 func _on_next_song_button_pressed() -> void:
 	_start_song()
+
+
+func _on_next_song_button_mouse_entered() -> void:
+	_menu_focus_sound.play()
+	
+	# Choose a random theme color for the button icon.
+	var theme_colors = GameSettings.get_theme_colors()
+	
+	# Ideally white should never be chosen as the hover color.
+	if theme_colors.size() > 1:
+		var white_index = theme_colors.find(Color("ffffff"))
+		if white_index > -1:
+			theme_colors.remove_at(white_index)
+			white_index = theme_colors.find(Color("ffffff"))
+			if white_index > -1:
+				theme_colors.remove_at(white_index)
+	
+	_next_song_button.modulate = theme_colors[randi_range(0, theme_colors.size() - 1)]
+
+
+func _on_next_song_button_mouse_exited() -> void:
+	_next_song_button.modulate = Color("fff")

@@ -131,6 +131,7 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 20
+alignment = 2
 
 [node name="SongIcon" type="TextureRect" parent="MarginContainer2/HBoxContainer" unique_id=93027729]
 layout_mode = 2
@@ -152,8 +153,10 @@ vertical_alignment = 2
 
 [node name="NextSongButton" type="Button" parent="MarginContainer2/HBoxContainer" unique_id=1189630906]
 layout_mode = 2
-size_flags_vertical = 4
+size_flags_horizontal = 8
+size_flags_vertical = 0
 icon = ExtResource("4_k33u3")
+flat = true
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
 stream = ExtResource("4_4pqbp")
@@ -173,4 +176,6 @@ stream = ExtResource("7_k33u3")
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_pressed"]
+[connection signal="mouse_entered" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_mouse_exited"]
 [connection signal="pressed" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_pressed"]
