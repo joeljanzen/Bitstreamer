@@ -5,6 +5,7 @@
 [ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="2_gih0s"]
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="4_4pqbp"]
 [ext_resource type="Texture2D" uid="uid://dvtx834d5ab72" path="res://Resources/Sprites/UI/next_song_button.png" id="4_k33u3"]
+[ext_resource type="Texture2D" uid="uid://dml5ob2ulln2d" path="res://Resources/Sprites/UI/song_icon.png" id="4_lrjdf"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_gih0s"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
 [ext_resource type="AudioStream" uid="uid://cav124sfcdoeg" path="res://Resources/Audio/LevelTracks/Initiate.wav" id="7_k33u3"]
@@ -117,7 +118,7 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -232.0
+offset_left = -349.0
 offset_top = -90.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -130,14 +131,18 @@ layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 20
 
+[node name="SongIcon" type="TextureRect" parent="MarginContainer2/HBoxContainer" unique_id=93027729]
+layout_mode = 2
+texture = ExtResource("4_lrjdf")
+stretch_mode = 3
+
 [node name="NowPlayingLabel" type="RichTextLabel" parent="MarginContainer2/HBoxContainer" unique_id=128567502]
 z_index = 1
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("1_i2xx2")
 theme_override_font_sizes/normal_font_size = 35
-text = "Now playing
-ur mother"
+text = "song name"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0

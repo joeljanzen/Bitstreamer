@@ -6,6 +6,7 @@ extends Control
 @onready var _title = $MarginContainer/Title
 @onready var _splash_text_label = $SplashTextLabel
 @onready var _now_playing_label = $MarginContainer2/HBoxContainer/NowPlayingLabel
+@onready var _song_icon = $MarginContainer2/HBoxContainer/SongIcon
 @onready var _conductor: Conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
@@ -95,7 +96,7 @@ func _start_song() -> void:
 	
 	LevelInfo.last_played_in_menu = info
 	
-	_now_playing_label.text = "Now playing:\n" + info.song_name
+	_now_playing_label.text = info.song_name
 	
 	beat_time = _conductor.set_beat_signal(info.bpm, BEAT_COEFFICIENT)
 	bit_time_to_cross_screen = beat_time * 8
@@ -106,7 +107,9 @@ func _start_song() -> void:
 
 ## Fades title bit alpha. When the title pulses its alpha is reset.
 func _process(delta: float) -> void:
-	_title.modulate.a -= delta / beat_time / (TITLE_PULSE_RATE + 1) * TITLE_FADE_COEFFICIENT
+	var fade_amount = delta / beat_time / (TITLE_PULSE_RATE + 1) * TITLE_FADE_COEFFICIENT
+	_title.modulate.a -= fade_amount
+	_song_icon.modulate.a -= fade_amount
 
 
 ## Play effects in time with the menu music.
@@ -148,6 +151,8 @@ func _pulse_title() -> void:
 	# Reset alpha so we can compare this color with the other colors to
 	# choose from next (randomly, but with no repeats).
 	_title.modulate.a = 1
+	
+	_song_icon.modulate.a = 1
 
 	# Choose a random theme color for the title text.
 	var theme_colors = GameSettings.get_theme_colors()
@@ -159,7 +164,9 @@ func _pulse_title() -> void:
 	if double_check != -1:
 		theme_colors.remove_at(double_check)
 	
-	_title.modulate = theme_colors[randi_range(0, theme_colors.size() - 1)]
+	var color = theme_colors[randi_range(0, theme_colors.size() - 1)]
+	_title.modulate = color
+	_song_icon.modulate = color
 
 
 ## Loads the array of splash text messages. Returns nothing if it fails.
