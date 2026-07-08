@@ -70,7 +70,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 theme = ExtResource("2_2wnai")
 theme_override_font_sizes/font_size = 50
-text = "Filter"
+text = "Sort"
 
 [node name="FiltersPanel" type="Panel" parent="CanvasLayer" unique_id=724824715]
 visible = false
@@ -102,7 +102,7 @@ theme_override_constants/separation = 20
 [node name="Label" type="Label" parent="CanvasLayer/FiltersPanel/MarginContainer/FilterButtonContainer" unique_id=360882583]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Filter by..."
+text = "Sort by..."
 
 [node name="Name" type="Button" parent="CanvasLayer/FiltersPanel/MarginContainer/FilterButtonContainer" unique_id=1252492490]
 z_index = 3
