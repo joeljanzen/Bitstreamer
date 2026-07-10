@@ -21,8 +21,16 @@ extends Control
 signal button_pressed(level_info: LevelInfo)
 signal button_focused
 
+## How many seconds it takes a popup to appear after a level attribute started 
+## being hovered over.
+const _TIME_TO_SHOW_POPUP = 1
+
 ## Level info for this button.
 var level_info: LevelInfo
+
+## Start a short timer to wait for a popup to start.
+var _popup_timer_on := false
+var _popup_time: float = 0
 
 ## Cycle through the theme colors each time a new level button is made.
 static var current_color_index: int = 0
@@ -55,7 +63,13 @@ func _ready() -> void:
 	_set_play_button_text_color()
 
 
-func _process(_delta: float) -> void:
+## Set popup positions and time when it should show.
+func _process(delta: float) -> void:
+	if _popup_timer_on and !_popup_panel.visible:
+		_popup_time += delta
+		if _popup_time > _TIME_TO_SHOW_POPUP:
+			_popup_panel.show()
+	
 	if _popup_panel.visible:
 		_popup_panel.global_position.x = get_global_mouse_position().x + 25
 		_popup_panel.global_position.y = get_global_mouse_position().y + 25
@@ -132,15 +146,31 @@ func _set_play_button_text_color() -> void:
 	_play_button.add_theme_color_override("font_hover_color", theme_colors[randi_range(0, theme_colors.size() - 1)])
 
 
+## Scale the button and gives it a slight rotation while hovered.
 func _on_mouse_entered() -> void:
 	_hover_button_sound.play()
 	_button_panel.scale = Vector2(1.03, 1.03)
 	_button_panel.rotation_degrees = randf_range(-1, 1)
 
 
+## Return the button to its default size and rotation.
 func _on_mouse_exited() -> void:
 	_button_panel.scale = Vector2(1, 1)
 	_button_panel.rotation = 0
+
+
+## Call when a level attribute is being hovered over. If the cursor remains
+## hovering over it, eventually the popup will appear.
+func _start_popup_timer() -> void:
+	_popup_time = 0
+	_popup_timer_on = true
+
+
+## Call when a level attribute is no longer being hovered over. Hides the popup
+## panel and stops the timer. 
+func _hide_popup() -> void:
+	_popup_panel.hide()
+	_popup_timer_on = false
 
 
 func _on_difficulty_panel_mouse_entered() -> void:	
@@ -163,7 +193,7 @@ The minimum difficulty is 0 and the maximum is 12."
 	)
 	
 	_popup_panel.size = Vector2.ZERO # This forces the panel to resize.
-	_popup_panel.show()
+	_start_popup_timer()
 
 
 func _on_speed_panel_mouse_entered() -> void:
@@ -177,7 +207,7 @@ cursor after appearing on screen. The minimum speed is
 	)
 	
 	_popup_panel.size = Vector2.ZERO # This forces the panel to resize.
-	_popup_panel.show()
+	_start_popup_timer()
 
 
 func _on_damage_panel_mouse_entered() -> void:
@@ -189,19 +219,16 @@ Missing an enter bit does not deal damage.\n\n"
 	)
 	
 	_popup_panel.size = Vector2.ZERO # This forces the panel to resize.
-	_popup_panel.show()
+	_start_popup_timer()
 
 
 func _on_difficulty_panel_mouse_exited() -> void:
-	_popup_panel.hide()
-	_popup_panel.size = Vector2.ZERO
+	_hide_popup()
 
 
 func _on_speed_panel_mouse_exited() -> void:
-	_popup_panel.hide()
-	_popup_panel.size = Vector2.ZERO
+	_hide_popup()
 
 
 func _on_damage_panel_mouse_exited() -> void:
-	_popup_panel.hide()
-	_popup_panel.size = Vector2.ZERO
+	_hide_popup()
