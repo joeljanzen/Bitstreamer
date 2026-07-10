@@ -9,5 +9,5 @@ font_names = PackedStringArray("Consolas")
 [resource]
 default_base_scale = 1.0
 default_font = SubResource("SystemFont_60xwf")
-default_font_size = 32
+default_font_size = 33
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_njjef")

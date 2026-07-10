@@ -212,6 +212,7 @@ theme_override_constants/margin_bottom = 20
 
 [node name="RichTextLabel" type="RichTextLabel" parent="PopupPanel/MarginContainer" unique_id=341151961]
 layout_mode = 2
+bbcode_enabled = true
 text = "pop up here"
 fit_content = true
 scroll_active = false

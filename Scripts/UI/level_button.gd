@@ -178,15 +178,19 @@ func _on_difficulty_panel_mouse_entered() -> void:
 "Difficulty determines the click accuracy required to
 get a perfect, good, or okay score, or miss a bit. 
 The minimum difficulty is 0 and the maximum is 12."
+	+ "[color=" + GameSettings.perfect_click_colour + "]"
 	+ "\n\nPerfect score: +-" + 
 	str(int(PerformanceCalculator.get_perfect_click_range(level_info.difficulty)))
-	+ " ms"
+	+ " ms[/color]"
+	+ "[color=" + GameSettings.good_click_colour + "]"
 	+ "\nGood score: +-" + 
 	str(int(PerformanceCalculator.get_good_click_range(level_info.difficulty)))
-	+ " ms"
+	+ " ms[/color]"
+	+ "[color=" + GameSettings.okay_click_colour + "]"
 	+ "\nOkay score: +-" + 
 	str(int(PerformanceCalculator.get_okay_click_range(level_info.difficulty)))
-	+ " ms"
+	+ " ms[/color]"
+	+ "[color=" + GameSettings.missed_click_colour + "]"
 	+ "\nMiss: >" + 
 	str(int(PerformanceCalculator.get_okay_click_range(level_info.difficulty)))
 	+ " ms"
@@ -201,7 +205,7 @@ func _on_speed_panel_mouse_entered() -> void:
 "Speed determines how long the bit takes to reach the
 cursor after appearing on screen. The minimum speed is
 1 and the maximum is 12.\n\n"
-	+ "Bit time to cursor: " + 
+	+ "[color=" + GameSettings.perfect_click_colour + "]Bit time to cursor: " +
 	str(int(PerformanceCalculator.get_approach_time(level_info.speed) * 1000)) 
 	+ " ms"
 	)
@@ -215,7 +219,8 @@ func _on_damage_panel_mouse_entered() -> void:
 "Damage determines the percentage of your health bar
 that is lost after missing or incorrectly clicking a bit.
 Missing an enter bit does not deal damage.\n\n" 
-	+ "Damage: " + str(level_info.damage) + "% of total health"
+	+ "[color=" + GameSettings.incorrect_bit_colour + "]Damage: "
+	+ str(level_info.damage) + "% of total health"
 	)
 	
 	_popup_panel.size = Vector2.ZERO # This forces the panel to resize.
