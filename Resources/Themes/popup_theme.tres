@@ -1,7 +1,10 @@
 [gd_resource type="Theme" format=3 uid="uid://b40ptr23jqbik"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8yvcs"]
+bg_color = Color(0.13682586, 0.13682568, 0.13682571, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njjef"]
-bg_color = Color(0.2784314, 0.2784314, 0.2784314, 1)
+bg_color = Color(0.13725491, 0.13725491, 0.13725491, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_60xwf"]
 font_names = PackedStringArray("Consolas")
@@ -10,4 +13,5 @@ font_names = PackedStringArray("Consolas")
 default_base_scale = 1.0
 default_font = SubResource("SystemFont_60xwf")
 default_font_size = 33
+Panel/styles/panel = SubResource("StyleBoxFlat_8yvcs")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_njjef")

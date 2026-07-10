@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bps4r7xs057l3" path="res://Scripts/UI/level_select.gd" id="1_2wnai"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_2wnai"]
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_1i34c"]
-[ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="3_40fl8"]
+[ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_40fl8"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_40fl8"]
 
 [node name="LevelSelect" type="Control" unique_id=1472628101]
