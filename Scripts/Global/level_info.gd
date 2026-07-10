@@ -351,7 +351,7 @@ func load_level_bits_and_delays() -> bool:
 	var error_loading := false
 	
 	var seconds_per_beat: float = 60.0 / bpm
-	_bit_time_to_cursor = PerformanceCalculator.calculate_approach_time(speed)
+	_bit_time_to_cursor = PerformanceCalculator.get_approach_time(speed)
 	
 	for line: int in range(1, lines.size()):
 		var line_num = line + 1

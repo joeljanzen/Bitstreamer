@@ -58,18 +58,35 @@ func connect_gameplay_stats(stats: GameplayStatistics) -> void:
 	statistics = stats
 
 
+## Get the milliseconds + or - a perfect click that is still considered 
+## perfect.
+func get_perfect_click_range(difficulty: float) -> float:
+	return 80 - 6 * difficulty
+
+
+## Get the milliseconds + or - a perfect click that is considered a good click.
+func get_good_click_range(difficulty: float) -> float:
+	return 140 - 8 * difficulty
+
+
+## Get the milliseconds + or - a perfect click that is considered an okay click.
+## Anything outside of this range is considered a miss.
+func get_okay_click_range(difficulty: float) -> float:
+	return 200 - 10 * difficulty
+
+
 ## Set the difficulty for the performance calculator to use during gameplay.
 func set_difficulty(difficulty: float) -> void:
-	perfect_click_range = 80 - 6 * difficulty
-	good_click_range = 140 - 8 * difficulty
-	clickable_range = 200 - 10 * difficulty
+	perfect_click_range = get_perfect_click_range(difficulty)
+	good_click_range = get_good_click_range(difficulty)
+	clickable_range = get_okay_click_range(difficulty)
 	print("Perfect hit window: +- %.2f ms" % perfect_click_range)
 	print("Good hit window: +- %.2f ms" % good_click_range)
 	print("Okay hit window: +- %.2f ms" % clickable_range)
 
 
 ## Get the approach time of bits given a speed.
-func calculate_approach_time(speed: float) -> float:
+func get_approach_time(speed: float) -> float:
 	if speed <= 10:
 		return 3 - 0.25 * (speed - 1)
 	else:
@@ -78,7 +95,7 @@ func calculate_approach_time(speed: float) -> float:
 
 ## Sets and returns the approach time of bits given a speed.
 func set_approach_time(speed: float) -> float:
-	approach_time = calculate_approach_time(speed)
+	approach_time = get_approach_time(speed)
 	print("Approach time: %.2f ms" % (approach_time * 1000))
 	return approach_time
 
