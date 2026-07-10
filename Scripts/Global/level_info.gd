@@ -50,7 +50,7 @@ var bit_queue: Array[Bit.Type]
 ## A queue of delays between sending bits.
 var delay_queue: Array[float]
 ## The delay between a bit being sent and it reaching the cursor, in seconds.
-var _bit_time_to_cursor: float
+var bit_time_to_cursor: float
 
 ## Determines if the level information is valid after it's loaded.
 var _is_valid := false
@@ -351,7 +351,7 @@ func load_level_bits_and_delays() -> bool:
 	var error_loading := false
 	
 	var seconds_per_beat: float = 60.0 / bpm
-	_bit_time_to_cursor = PerformanceCalculator.get_approach_time(speed)
+	bit_time_to_cursor = PerformanceCalculator.get_approach_time(speed)
 	
 	for line: int in range(1, lines.size()):
 		var line_num = line + 1
@@ -410,11 +410,11 @@ func load_level_bits_and_delays() -> bool:
 			break
 		
 		if delay_queue.size() == 1:
-			var difference = delay_queue[0] - _bit_time_to_cursor
+			var difference = delay_queue[0] - bit_time_to_cursor
 			if difference < 0:
 				error_loading = true
 				push_error("First delay of %.2f beats or %.2f seconds on line %d is not long enough due to the bit speed being too low. It should be at least %.2f beats or %.2f seconds long." % 
-						[(delay_queue[0] / seconds_per_beat), delay_queue[0], line_num, (_bit_time_to_cursor / seconds_per_beat), _bit_time_to_cursor])
+						[(delay_queue[0] / seconds_per_beat), delay_queue[0], line_num, (bit_time_to_cursor / seconds_per_beat), bit_time_to_cursor])
 				break
 		
 		match bit_token:
