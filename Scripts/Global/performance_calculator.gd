@@ -80,12 +80,9 @@ func set_difficulty(difficulty: float) -> void:
 	perfect_click_range = get_perfect_click_range(difficulty)
 	good_click_range = get_good_click_range(difficulty)
 	clickable_range = get_okay_click_range(difficulty)
-	print("Perfect hit window: +- %.2f ms" % perfect_click_range)
-	print("Good hit window: +- %.2f ms" % good_click_range)
-	print("Okay hit window: +- %.2f ms" % clickable_range)
 
 
-## Get the approach time of bits given a speed.
+## Get the approach time of bits given a speed, in seconds.
 func get_approach_time(speed: float) -> float:
 	if speed <= 10:
 		return 3 - 0.25 * (speed - 1)

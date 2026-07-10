@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="1_bbr4g"]
 [ext_resource type="Script" uid="uid://c0dcx5ksg78n5" path="res://Scripts/UI/level_button.gd" id="1_iq6la"]
+[ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_icd4v"]
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_j7lvc"]
 
 [node name="LevelButton" type="Control" unique_id=1822112030]
@@ -12,7 +13,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset_ratio = Vector2(0.5, 1)
 mouse_filter = 1
 script = ExtResource("1_iq6la")
 
@@ -23,6 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 1)
 mouse_filter = 1
 theme = ExtResource("1_bbr4g")
 
@@ -185,6 +186,39 @@ theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 60
 text = "Launch"
 
+[node name="PopupPanel" type="PanelContainer" parent="." unique_id=380795810]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -134.0
+offset_top = -73.0
+offset_right = 134.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme = ExtResource("3_icd4v")
+
+[node name="MarginContainer" type="MarginContainer" parent="PopupPanel" unique_id=699628142]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PopupPanel/MarginContainer" unique_id=341151961]
+layout_mode = 2
+text = "pop up here"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="HoverButton" type="AudioStreamPlayer" parent="." unique_id=254220930]
 stream = ExtResource("3_j7lvc")
 volume_db = -8.0
@@ -192,5 +226,11 @@ bus = &"SFX"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/DifficultyPanel" to="." method="_on_difficulty_panel_mouse_entered"]
+[connection signal="mouse_exited" from="Panel/MarginContainer/VBoxContainer/DifficultyPanel" to="." method="_on_difficulty_panel_mouse_exited"]
+[connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/SpeedPanel" to="." method="_on_speed_panel_mouse_entered"]
+[connection signal="mouse_exited" from="Panel/MarginContainer/VBoxContainer/SpeedPanel" to="." method="_on_speed_panel_mouse_exited"]
+[connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/DamagePanel" to="." method="_on_damage_panel_mouse_entered"]
+[connection signal="mouse_exited" from="Panel/MarginContainer/VBoxContainer/DamagePanel" to="." method="_on_damage_panel_mouse_exited"]
 [connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]

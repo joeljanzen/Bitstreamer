@@ -1,6 +1,7 @@
 class_name LevelButton
 extends Control
 
+@onready var _button_panel = $Panel
 @onready var _name_label = $Panel/MarginContainer/VBoxContainer/NamePanel/NameLabel
 @onready var _bit_count_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/BitCountLabel
 @onready var _version_label = $Panel/MarginContainer/VBoxContainer/VersionPanel/VersionLabel
@@ -10,6 +11,9 @@ extends Control
 @onready var _speed_label = $Panel/MarginContainer/VBoxContainer/SpeedPanel/SpeedLabel
 @onready var _damage_label = $Panel/MarginContainer/VBoxContainer/DamagePanel/DamageLabel
 @onready var _play_button = $Panel/MarginContainer/VBoxContainer/PlayButton
+
+@onready var _popup_panel = $PopupPanel
+@onready var _popup_label = $PopupPanel/MarginContainer/RichTextLabel
 
 @onready var _hover_button_sound = $HoverButton
 
@@ -49,6 +53,12 @@ func _ready() -> void:
 	current_color_index += 1
 	
 	_set_play_button_text_color()
+
+
+func _process(_delta: float) -> void:
+	if _popup_panel.visible:
+		_popup_panel.global_position.x = get_global_mouse_position().x + 25
+		_popup_panel.global_position.y = get_global_mouse_position().y + 25
 
 
 ## Update the title color as the theme colors may have been changed.
@@ -124,10 +134,74 @@ func _set_play_button_text_color() -> void:
 
 func _on_mouse_entered() -> void:
 	_hover_button_sound.play()
-	scale = Vector2(1.03, 1.03)
-	rotation_degrees = randf_range(-1, 1)
+	_button_panel.scale = Vector2(1.03, 1.03)
+	_button_panel.rotation_degrees = randf_range(-1, 1)
 
 
 func _on_mouse_exited() -> void:
-	scale = Vector2(1, 1)
-	rotation = 0
+	_button_panel.scale = Vector2(1, 1)
+	_button_panel.rotation = 0
+
+
+func _on_difficulty_panel_mouse_entered() -> void:	
+	_popup_label.text = (
+"Difficulty determines the click accuracy required to
+get a perfect, good, or okay score, or miss a bit. 
+The minimum difficulty is 0 and the maximum is 12."
+	+ "\n\nPerfect score: +-" + 
+	str(int(PerformanceCalculator.get_perfect_click_range(level_info.difficulty)))
+	+ " ms"
+	+ "\nGood score: +-" + 
+	str(int(PerformanceCalculator.get_good_click_range(level_info.difficulty)))
+	+ " ms"
+	+ "\nOkay score: +-" + 
+	str(int(PerformanceCalculator.get_okay_click_range(level_info.difficulty)))
+	+ " ms"
+	+ "\nMiss: >" + 
+	str(int(PerformanceCalculator.get_okay_click_range(level_info.difficulty)))
+	+ " ms"
+	)
+	
+	_popup_panel.size = Vector2.ZERO # This forces the panel to resize.
+	_popup_panel.show()
+
+
+func _on_speed_panel_mouse_entered() -> void:
+	_popup_label.text = (
+"Speed determines how long the bit takes to reach the
+cursor after appearing on screen. The minimum speed is
+1 and the maximum is 12.\n\n"
+	+ "Bit time to cursor: " + 
+	str(int(PerformanceCalculator.get_approach_time(level_info.speed) * 1000)) 
+	+ " ms"
+	)
+	
+	_popup_panel.size = Vector2.ZERO # This forces the panel to resize.
+	_popup_panel.show()
+
+
+func _on_damage_panel_mouse_entered() -> void:
+	_popup_label.text = (
+"Damage determines the percentage of your health bar
+that is lost after missing or incorrectly clicking a bit.
+Missing an enter bit does not deal damage.\n\n" 
+	+ "Damage: " + str(level_info.damage) + "% of total health"
+	)
+	
+	_popup_panel.size = Vector2.ZERO # This forces the panel to resize.
+	_popup_panel.show()
+
+
+func _on_difficulty_panel_mouse_exited() -> void:
+	_popup_panel.hide()
+	_popup_panel.size = Vector2.ZERO
+
+
+func _on_speed_panel_mouse_exited() -> void:
+	_popup_panel.hide()
+	_popup_panel.size = Vector2.ZERO
+
+
+func _on_damage_panel_mouse_exited() -> void:
+	_popup_panel.hide()
+	_popup_panel.size = Vector2.ZERO
