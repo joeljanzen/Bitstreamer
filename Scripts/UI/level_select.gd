@@ -165,6 +165,11 @@ static func _compare_level_speed(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.speed < b.level_info.speed
 
 
+## Compares 2 levels based on their BPM, from low to high.
+static func _compare_level_bpm(a: LevelButton, b: LevelButton) -> bool:
+	return a.level_info.bpm < b.level_info.bpm
+
+
 ## Compares 2 levels based on their difficulty, from low to high.
 static func _compare_level_difficulty(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.difficulty < b.level_info.difficulty
@@ -230,10 +235,19 @@ func _on_length_pressed() -> void:
 	_filter_buttons[_current_filter_index].disabled = true
 
 
+func _on_bpm_pressed() -> void:
+	_menu_click_sound.play()
+	_sort_levels_by_comparator(_compare_level_bpm)
+	
+	_filter_buttons[_current_filter_index].disabled = false
+	_current_filter_index = 5
+	_filter_buttons[_current_filter_index].disabled = true
+
+
 func _on_bit_count_pressed() -> void:
 	_menu_click_sound.play()
 	_sort_levels_by_comparator(_compare_level_bit_count)
 	
 	_filter_buttons[_current_filter_index].disabled = false
-	_current_filter_index = 5
+	_current_filter_index = 6
 	_filter_buttons[_current_filter_index].disabled = true
