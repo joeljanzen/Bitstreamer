@@ -89,6 +89,11 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 		var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
 		Bit.in_main_menu = false
 		LevelInfo.last_played = level_info
+		
+		# Attach tutorial script for the tutorial level.
+		if level_info.version == "Tutorial":
+			level_scene.set_script(load("res://Scripts/Gameplay/tutorial_level.gd"))
+		
 		get_tree().change_scene_to_node(level_scene)
 	else:
 		push_error("Failed to load the level!")
