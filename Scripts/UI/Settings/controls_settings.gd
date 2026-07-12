@@ -8,7 +8,6 @@ extends Control
 @onready var _level_ui_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI
 
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
-@onready var _menu_focus_sound: AudioStreamPlayer = $"../../../../MenuFocus"
 
 var current_action: String
 var current_button: Button
@@ -85,22 +84,3 @@ func _on_toggle_level_ui_pressed() -> void:
 	current_button = _level_ui_button
 	
 	current_button.text = " Press any key "
-
-
-func _on_zero_bit_click_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_one_bit_click_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_enter_bit_click_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_back_bit_click_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-func _on_toggle_level_ui_mouse_entered() -> void:
-	_menu_focus_sound.play()

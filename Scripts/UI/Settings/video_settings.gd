@@ -16,6 +16,7 @@ func _ready() -> void:
 
 
 func _on_bloom_level_value_changed(value: float) -> void:
+	print(value)
 	_menu_click_sound.play()
 	GameSettings.bloom_strength = value
 	
@@ -27,7 +28,3 @@ func _on_bloom_level_value_changed(value: float) -> void:
 func _on_crt_filter_toggled(toggled_on: bool) -> void:
 	_menu_click_sound.play()
 	GameSettings.set_crt_filter(toggled_on)
-
-
-func _on_bloom_level_drag_started() -> void:
-	_menu_click_sound.play()
