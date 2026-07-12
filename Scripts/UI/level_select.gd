@@ -87,7 +87,6 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 		_last_level_select_position = _scroll_box.scroll_horizontal
 		
 		var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
-		level_scene.set_level(level_info)
 		Bit.in_main_menu = false
 		LevelInfo.last_played = level_info
 		get_tree().change_scene_to_node(level_scene)

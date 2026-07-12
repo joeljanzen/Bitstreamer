@@ -43,8 +43,9 @@ func _ready() -> void:
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.connect_conductor(conductor)
 	
-	if level_info == null:
-		level_info = LevelInfo.last_played
+	# When a new level chosen, it is set to last_played before this scene 
+	# instantiates, so in all cases this works fine.
+	level_info = LevelInfo.last_played
 	
 	bit_queue = level_info.bit_queue
 	delay_queue = level_info.delay_queue
@@ -68,12 +69,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		# Update game settings to remember if the player had UI on or not.
 		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
-
-
-## Set which level to play when the scene loads. Otherwise the last played
-## level will be reloaded.
-func set_level(level_information: LevelInfo) -> void:
-	level_info = level_information
 
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
