@@ -1,6 +1,4 @@
-song_name=Tutorial Song,song=Tutorial.wav,version=Tutorial,bpm=100,speed=3.5,diff=1,dmg=2,length=98.4,bit_count=69
-
-# Make the real tutorial level here.
+song_name=First Steps,song=Tutorial.wav,version=Easy,bpm=100,speed=4,diff=1,dmg=2,length=98.4,bit_count=69
 
 4,0
 2,0

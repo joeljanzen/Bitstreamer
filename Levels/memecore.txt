@@ -1,9 +1,5 @@
 song_name=Memecore,song=Memecore.wav,version=Easy,bpm=119,speed=5,diff=3,dmg=3,length=66.555,bit_count=68
 
-# First official level after the tutorial, maybe?
-
-# Intro
-
 8,enter
 
 6,0
