@@ -43,7 +43,13 @@ func connect_gameplay_stats(stats: GameplayStatistics) -> void:
 func _on_reboot_pressed() -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
-	get_tree().reload_current_scene()
+	
+	var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
+	# Check if current level is a tutorial.
+	if LevelInfo.last_played.version == "Tutorial":
+		level_scene.set_script(load("res://Scripts/Gameplay/tutorial_level.gd"))
+	
+	get_tree().change_scene_to_node(level_scene)
 
 
 ## Return to the main menu.
