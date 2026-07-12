@@ -512,7 +512,6 @@ custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
 [node name="BackButton" type="Button" parent="CanvasLayer" unique_id=1920771885]
-z_index = 3
 custom_minimum_size = Vector2(200, 90)
 anchors_preset = 2
 anchor_top = 1.0

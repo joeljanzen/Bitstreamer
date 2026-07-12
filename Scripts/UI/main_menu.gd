@@ -102,6 +102,7 @@ func _start_song() -> void:
 	beat_time = _conductor.set_beat_signal(info.bpm, BEAT_COEFFICIENT)
 	bit_time_to_cross_screen = beat_time * 8
 	
+	title_pulse_interval = 0
 	_conductor.set_song(info.song)
 	_conductor.play_with_offset()
 

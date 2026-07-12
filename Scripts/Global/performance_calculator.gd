@@ -93,7 +93,6 @@ func get_approach_time(speed: float) -> float:
 ## Sets and returns the approach time of bits given a speed.
 func set_approach_time(speed: float) -> float:
 	approach_time = get_approach_time(speed)
-	print("Approach time: %.2f ms" % (approach_time * 1000))
 	return approach_time
 
 

@@ -94,14 +94,13 @@ func done_timings() -> void:
 ## Most accurately measures the current song time and sends timed events based
 ## on that time.
 func _physics_process(delta: float) -> void:
-	if !_done_timings and playing:
-		_time = get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
-		_time -= AudioServer.get_output_latency()
-		
-		if _time < 0:
-			_time = 0
-		
-		if _time > 0:
+	_time = get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
+	_time -= AudioServer.get_output_latency()
+	if _time < 0:
+		_time = 0
+	
+	if playing and _time > 0:
+		if !_done_timings:
 			# If the difference between current time and time of delay end is within
 			# the length of time since the last time _process was called (which is the
 			# value of delta), we treat it as reaching the delay end.
@@ -111,10 +110,10 @@ func _physics_process(delta: float) -> void:
 				timed_event.emit(_timing_event_index)
 				#print("sending timed event at %f" % _time)
 				_timing_event_index += 1
-	
-	# Beat signal, which is only active if seconds_per_beat has been set.
-	if seconds_per_beat > 0 and playing:
-		var difference = abs(_time - _time_of_next_beat)
-		if difference <= delta || _time > _time_of_next_beat:
-			beat.emit()
-			_time_of_next_beat += seconds_per_beat
+		
+		# Beat signal, which is only active if seconds_per_beat has been set.
+		if seconds_per_beat > 0:
+			var difference = abs(_time - _time_of_next_beat)
+			if difference <= delta || _time > _time_of_next_beat:
+				beat.emit()
+				_time_of_next_beat += seconds_per_beat

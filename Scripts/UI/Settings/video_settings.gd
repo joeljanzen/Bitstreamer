@@ -16,7 +16,6 @@ func _ready() -> void:
 
 
 func _on_bloom_level_value_changed(value: float) -> void:
-	print(value)
 	_menu_click_sound.play()
 	GameSettings.bloom_strength = value
 	
