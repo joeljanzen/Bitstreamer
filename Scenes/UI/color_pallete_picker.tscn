@@ -311,6 +311,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
+[connection signal="gui_input" from="CanvasLayer/Panel" to="." method="_on_panel_gui_input"]
 [connection signal="pressed" from="CanvasLayer/Panel/GridContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Panel/GridContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="CanvasLayer/Panel/GridContainer/Button3" to="." method="_on_button_3_pressed"]

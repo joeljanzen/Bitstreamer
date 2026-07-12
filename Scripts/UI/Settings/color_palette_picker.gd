@@ -12,6 +12,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		queue_free()
 
 
+## The panel was pressed, so close the pallete picker
+func _on_panel_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouse and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+		accept_event()
+		queue_free()
+
+
 func _on_button_pressed() -> void:
 	color_selected.emit($CanvasLayer/Panel/GridContainer/Button/ColorRect.color)
 	queue_free()
