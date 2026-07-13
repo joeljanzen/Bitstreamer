@@ -316,7 +316,7 @@ layout_mode = 2
 [node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton" unique_id=1589276085]
 layout_mode = 2
 mouse_filter = 1
-text = "Click Zero Bit"
+text = "Receive Zero Bit"
 
 [node name="ZeroBitClick" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton" unique_id=1034372986]
 custom_minimum_size = Vector2(0, 100)
@@ -336,7 +336,7 @@ layout_mode = 2
 [node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton2" unique_id=355181695]
 layout_mode = 2
 mouse_filter = 1
-text = "Click One Bit"
+text = "Receive One Bit"
 
 [node name="OneBitClick" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton2" unique_id=1870582109]
 custom_minimum_size = Vector2(0, 100)
@@ -356,7 +356,7 @@ layout_mode = 2
 [node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3" unique_id=367014669]
 layout_mode = 2
 mouse_filter = 1
-text = "Click Enter Bit"
+text = "Receive Enter Bit"
 
 [node name="EnterBitClick" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3" unique_id=1228514475]
 custom_minimum_size = Vector2(0, 100)
@@ -376,7 +376,7 @@ layout_mode = 2
 [node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4" unique_id=17418925]
 layout_mode = 2
 mouse_filter = 1
-text = "Click Back Bit"
+text = "Receive Back Bit"
 
 [node name="BackBitClick" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4" unique_id=154096359]
 custom_minimum_size = Vector2(0, 100)
