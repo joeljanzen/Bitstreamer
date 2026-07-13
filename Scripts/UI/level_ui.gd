@@ -39,7 +39,7 @@ var _raw_score: int = 0
 ## The maximum raw score obtainable in this play.
 var _max_accuracy: int = 0
 
-## Contains statistics for the current level.
+## Used to look up the current point in the level and display progress.
 var _conductor: Conductor
 
 
@@ -48,13 +48,12 @@ func _ready() -> void:
 	PerformanceCalculator.connect_gameplay_stats(self)
 	Signals.scored.connect(_scored)
 	Signals.missed.connect(_missed)
-	
-	#_progress_circle.tint_progress = GameSettings.zero_bit_colour
 
 
 ## Updates the level progress circle.
 func _process(_delta: float) -> void:
-	_progress_circle.value = _conductor.get_time()
+	if _progress_circle.visible:
+		_progress_circle.value = _conductor.get_time()
 
 
 ## Connects the current level to the level UI.

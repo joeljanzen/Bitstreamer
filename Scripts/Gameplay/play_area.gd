@@ -82,6 +82,7 @@ func _process(_delta: float) -> void:
 	
 	if _last_bits_sent and _bitstream.is_empty():
 		no_bits_left.emit()
+		_last_bits_sent = false # Ensure the signal is only emitted once.
 
 
 ## Input handling.
@@ -116,6 +117,7 @@ func update_border_color() -> void:
 	_border.color = GameSettings.zero_bit_colour
 
 
+## Manually set the current cursor animation.
 func set_cursor_animation(flicker: bool) -> void:
 	if flicker:
 		_cursor.play("flicker")

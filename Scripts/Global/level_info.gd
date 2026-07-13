@@ -307,6 +307,11 @@ static func get_random_level_info() -> LevelInfo:
 	# Pick one
 	var random_index = randi_range(0, level_filenames.size() - 1)
 	
+	# Never pick the tutorial level.
+	if level_filenames[random_index] == "tutorial1.txt":
+		level_filenames.remove_at(random_index)
+		random_index = randi_range(0, level_filenames.size() - 1)
+	
 	# Ensure you never get the same one twice in a row.
 	if last_played != null:
 		if level_filenames[random_index] == last_played.file_name:
