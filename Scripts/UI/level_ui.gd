@@ -138,7 +138,9 @@ func set_combo_label_visible(enabled: bool) -> void:
 ## Used in the tutorial where there are multiple separate sections.
 func reset_stats() -> void:
 	score = 0
+	_score_label.text = "0"
 	combo = 0
+	_combo_label.text = "0x"
 	
 	perfect_clicks = 0
 	good_clicks = 0
@@ -147,6 +149,7 @@ func reset_stats() -> void:
 	error_clicks = 0
 	
 	accuracy = 100
+	_accuracy_label.text = "Accuracy 100%%"
 	_max_accuracy = 0
 	_raw_score = 0
 
