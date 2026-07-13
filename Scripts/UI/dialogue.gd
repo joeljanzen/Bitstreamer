@@ -80,7 +80,7 @@ func pause_dialogue() -> void:
 
 ## Resumes typing animation if it was paused.
 func resume_dialogue() -> void:
-	if anim_player.current_animation_position != anim_player.get_section_end_time():
+	if textbox.visible_ratio < 1:
 		anim_player.play()
 
 
