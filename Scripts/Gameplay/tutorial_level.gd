@@ -24,6 +24,7 @@ func _ready() -> void:
 	bit_time_to_cursor = PerformanceCalculator.set_approach_time(level_info.speed)
 	conductor.timed_event.connect(_receive_timed_event)
 	conductor.set_song(level_info.song)
+	_play_area.set_process_input(false)
 	
 	# Initiate dialogue.
 	_dialogue_box = dialogue_scene.instantiate()
@@ -42,18 +43,14 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause") and !paused and !completed:
 		_paused()
-	elif event.is_action_pressed("toggle_level_UI") and !paused and !completed:
-		if _levelUI.UI_is_visible():
-			_levelUI.hide_UI()
-		else:
-			_levelUI.show_UI()
-		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
 
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
 ## given, which will skip to that point in the level and play from there.
 ## Must successfully call load_level with no errors for this func to work.
 func _start_level(level_offset: float = 0) -> void:
+	_play_area.set_process_input(true)
+	
 	# The total time in the song when the next bit should be sent.
 	# We want to find when the total time is greater than the offset seconds.
 	# This will also give us the delay for the initial timed event.
@@ -84,4 +81,4 @@ func _resumed() -> void:
 	_levelUI.hide_UI()
 	if _dialogue_box.sequence_active:
 		_dialogue_box.show()
-		_dialogue_box.play_dialogue()
+		_dialogue_box.resume_dialogue()

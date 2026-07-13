@@ -38,7 +38,7 @@ var crt_filter := true
 var _crt_shader: flowerwallCRT
 
 ## The colour of zero bits.
-var zero_bit_colour := Color("00FF00")
+var zero_bit_colour := Color("#00FF00")
 ## The colour of one bits.
 var one_bit_colour := Color("#FF0066")
 ## The colour of enter bits.
