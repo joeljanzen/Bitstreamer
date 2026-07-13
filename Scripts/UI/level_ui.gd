@@ -43,6 +43,20 @@ var _max_accuracy: int = 0
 var _conductor: Conductor
 
 
+## Share statistics with PerformanceCalculator, and connect to gameplay signals.
+func _ready() -> void:
+	PerformanceCalculator.connect_gameplay_stats(self)
+	Signals.scored.connect(_scored)
+	Signals.missed.connect(_missed)
+	
+	#_progress_circle.tint_progress = GameSettings.zero_bit_colour
+
+
+## Updates the level progress circle.
+func _process(_delta: float) -> void:
+	_progress_circle.value = _conductor.get_time()
+
+
 ## Connects the current level to the level UI.
 func connect_conductor(conductor: Conductor) -> void:
 	_conductor = conductor
@@ -81,18 +95,44 @@ func UI_is_visible() -> bool:
 	return _canvas.visible
 
 
-## Share statistics with PerformanceCalculator, and connect to gameplay signals.
-func _ready() -> void:
-	PerformanceCalculator.connect_gameplay_stats(self)
-	Signals.scored.connect(_scored)
-	Signals.missed.connect(_missed)
-	
-	#_progress_circle.tint_progress = GameSettings.zero_bit_colour
+## Set the visibility of the level progress circle.
+func set_level_progress_visible(enabled: bool) -> void:
+	if enabled:
+		_progress_circle.show()
+	else:
+		_progress_circle.hide()
 
 
-## Updates the level progress circle.
-func _process(_delta: float) -> void:
-	_progress_circle.value = _conductor.get_time()
+## Set the visibility of the score label.
+func set_score_label_visible(enabled: bool) -> void:
+	if enabled:
+		_score_label.show()
+	else:
+		_score_label.hide()
+
+
+## Set the visibility of the score label.
+func set_accuracy_label_visible(enabled: bool) -> void:
+	if enabled:
+		_score_label.show()
+	else:
+		_score_label.hide()
+
+
+## Set the visibility of the health bar.
+func set_health_bar_visible(enabled: bool) -> void:
+	if enabled:
+		_health_bar.show()
+	else:
+		_health_bar.hide()
+
+
+## Set the visibility of the accuracy label.
+func set_combo_label_visible(enabled: bool) -> void:
+	if enabled:
+		_combo_label.show()
+	else:
+		_combo_label.hide()
 
 
 ## Points have been scored. amount is the total score gained, and raw_amount is
