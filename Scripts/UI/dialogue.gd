@@ -124,12 +124,30 @@ func _process_special_codes(string: String) -> String:
 			match code:
 				"{zero_bit_keybind}":
 					var bind = InputMap.action_get_events("0_bit")[0].as_text().trim_suffix(" - Physical")
-					var color_string = "[color=#" + GameSettings.zero_bit_colour.to_html(false) + "]"
+					var color_string = "[color=#" + GameSettings.perfect_click_colour + "]"
+					if GameSettings.zero_bit_colour != Color.WHITE:
+						color_string = "[color=#" + GameSettings.zero_bit_colour.to_html(false) + "]"
 					var full_string = color_string + bind + "[/color]"
 					string = string.replace(code, full_string)
 				"{one_bit_keybind}":
 					var bind = InputMap.action_get_events("1_bit")[0].as_text().trim_suffix(" - Physical")
-					var color_string = "[color=#" + GameSettings.one_bit_colour.to_html(false) + "]"
+					var color_string = "[color=#" + GameSettings.perfect_click_colour + "]"
+					if GameSettings.one_bit_colour != Color.WHITE:
+						color_string = "[color=#" + GameSettings.one_bit_colour.to_html(false) + "]"
+					var full_string = color_string + bind + "[/color]"
+					string = string.replace(code, full_string)
+				"{enter_bit_keybind}":
+					var bind = InputMap.action_get_events("enter_bit")[0].as_text().trim_suffix(" - Physical")
+					var color_string = "[color=#" + GameSettings.perfect_click_colour + "]"
+					if GameSettings.enter_bit_colour != Color.WHITE:
+						color_string = "[color=#" + GameSettings.enter_bit_colour.to_html(false) + "]"
+					var full_string = color_string + bind + "[/color]"
+					string = string.replace(code, full_string)
+				"{back_bit_keybind}":
+					var bind = InputMap.action_get_events("back_bit")[0].as_text().trim_suffix(" - Physical")
+					var color_string = "[color=#" + GameSettings.perfect_click_colour + "]"
+					if GameSettings.back_bit_colour != Color.WHITE:
+						color_string = "[color=#" + GameSettings.back_bit_colour.to_html(false) + "]"
 					var full_string = color_string + bind + "[/color]"
 					string = string.replace(code, full_string)
 				"{perfect_click_color}":
