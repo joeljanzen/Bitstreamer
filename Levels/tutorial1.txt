@@ -1,22 +1,15 @@
-song_name=First Steps,song=Tutorial.wav,version=Tutorial,bpm=100,speed=3.5,diff=0,dmg=0,bit_count=4,length=6.0
+song_name=First Steps,song=Tutorial.wav,version=Tutorial,bpm=100,speed=3.5,diff=0,dmg=0,length=21.6,bit_count=9
 
-# learn the zero bit
+# learn the zero and one bit
 
 4,0
 4,0
 4,0
 4,0
-2,0
-2,0
-
-# learn the one bit (11s offset)
-
 4,1
 4,1
 4,1
 4,1
-2,1
-2,1
-
+4,0
 
 # learn the enter bit

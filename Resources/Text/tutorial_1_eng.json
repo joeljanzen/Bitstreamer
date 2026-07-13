@@ -1,10 +1,13 @@
 {
 	"start": [
-		"Huh, uh, you that Daniel gentleman? yo this",
-		"[color=#ff0000]no duh[/color]",
+		"Welcome to Bitstreamer! As our new central processor, you'll be running all the programs around here. I'm sure you'll make a fine replacement, so let's get started!",
+		"Programs send us data in the form of {perfect_click_color}bits[/color]. It is your job to receive them when they arrive at your blinking cursor.",
+		"To receive a zero bit, press {zero_bit_keybind}.",
+		"To receive a one bit, press {one_bit_keybind}.",
+		"Try not to miss any bits or receive them incorrectly. Now, give it a go!",
 		"",
 	],
-	"huh": [
+	"enter_bit": [
 		"Huh, uh, you that Daniel gentleman?",
 		"[color=#ff00ff]no duh[/color]",
 		"",
