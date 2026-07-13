@@ -114,9 +114,9 @@ func set_score_label_visible(enabled: bool) -> void:
 ## Set the visibility of the score label.
 func set_accuracy_label_visible(enabled: bool) -> void:
 	if enabled:
-		_score_label.show()
+		_accuracy_label.show()
 	else:
-		_score_label.hide()
+		_accuracy_label.hide()
 
 
 ## Set the visibility of the health bar.
@@ -133,6 +133,22 @@ func set_combo_label_visible(enabled: bool) -> void:
 		_combo_label.show()
 	else:
 		_combo_label.hide()
+
+
+## Used in the tutorial where there are multiple separate sections.
+func reset_stats() -> void:
+	score = 0
+	combo = 0
+	
+	perfect_clicks = 0
+	good_clicks = 0
+	okay_clicks = 0
+	missed_clicks = 0
+	error_clicks = 0
+	
+	accuracy = 100
+	_max_accuracy = 0
+	_raw_score = 0
 
 
 ## Points have been scored. amount is the total score gained, and raw_amount is
