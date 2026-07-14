@@ -1,5 +1,9 @@
 extends Node
 ## Holds game settings for the player. These persist throughout levels.
+## May also include global constants that are only meant for devs to modify.
+
+## The number of seconds to wait before triggering a finish state for the level.
+const LEVEL_FINISH_DELAY: float = 0.5
 
 # Gameplay options
 ## Displays an effect indicating the acccuracy of the bit click (or miss).

@@ -11,9 +11,6 @@ const _SECTION_END_INDEX = [8, 15]
 ## section.
 const _SECTION_SUCCESS_THRESHOLD = [2, 1, 1]
 
-## The number of seconds to wait before starting the next section.
-const WAIT_BETWEEN_SECTIONS = 0.5
-
 var _dialogue_box: Dialogue
 
 ## Tracks which section the player is currently on.
@@ -126,7 +123,7 @@ func _receive_timed_event(event_index: int) -> void:
 ## The section has been completed. It may restart if there were misses, but
 ## otherwise it will proceed to the next tutorial section.
 func _section_end() -> void:
-	await get_tree().create_timer(WAIT_BETWEEN_SECTIONS).timeout
+	await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
 	
 	_play_area.set_process_input(false)
 	_levelUI.set_level_progress_visible(false)

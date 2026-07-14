@@ -192,6 +192,7 @@ func _missed(damage: int, click_quality: PerformanceCalculator.ClickQuality) -> 
 			error_clicks += 1
 	
 	if _health_bar.value <= 0:
+		await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
 		Signals.failed.emit()
 
 
