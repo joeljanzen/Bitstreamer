@@ -3,9 +3,12 @@ extends GameLevel
 
 @onready var dialogue_scene = preload("res://Scenes/UI/dialogue.tscn")
 
+@onready var tutorial_s2_music = preload("res://Resources/Audio/LevelTracks/Tutorial S2.wav")
+@onready var tutorial_s3_music = preload("res://Resources/Audio/LevelTracks/Tutorial S3.wav")
+
 ## Tells the tutorial how long each section is. The last section goes to the
 ## end of the bit and delay queues.
-const _SECTION_END_INDEX = [8, 15]
+const _SECTION_END_INDEX = [8, 17]
 
 ## How many mistakes the player can make without being forced to retry the 
 ## section.
@@ -93,6 +96,14 @@ func _start_level(level_offset: float = 0) -> void:
 	if total_time < level_offset:
 		push_error("An offset of %.2f goes past the entire level!" % level_offset)
 	else:
+		# Set new music for new sections.
+		match _current_section:
+			2:
+				conductor.set_song(tutorial_s2_music)
+				
+			3:
+				conductor.set_song(tutorial_s3_music)
+		
 		conductor.play_with_offset(level_offset, event_index)
 		conductor.set_timed_event(total_time)
 
@@ -136,7 +147,6 @@ func _section_end() -> void:
 				_dialogue_box.display_dialogue("fail_start")
 			else:
 				_current_section += 1
-				#conductor.set_song() SET NEW SONG HERE FOR NEW SECTION
 				_dialogue_box.display_dialogue("enter_bit")
 				_levelUI.set_score_label_visible(true)
 		2:
@@ -145,7 +155,6 @@ func _section_end() -> void:
 				_dialogue_box.display_dialogue("fail_enter_bit")
 			else:
 				_current_section += 1
-				#conductor.set_song() SET NEW SONG HERE FOR NEW SECTION
 				_dialogue_box.display_dialogue("back_bit")
 				_levelUI.set_health_bar_visible(true)
 		3:

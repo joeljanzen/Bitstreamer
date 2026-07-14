@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dmoapc3qyse4i"
+path="res://.godot/imported/First Steps.wav-082922d885833e73da3934c2bb350dfb.sample"
+
+[deps]
+
+source_file="res://Resources/Audio/LevelTracks/First Steps.wav"
+dest_files=["res://.godot/imported/First Steps.wav-082922d885833e73da3934c2bb350dfb.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

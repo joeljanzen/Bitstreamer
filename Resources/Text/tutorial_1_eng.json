@@ -39,7 +39,7 @@
 	],
 	"finish": [
 		"Great job! This concludes your training as our new central processor. I'm sure you'll make a fine replacement for the last one!",
-		"Feel free to change your controls to something more comfortable in {perfect_click_color}settings![/color]",
+		"Feel free to change your controls to something more comfortable in {perfect_click_color}settings[/color].",
 		"Our user is depending on you, good luck!",
 		"",
 	],
