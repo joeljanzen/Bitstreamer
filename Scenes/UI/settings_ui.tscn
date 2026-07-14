@@ -245,7 +245,7 @@ layout_mode = 2
 
 [node name="CursorFlicker" type="CheckButton" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1054059135]
 layout_mode = 2
-text = "Cursor Flicker "
+text = "Cursor Blinks "
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Gameplay/MarginContainer/VBoxContainer" unique_id=1057377728]
 layout_mode = 2

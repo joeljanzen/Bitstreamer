@@ -1,4 +1,5 @@
 [
+	"Welcome to Bitstreamer!",
 	"Click the bits!",
 	"This is the good bit!",
 	"Just a bit longer!",
@@ -9,5 +10,15 @@
 	"1000011",
 	"Take the 01001100!",
 	"01010111 rhythm game!",
-	"I sense there's some real stereo madness ahead...",
+	"I'm sensing some real stereo madness ahead...",
+	"Enter and back bits cannot be received incorrectly, only missed.",
+	"Missing an enter or back bit breaks combo but doesn't deal damage.",
+	"Rebuild your combo to heal the program.",
+	"A high combo grants extra score.",
+	"Change your controls to something more comfortable in settings!",
+	"Select your favourite colour scheme in theme settings!",
+	"I'm sure you'll make a fine replacement for the last one!",
+	"Our user is depending on you!",
+	"Nice to connect with you!",
+	"You'll be running all the programs around here.",
 ]
