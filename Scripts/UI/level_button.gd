@@ -216,10 +216,10 @@ cursor after appearing on screen. The minimum speed is
 
 func _on_damage_panel_mouse_entered() -> void:
 	_popup_label.text = (
-"Damage determines the percentage of your health bar
-that is lost after missing or incorrectly clicking a bit.
-Missing an enter bit does not deal damage.\n\n" 
-	+ "[color=" + GameSettings.incorrect_bit_colour + "]Damage: "
+"Damage determines the percentage of program health 
+that is lost after missing or incorrectly receiving a bit.
+Missing an enter or back bit does not deal damage.\n\n" 
+	+ "[color=" + GameSettings.incorrect_click_colour + "]Damage: "
 	+ str(level_info.damage) + "% of total health"
 	)
 	
