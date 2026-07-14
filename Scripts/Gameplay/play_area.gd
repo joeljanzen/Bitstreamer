@@ -81,7 +81,6 @@ func _process(_delta: float) -> void:
 			_cursor.play("static")
 	
 	if _last_bits_sent and _bitstream.is_empty():
-		await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
 		no_bits_left.emit()
 		_last_bits_sent = false # Ensure the signal is only emitted once.
 

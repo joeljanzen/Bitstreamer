@@ -188,6 +188,8 @@ func _paused() -> void:
 
 ## The level has been failed.
 func _failed() -> void:
+	await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
+	
 	failed = true
 	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
@@ -200,6 +202,8 @@ func _failed() -> void:
 
 ## The level has been completed.
 func _completed() -> void:
+	await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
+	
 	completed = true
 	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
