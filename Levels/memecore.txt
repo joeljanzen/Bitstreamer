@@ -1,4 +1,4 @@
-song_name=Memecore,song=Memecore.wav,version=Easy,bpm=119,speed=5,diff=3,dmg=3,length=66.555,bit_count=68
+song_name=Memecore,song=Memecore.wav,version=Easy,bpm=119,speed=5,diff=3,dmg=3,length=135.126,bit_count=118
 
 8,enter
 
@@ -32,8 +32,7 @@ song_name=Memecore,song=Memecore.wav,version=Easy,bpm=119,speed=5,diff=3,dmg=3,l
 3,0
 1,0
 3/2,1
-1/4,0
-1/4,1
+1/2,0
 2,enter
 
 # 32s
@@ -92,3 +91,68 @@ song_name=Memecore,song=Memecore.wav,version=Easy,bpm=119,speed=5,diff=3,dmg=3,l
 # 64s
 
 4,1
+4,1
+7/2,1
+1/2,0
+1,0
+1,0
+1,0
+1,enter
+
+4,0
+4,0
+7/2,0
+1/2,1
+1,1
+1,1
+1,1
+1,enter
+
+# 78.5s
+
+6,0
+1,1
+1,0
+3,1
+1,1
+3,0
+1/2,1
+1/2,0
+
+3/2,0
+5/2,0
+5/2,0
+3/2,1
+2,1
+2,1
+4,enter
+
+# 94.5s
+
+7/2,0
+1/2,1
+2,1
+2,1
+3/2,1
+5/2,1
+7/2,0
+1/2,1
+
+7/2,0
+1/2,1
+7/4,1
+9/4,1
+3/2,1
+5/2,1
+3,0
+1,enter
+
+# 110s
+
+16,enter
+16,enter
+
+8,enter
+4,back
+
+# 133s
