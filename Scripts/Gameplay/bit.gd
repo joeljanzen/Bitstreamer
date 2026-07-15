@@ -81,21 +81,13 @@ func _physics_process(delta: float) -> void:
 				modulate.a -= delta / fade_time
 	
 	# Bit is missed.
-	if !in_main_menu:
-		if !_is_missed and PerformanceCalculator.is_missed(get_accuracy()):
+	if !in_main_menu and !_is_missed and PerformanceCalculator.is_missed(get_accuracy()):
 			Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.MISS)
 			_is_missed = true
 			_score_animation(PerformanceCalculator.ClickQuality.MISS)
 			
 			if !GameSettings.move_offscreen_on_bit_miss:
-				if !GameSettings.bit_click_effect:
-					# This triggers a fade out instead of instant deletion, since we
-					# want a fade when the bit click effect is not active.
-					kill(false)
-				else:
-					# Since the bit click effect is active, we want the bit gone
-					# right away so the "miss" text can display with no obstructions.
-					queue_free()
+				kill(false)
 	
 	# Bit is offscreen.
 	if global_position.x < -Bit.get_width():
