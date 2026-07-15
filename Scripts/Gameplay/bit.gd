@@ -81,8 +81,12 @@ func _physics_process(delta: float) -> void:
 				modulate.a -= delta / fade_time
 	
 	# Bit is missed.
-	if !in_main_menu and !_is_missed and PerformanceCalculator.is_missed(get_accuracy()):
+	# Note that we need to stop polling for this if the bit is fading, as
+	# it has been clicked already and cannot be missed afterwards.
+	if (!in_main_menu and !_is_missed and !_fade_bit
+			and PerformanceCalculator.is_missed(get_accuracy())):
 			Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.MISS)
+			
 			_is_missed = true
 			_score_animation(PerformanceCalculator.ClickQuality.MISS)
 			
@@ -142,7 +146,7 @@ func set_bit_visuals(type: Type) -> void:
 ## If not, the bit keeps going and can try to be clicked again.
 func click(value: Bit.Type) -> bool:
 	var accuracy = get_accuracy()
-	#print("Click accuracy: %.2f ms" % accuracy)
+	#print("Click accuracy: %.2f ms for bit of type %d" % [accuracy, _value])
 	var is_perfect_click = false
 	
 	if PerformanceCalculator.is_clickable(accuracy):
