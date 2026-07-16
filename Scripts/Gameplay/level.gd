@@ -189,9 +189,9 @@ func _paused() -> void:
 
 ## The level has been failed.
 func _failed() -> void:
+	failed = true
 	await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
 	
-	failed = true
 	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	conductor.done_timings()
@@ -203,19 +203,20 @@ func _failed() -> void:
 
 ## The level has been completed.
 func _completed() -> void:
-	await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
-	
-	completed = true
-	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
-	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
-	conductor.done_timings()
-	
-	_levelUI.hide_UI()
-	
-	# Enable background blur.
-	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
-	_environment.environment.glow_bloom = PAUSE_BLUR_STRENGTH
-	
-	var win_screen: GameWinUI = _win_screen.instantiate()
-	win_screen.connect_gameplay_stats(_levelUI)
-	add_child(win_screen)
+	if !failed:
+		completed = true
+		await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
+		
+		_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
+		_play_area.process_mode = Node.PROCESS_MODE_DISABLED
+		conductor.done_timings()
+		
+		_levelUI.hide_UI()
+		
+		# Enable background blur.
+		_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
+		_environment.environment.glow_bloom = PAUSE_BLUR_STRENGTH
+		
+		var win_screen: GameWinUI = _win_screen.instantiate()
+		win_screen.connect_gameplay_stats(_levelUI)
+		add_child(win_screen)

@@ -206,7 +206,6 @@ func _missed(damage: int, click_quality: PerformanceCalculator.ClickQuality) -> 
 		# Ignore extra missed and clicked bits, the player already failed.
 		Signals.missed.disconnect(_missed) 
 		Signals.scored.disconnect(_scored)
-		await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
 		Signals.failed.emit()
 
 
