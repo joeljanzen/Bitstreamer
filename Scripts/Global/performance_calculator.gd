@@ -27,7 +27,7 @@ const COMBO_BONUS_SCALER := 0.02
 
 # The health restored for a certain accuracy of click.
 ## The health restored for a click within the bounds of perfect_click_range.
-const PERFECT_CLICK_HEAL := 6
+const PERFECT_CLICK_HEAL := 3
 ## The health restored for a click within the bounds of good_click_range.
 const GOOD_CLICK_HEAL := 2
 ## The health restored for a click within the bounds of clickable_range.
