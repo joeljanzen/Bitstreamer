@@ -52,7 +52,7 @@ func _ready() -> void:
 
 ## Updates the level progress circle.
 func _process(_delta: float) -> void:
-	if _progress_circle.visible:
+	if UI_is_visible() and _progress_circle.visible:
 		_progress_circle.value = _conductor.get_time()
 
 
@@ -92,6 +92,11 @@ func hide_UI() -> void:
 ## Returns if the UI is currently visible.
 func UI_is_visible() -> bool:
 	return _canvas.visible
+
+
+## Get the current percentage of progress into the level the player is.
+func get_current_progress() -> float:
+	return _progress_circle.value / _progress_circle.max_value * 100
 
 
 ## Set the visibility of the level progress circle.
@@ -192,6 +197,9 @@ func _missed(damage: int, click_quality: PerformanceCalculator.ClickQuality) -> 
 			error_clicks += 1
 	
 	if _health_bar.value <= 0:
+		# Ignore extra missed and clicked bits, the player already failed.
+		Signals.missed.disconnect(_missed) 
+		Signals.scored.disconnect(_scored)
 		await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
 		Signals.failed.emit()
 

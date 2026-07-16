@@ -18,10 +18,45 @@ script = ExtResource("1_pwu0n")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=357287189]
 
 [node name="CrashBackground" type="TextureRect" parent="CanvasLayer" unique_id=655336392]
-offset_right = 40.0
-offset_bottom = 40.0
+visible = false
+offset_right = 2560.0
+offset_bottom = 1440.0
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_3m6g7")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=478902463]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.47058824, 0.84313726, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=722436615]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="Clicks" type="RichTextLabel" parent="CanvasLayer/MarginContainer" unique_id=572128911]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme = ExtResource("3_lbv4o")
+theme_override_font_sizes/normal_font_size = 50
+text = "perfect:
+good:
+okay:
+miss:
+error:"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 2
 
 [node name="Reboot" type="Button" parent="CanvasLayer" unique_id=1823941811]
 offset_left = 310.0
@@ -39,56 +74,59 @@ offset_bottom = 980.0
 theme = ExtResource("3_lbv4o")
 text = "Quit"
 
-[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer" unique_id=92562157]
-offset_left = 714.0
-offset_top = 101.0
-offset_right = 1884.0
-offset_bottom = 202.0
-theme = ExtResource("3_lbv4o")
-theme_override_font_sizes/normal_font_size = 100
-text = "Accuracy: 100%"
-fit_content = true
-scroll_active = false
-horizontal_alignment = 2
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer" unique_id=1589719795]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_bottom = 400
 
-[node name="Combo" type="RichTextLabel" parent="CanvasLayer" unique_id=1716948503]
-offset_left = 420.0
-offset_top = 252.0
-offset_right = 1641.0
-offset_bottom = 353.0
-theme = ExtResource("3_lbv4o")
-theme_override_font_sizes/normal_font_size = 100
-text = "Maximum Combo: 0x"
-fit_content = true
-scroll_active = false
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2" unique_id=1089012449]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
 
-[node name="Score" type="RichTextLabel" parent="CanvasLayer" unique_id=1884251460]
-offset_left = 393.0
-offset_top = 580.0
-offset_right = 1527.0
-offset_bottom = 688.0
+[node name="Score" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1884251460]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
 theme = ExtResource("3_lbv4o")
 theme_override_font_sizes/normal_font_size = 100
 text = "Score: 0"
 fit_content = true
 scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Clicks" type="RichTextLabel" parent="CanvasLayer" unique_id=572128911]
-offset_left = 1368.0
-offset_top = 453.0
-offset_right = 1884.0
-offset_bottom = 741.0
+[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=92562157]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
 theme = ExtResource("3_lbv4o")
-theme_override_font_sizes/normal_font_size = 50
-text = "perfect:
-good:
-okay:
-miss:
-error:"
+theme_override_font_sizes/normal_font_size = 100
+text = "Accuracy: 100%"
 fit_content = true
 scroll_active = false
-horizontal_alignment = 2
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Progress" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1716948503]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme = ExtResource("3_lbv4o")
+theme_override_font_sizes/normal_font_size = 100
+text = "Progress: 92.32%"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=280739703]
 stream = ExtResource("4_rxu5j")

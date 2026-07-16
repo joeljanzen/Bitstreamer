@@ -2,10 +2,10 @@ class_name GameCrashUI
 extends Control
 ## Displays when the player loses (the program crashes).
 
-@onready var _accuracy_label: RichTextLabel = $CanvasLayer/Accuracy
-@onready var _combo_label: RichTextLabel = $CanvasLayer/Combo
-@onready var _score_label: RichTextLabel = $CanvasLayer/Score
-@onready var _clicks_label: RichTextLabel = $CanvasLayer/Clicks
+@onready var _accuracy_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Accuracy
+@onready var _progress_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Progress
+@onready var _score_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Score
+@onready var _clicks_label: RichTextLabel = $CanvasLayer/MarginContainer/Clicks
 # Sounds.
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
@@ -18,7 +18,7 @@ var statistics: GameplayStatistics
 func _ready() -> void:
 	_score_label.text = "Score: %d" % statistics.score
 	_accuracy_label.text = "Accuracy: %.2f%%" % statistics.accuracy
-	_combo_label.text = "Maximum combo: %dx" % statistics.max_combo
+	_progress_label.text = "Progress: %.2f%%" % statistics.get_current_progress()
 	_clicks_label.text = """perfect: %d
 	good: %d
 	okay: %d
