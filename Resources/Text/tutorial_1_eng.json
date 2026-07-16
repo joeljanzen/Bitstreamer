@@ -14,7 +14,7 @@
 	],
 	"enter_bit": [
 		"Well done! The more accurately you receive bits, the smoother the program will run and as a reward you will receive more {perfect_click_color}score[/color]. Your score is displayed at the top of the screen.",
-		"Sometimes you will need to move down to a new line to receive more bits. I will send you a queue to do this, called an {perfect_click_color}enter bit.",
+		"Sometimes you will need to move down to a new line to receive more bits. I will send you a queue to do this, called an {perfect_click_color}enter bit[/color].",
 		"If you miss an enter bit, I'll ensure you still move down the line, but you will not gain score and will lose your combo as a result.",
 		"*show_combo:Your {perfect_click_color}combo[/color] is displayed in the bottom right. When you receive bits correctly, your combo will increase.",
 		"The program runs best when your combo is high, granting you extra score. If you miss or incorrectly receive any bits it will drop back to zero, so be careful!",

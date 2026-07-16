@@ -1,4 +1,4 @@
-song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4,length=199.538,bit_count=188
+song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=8,length=199.538,bit_count=188
 
 8,enter
 
@@ -57,7 +57,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 5/2,enter
 4,0
 
-# 50s
+# Ayo the pizza here, huh? - 50s
 
 4,enter
 1,1
@@ -88,7 +88,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 
 1,enter
 
-# 64s
+# Interlude - 64s
 
 4,1
 4,1
@@ -107,7 +107,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 1,1
 1,enter
 
-# 78.5s
+# Drop 2 (keys) - 78.5s
 
 6,0
 1,1
@@ -146,7 +146,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 3,0
 1,enter
 
-# 110s
+# Bridge - 110s
 
 16,enter
 63/4,enter
@@ -154,7 +154,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 33/4,enter
 4,back
 
-# 133s
+# New section - 133s
 
 8,enter
 
@@ -166,7 +166,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 7,0
 1,enter
 
-# 149
+# Buildup - 149s
 
 3/2,0
 3/4,1
@@ -179,7 +179,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 3/2,0
 17/4,enter
 
-# 157
+# 157s
 
 1,0
 1,1
@@ -194,7 +194,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 1,1
 1,enter
 
-# 165
+# Drop 3 (Markiplier, hehehe) - 165s
 
 3/2,0
 1,0
@@ -228,7 +228,7 @@ song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=5,dmg=4
 1,1
 5/2,enter
 
-# 185
+# Hol' up, wait a minute - 185s
 
 8,back
 1,0
