@@ -39,6 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 
@@ -58,22 +59,6 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 2
 
-[node name="Reboot" type="Button" parent="CanvasLayer" unique_id=1823941811]
-offset_left = 310.0
-offset_top = 780.0
-offset_right = 810.0
-offset_bottom = 980.0
-theme = ExtResource("3_lbv4o")
-text = "Restart"
-
-[node name="Quit" type="Button" parent="CanvasLayer" unique_id=603242436]
-offset_left = 1110.0
-offset_top = 780.0
-offset_right = 1610.0
-offset_bottom = 980.0
-theme = ExtResource("3_lbv4o")
-text = "Quit"
-
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer" unique_id=1589719795]
 anchors_preset = 15
 anchor_right = 1.0
@@ -81,20 +66,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 100
-theme_override_constants/margin_bottom = 400
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2" unique_id=1089012449]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/separation = 20
 alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1666448086]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme = ExtResource("3_lbv4o")
+theme_override_font_sizes/font_size = 120
+text = "An error has occured!"
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1408995123]
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Progress" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1716948503]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = ExtResource("3_lbv4o")
+theme_override_font_sizes/normal_font_size = 50
+text = "Progress: 92.32%"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Score" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1884251460]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 3
+size_flags_vertical = 8
 theme = ExtResource("3_lbv4o")
-theme_override_font_sizes/normal_font_size = 100
+theme_override_font_sizes/normal_font_size = 50
 text = "Score: 0"
 fit_content = true
 scroll_active = false
@@ -105,9 +118,9 @@ vertical_alignment = 1
 [node name="Accuracy" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=92562157]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 3
+size_flags_vertical = 4
 theme = ExtResource("3_lbv4o")
-theme_override_font_sizes/normal_font_size = 100
+theme_override_font_sizes/normal_font_size = 50
 text = "Accuracy: 100%"
 fit_content = true
 scroll_active = false
@@ -115,18 +128,24 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Progress" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1716948503]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1378365594]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 3
+size_flags_vertical = 10
+alignment = 1
+
+[node name="Reboot" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=1823941811]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 6
 theme = ExtResource("3_lbv4o")
-theme_override_font_sizes/normal_font_size = 100
-text = "Progress: 92.32%"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-horizontal_alignment = 1
-vertical_alignment = 1
+text = "Restart"
+
+[node name="Quit" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=603242436]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("3_lbv4o")
+text = "Quit"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=280739703]
 stream = ExtResource("4_rxu5j")
@@ -135,7 +154,7 @@ bus = &"SFX"
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=2035866713]
 stream = ExtResource("5_4o26s")
 
-[connection signal="mouse_entered" from="CanvasLayer/Reboot" to="." method="_on_reboot_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Reboot" to="." method="_on_reboot_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/Quit" to="." method="_on_quit_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Reboot" to="." method="_on_reboot_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Reboot" to="." method="_on_reboot_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Quit" to="." method="_on_quit_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]

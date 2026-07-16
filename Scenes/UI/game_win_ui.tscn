@@ -19,84 +19,25 @@ script = ExtResource("1_ied5b")
 
 [node name="winbackground?" type="TextureRect" parent="CanvasLayer" unique_id=655336392]
 visible = false
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 2560.0
+offset_bottom = 1440.0
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_obi77")
 
-[node name="PlayAgain" type="Button" parent="CanvasLayer" unique_id=1823941811]
-offset_left = 310.0
-offset_top = 780.0
-offset_right = 810.0
-offset_bottom = 980.0
-theme = ExtResource("3_e04pd")
-text = "Play again"
-
-[node name="Quit" type="Button" parent="CanvasLayer" unique_id=603242436]
-offset_left = 1110.0
-offset_top = 780.0
-offset_right = 1610.0
-offset_bottom = 980.0
-theme = ExtResource("3_e04pd")
-text = "Quit"
-
-[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer" unique_id=92562157]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -585.0
-offset_top = 550.0
-offset_right = 585.0
-offset_bottom = 651.0
-grow_horizontal = 2
-theme = ExtResource("3_e04pd")
-theme_override_font_sizes/normal_font_size = 100
-text = "Accuracy: 100%"
-fit_content = true
-scroll_active = false
-horizontal_alignment = 1
-
-[node name="Combo" type="RichTextLabel" parent="CanvasLayer" unique_id=1716948503]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -610.5
-offset_top = 350.0
-offset_right = 610.5
-offset_bottom = 451.0
-grow_horizontal = 2
-theme = ExtResource("3_e04pd")
-theme_override_font_sizes/normal_font_size = 100
-text = "Maximum Combo: 0x"
-fit_content = true
-scroll_active = false
-horizontal_alignment = 1
-
-[node name="Score" type="RichTextLabel" parent="CanvasLayer" unique_id=1884251460]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -567.0
-offset_top = 150.0
-offset_right = 567.0
-offset_bottom = 258.0
-grow_horizontal = 2
-theme = ExtResource("3_e04pd")
-theme_override_font_sizes/normal_font_size = 100
-text = "Score: 0"
-fit_content = true
-scroll_active = false
-horizontal_alignment = 1
-
-[node name="Clicks" type="RichTextLabel" parent="CanvasLayer" unique_id=572128911]
-anchors_preset = 1
-anchor_left = 1.0
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=436827717]
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = -534.0
-offset_top = 18.0
-offset_right = -18.0
-offset_bottom = 273.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="Clicks" type="RichTextLabel" parent="CanvasLayer/MarginContainer" unique_id=1233034389]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
 theme = ExtResource("3_e04pd")
 theme_override_font_sizes/normal_font_size = 50
 text = "perfect:
@@ -106,7 +47,73 @@ miss:
 error:"
 fit_content = true
 scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer" unique_id=2044743102]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2" unique_id=252787303]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Score" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1884251460]
+layout_mode = 2
+size_flags_vertical = 10
+theme = ExtResource("3_e04pd")
+theme_override_font_sizes/normal_font_size = 150
+text = "Score: 0"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=92562157]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("3_e04pd")
+theme_override_font_sizes/normal_font_size = 50
+text = "Accuracy: 100%"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Combo" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1716948503]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("3_e04pd")
+theme_override_font_sizes/normal_font_size = 50
+text = "Maximum Combo: 0x"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1522673332]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="PlayAgain" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=1823941811]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("3_e04pd")
+text = "Play again"
+
+[node name="Quit" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=603242436]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("3_e04pd")
+text = "Quit"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1371278344]
 stream = ExtResource("4_e04pd")
@@ -115,7 +122,7 @@ bus = &"SFX"
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1631289638]
 stream = ExtResource("5_i62qj")
 
-[connection signal="mouse_entered" from="CanvasLayer/PlayAgain" to="." method="_on_play_again_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/PlayAgain" to="." method="_on_play_again_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/Quit" to="." method="_on_quit_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/PlayAgain" to="." method="_on_play_again_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Quit" to="." method="_on_quit_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]

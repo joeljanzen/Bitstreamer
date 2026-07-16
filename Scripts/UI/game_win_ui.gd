@@ -2,10 +2,10 @@ class_name GameWinUI
 extends Control
 ## Displays when the player loses (the program crashes).
 
-@onready var _accuracy_label: RichTextLabel = $CanvasLayer/Accuracy
-@onready var _combo_label: RichTextLabel = $CanvasLayer/Combo
-@onready var _score_label: RichTextLabel = $CanvasLayer/Score
-@onready var _clicks_label: RichTextLabel = $CanvasLayer/Clicks
+@onready var _accuracy_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Accuracy
+@onready var _combo_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Combo
+@onready var _score_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Score
+@onready var _clicks_label: RichTextLabel = $CanvasLayer/MarginContainer/Clicks
 # Sounds.
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
