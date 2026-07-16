@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 	# Bit is missed.
 	# Note that we need to stop polling for this if the bit is fading, as
 	# it has been clicked already and cannot be missed afterwards.
-	if (!in_main_menu and !_is_missed and !_fade_bit
+	if (!in_main_menu and !_is_missed and !_is_clicked
 			and PerformanceCalculator.is_missed(get_accuracy())):
 			Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.MISS)
 			
