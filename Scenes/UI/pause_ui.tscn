@@ -18,37 +18,55 @@ script = ExtResource("1_srqh7")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1799958347]
 
-[node name="Resume" type="Button" parent="CanvasLayer" unique_id=1245872889]
-offset_left = 710.0
-offset_top = 110.0
-offset_right = 1210.0
-offset_bottom = 310.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=1891248356]
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -264.0
+offset_right = 264.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Resume" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=1245872889]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 4
 theme = ExtResource("1_bthaf")
 text = "Resume"
 
-[node name="Reboot" type="Button" parent="CanvasLayer" unique_id=353286288]
-offset_left = 710.0
-offset_top = 340.0
-offset_right = 1210.0
-offset_bottom = 540.0
+[node name="Reboot" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=353286288]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_bthaf")
 text = "Restart"
 
-[node name="Settings" type="Button" parent="CanvasLayer" unique_id=690275050]
-offset_left = 710.0
-offset_top = 570.0
-offset_right = 1210.0
-offset_bottom = 770.0
+[node name="Settings" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=690275050]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_bthaf")
 text = "Settings"
 
-[node name="Quit" type="Button" parent="CanvasLayer" unique_id=873856400]
-offset_left = 710.0
-offset_top = 800.0
-offset_right = 1210.0
-offset_bottom = 1000.0
+[node name="Quit" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=873856400]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+size_flags_horizontal = 4
 theme = ExtResource("1_bthaf")
 text = "Quit"
+
+[node name="Progress" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1540023217]
+layout_mode = 2
+theme = ExtResource("1_bthaf")
+theme_override_font_sizes/font_size = 40
+text = "Current Progress: 92.23%"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1362538356]
 stream = ExtResource("3_cf5hy")
@@ -59,11 +77,11 @@ bus = &"SFX"
 stream = ExtResource("4_w3mym")
 bus = &"SFX"
 
-[connection signal="mouse_entered" from="CanvasLayer/Resume" to="." method="_on_resume_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Resume" to="." method="_on_resume_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/Reboot" to="." method="_on_reboot_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Reboot" to="." method="_on_reboot_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/Settings" to="." method="_on_settings_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/Quit" to="." method="_on_quit_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Resume" to="." method="_on_resume_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Reboot" to="." method="_on_reboot_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Reboot" to="." method="_on_reboot_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Settings" to="." method="_on_settings_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Quit" to="." method="_on_quit_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

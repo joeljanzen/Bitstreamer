@@ -2,6 +2,8 @@ class_name PauseUI
 extends Control
 ## Pause the current game, letting the player quit, change settings, or resume.
 
+@onready var _progress_label = $CanvasLayer/VBoxContainer/Progress
+
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 @onready var _canvas = $CanvasLayer
@@ -11,12 +13,29 @@ signal resumed
 
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 
+## Contains statistics for the current play.
+var statistics: GameplayStatistics
+
+
+## Set progress amount.
+func _ready() -> void:
+	var progress = statistics.get_current_progress()
+	if progress > 0:
+		_progress_label.text = "Current Progress: %.2f%%" % progress
+	else: # progress is not applicable for whatever reason.
+		_progress_label.hide()
+
 
 ## Input handling.
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_close_dialog"):
 		accept_event()
 		resumed.emit()
+
+
+## Connects the statistics for the current play to the PauseUI.
+func connect_gameplay_stats(stats: GameplayStatistics) -> void:
+	statistics = stats
 
 
 ## The player has pressed the resume button.

@@ -95,8 +95,14 @@ func UI_is_visible() -> bool:
 
 
 ## Get the current percentage of progress into the level the player is.
+## If it returns -1, the current progress does not exist (for tutorial levels)
 func get_current_progress() -> float:
-	return _progress_circle.value / _progress_circle.max_value * 100
+	var progress = _progress_circle.value / _progress_circle.max_value * 100
+	
+	if progress > 0:
+		return progress
+	else:
+		return -1
 
 
 ## Set the visibility of the level progress circle.

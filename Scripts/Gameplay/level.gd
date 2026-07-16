@@ -178,6 +178,7 @@ func _paused() -> void:
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	_pause_instance = _pause_screen.instantiate()
+	_pause_instance.connect_gameplay_stats(_levelUI)
 	_pause_instance.resumed.connect(_resumed)
 	add_child(_pause_instance)
 	
