@@ -11,7 +11,6 @@ extends Control
 @onready var _conductor: Conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
-@onready var _credits_panel = $CanvasLayer/CreditsPanel
 @onready var _credits_text = $CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel
 @onready var _credits_animation: AnimationPlayer = $CanvasLayer/CreditsPanel/CreditsAnimation
 
