@@ -292,3 +292,11 @@ func _on_next_song_button_mouse_entered() -> void:
 
 func _on_next_song_button_mouse_exited() -> void:
 	_next_song_button.modulate = Color("fff")
+
+
+func _on_rich_text_label_mouse_entered() -> void:
+	_credits_text.text = "[wave]" + _credits_text.text
+
+
+func _on_rich_text_label_mouse_exited() -> void:
+	_credits_text.text = _credits_text.text.trim_prefix("[wave]")

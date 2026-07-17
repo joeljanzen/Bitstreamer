@@ -286,6 +286,8 @@ bus = &"SFX"
 [node name="Conductor" parent="." unique_id=1369693212 instance=ExtResource("6_gih0s")]
 stream = ExtResource("7_k33u3")
 
+[connection signal="mouse_entered" from="CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel" to="." method="_on_rich_text_label_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel" to="." method="_on_rich_text_label_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_mouse_entered"]
