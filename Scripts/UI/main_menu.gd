@@ -11,6 +11,10 @@ extends Control
 @onready var _conductor: Conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
+@onready var _credits_panel = $CanvasLayer/CreditsPanel
+@onready var _credits_text = $CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel
+@onready var _credits_animation: AnimationPlayer = $CanvasLayer/CreditsPanel/CreditsAnimation
+
 ## The number of pixels below the top of screen/above the bottom of screen that 
 ## bits can spawn.
 const BIT_SPAWN_MARGIN: int = 75
@@ -31,6 +35,9 @@ const TITLE_FADE_COEFFICIENT: float = 0.5
 
 ## The strength of blur when in the game settings.
 const BACKGROUND_BLUR_STRENGTH: float = 0.5
+
+## Strength of the pulsing of the credits text.
+const CREDITS_PULSE_STRENGTH: float = 0.35
 
 const splash_text_filepath = "res://Resources/Text/splash_text.json"
 
@@ -112,6 +119,7 @@ func _process(delta: float) -> void:
 	var fade_amount = delta / beat_time / (TITLE_PULSE_RATE + 1) * TITLE_FADE_COEFFICIENT
 	_title.modulate.a -= fade_amount
 	_song_icon.modulate.a -= fade_amount
+	_credits_text.modulate.a -= fade_amount * CREDITS_PULSE_STRENGTH
 
 
 ## Play effects in time with the menu music.
@@ -153,8 +161,8 @@ func _pulse_title() -> void:
 	# Reset alpha so we can compare this color with the other colors to
 	# choose from next (randomly, but with no repeats).
 	_title.modulate.a = 1
-	
 	_song_icon.modulate.a = 1
+	_credits_text.modulate.a = 1
 
 	# Choose a random theme color for the title text.
 	var theme_colors = GameSettings.get_theme_colors()
@@ -211,6 +219,17 @@ func _on_settings_button_pressed() -> void:
 	var settings: SettingsUI = _settings_scene.instantiate()
 	settings.settings_closed.connect(_show_menu)
 	add_child(settings)
+
+
+## Show game credits.
+func _on_credits_pressed() -> void:
+	_menu_click_sound.play()
+	
+	if (_credits_text.visible_ratio == 0
+			or _credits_animation.get_playing_speed() < 0):
+		_credits_animation.play("credits_text")
+	else:
+		_credits_animation.play_backwards("credits_text")
 
 
 ## Hide the menu when something else is shown (settings, credits, level select

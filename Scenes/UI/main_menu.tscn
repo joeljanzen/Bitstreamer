@@ -3,12 +3,74 @@
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_i2xx2"]
 [ext_resource type="Script" uid="uid://dmhxr0lxqlsk6" path="res://Scripts/UI/main_menu.gd" id="1_mrfpk"]
 [ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="2_gih0s"]
+[ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="2_wqme5"]
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="4_4pqbp"]
 [ext_resource type="Texture2D" uid="uid://dvtx834d5ab72" path="res://Resources/Sprites/UI/next_song_button.png" id="4_k33u3"]
 [ext_resource type="Texture2D" uid="uid://dml5ob2ulln2d" path="res://Resources/Sprites/UI/song_icon.png" id="4_lrjdf"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_gih0s"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
 [ext_resource type="AudioStream" uid="uid://cav124sfcdoeg" path="res://Resources/Audio/LevelTracks/Initiate.wav" id="7_k33u3"]
+
+[sub_resource type="Animation" id="Animation_wqme5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CreditsPanel/MarginContainer/RichTextLabel:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CreditsPanel:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1080)]
+}
+
+[sub_resource type="Animation" id="Animation_jewm6"]
+resource_name = "credits_text"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CreditsPanel/MarginContainer/RichTextLabel:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CreditsPanel:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(0.35355264, 1),
+"update": 0,
+"values": [Vector2(0, 1080), Vector2(0, 700)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cejvf"]
+_data = {
+&"RESET": SubResource("Animation_wqme5"),
+&"credits_text": SubResource("Animation_jewm6")
+}
 
 [sub_resource type="Environment" id="Environment_gih0s"]
 background_mode = 3
@@ -37,6 +99,52 @@ color = Color(0.038954537, 0.058708385, 0.06430844, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1806771198]
 
+[node name="CreditsPanel" type="PanelContainer" parent="CanvasLayer" unique_id=1721606380]
+z_index = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_right = 566.0
+offset_bottom = 380.0067
+grow_vertical = 0
+mouse_filter = 2
+theme = ExtResource("2_wqme5")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CreditsPanel" unique_id=996705019]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/CreditsPanel/MarginContainer" unique_id=268292896]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+bbcode_enabled = true
+text = "Bitstreamer
+
+Created by Joel Janzen with
+Godot Engine
+
+Music composed by Joel Janzen
+
+CRT Shader by Flowerwall
+
+Special thanks to osu!
+"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="CreditsAnimation" type="AnimationPlayer" parent="CanvasLayer/CreditsPanel" unique_id=1348527584]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_cejvf")
+
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1691941615]
 anchors_preset = 15
 anchor_right = 1.0
@@ -55,21 +163,29 @@ size_flags_vertical = 4
 theme_override_constants/separation = 30
 
 [node name="PlayButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1666786679]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_i2xx2")
 text = "Play"
 
 [node name="SettingsButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1261688561]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_i2xx2")
 text = "Settings"
 
+[node name="Credits" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=109601501]
+custom_minimum_size = Vector2(600, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_i2xx2")
+text = "Credits
+"
+
 [node name="ShutdownButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1682418373]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_i2xx2")
@@ -174,6 +290,8 @@ stream = ExtResource("7_k33u3")
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/Credits" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/Credits" to="." method="_on_credits_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_mouse_entered"]
