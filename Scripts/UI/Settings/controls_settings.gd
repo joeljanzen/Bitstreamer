@@ -5,6 +5,7 @@ extends Control
 @onready var _one_bit_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton2/OneBitClick
 @onready var _enter_bit_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3/EnterBitClick
 @onready var _back_bit_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4/BackBitClick
+@onready var _pause_resume_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton6/PauseResume
 @onready var _level_ui_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI
 
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
@@ -14,6 +15,7 @@ const BINDABLE_ACTIONS: Array[String] = [
 	"1_bit",
 	"enter_bit",
 	"back_bit",
+	"pause",
 	"toggle_level_UI",
 ]
 
@@ -28,7 +30,7 @@ func _ready() -> void:
 	_set_button_text_to_bind(_one_bit_button, "1_bit")
 	_set_button_text_to_bind(_enter_bit_button, "enter_bit")
 	_set_button_text_to_bind(_back_bit_button, "back_bit")
-	_set_button_text_to_bind(_level_ui_button, "toggle_level_UI")
+	_set_button_text_to_bind(_pause_resume_button, "pause")
 
 
 func _input(event: InputEvent) -> void:
@@ -79,7 +81,6 @@ func _on_zero_bit_click_pressed() -> void:
 	waiting_for_input = true
 	current_action = "0_bit"
 	current_button = _zero_bit_button
-	
 	current_button.text = " Press any key "
 
 
@@ -88,7 +89,6 @@ func _on_one_bit_click_pressed() -> void:
 	waiting_for_input = true
 	current_action = "1_bit"
 	current_button = _one_bit_button
-	
 	current_button.text = " Press any key "
 
 
@@ -97,7 +97,6 @@ func _on_enter_bit_click_pressed() -> void:
 	waiting_for_input = true
 	current_action = "enter_bit"
 	current_button = _enter_bit_button
-	
 	current_button.text = " Press any key "
 
 
@@ -106,7 +105,6 @@ func _on_back_bit_click_pressed() -> void:
 	waiting_for_input = true
 	current_action = "back_bit"
 	current_button = _back_bit_button
-	
 	current_button.text = " Press any key "
 
 
@@ -115,5 +113,12 @@ func _on_toggle_level_ui_pressed() -> void:
 	waiting_for_input = true
 	current_action = "toggle_level_UI"
 	current_button = _level_ui_button
-	
+	current_button.text = " Press any key "
+
+
+func _on_pause_resume_pressed() -> void:
+	_menu_click_sound.play()
+	waiting_for_input = true
+	current_action = "pause"
+	current_button = _pause_resume_button
 	current_button.text = " Press any key "
