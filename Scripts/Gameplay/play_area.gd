@@ -6,7 +6,9 @@ extends Node2D
 @onready var _bit_label: RichTextLabel = $BitLabel
 @onready var _border: ColorRect = $Border
 @onready var _bit_click_sound: AudioStreamPlayer = $BitClick
+@onready var _enter_back_click_sound: AudioStreamPlayer = $EnterBackClick
 @onready var _bit_miss_sound: AudioStreamPlayer = $BitMiss
+@onready var _error_click_sound: AudioStreamPlayer = $ErrorClick
 @onready var _empty_click_sound: AudioStreamPlayer = $EmptyClick
 @onready var _line_clear_sound: AudioStreamPlayer = $LineClear
 @onready var _bit = preload("res://Scenes/bit.tscn")
@@ -261,7 +263,7 @@ func _click_zero(correct_click: bool) -> void:
 		_bit_click_sound.play()
 		_add_to_bit_label_line("0")
 	else:
-		_bit_miss_sound.play()
+		_error_click_sound.play()
 		_add_to_bit_label_line("[color=%s]0[/color]" % GameSettings.incorrect_bit_colour)
 	_fill_bit_label_lines()
 
@@ -274,7 +276,7 @@ func _click_one(correct_click: bool) -> void:
 		_bit_click_sound.play()
 		_add_to_bit_label_line("1")
 	else:
-		_bit_miss_sound.play()
+		_error_click_sound.play()
 		_add_to_bit_label_line("[color=%s]1[/color]" % GameSettings.incorrect_bit_colour)
 	_fill_bit_label_lines()
 
@@ -284,7 +286,7 @@ func _click_one(correct_click: bool) -> void:
 ## the game clicks it for you).
 func _click_enter() -> void:
 	_cursor.play("enter")
-	_bit_click_sound.play()
+	_enter_back_click_sound.play()
 	_new_line(true)
 
 
@@ -293,7 +295,7 @@ func _click_enter() -> void:
 ## the game clicks it for you).
 func _click_back() -> void:
 	_cursor.play("back")
-	_bit_click_sound.play()
+	_enter_back_click_sound.play()
 	_new_line(false)
 
 

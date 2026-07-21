@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bbgcee7svf38p" path="res://Scripts/UI/dialogue.gd" id="1_d5t14"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="2_0nvb7"]
-[ext_resource type="AudioStream" uid="uid://cknudptjls5jt" path="res://Resources/Audio/SFX/keyboard_type.wav" id="3_0nvb7"]
+[ext_resource type="AudioStream" uid="uid://cknudptjls5jt" path="res://Resources/Audio/SFX/KeyboardType.wav" id="3_0nvb7"]
 
 [sub_resource type="Animation" id="Animation_d5t14"]
 length = 0.001

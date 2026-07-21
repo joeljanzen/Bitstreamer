@@ -245,6 +245,7 @@ func _hide_menu() -> void:
 ## splash text.
 func _show_menu() -> void:
 	_canvas.show()
+	_menu_click_sound.play() # For the button they pressed to return to menu.
 	
 	# Disable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN

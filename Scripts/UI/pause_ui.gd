@@ -59,6 +59,7 @@ func _on_settings_pressed() -> void:
 
 ## The player has left settings.
 func _settings_closed() -> void:
+	_menu_click_sound.play() # For the button they pressed to leave settings.
 	_canvas.show()
 
 

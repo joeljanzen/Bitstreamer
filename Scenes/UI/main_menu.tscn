@@ -276,7 +276,6 @@ flat = true
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
 stream = ExtResource("4_4pqbp")
-volume_db = -8.0
 bus = &"SFX"
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=767961663]

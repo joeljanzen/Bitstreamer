@@ -628,4 +628,4 @@ bus = &"SFX"
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_color_changed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/BackButton" to="." method="_on_back_button_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_close_settings"]

@@ -43,11 +43,5 @@ func _close_settings() -> void:
 	queue_free()
 
 
-func _on_back_button_pressed() -> void:
-	_menu_click_sound.play()
-	await _menu_click_sound.finished
-	_close_settings()
-
-
 func _on_back_button_mouse_entered() -> void:
 	_menu_focus_sound.play()

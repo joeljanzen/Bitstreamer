@@ -136,7 +136,6 @@ func UI_is_visible() -> bool:
 
 
 func _on_back_button_pressed() -> void:
-	_menu_click_sound.play()
 	hide_UI()
 	selection_closed.emit()
 
