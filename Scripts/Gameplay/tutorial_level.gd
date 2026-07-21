@@ -66,7 +66,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_paused()
 	elif event.is_action_pressed("restart"):
 		restart(get_tree())
-
+	elif event.is_action_pressed("quit"):
+		quit(get_tree())
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
 ## given, which will skip to that point in the level and play from there.
