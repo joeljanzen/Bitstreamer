@@ -9,6 +9,14 @@ extends Control
 
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
 
+const BINDABLE_ACTIONS: Array[String] = [
+	"0_bit",
+	"1_bit",
+	"enter_bit",
+	"back_bit",
+	"toggle_level_UI",
+]
+
 var current_action: String
 var current_button: Button
 var waiting_for_input := false
@@ -27,13 +35,37 @@ func _input(event: InputEvent) -> void:
 	if waiting_for_input:
 		if event is InputEventKey || event is InputEventMouseButton and event.is_pressed():
 			_menu_click_sound.play()
-			#print("adding keybind of %s to action %s" % [event.as_text(), current_action])
-			InputMap.action_erase_events(current_action)
-			InputMap.action_add_event(current_action, event)
-			_set_button_text_to_bind(current_button, current_action)
-			accept_event()
+			accept_event() # Makes sure that clicking enter does not click the button again after.
 			
-			waiting_for_input = false
+			var same_control_selected := false
+			var control_in_use := false
+			# Check for overlapping controls, unless the key pressed is already what the
+			# action is set to (then we just set it again).
+			var current_action_events = InputMap.action_get_events(current_action)
+			for e in current_action_events:
+				if event.is_match(e):
+					same_control_selected = true
+			
+			if !same_control_selected:
+				for i in range(BINDABLE_ACTIONS.size()):
+					var input_events: Array[InputEvent] = InputMap.action_get_events(BINDABLE_ACTIONS[i])
+					
+					for j in range(input_events.size()):
+						var event_to_compare = input_events[j]
+						if event_to_compare.is_match(event):
+							control_in_use = true
+							break
+			
+			if control_in_use:
+				current_button.text = " Keybind in use, give another "
+			else:
+				waiting_for_input = false
+				
+				if !same_control_selected:
+					InputMap.action_erase_events(current_action)
+					InputMap.action_add_event(current_action, event)
+				
+				_set_button_text_to_bind(current_button, current_action)
 
 
 ## Set the displayed text for the button to the bind for the event given
