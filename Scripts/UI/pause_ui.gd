@@ -66,22 +66,14 @@ func _settings_closed() -> void:
 func _on_quit_pressed() -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
-	var menu_scene = load("res://Scenes/UI/main_menu.tscn").instantiate()
-	menu_scene.start_in_level_select = true
-	get_tree().change_scene_to_node(menu_scene)
+	GameLevel.quit(get_tree())
 
 
 ## The player has pressed the reboot button. Clearly.
 func _on_reboot_pressed() -> void:
 	_menu_click_sound.play()
 	await _menu_click_sound.finished
-	
-	var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
-	# Check if current level is a tutorial.
-	if LevelInfo.last_played.version == "Tutorial":
-		level_scene.set_script(load("res://Scripts/Gameplay/tutorial_level.gd"))
-	
-	get_tree().change_scene_to_node(level_scene)
+	GameLevel.restart(get_tree())
 
 
 func _on_resume_mouse_entered() -> void:

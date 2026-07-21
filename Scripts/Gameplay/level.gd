@@ -66,9 +66,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			_levelUI.hide_UI()
 		else:
 			_levelUI.show_UI()
-		
+			
 		# Update game settings to remember if the player had UI on or not.
 		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
+	elif event.is_action_pressed("restart"):
+		restart(get_tree())
+	elif event.is_action_pressed("quit"):
+		quit(get_tree())
 
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
@@ -185,6 +189,25 @@ func _paused() -> void:
 	# Enable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
 	_environment.environment.glow_bloom = PAUSE_BLUR_STRENGTH
+
+
+## Restart the level scene, given the current scene tree. Use get_tree() for
+## the node you are calling this function with to get the scene tree.
+static func restart(current_tree: SceneTree) -> void:
+	var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
+	# Check if current level is a tutorial.
+	if LevelInfo.last_played.version == "Tutorial":
+		level_scene.set_script(load("res://Scripts/Gameplay/tutorial_level.gd"))
+	
+	current_tree.change_scene_to_node(level_scene)
+
+
+## Quit the level scene, given the current scene tree. Use get_tree() for
+## the node you are calling this function with to get the scene tree.
+static func quit(current_tree: SceneTree) -> void:
+	var menu_scene = load("res://Scenes/UI/main_menu.tscn").instantiate()
+	menu_scene.start_in_level_select = true
+	current_tree.change_scene_to_node(menu_scene)
 
 
 ## The level has been failed.

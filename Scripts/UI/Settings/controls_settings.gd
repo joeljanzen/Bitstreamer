@@ -6,8 +6,9 @@ extends Control
 @onready var _enter_bit_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton3/EnterBitClick
 @onready var _back_bit_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4/BackBitClick
 @onready var _pause_resume_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton6/PauseResume
+@onready var _restart_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton7/Restart
 @onready var _level_ui_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI
-
+@onready var _quit_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton8/Quit
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
 
 const BINDABLE_ACTIONS: Array[String] = [
@@ -16,6 +17,8 @@ const BINDABLE_ACTIONS: Array[String] = [
 	"enter_bit",
 	"back_bit",
 	"pause",
+	"restart",
+	"quit",
 	"toggle_level_UI",
 ]
 
@@ -31,6 +34,9 @@ func _ready() -> void:
 	_set_button_text_to_bind(_enter_bit_button, "enter_bit")
 	_set_button_text_to_bind(_back_bit_button, "back_bit")
 	_set_button_text_to_bind(_pause_resume_button, "pause")
+	_set_button_text_to_bind(_restart_button, "restart")
+	_set_button_text_to_bind(_quit_button, "quit")
+	_set_button_text_to_bind(_level_ui_button, "toggle_level_UI")
 
 
 func _input(event: InputEvent) -> void:
@@ -121,4 +127,20 @@ func _on_pause_resume_pressed() -> void:
 	waiting_for_input = true
 	current_action = "pause"
 	current_button = _pause_resume_button
+	current_button.text = " Press any key "
+
+
+func _on_restart_pressed() -> void:
+	_menu_click_sound.play()
+	waiting_for_input = true
+	current_action = "restart"
+	current_button = _restart_button
+	current_button.text = " Press any key "
+
+
+func _on_quit_pressed() -> void:
+	_menu_click_sound.play()
+	waiting_for_input = true
+	current_action = "quit"
+	current_button = _quit_button
 	current_button.text = " Press any key "

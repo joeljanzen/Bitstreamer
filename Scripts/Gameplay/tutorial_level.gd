@@ -64,6 +64,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause") and !paused and !completed:
 		_paused()
+	elif event.is_action_pressed("restart"):
+		restart(get_tree())
 
 
 ## Starts the music for the level. Optionally, an offset in seconds can be 
