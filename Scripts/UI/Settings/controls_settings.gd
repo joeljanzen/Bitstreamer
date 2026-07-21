@@ -31,6 +31,7 @@ func _input(event: InputEvent) -> void:
 			InputMap.action_erase_events(current_action)
 			InputMap.action_add_event(current_action, event)
 			_set_button_text_to_bind(current_button, current_action)
+			accept_event()
 			
 			waiting_for_input = false
 
