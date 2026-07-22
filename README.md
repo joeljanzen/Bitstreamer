@@ -1,14 +1,13 @@
 # Bitstreamer
 
-A rhythm game where you receive streams of bits to run programs for the User. Make one wrong move and you might crash the program, so be careful! The User is depending on you.
+A rhythm game where you, the central processor, receive streams of bits to run programs. Make too many errors and you will crash the program, so be careful! The user is depending on you.
 
 # Credits
 
-Developed by Joel Janzen
+Created by Joel Janzen with Godot Engine
 
-Insert art credits here (mostly Joel, maybe)
-Insert music credits here (also Joel, probably)
+Music composed by Joel Janzen
 
 CRT Shader by Flowerwall: https://github.com/Art-Michel/Flowerwall-CRT-shader-for-Godot
 
-Inspiration for some game mechanics come from osu!
+Special thanks to osu!
