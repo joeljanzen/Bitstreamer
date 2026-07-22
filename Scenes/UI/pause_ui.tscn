@@ -70,7 +70,6 @@ text = "Current Progress: 92.23%"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1362538356]
 stream = ExtResource("3_cf5hy")
-volume_db = -8.0
 bus = &"SFX"
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1198576290]

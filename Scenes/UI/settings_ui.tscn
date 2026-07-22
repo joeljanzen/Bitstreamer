@@ -587,7 +587,6 @@ bus = &"SFX"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=683666101]
 stream = ExtResource("8_ct0jw")
-volume_db = -8.0
 bus = &"SFX"
 
 [node name="ColorClick" type="AudioStreamPlayer" parent="." unique_id=1978047853]

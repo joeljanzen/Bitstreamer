@@ -222,7 +222,6 @@ vertical_alignment = 1
 
 [node name="HoverButton" type="AudioStreamPlayer" parent="." unique_id=254220930]
 stream = ExtResource("3_j7lvc")
-volume_db = -8.0
 bus = &"SFX"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

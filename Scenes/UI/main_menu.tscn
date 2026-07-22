@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://dml5ob2ulln2d" path="res://Resources/Sprites/UI/song_icon.png" id="4_lrjdf"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_gih0s"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
-[ext_resource type="AudioStream" uid="uid://cav124sfcdoeg" path="res://Resources/Audio/LevelTracks/Initiate.wav" id="7_k33u3"]
 
 [sub_resource type="Animation" id="Animation_wqme5"]
 length = 0.001
@@ -283,7 +282,6 @@ stream = ExtResource("5_gih0s")
 bus = &"SFX"
 
 [node name="Conductor" parent="." unique_id=1369693212 instance=ExtResource("6_gih0s")]
-stream = ExtResource("7_k33u3")
 
 [connection signal="mouse_entered" from="CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel" to="." method="_on_rich_text_label_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel" to="." method="_on_rich_text_label_mouse_exited"]

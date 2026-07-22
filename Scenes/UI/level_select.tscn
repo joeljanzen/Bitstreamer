@@ -176,7 +176,6 @@ text = "Bit count"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=564885747]
 stream = ExtResource("3_1i34c")
-volume_db = -8.0
 bus = &"SFX"
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=723314131]
