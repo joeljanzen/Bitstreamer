@@ -41,8 +41,6 @@ func connect_gameplay_stats(stats: GameplayStatistics) -> void:
 
 ## The player has pressed the play again button. Clearly.
 func _on_play_again_pressed() -> void:
-	_menu_click_sound.play()
-	await _menu_click_sound.finished
 	GameLevel.restart(get_tree())
 
 

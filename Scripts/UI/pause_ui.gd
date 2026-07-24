@@ -40,8 +40,6 @@ func connect_gameplay_stats(stats: GameplayStatistics) -> void:
 
 ## The player has pressed the resume button.
 func _on_resume_pressed() -> void:
-	_menu_click_sound.play()
-	await _menu_click_sound.finished
 	resumed.emit()
 
 
@@ -72,8 +70,6 @@ func _on_quit_pressed() -> void:
 
 ## The player has pressed the reboot button. Clearly.
 func _on_reboot_pressed() -> void:
-	_menu_click_sound.play()
-	await _menu_click_sound.finished
 	GameLevel.restart(get_tree())
 
 
