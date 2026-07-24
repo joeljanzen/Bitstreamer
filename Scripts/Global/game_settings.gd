@@ -2,10 +2,16 @@ extends Node
 ## Holds game settings for the player. These persist throughout levels.
 ## May also include global constants that are only meant for devs to modify.
 
+## The location of the file where the default settings are saved and loaded.
+const DEFAULTS_FILEPATH: String = "user://default_settings.cfg"
+
+## The location of the file where player settings are saved and loaded.
+const USER_SETTINGS_FILEPATH: String = "user://user_settings.cfg"
+
 ## The number of seconds to wait before triggering a finish state for the level.
 const LEVEL_FINISH_DELAY: float = 0.5
 
-# Gameplay options
+# Gameplay settings.
 ## Displays an effect indicating the acccuracy of the bit click (or miss).
 ## If disabled, bits just fade away when clicked.
 var bit_click_effect := true
@@ -27,11 +33,10 @@ var clicked_fade_time: float = 0.15
 ## The cursor flickers like a real cursor. Set false to disable flickering.
 var cursor_flicker := true
 
-# UI options
-## Toggles the level UI
+## Toggles the level UI during gameplay.
 var level_UI_enabled := true
 
-# Aesthetic variables.
+# Video settings.
 ## The strength of bloom.
 var bloom_strength: float = 0.5
 
@@ -41,6 +46,7 @@ var crt_filter := true
 ## The CRT shader singleton.
 var _crt_shader: flowerwallCRT
 
+# Theme colours.
 ## The colour of zero bits.
 var zero_bit_colour := Color("#00FF00")
 ## The colour of one bits.
@@ -50,6 +56,7 @@ var enter_bit_colour := Color("#FFFFFF")
 ## The colour of back bits.
 var back_bit_colour := Color("#FFFFFF")
 
+# Other colours the user can't actually change.
 ## The colour displayed for correctly entered bits on the terminal.
 var entered_bit_colour := "#454545"
 ## The colour displayed for incorrectly entered bits on the terminal.
@@ -79,9 +86,9 @@ func connect_crt_shader(crt_shader: flowerwallCRT) -> void:
 ## Set the CRT filter on or off.
 func set_crt_filter(enabled: bool) -> void:
 	crt_filter = enabled
-	if enabled and !_crt_shader.is_enabled:
+	if enabled:
 		_crt_shader.enable_shader()
-	elif _crt_shader.is_enabled:
+	else:
 		_crt_shader.disable_shader()
 
 
@@ -89,3 +96,95 @@ func set_crt_filter(enabled: bool) -> void:
 ## secondary, and so on.
 func get_theme_colors() -> Array[Color]:
 	return [zero_bit_colour, one_bit_colour, enter_bit_colour]
+
+
+## Save the current game settings to a config file. To save the default
+## settings, pass true.
+func save_settings(save_defaults: bool = false) -> void:
+	var config: ConfigFile = ConfigFile.new()
+	
+	config.set_value("video_settings", "bloom_strength", bloom_strength)
+	config.set_value("video_settings", "crt_filter", crt_filter)
+	
+	config.set_value("audio_settings", "master_volume", 
+		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master")))
+	config.set_value("audio_settings", "music_volume", 
+		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Music")))
+	config.set_value("audio_settings", "sfx_volume", 
+		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("SFX")))
+	
+	config.set_value("gameplay_settings", "bit_click_effect", bit_click_effect)
+	config.set_value("gameplay_settings", "ignores_perfect_clicks", ignores_perfect_clicks)
+	config.set_value("gameplay_settings", "move_offscreen_on_bit_miss", move_offscreen_on_bit_miss)
+	config.set_value("gameplay_settings", "clicked_fade_time", clicked_fade_time)
+	config.set_value("gameplay_settings", "cursor_flicker", cursor_flicker)
+	config.set_value("gameplay_settings", "level_UI_enabled", level_UI_enabled)
+	
+	# Only saves a single keybind per action.
+	for action: String in GameControls.BINDABLE_ACTIONS:
+		var events = InputMap.action_get_events(action)
+		config.set_value("controls_settings", action, events[0])
+		
+		#var index = 0
+		#for keybind: InputEvent in events:
+			#config.set_value("controls_settings", action + str(index), keybind)
+			#index += 1
+		# This will have issues when trying to load because you don't know how
+		# many keybinds have been saved for a single action
+	
+	config.set_value("theme_settings", "zero_bit_colour", zero_bit_colour)
+	config.set_value("theme_settings", "one_bit_colour", one_bit_colour)
+	config.set_value("theme_settings", "enter_bit_colour", enter_bit_colour)
+	config.set_value("theme_settings", "back_bit_colour", back_bit_colour)
+	
+	# still need to save controls keybinds btw
+	
+	if save_defaults:
+		config.save(DEFAULTS_FILEPATH)
+	else:
+		config.save(USER_SETTINGS_FILEPATH)
+
+
+## Load saved game settings from a config file. If you wish to restore the 
+## default settings, pass true.
+func load_settings(restore_defaults: bool = false) -> void:
+	var config = ConfigFile.new()
+	
+	var error: Error
+	if restore_defaults:
+		error = config.load(DEFAULTS_FILEPATH)
+	else:
+		error = config.load(USER_SETTINGS_FILEPATH)
+	
+	if error != OK:
+		push_error("Settings file could not be opened and loaded!")
+		return
+	
+	bloom_strength = config.get_value("video_settings", "bloom_strength")
+	
+	set_crt_filter(config.get_value("video_settings", "crt_filter"))
+	
+	var volume = config.get_value("audio_settings", "master_volume")
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(volume))
+	volume = config.get_value("audio_settings", "music_volume")
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(volume))
+	volume = config.get_value("audio_settings", "sfx_volume")
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(volume))
+	
+	bit_click_effect = config.get_value("gameplay_settings", "bit_click_effect")
+	ignores_perfect_clicks = config.get_value("gameplay_settings", "ignores_perfect_clicks")
+	move_offscreen_on_bit_miss = config.get_value("gameplay_settings", "move_offscreen_on_bit_miss")
+	clicked_fade_time = config.get_value("gameplay_settings", "clicked_fade_time")
+	cursor_flicker = config.get_value("gameplay_settings", "cursor_flicker")
+	level_UI_enabled = config.get_value("gameplay_settings", "level_UI_enabled")
+	
+	# Only loads a single keybind per action.
+	for action: String in GameControls.BINDABLE_ACTIONS:
+		var event = config.get_value("controls_settings", action)
+		InputMap.action_erase_events(action)
+		InputMap.action_add_event(action, event)
+	
+	zero_bit_colour = config.get_value("theme_settings", "zero_bit_colour")
+	one_bit_colour = config.get_value("theme_settings", "one_bit_colour")
+	enter_bit_colour = config.get_value("theme_settings", "enter_bit_colour")
+	back_bit_colour = config.get_value("theme_settings", "back_bit_colour")

@@ -38,6 +38,7 @@ func _on_tab_container_tab_hovered(_tab: int) -> void:
 
 ## Closes the settings tab (also saves the last tab the user was in).
 func _close_settings() -> void:
+	GameSettings.save_settings()
 	_last_settings_tab = _tab_container.current_tab
 	settings_closed.emit()
 	queue_free()

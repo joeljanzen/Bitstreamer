@@ -13,27 +13,30 @@ extends Control
 
 ## Set sliders to their appropriate positions (where volumes are currently at).
 func _ready() -> void:
-	_master_slider.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master"))
-	_music_slider.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Music"))
-	_sound_slider.value = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("SFX"))
+	var volume = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master"))
+	_master_slider.value = volume
+	_master_label.text = get_percent_text(volume)
+	volume = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Music"))
+	_music_slider.value = volume
+	_music_label.text = get_percent_text(volume)
+	volume = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("SFX"))
+	_sound_slider.value = volume
+	_sound_label.text = get_percent_text(volume)
 
 
 func _on_master_volume_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(value))
-	var percentage: int = round(value * 100)
-	_master_label.text = " ".repeat(get_padding(percentage)) + str(percentage)+ "%"
+	_master_label.text = get_percent_text(value)
 
 
 func _on_music_volume_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(value))
-	var percentage: int = round(value * 100)
-	_music_label.text = " ".repeat(get_padding(percentage)) + str(percentage)+ "%"
+	_music_label.text = get_percent_text(value)
 
 
 func _on_sound_volume_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(value))
-	var percentage: int = round(value * 100)
-	_sound_label.text = " ".repeat(get_padding(percentage)) + str(percentage)+ "%"
+	_sound_label.text = get_percent_text(value)
 
 
 ## Get the required padding for a string of a given percentage.
@@ -44,6 +47,12 @@ func get_padding(percentage: int) -> int:
 	if percentage < 10:
 		front_padding += 1
 	return front_padding
+
+
+## Return the percentage for the value given as a string with padding.
+func get_percent_text(value: float) -> String:
+	var percentage: int = round(value * 100)
+	return " ".repeat(get_padding(percentage)) + str(percentage)+ "%"
 
 
 # UI SFX

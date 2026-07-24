@@ -76,6 +76,13 @@ func _ready() -> void:
 	splash_text = _load_splash_text(splash_text_filepath)
 	_splash_text_label.text = splash_text[randi_range(0, splash_text.size() - 1)]
 	
+	# Settings.
+	if not FileAccess.file_exists(GameSettings.DEFAULTS_FILEPATH):
+		GameSettings.save_settings(true)
+	
+	if FileAccess.file_exists(GameSettings.USER_SETTINGS_FILEPATH):
+		GameSettings.load_settings()
+	
 	# Music.
 	_conductor.connect("beat", _on_beat)
 	_conductor.connect("finished", _start_song)

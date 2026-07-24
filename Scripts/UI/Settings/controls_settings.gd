@@ -1,3 +1,4 @@
+class_name GameControls
 extends Control
 ## UI for controls settings.
 

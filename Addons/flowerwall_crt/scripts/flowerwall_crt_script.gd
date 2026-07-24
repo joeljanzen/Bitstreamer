@@ -11,7 +11,7 @@ extends Control
 @export var slot_toggle: CheckButton
 @export var scanlines_size_slider: HSlider
 @export var scanlines_interval_slider: HSlider
-var is_enabled: float = true
+#var is_enabled: float = true
 
 const BLOOM_SHADER = preload("res://addons/flowerwall_crt/shaders/bloom_shader.material")
 const BLURX_SHADER = preload("res://addons/flowerwall_crt/shaders/blurx_shader.material")
@@ -49,13 +49,11 @@ func _ready() -> void:
 		#should_enable_bloom()
 
 func enable_shader() -> void:
-	is_enabled = true
 	should_enable_blur()
 	should_enable_crt()
 	should_enable_bloom()
 
 func disable_shader() -> void:
-	is_enabled = false
 	for n in get_children():
 		n.visible = false
 

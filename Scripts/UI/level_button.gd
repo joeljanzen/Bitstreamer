@@ -19,7 +19,6 @@ extends Control
 
 ## This level has been selected to play.
 signal button_pressed(level_info: LevelInfo)
-signal button_focused
 
 ## How many seconds it takes a popup to appear after a level attribute started 
 ## being hovered over.
@@ -115,8 +114,6 @@ func _on_play_button_pressed() -> void:
 
 func _on_play_button_mouse_entered() -> void:
 	_set_play_button_text_color()
-	
-	button_focused.emit()
 
 
 ## Set the hover color of the button text.

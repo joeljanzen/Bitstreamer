@@ -55,7 +55,6 @@ func _ready() -> void:
 			var level_button: LevelButton = _level_button_scene.instantiate()
 			level_button.setup(level)
 			level_button.connect("button_pressed", _level_button_pressed)
-			level_button.connect("button_focused", _level_button_focused)
 			_level_button_container.add_child(level_button)
 	
 	_sort_levels_by_comparator(_last_filter_used)
@@ -97,10 +96,6 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 		get_tree().change_scene_to_node(level_scene)
 	else:
 		push_error("Failed to load the level!")
-
-
-func _level_button_focused() -> void:
-	_menu_focus_sound.play()
 
 
 ## Hides the level select UI.
