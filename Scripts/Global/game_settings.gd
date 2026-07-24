@@ -137,53 +137,87 @@ func save_settings(save_defaults: bool = false) -> void:
 	config.set_value("theme_settings", "enter_bit_colour", enter_bit_colour)
 	config.set_value("theme_settings", "back_bit_colour", back_bit_colour)
 	
-	# still need to save controls keybinds btw
-	
 	if save_defaults:
 		config.save(DEFAULTS_FILEPATH)
 	else:
 		config.save(USER_SETTINGS_FILEPATH)
 
 
-## Load saved game settings from a config file. If you wish to restore the 
-## default settings, pass true.
-func load_settings(restore_defaults: bool = false) -> void:
+## Load all user settings from a config file.
+func load_user_settings() -> void:
 	var config = ConfigFile.new()
 	
-	var error: Error
-	if restore_defaults:
-		error = config.load(DEFAULTS_FILEPATH)
-	else:
-		error = config.load(USER_SETTINGS_FILEPATH)
+	var error = config.load(USER_SETTINGS_FILEPATH)
 	
 	if error != OK:
 		push_error("Settings file could not be opened and loaded!")
 		return
 	
+	_load_video_settings(config)
+	_load_audio_settings(config)
+	_load_gameplay_settings(config)
+	_load_controls_settings(config)
+	_load_theme_settings(config)
+
+
+## Load default settings for the current settings tab provided ONLY. All 
+## settings in other tabs remain unchanged.
+## 0 is video, 1 is audio, 2 is gameplay, 3 is controls, 4 is theme.
+func load_default_settings(tab_index: int) -> void:
+	var config = ConfigFile.new()
+	var error = config.load(DEFAULTS_FILEPATH)
+	if error != OK:
+		push_error("Settings file could not be opened and loaded!")
+		return
+	
+	match tab_index:
+		0:
+			_load_video_settings(config)
+		1:
+			_load_audio_settings(config)
+		2:
+			_load_gameplay_settings(config)
+		3:
+			_load_controls_settings(config)
+		4:
+			_load_theme_settings(config)
+
+# Self explanatory functions that load different settings, given the config file.
+# These are separated so that default settings can be individually loaded from 
+# each without changing the others.
+
+func _load_video_settings(config: ConfigFile) -> void:
 	bloom_strength = config.get_value("video_settings", "bloom_strength")
-	
 	set_crt_filter(config.get_value("video_settings", "crt_filter"))
-	
+
+
+func _load_audio_settings(config: ConfigFile) -> void:
 	var volume = config.get_value("audio_settings", "master_volume")
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(volume))
 	volume = config.get_value("audio_settings", "music_volume")
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(volume))
 	volume = config.get_value("audio_settings", "sfx_volume")
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(volume))
-	
+
+
+func _load_gameplay_settings(config: ConfigFile) -> void:
 	bit_click_effect = config.get_value("gameplay_settings", "bit_click_effect")
 	ignores_perfect_clicks = config.get_value("gameplay_settings", "ignores_perfect_clicks")
 	move_offscreen_on_bit_miss = config.get_value("gameplay_settings", "move_offscreen_on_bit_miss")
 	clicked_fade_time = config.get_value("gameplay_settings", "clicked_fade_time")
 	cursor_flicker = config.get_value("gameplay_settings", "cursor_flicker")
 	level_UI_enabled = config.get_value("gameplay_settings", "level_UI_enabled")
-	
+
+
+func _load_controls_settings(config: ConfigFile) -> void:
 	# Only loads a single keybind per action.
 	for action: String in GameControls.BINDABLE_ACTIONS:
 		var event = config.get_value("controls_settings", action)
 		InputMap.action_erase_events(action)
 		InputMap.action_add_event(action, event)
-	
+
+
+func _load_theme_settings(config: ConfigFile) -> void:
 	zero_bit_colour = config.get_value("theme_settings", "zero_bit_colour")
 	one_bit_colour = config.get_value("theme_settings", "one_bit_colour")
 	enter_bit_colour = config.get_value("theme_settings", "enter_bit_colour")

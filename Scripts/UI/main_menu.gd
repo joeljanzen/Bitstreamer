@@ -81,7 +81,7 @@ func _ready() -> void:
 		GameSettings.save_settings(true)
 	
 	if FileAccess.file_exists(GameSettings.USER_SETTINGS_FILEPATH):
-		GameSettings.load_settings()
+		GameSettings.load_user_settings()
 	
 	# Music.
 	_conductor.connect("beat", _on_beat)

@@ -49,7 +49,7 @@ func _on_button_mouse_entered() -> void:
 
 func _on_restore_button_pressed() -> void:
 	_menu_click_sound.play()
-	GameSettings.load_settings(true)
-	# Get all tabs to display their new values.
-	for node in _tab_container.get_children():
-		node.setup()
+	var tab = _tab_container.current_tab
+	GameSettings.load_default_settings(tab)
+	# Get this tab to display its new values.
+	_tab_container.get_child(tab).setup()
