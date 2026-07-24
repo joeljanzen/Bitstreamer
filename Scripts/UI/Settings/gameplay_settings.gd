@@ -14,13 +14,17 @@ extends Control
 
 
 ## Set all gameplay settings to their current states.
-func _ready() -> void:
+func setup() -> void:
 	_bit_click_effect_toggle.set_pressed_no_signal(GameSettings.bit_click_effect)
 	_ignores_perfect_clicks_toggle.set_pressed_no_signal(GameSettings.ignores_perfect_clicks)
 	_fade_slider.value = GameSettings.clicked_fade_time
 	_cursor_flicker_toggle.set_pressed_no_signal(GameSettings.cursor_flicker)
 	_level_ui_toggle.set_pressed_no_signal(GameSettings.level_UI_enabled)
 	_bit_miss_effect_toggle.set_pressed_no_signal(GameSettings.move_offscreen_on_bit_miss)
+
+
+func _ready() -> void:
+	setup()
 
 
 func _on_bit_click_effect_toggled(toggled_on: bool) -> void:

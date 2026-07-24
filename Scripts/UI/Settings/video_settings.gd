@@ -10,9 +10,13 @@ extends Control
 
 
 ## Set all video settings to their current states.
-func _ready() -> void:
+func setup() -> void:
 	_bloom_slider.value = GameSettings.bloom_strength
 	_crt_filter_toggle.set_pressed_no_signal(GameSettings.crt_filter)
+
+
+func _ready() -> void:
+	setup()
 
 
 func _on_bloom_level_value_changed(value: float) -> void:

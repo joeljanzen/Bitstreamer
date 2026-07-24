@@ -11,8 +11,9 @@ extends Control
 
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
 
+
 ## Set sliders to their appropriate positions (where volumes are currently at).
-func _ready() -> void:
+func setup() -> void:
 	var volume = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master"))
 	_master_slider.value = volume
 	_master_label.text = get_percent_text(volume)
@@ -22,6 +23,10 @@ func _ready() -> void:
 	volume = AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("SFX"))
 	_sound_slider.value = volume
 	_sound_label.text = get_percent_text(volume)
+
+
+func _ready() -> void:
+	setup()
 
 
 func _on_master_volume_value_changed(value: float) -> void:

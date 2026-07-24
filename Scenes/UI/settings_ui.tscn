@@ -581,6 +581,23 @@ theme = ExtResource("9_o3mvw")
 theme_override_font_sizes/font_size = 50
 text = "<"
 
+[node name="RestoreButton" type="Button" parent="CanvasLayer" unique_id=419517577]
+custom_minimum_size = Vector2(200, 90)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -90.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("9_o3mvw")
+theme_override_font_sizes/font_size = 50
+text = " Restore Default Settings "
+
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=560583228]
 stream = ExtResource("7_xoqkd")
 bus = &"SFX"
@@ -626,5 +643,7 @@ bus = &"SFX"
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_enter_bit_color_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_color_changed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/BackButton" to="." method="_on_back_button_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/BackButton" to="." method="_on_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_close_settings"]
+[connection signal="mouse_entered" from="CanvasLayer/RestoreButton" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/RestoreButton" to="." method="_on_restore_button_pressed"]

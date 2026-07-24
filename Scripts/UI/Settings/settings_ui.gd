@@ -3,7 +3,6 @@ extends Control
 ## Allows the player to change settings while paused or in the main menu.
 
 @onready var _tab_container = $CanvasLayer/MarginContainer/TabContainer
-
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
@@ -44,5 +43,13 @@ func _close_settings() -> void:
 	queue_free()
 
 
-func _on_back_button_mouse_entered() -> void:
+func _on_button_mouse_entered() -> void:
 	_menu_focus_sound.play()
+
+
+func _on_restore_button_pressed() -> void:
+	_menu_click_sound.play()
+	GameSettings.load_settings(true)
+	# Get all tabs to display their new values.
+	for node in _tab_container.get_children():
+		node.setup()

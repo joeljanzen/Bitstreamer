@@ -11,11 +11,15 @@ extends Control
 
 
 ## Set all theme settings to their current states.
-func _ready() -> void:
+func setup() -> void:
 	_zero_bit_color_selector.set_color(GameSettings.zero_bit_colour)
 	_one_bit_color_selector.set_color(GameSettings.one_bit_colour)
 	_enter_bit_color_selector.set_color(GameSettings.enter_bit_colour)
 	_back_bit_color_selector.set_color(GameSettings.back_bit_colour)
+
+
+func _ready() -> void:
+	setup()
 
 
 func _on_zero_bit_color_color_changed(color: Color) -> void:

@@ -29,7 +29,7 @@ var waiting_for_input := false
 
 
 ## Set all controls settings to their current states.
-func _ready() -> void:
+func setup() -> void:
 	_set_button_text_to_bind(_zero_bit_button, "0_bit")
 	_set_button_text_to_bind(_one_bit_button, "1_bit")
 	_set_button_text_to_bind(_enter_bit_button, "enter_bit")
@@ -38,6 +38,10 @@ func _ready() -> void:
 	_set_button_text_to_bind(_restart_button, "restart")
 	_set_button_text_to_bind(_quit_button, "quit")
 	_set_button_text_to_bind(_level_ui_button, "toggle_level_UI")
+
+
+func _ready() -> void:
+	setup()
 
 
 func _input(event: InputEvent) -> void:
