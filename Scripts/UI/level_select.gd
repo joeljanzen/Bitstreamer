@@ -106,6 +106,13 @@ func hide_UI():
 	
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_IGNORE
 	_last_level_select_position = _scroll_box.scroll_horizontal
+	
+	if _filters_panel.visible:
+		# Cannot hide right away as that will trigger filter button to 
+		# show itself again (through the mouse_exited signal) instead we
+		# do it after frame process idk it works ig.
+		await get_tree().process_frame
+		_filters_panel.hide()
 
 
 ## Shows the level select UI.
@@ -149,7 +156,8 @@ func _on_filters_button_mouse_entered() -> void:
 ## Close the filters panel.
 func _on_filters_panel_mouse_exited() -> void:
 	_filters_panel.hide()
-	_filters_button_toggle.show()
+	if UI_is_visible():
+		_filters_button_toggle.show()
 
 # Various comparator functions, for sorting levels by various properties.
 
