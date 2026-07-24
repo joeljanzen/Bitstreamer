@@ -152,24 +152,24 @@ animation = &"flicker"
 
 [node name="BitClick" type="AudioStreamPlayer" parent="." unique_id=762070170]
 stream = SubResource("AudioStreamRandomizer_3ggqm")
-bus = &"SFX"
+bus = &"Gameplay"
 
 [node name="EnterBackClick" type="AudioStreamPlayer" parent="." unique_id=1705735391]
 stream = ExtResource("11_3ggqm")
-bus = &"SFX"
+bus = &"Gameplay"
 
 [node name="BitMiss" type="AudioStreamPlayer" parent="." unique_id=652054374]
 stream = SubResource("AudioStreamRandomizer_3ex8o")
-bus = &"SFX"
+bus = &"Gameplay"
 
 [node name="ErrorClick" type="AudioStreamPlayer" parent="." unique_id=236475421]
 stream = SubResource("AudioStreamRandomizer_f4f56")
-bus = &"SFX"
+bus = &"Gameplay"
 
 [node name="EmptyClick" type="AudioStreamPlayer" parent="." unique_id=269752902]
 stream = SubResource("AudioStreamRandomizer_2drmg")
-bus = &"SFX"
+bus = &"Gameplay"
 
 [node name="LineClear" type="AudioStreamPlayer" parent="." unique_id=1645525711]
 stream = ExtResource("15_3ggqm")
-bus = &"SFX"
+bus = &"Gameplay"

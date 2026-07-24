@@ -275,11 +275,11 @@ flat = true
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
 stream = ExtResource("4_4pqbp")
-bus = &"SFX"
+bus = &"Menu"
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=767961663]
 stream = ExtResource("5_gih0s")
-bus = &"SFX"
+bus = &"Menu"
 
 [node name="Conductor" parent="." unique_id=1369693212 instance=ExtResource("6_gih0s")]
 

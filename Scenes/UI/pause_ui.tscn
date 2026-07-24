@@ -70,11 +70,11 @@ text = "Current Progress: 92.23%"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1362538356]
 stream = ExtResource("3_cf5hy")
-bus = &"SFX"
+bus = &"Menu"
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1198576290]
 stream = ExtResource("4_w3mym")
-bus = &"SFX"
+bus = &"Menu"
 
 [connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Resume" to="." method="_on_resume_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]

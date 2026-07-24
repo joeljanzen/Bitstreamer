@@ -149,10 +149,11 @@ text = "Quit"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=280739703]
 stream = ExtResource("4_rxu5j")
-bus = &"SFX"
+bus = &"Menu"
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=2035866713]
 stream = ExtResource("5_4o26s")
+bus = &"Menu"
 
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Reboot" to="." method="_on_reboot_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Reboot" to="." method="_on_reboot_pressed"]

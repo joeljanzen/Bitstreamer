@@ -98,4 +98,4 @@ libraries/ = SubResource("AnimationLibrary_15aj3")
 [node name="TypeText" type="AudioStreamPlayer" parent="." unique_id=1326385923]
 stream = SubResource("AudioStreamRandomizer_15aj3")
 volume_db = -8.0
-bus = &"SFX"
+bus = &"Menu"

@@ -176,11 +176,11 @@ text = "Bit count"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=564885747]
 stream = ExtResource("3_1i34c")
-bus = &"SFX"
+bus = &"Menu"
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=723314131]
 stream = ExtResource("4_40fl8")
-bus = &"SFX"
+bus = &"Menu"
 
 [connection signal="mouse_entered" from="CanvasLayer/BackButton" to="." method="_on_back_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]

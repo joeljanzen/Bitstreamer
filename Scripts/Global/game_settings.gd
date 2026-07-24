@@ -110,8 +110,10 @@ func save_settings(save_defaults: bool = false) -> void:
 		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master")))
 	config.set_value("audio_settings", "music_volume", 
 		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Music")))
-	config.set_value("audio_settings", "sfx_volume", 
-		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("SFX")))
+	config.set_value("audio_settings", "gameplay_volume", 
+		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Gameplay")))
+	config.set_value("audio_settings", "menu_volume", 
+		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Menu")))
 	
 	config.set_value("gameplay_settings", "bit_click_effect", bit_click_effect)
 	config.set_value("gameplay_settings", "ignores_perfect_clicks", ignores_perfect_clicks)
@@ -196,8 +198,10 @@ func _load_audio_settings(config: ConfigFile) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(volume))
 	volume = config.get_value("audio_settings", "music_volume")
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(volume))
-	volume = config.get_value("audio_settings", "sfx_volume")
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(volume))
+	volume = config.get_value("audio_settings", "gameplay_volume")
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Gameplay"), linear_to_db(volume))
+	volume = config.get_value("audio_settings", "menu_volume")
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Menu"), linear_to_db(volume))
 
 
 func _load_gameplay_settings(config: ConfigFile) -> void:
