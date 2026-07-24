@@ -13,10 +13,10 @@ extends Control
 @export var scanlines_interval_slider: HSlider
 #var is_enabled: float = true
 
-const BLOOM_SHADER = preload("res://addons/flowerwall_crt/shaders/bloom_shader.material")
-const BLURX_SHADER = preload("res://addons/flowerwall_crt/shaders/blurx_shader.material")
-const BLURY_SHADER = preload("res://addons/flowerwall_crt/shaders/blury_shader.material")
-const CRT_SHADER = preload("res://addons/flowerwall_crt/shaders/crt_shader.material")
+const BLOOM_SHADER = preload("res://Addons/flowerwall_crt/shaders/bloom_shader.material")
+const BLURX_SHADER = preload("res://Addons/flowerwall_crt/shaders/blurx_shader.material")
+const BLURY_SHADER = preload("res://Addons/flowerwall_crt/shaders/blury_shader.material")
+const CRT_SHADER = preload("res://Addons/flowerwall_crt/shaders/crt_shader.material")
 
 func _ready() -> void:
 	should_enable_blur()
@@ -26,6 +26,7 @@ func _ready() -> void:
 	
 	# Connect to my game settings.
 	GameSettings.connect_crt_shader(self)
+	
 
 ## Original controls to toggle filter.
 #Menu
