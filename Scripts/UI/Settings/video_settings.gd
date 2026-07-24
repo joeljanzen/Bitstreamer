@@ -1,10 +1,11 @@
 extends Control
 ## UI for video settings.
 
-@onready var _bloom_slider = $"../Video/MarginContainer/VBoxContainer/HBoxContainer/BloomLevel"
+@onready var _bloom_slider = $MarginContainer/VBoxContainer/HBoxContainer3/BloomLevel
 @onready var _crt_filter_toggle = $MarginContainer/VBoxContainer/HBoxContainer2/CRTFilter
+@onready var _fullscreen_toggle = $MarginContainer/VBoxContainer/HBoxContainer1/Fullscreen
 
-@onready var _bloom_label = $MarginContainer/VBoxContainer/HBoxContainer/Label2
+@onready var _bloom_label = $MarginContainer/VBoxContainer/HBoxContainer3/Label2
 
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
 
@@ -13,6 +14,7 @@ extends Control
 func setup() -> void:
 	_bloom_slider.value = GameSettings.bloom_strength
 	_crt_filter_toggle.set_pressed_no_signal(GameSettings.crt_filter)
+	_fullscreen_toggle.set_pressed_no_signal(GameSettings.fullscreen)
 
 
 func _ready() -> void:
@@ -31,3 +33,8 @@ func _on_bloom_level_value_changed(value: float) -> void:
 func _on_crt_filter_toggled(toggled_on: bool) -> void:
 	_menu_click_sound.play()
 	GameSettings.set_crt_filter(toggled_on)
+
+
+func _on_fullscreen_toggled(toggled_on: bool) -> void:
+	_menu_click_sound.play()
+	GameSettings.set_fullscreen(toggled_on)

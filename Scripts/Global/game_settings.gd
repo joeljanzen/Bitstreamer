@@ -46,6 +46,9 @@ var crt_filter := true
 ## The CRT shader singleton.
 var _crt_shader: flowerwallCRT
 
+## Whether the game is in fullscreen or not.
+var fullscreen := true
+
 # Theme colours.
 ## The colour of zero bits.
 var zero_bit_colour := Color("#00FF00")
@@ -79,8 +82,6 @@ var incorrect_click_colour := "FF0000"
 ## Connect the Flowerwall CRT script when it is loaded.
 func connect_crt_shader(crt_shader: flowerwallCRT) -> void:
 	_crt_shader = crt_shader
-	if !crt_filter:
-		_crt_shader.disable_shader()
 
 
 ## Set the CRT filter on or off.
@@ -90,6 +91,15 @@ func set_crt_filter(enabled: bool) -> void:
 		_crt_shader.enable_shader()
 	else:
 		_crt_shader.disable_shader()
+
+
+## Set the window to fullscreen or windowed mode.
+func set_fullscreen(enabled: bool) -> void:
+	fullscreen = enabled
+	if enabled:
+		get_window().mode = Window.MODE_FULLSCREEN
+	else:
+		get_window().mode = Window.MODE_WINDOWED
 
 
 ## Returns an array of all theme colors used in UI, in order of primary, 
@@ -105,6 +115,7 @@ func save_settings(save_defaults: bool = false) -> void:
 	
 	config.set_value("video_settings", "bloom_strength", bloom_strength)
 	config.set_value("video_settings", "crt_filter", crt_filter)
+	config.set_value("video_settings", "fullscreen", fullscreen)
 	
 	config.set_value("audio_settings", "master_volume", 
 		AudioServer.get_bus_volume_linear(AudioServer.get_bus_index("Master")))
@@ -191,6 +202,7 @@ func load_default_settings(tab_index: int) -> void:
 func _load_video_settings(config: ConfigFile) -> void:
 	bloom_strength = config.get_value("video_settings", "bloom_strength")
 	set_crt_filter(config.get_value("video_settings", "crt_filter"))
+	set_fullscreen(config.get_value("video_settings", "fullscreen"))
 
 
 func _load_audio_settings(config: ConfigFile) -> void:
