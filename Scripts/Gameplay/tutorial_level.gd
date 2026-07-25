@@ -51,7 +51,7 @@ func _ready() -> void:
 	var canvas = CanvasLayer.new()
 	canvas.add_child(_dialogue_box)
 	add_child(canvas)
-	_dialogue_box.dialogue_exited.connect(_start_level)
+	_dialogue_box.dialogue_exited.connect(_start_section)
 	_dialogue_box.dialogue_event.connect(_dialogue_event)
 	_dialogue_box.display_dialogue("start")
 	
@@ -69,10 +69,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("quit"):
 		quit(get_tree())
 
-## Starts the music for the level. Optionally, an offset in seconds can be 
+## Starts the level. Optionally, an offset in seconds can be 
 ## given, which will skip to that point in the level and play from there.
 ## Must successfully call load_level with no errors for this func to work.
-func _start_level(level_offset: float = 0) -> void:
+func _start_section() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	
 	_play_area.set_process_input(true)
 	_play_area._clear_bit_label_lines()
 	_play_area.override_line_num(0)
@@ -96,19 +98,16 @@ func _start_level(level_offset: float = 0) -> void:
 	_levelUI.set_level_length(level_length)
 	_levelUI.set_level_progress_visible(true)
 	
-	if total_time < level_offset:
-		push_error("An offset of %.2f goes past the entire level!" % level_offset)
-	else:
-		# Set new music for new sections.
-		match _current_section:
-			2:
-				conductor.set_song(tutorial_s2_music)
-				
-			3:
-				conductor.set_song(tutorial_s3_music)
-		
-		conductor.play_with_offset(level_offset, event_index)
-		conductor.set_timed_event(total_time)
+	# Set new music for new sections.
+	match _current_section:
+		2:
+			conductor.set_song(tutorial_s2_music)
+			
+		3:
+			conductor.set_song(tutorial_s3_music)
+	
+	conductor.play_with_offset(0, event_index)
+	conductor.set_timed_event(total_time)
 
 
 ## The next timed event has been received by the conductor. Sends the next bit
@@ -139,6 +138,8 @@ func _receive_timed_event(event_index: int) -> void:
 func _section_end() -> void:
 	await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
 	
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
 	_play_area.set_process_input(false)
 	_levelUI.set_level_progress_visible(false)
 	_play_area.set_cursor_animation(GameSettings.cursor_flicker)
@@ -165,7 +166,7 @@ func _section_end() -> void:
 						_SECTION_SUCCESS_THRESHOLD[1]):
 				_dialogue_box.display_dialogue("fail_back_bit")
 			else:
-				_dialogue_box.dialogue_exited.disconnect(_start_level)
+				_dialogue_box.dialogue_exited.disconnect(_start_section)
 				_dialogue_box.dialogue_exited.connect(_completed)
 				_dialogue_box.display_dialogue("finish")
 				pass
@@ -185,6 +186,7 @@ func _resumed() -> void:
 	if _dialogue_box.sequence_active:
 		_dialogue_box.show()
 		_dialogue_box.resume_dialogue()
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 ## A dialogue event has been received.

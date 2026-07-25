@@ -43,6 +43,8 @@ func _ready() -> void:
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.connect_conductor(conductor)
 	
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	
 	# When a new level chosen, it is set to last_played before this scene 
 	# instantiates, so in all cases this works fine.
 	level_info = LevelInfo.last_played
@@ -158,6 +160,8 @@ func _resumed() -> void:
 	_music_queue.set_paused(false)
 	conductor.toggle_paused()
 	
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	
 	_pause_instance.queue_free()
 	_levelUI.set_UI_visible(GameSettings.level_UI_enabled)
 	_levelUI.process_mode = Node.PROCESS_MODE_INHERIT
@@ -176,6 +180,8 @@ func _paused() -> void:
 	paused = true
 	_music_queue.set_paused(true)
 	conductor.toggle_paused()
+	
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	_levelUI.hide_UI()
 	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
@@ -215,6 +221,8 @@ func _failed() -> void:
 	failed = true
 	await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
 	
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
 	_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	conductor.done_timings()
@@ -229,6 +237,8 @@ func _completed() -> void:
 	if !failed:
 		completed = true
 		await get_tree().create_timer(GameSettings.LEVEL_FINISH_DELAY).timeout
+		
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		
 		_levelUI.process_mode = Node.PROCESS_MODE_DISABLED
 		_play_area.process_mode = Node.PROCESS_MODE_DISABLED
