@@ -165,6 +165,10 @@ theme_override_constants/separation = 30
 custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../../../../MarginContainer2/HBoxContainer/NextSongButton")
+focus_neighbor_bottom = NodePath("../SettingsButton")
+focus_next = NodePath("../SettingsButton")
+focus_previous = NodePath("../../../../MarginContainer2/HBoxContainer/NextSongButton")
 theme = ExtResource("1_i2xx2")
 text = "Play"
 
@@ -187,6 +191,8 @@ text = "Credits
 custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_neighbor_bottom = NodePath("../../../../MarginContainer2/HBoxContainer/NextSongButton")
+focus_next = NodePath("../../../../MarginContainer2/HBoxContainer/NextSongButton")
 theme = ExtResource("1_i2xx2")
 text = "Shut down"
 
@@ -270,6 +276,10 @@ vertical_alignment = 2
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+focus_neighbor_top = NodePath("../../../CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton")
+focus_neighbor_bottom = NodePath("../../../CanvasLayer/MarginContainer/VBoxContainer/PlayButton")
+focus_next = NodePath("../../../CanvasLayer/MarginContainer/VBoxContainer/PlayButton")
+focus_previous = NodePath("../../../CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton")
 icon = ExtResource("4_k33u3")
 flat = true
 

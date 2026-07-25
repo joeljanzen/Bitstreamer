@@ -100,11 +100,14 @@ horizontal_alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1522673332]
 layout_mode = 2
 size_flags_vertical = 10
+focus_mode = 2
 
 [node name="PlayAgain" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=1823941811]
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
 size_flags_horizontal = 6
+focus_neighbor_left = NodePath("../Quit")
+focus_previous = NodePath("../Quit")
 theme = ExtResource("3_e04pd")
 text = "Play again"
 
@@ -112,6 +115,8 @@ text = "Play again"
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
 size_flags_horizontal = 6
+focus_neighbor_right = NodePath("../PlayAgain")
+focus_next = NodePath("../PlayAgain")
 theme = ExtResource("3_e04pd")
 text = "Quit"
 

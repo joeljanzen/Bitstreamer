@@ -131,12 +131,15 @@ vertical_alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1378365594]
 layout_mode = 2
 size_flags_vertical = 10
+focus_mode = 2
 alignment = 1
 
 [node name="Reboot" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=1823941811]
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
 size_flags_horizontal = 6
+focus_neighbor_left = NodePath("../Quit")
+focus_previous = NodePath("../Quit")
 theme = ExtResource("3_lbv4o")
 text = "Restart"
 
@@ -144,6 +147,8 @@ text = "Restart"
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
 size_flags_horizontal = 6
+focus_neighbor_right = NodePath("../Reboot")
+focus_next = NodePath("../Reboot")
 theme = ExtResource("3_lbv4o")
 text = "Quit"
 

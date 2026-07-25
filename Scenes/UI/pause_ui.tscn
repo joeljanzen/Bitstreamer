@@ -29,6 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
@@ -36,6 +37,8 @@ alignment = 1
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../Quit")
+focus_previous = NodePath("../Quit")
 theme = ExtResource("1_bthaf")
 text = "Resume"
 
@@ -59,6 +62,8 @@ text = "Settings"
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_neighbor_bottom = NodePath("../Resume")
+focus_next = NodePath("../Resume")
 theme = ExtResource("1_bthaf")
 text = "Quit"
 
