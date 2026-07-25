@@ -92,6 +92,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 visible_characters_behavior = 1
 
+[node name="NextButton" type="Button" parent="MarginContainer/Panel/MarginContainer" unique_id=1882756644]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 1
+text = "  >  "
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=7213950]
 libraries/ = SubResource("AnimationLibrary_15aj3")
 
