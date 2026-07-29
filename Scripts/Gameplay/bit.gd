@@ -8,6 +8,10 @@ extends Node2D
 ## Used to swap from the enter texture which is on by default.
 @onready var _back_texture = preload("res://Resources/Sprites/Cursor/cursor_up.png")
 
+## Signifies a bit flying across the background has been clicked while in the 
+## main menu.
+signal bit_clicked_in_menu
+
 ## The types of bits.
 enum Type {
 	ZERO, 
@@ -54,6 +58,8 @@ var _is_clicked = false
 ## If the bit has been missed (and also hasn't been deleted yet).
 var _is_missed = false
 
+## True if the mouse is within the bit's area2D currently.
+var _mouse_hovered_in_menu = false
 
 ## The width of a bit, in pixels.
 ## WARNING: NOT GOOD TO HARDCODE THIS, SHOULD BE CALCULATED SOMEHOW
@@ -204,12 +210,55 @@ func get_accuracy() -> int:
 ## Play animations for a correct click.
 func _score_animation(click_quality: PerformanceCalculator.ClickQuality) -> void:
 	if GameSettings.bit_click_effect and !in_main_menu:
-		var effect: BitClickEffect = _bit_click_effect.instantiate()
-		get_tree().root.call_deferred("add_child", effect)
-		var pos: Vector2 = global_position
-		@warning_ignore("integer_division")
-		var pos_offset: int = BitClickEffect.get_width() / 2
-		# bit is somewhat offscreen or entirely offscreen
-		if global_position.x < pos_offset:
-			pos = Vector2(pos_offset, global_position.y)
-		effect.call_deferred("create", pos, click_quality)
+		_add_score_effect_child(click_quality)
+
+
+## Makes the score animation actually happen, given conditions are met when
+## _score_animation is called.
+func _add_score_effect_child(click_quality: PerformanceCalculator.ClickQuality):
+	var effect: BitClickEffect = _bit_click_effect.instantiate()
+	get_tree().root.call_deferred("add_child", effect)
+	var pos: Vector2 = global_position
+	@warning_ignore("integer_division")
+	var pos_offset: int = BitClickEffect.get_width() / 2
+	# bit is somewhat offscreen or entirely offscreen
+	if global_position.x < pos_offset:
+		pos = Vector2(pos_offset, global_position.y)
+	effect.call_deferred("create", pos, click_quality)
+
+
+## Allow destroying bits in the main menu.
+func _on_bit_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if (in_main_menu and event is InputEventMouseButton and event.is_pressed() 
+			and event.button_index == MOUSE_BUTTON_LEFT):
+		_click_bit_in_menu()
+
+
+func _on_mouse_entered() -> void:
+	if in_main_menu:
+		_mouse_hovered_in_menu = true
+
+
+func _on_mouse_exited() -> void:
+	if in_main_menu:
+		_mouse_hovered_in_menu = false
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if _mouse_hovered_in_menu:
+		if event.is_action_pressed("0_bit") and _value == Type.ZERO:
+			_click_bit_in_menu()
+		elif event.is_action_pressed("1_bit") and _value == Type.ONE:
+			_click_bit_in_menu()
+		elif event.is_action_pressed("enter_bit") and _value == Type.ENTER:
+			_click_bit_in_menu()
+
+
+## The bit was clicked while in the main menu.
+func _click_bit_in_menu() -> void:
+	bit_clicked_in_menu.emit()
+	if GameSettings.bit_click_effect:
+		_add_score_effect_child(PerformanceCalculator.ClickQuality.PERFECT)
+		queue_free()
+	else:
+		kill(false)

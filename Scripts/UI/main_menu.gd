@@ -2,12 +2,14 @@ extends Control
 
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
+@onready var _bit_click_sound: AudioStreamPlayer = $BitClick
 @onready var _canvas = $CanvasLayer
 @onready var _title = $MarginContainer/Title
 @onready var _splash_text_label = $SplashTextLabel
 @onready var _now_playing_label = $MarginContainer2/HBoxContainer/NowPlayingLabel
 @onready var _song_icon = $MarginContainer2/HBoxContainer/SongIcon
 @onready var _next_song_button = $MarginContainer2/HBoxContainer/NextSongButton
+@onready var _bit_click_counter_label = $MarginContainerForCounter/BitClickCounter
 @onready var _conductor: Conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
@@ -67,6 +69,9 @@ var splash_text: Array
 ## When reloading the menu, will start in the level selection screen if this is
 ## true.
 var start_in_level_select := false
+
+## Tracks how many bits have been clicked in the main menu.
+var _clicked_bit_count: int = 0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -162,6 +167,7 @@ func _send_random_bit() -> void:
 	
 	add_child(new_bit)
 	new_bit.create(bit_type, y_value, 0, bit_time_to_cross_screen, 0, _conductor)
+	new_bit.bit_clicked_in_menu.connect(_bit_clicked)
 
 
 ## Trigger a title pulse.
@@ -309,3 +315,10 @@ func _on_rich_text_label_mouse_entered() -> void:
 
 func _on_rich_text_label_mouse_exited() -> void:
 	_credits_text.text = _credits_text.text.trim_prefix("[wave]")
+
+
+## A bit flying across the background has been clicked.
+func _bit_clicked() -> void:
+	_bit_click_sound.play()
+	_clicked_bit_count += 1
+	_bit_click_counter_label.text = "Bits clicked: " + str(_clicked_bit_count)

@@ -14,6 +14,9 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 1)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_bfqwx"]
+radius = 80.0
+
 [node name="Bit" type="Node2D" unique_id=573621459]
 script = ExtResource("1_igqlm")
 
@@ -36,3 +39,12 @@ text = "0"
 [node name="BitSprite" type="Sprite2D" parent="." unique_id=466915647]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_bfqwx")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1163435875]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=830937935]
+shape = SubResource("CircleShape2D_bfqwx")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_bit_area_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]
