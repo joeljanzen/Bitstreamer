@@ -1,35 +1,42 @@
 extends Control
+class_name LevelSelect
+## Where the player selects which level to play.
 
 @onready var _level_button_container = $CanvasLayer/HBoxContainer/ScrollContainer/MarginContainer/LevelButtonContainer
 @onready var _back_button = $CanvasLayer/BackButton
 @onready var _scroll_box = $CanvasLayer/HBoxContainer/ScrollContainer
-@onready var _filters_panel = $CanvasLayer/FiltersPanel
-@onready var _filters_button_toggle = $CanvasLayer/FiltersButton
-@onready var _filter_button_container = $CanvasLayer/FiltersPanel/MarginContainer/FilterButtonContainer
+@onready var _sort_button = $CanvasLayer/SortButton
+@onready var _sort_panel = $CanvasLayer/SortPanel
+@onready var _sort_button_container = $CanvasLayer/SortPanel/MarginContainer/SortButtonContainer
 
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
+
+## Emitted when the close button is pressed, or esc is pressed.
+signal selection_closed
+
+## The methods of sorting available for levels.
+enum SortingType {
+	NAME,
+	DIFFICULTY,
+	SPEED,
+	DAMAGE,
+	LENGTH,
+	BPM,
+	BIT_COUNT,
+}
 
 ## The filenames of all tutorial levels.
 const _tutorial_level_filenames: PackedStringArray = [
 	"tutorial1.txt",
 ]
 
-## All the buttons to choose a filter for level sorting.
-var _filter_buttons: Array[Button]
-
-## Emitted when the close button is pressed, or esc is pressed.
-signal selection_closed
-
-## The last comparator function used to sort levels.
-static var _last_filter_used: Callable = _compare_level_difficulty
-
-## The filter button that is currently selected.
-static var _current_filter_index: int = 1
-
 ## The last position the player was on the level selection menu (on the 
 ## scrollbar).
 static var _last_level_select_position: int = 0
+
+## All the buttons to choose a level sorting method from.
+var _sort_buttons: Array[Button]
 
 var _level_button_scene = preload("res://Scenes/UI/level_button.tscn")
 
@@ -42,13 +49,13 @@ func _ready() -> void:
 	_scroll_box.set_deferred("scroll_horizontal", _last_level_select_position)
 	
 	if SaveLoad.save_data.tutorial_played:
-		_filters_button_toggle.show()
-		# Add filter button children
-		for child in _filter_button_container.get_children():
+		_sort_button.show()
+		# Add sort button children
+		for child in _sort_button_container.get_children():
 			if child is Button:
-				_filter_buttons.push_back(child)
+				_sort_buttons.push_back(child)
 		
-		_filter_buttons[_current_filter_index].disabled = true
+		_sort_buttons[SaveLoad.save_data.sorting_method].disabled = true
 	
 	# Load level info
 	var level_filenames: PackedStringArray = _tutorial_level_filenames
@@ -65,15 +72,39 @@ func _ready() -> void:
 			level_button.setup(level)
 			level_button.connect("button_pressed", _level_button_pressed)
 			_level_button_container.add_child(level_button)
+
+	_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
+
+
+## Return the comparator function for the given sorting method.
+func _get_sorting_comparator(sorting_method: SortingType) -> Callable:
+	match sorting_method:
+		SortingType.NAME:
+			return _compare_level_name
+		SortingType.DIFFICULTY:
+			return _compare_level_difficulty
+		SortingType.SPEED:
+			return _compare_level_speed
+		SortingType.DAMAGE:
+			return _compare_level_damage
+		SortingType.LENGTH:
+			return _compare_level_length
+		SortingType.BPM:
+			return _compare_level_bpm
+		SortingType.BIT_COUNT:
+			return _compare_level_bit_count
+		_:
+			return _compare_level_difficulty
+
+
+## Rearranges the children of the button container based on the sorting type 
+## passed.
+func _sort_levels_by_comparator(sorting_method: SortingType) -> void:
+	# First disable the new button, and enable the previously disabled one.
+	_sort_buttons[SaveLoad.save_data.sorting_method].disabled = false
+	_sort_buttons[sorting_method].disabled = true
 	
-	_sort_levels_by_comparator(_last_filter_used)
-
-
-## Rearranges the children of the button container based on the comparator 
-## function passed (it should take 2 array elements and return if the first 
-## should come before the second).
-func _sort_levels_by_comparator(comparator: Callable) -> void:
-	_last_filter_used = comparator
+	var comparator = _get_sorting_comparator(sorting_method)
 	
 	var children: Array[Node] = _level_button_container.get_children()
 	
@@ -82,6 +113,10 @@ func _sort_levels_by_comparator(comparator: Callable) -> void:
 	# Rearrange children appropriately
 	for i in range(children.size()):
 		_level_button_container.move_child(children[i], i)
+	
+	# Save this sorting method to load next time.
+	SaveLoad.save_data.sorting_method = sorting_method
+	SaveLoad.save_game()
 
 
 ## Start the level that has been selected.
@@ -110,18 +145,18 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 ## Hides the level select UI.
 func hide_UI():
 	_back_button.hide()
-	_filters_button_toggle.hide()
+	_sort_button.hide()
 	_level_button_container.hide()
 	
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_IGNORE
 	_last_level_select_position = _scroll_box.scroll_horizontal
 	
-	if _filters_panel.visible:
+	if _sort_panel.visible:
 		# Cannot hide right away as that will trigger filter button to 
 		# show itself again (through the mouse_exited signal) instead we
 		# do it after frame process idk it works ig.
 		await get_tree().process_frame
-		_filters_panel.hide()
+		_sort_panel.hide()
 
 
 ## Shows the level select UI.
@@ -131,7 +166,7 @@ func show_UI():
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_STOP
 	
 	if SaveLoad.save_data.tutorial_played:
-		_filters_button_toggle.show()
+		_sort_button.show()
 	
 	# In the event that the theme colors changed.
 	LevelButton.current_color_index = 0
@@ -157,18 +192,18 @@ func _on_back_button_mouse_entered() -> void:
 	_menu_focus_sound.play()
 
 
-## Show the filters panel.
-func _on_filters_button_mouse_entered() -> void:
+## Show the sort panel.
+func _on_sort_button_mouse_entered() -> void:
 	_menu_focus_sound.play()
-	_filters_panel.show()
-	_filters_button_toggle.hide()
+	_sort_panel.show()
+	_sort_button.hide()
 
 
-## Close the filters panel.
-func _on_filters_panel_mouse_exited() -> void:
-	_filters_panel.hide()
+## Close the sort panel.
+func _on_sort_panel_mouse_exited() -> void:
+	_sort_panel.hide()
 	if UI_is_visible():
-		_filters_button_toggle.show()
+		_sort_button.show()
 
 # Various comparator functions, for sorting levels by various properties.
 
@@ -206,65 +241,38 @@ static func _compare_level_length(a: LevelButton, b: LevelButton) -> bool:
 static func _compare_level_bit_count(a: LevelButton, b: LevelButton) -> bool:
 	return a.level_info.bit_count < b.level_info.bit_count
 
-# Various level filtering buttons.
+# Various level sorting buttons.
 
 func _on_name_pressed() -> void:
 	_menu_click_sound.play()
-	_sort_levels_by_comparator(_compare_level_name)
-	
-	_filter_buttons[_current_filter_index].disabled = false
-	_current_filter_index = 0
-	_filter_buttons[_current_filter_index].disabled = true
+	_sort_levels_by_comparator(SortingType.NAME)
 
 
 func _on_difficulty_pressed() -> void:
 	_menu_click_sound.play()
-	_sort_levels_by_comparator(_compare_level_difficulty)
-	
-	_filter_buttons[_current_filter_index].disabled = false
-	_current_filter_index = 1
-	_filter_buttons[_current_filter_index].disabled = true
+	_sort_levels_by_comparator(SortingType.DIFFICULTY)
 
 
 func _on_speed_pressed() -> void:
 	_menu_click_sound.play()
-	_sort_levels_by_comparator(_compare_level_speed)
-	
-	_filter_buttons[_current_filter_index].disabled = false
-	_current_filter_index = 2
-	_filter_buttons[_current_filter_index].disabled = true
+	_sort_levels_by_comparator(SortingType.SPEED)
 
 
 func _on_damage_pressed() -> void:
 	_menu_click_sound.play()
-	_sort_levels_by_comparator(_compare_level_damage)
-	
-	_filter_buttons[_current_filter_index].disabled = false
-	_current_filter_index = 3
-	_filter_buttons[_current_filter_index].disabled = true
+	_sort_levels_by_comparator(SortingType.DAMAGE)
 
 
 func _on_length_pressed() -> void:
 	_menu_click_sound.play()
-	_sort_levels_by_comparator(_compare_level_length)
-	_filter_buttons[_current_filter_index].disabled = false
-	_current_filter_index = 4
-	_filter_buttons[_current_filter_index].disabled = true
+	_sort_levels_by_comparator(SortingType.LENGTH)
 
 
 func _on_bpm_pressed() -> void:
 	_menu_click_sound.play()
-	_sort_levels_by_comparator(_compare_level_bpm)
-	
-	_filter_buttons[_current_filter_index].disabled = false
-	_current_filter_index = 5
-	_filter_buttons[_current_filter_index].disabled = true
+	_sort_levels_by_comparator(SortingType.BPM)
 
 
 func _on_bit_count_pressed() -> void:
 	_menu_click_sound.play()
-	_sort_levels_by_comparator(_compare_level_bit_count)
-	
-	_filter_buttons[_current_filter_index].disabled = false
-	_current_filter_index = 6
-	_filter_buttons[_current_filter_index].disabled = true
+	_sort_levels_by_comparator(SortingType.BIT_COUNT)

@@ -6,6 +6,7 @@ const SAVE_LOCATION = "user://game_save.tres"
 var save_data: SaveDataResource = SaveDataResource.new()
 
 
+## Automatically load game data on start.
 func _ready() -> void:
 	load_game()
 
