@@ -35,6 +35,7 @@ scroll_deadzone = 35
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/ScrollContainer" unique_id=768856825]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_left = 500
 theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 500
@@ -45,6 +46,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 150
+alignment = 1
 
 [node name="BackButton" type="Button" parent="CanvasLayer" unique_id=222140717]
 z_index = 3
@@ -62,6 +64,7 @@ theme_override_font_sizes/font_size = 50
 text = "<"
 
 [node name="FiltersButton" type="Button" parent="CanvasLayer" unique_id=1064356445]
+visible = false
 z_index = 3
 custom_minimum_size = Vector2(200, 90)
 offset_right = 200.0

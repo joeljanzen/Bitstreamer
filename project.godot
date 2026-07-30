@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://b6tgw0hy7goba"
 GameSettings="*uid://btgjt44yi3mpp"
 Signals="*uid://crtud41x335yx"
 PerformanceCalculator="*uid://cavskhjwn6yn1"
+SaveLoad="*uid://che2koeyadvig"
 flowerwall_crt="*uid://cc1fomjf362h5"
 
 [display]

@@ -10,6 +10,11 @@ extends Control
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
+## The filenames of all tutorial levels.
+const _tutorial_level_filenames: PackedStringArray = [
+	"tutorial1.txt",
+]
+
 ## All the buttons to choose a filter for level sorting.
 var _filter_buttons: Array[Button]
 
@@ -36,15 +41,19 @@ var _levels: Array[LevelInfo]
 func _ready() -> void:
 	_scroll_box.set_deferred("scroll_horizontal", _last_level_select_position)
 	
-	# Add filter button children
-	for child in _filter_button_container.get_children():
-		if child is Button:
-			_filter_buttons.push_back(child)
+	if SaveLoad.save_data.tutorial_played:
+		_filters_button_toggle.show()
+		# Add filter button children
+		for child in _filter_button_container.get_children():
+			if child is Button:
+				_filter_buttons.push_back(child)
+		
+		_filter_buttons[_current_filter_index].disabled = true
 	
-	_filter_buttons[_current_filter_index].disabled = true
-	
-	# Load all level info
-	var level_filenames: PackedStringArray = DirAccess.get_files_at("res://Levels")
+	# Load level info
+	var level_filenames: PackedStringArray = _tutorial_level_filenames
+	if SaveLoad.save_data.tutorial_played:
+		level_filenames = DirAccess.get_files_at("res://Levels")
 	
 	for file in level_filenames:
 		_levels.push_back(LevelInfo.new(file))
@@ -118,9 +127,11 @@ func hide_UI():
 ## Shows the level select UI.
 func show_UI():
 	_back_button.show()
-	_filters_button_toggle.show()
 	_level_button_container.show()
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_STOP
+	
+	if SaveLoad.save_data.tutorial_played:
+		_filters_button_toggle.show()
 	
 	# In the event that the theme colors changed.
 	LevelButton.current_color_index = 0

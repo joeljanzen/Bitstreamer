@@ -78,6 +78,10 @@ var missed_click_colour := "FFFFFF"
 ## The colour associated with incorrect clicks.
 var incorrect_click_colour := "FF0000"
 
+## Can check to ensure the main menu only loads game settings when the game is 
+## first opened.
+var game_loaded := false
+
 
 ## Connect the Flowerwall CRT script when it is loaded.
 func connect_crt_shader(crt_shader: flowerwallCRT) -> void:
@@ -171,6 +175,8 @@ func load_user_settings() -> void:
 	_load_gameplay_settings(config)
 	_load_controls_settings(config)
 	_load_theme_settings(config)
+	
+	game_loaded = true
 
 
 ## Load default settings for the current settings tab provided ONLY. All 
