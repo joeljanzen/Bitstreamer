@@ -72,8 +72,12 @@ func _ready() -> void:
 			level_button.setup(level)
 			level_button.connect("button_pressed", _level_button_pressed)
 			_level_button_container.add_child(level_button)
-
-	_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
+	
+	# If this isn't true, then there are no sort buttons yet so we can't try to
+	# sort anything (will get an out of bounds error since the buttons are 
+	# references in that func).
+	if SaveLoad.save_data.tutorial_played:
+		_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
 
 
 ## Return the comparator function for the given sorting method.
