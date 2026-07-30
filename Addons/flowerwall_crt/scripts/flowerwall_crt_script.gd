@@ -26,16 +26,14 @@ func _ready() -> void:
 	
 	# Connect to my game settings.
 	GameSettings.connect_crt_shader(self)
-	
 
-## Original controls to toggle filter.
-#Menu
-#func _unhandled_key_input(event: InputEvent) -> void:
-	#if event is InputEventKey:
-		#if event.pressed and event.keycode == KEY_F1 and is_enabled and OS.is_debug_build():
-			#flowerwall_crt_config_ui.visible = !flowerwall_crt_config_ui.visible
-		#if event.pressed and event.keycode == KEY_F2 and OS.is_debug_build():
-			#enable_shader()
+## Shortcut to modify shader materials.
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_F1 and GameSettings.crt_filter and OS.is_debug_build():
+			flowerwall_crt_config_ui.visible = !flowerwall_crt_config_ui.visible
+		if event.pressed and event.keycode == KEY_F2 and OS.is_debug_build():
+			enable_shader()
 
 ## Original function (I modified it).
 #func enable_shader() -> void:
