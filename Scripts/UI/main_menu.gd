@@ -329,6 +329,9 @@ func _bit_clicked(correct_click: bool) -> void:
 	if correct_click:
 		_bit_click_sound.play()
 		_clicked_bit_count += 1
+		_bit_click_counter_label.text = "Bits clicked: " + str(_clicked_bit_count)
 	else:
 		_bit_error_click_sound.play()
-	_bit_click_counter_label.text = "Bits clicked: " + str(_clicked_bit_count)
+		_clicked_bit_count = 0
+		_bit_click_counter_label.text = ""
+	
