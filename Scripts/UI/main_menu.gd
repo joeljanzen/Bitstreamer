@@ -3,6 +3,7 @@ extends Control
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 @onready var _bit_click_sound: AudioStreamPlayer = $BitClick
+@onready var _bit_error_click_sound: AudioStreamPlayer = $ErrorClick
 @onready var _canvas = $CanvasLayer
 @onready var _title = $MarginContainer/Title
 @onready var _splash_text_label = $SplashTextLabel
@@ -85,6 +86,7 @@ func _ready() -> void:
 			GameSettings.load_user_settings()
 	
 	Bit.in_main_menu = true
+	Bit.clickable_in_main_menu = true
 	
 	splash_text = _load_splash_text(splash_text_filepath)
 	_splash_text_label.text = splash_text[randi_range(0, splash_text.size() - 1)]
@@ -247,10 +249,12 @@ func _on_credits_pressed() -> void:
 		_credits_animation.play_backwards("credits_text")
 
 
-## Hide the menu when something else is shown (settings, credits, level select
+## Hide the menu when something else is shown (settings, level select
 ## etc).
 func _hide_menu() -> void:
 	_canvas.hide()
+	
+	Bit.clickable_in_main_menu = false
 	
 	# Enable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
@@ -262,6 +266,8 @@ func _hide_menu() -> void:
 func _show_menu() -> void:
 	_canvas.show()
 	_menu_click_sound.play() # For the button they pressed to return to menu.
+	
+	Bit.clickable_in_main_menu = true
 	
 	# Disable background blur.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
@@ -319,7 +325,10 @@ func _on_rich_text_label_mouse_exited() -> void:
 
 
 ## A bit flying across the background has been clicked.
-func _bit_clicked() -> void:
-	_bit_click_sound.play()
-	_clicked_bit_count += 1
+func _bit_clicked(correct_click: bool) -> void:
+	if correct_click:
+		_bit_click_sound.play()
+		_clicked_bit_count += 1
+	else:
+		_bit_error_click_sound.play()
 	_bit_click_counter_label.text = "Bits clicked: " + str(_clicked_bit_count)

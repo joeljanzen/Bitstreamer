@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_gih0s"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
 [ext_resource type="AudioStream" uid="uid://rl8f7krqudnc" path="res://Resources/Audio/SFX/BitClick.wav" id="10_wqme5"]
+[ext_resource type="AudioStream" uid="uid://bm45yq771u653" path="res://Resources/Audio/SFX/ErrorClick.wav" id="11_jewm6"]
 
 [sub_resource type="Animation" id="Animation_wqme5"]
 length = 0.001
@@ -86,6 +87,12 @@ playback_mode = 1
 random_pitch = 1.0594631
 streams_count = 1
 stream_0/stream = ExtResource("10_wqme5")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_cejvf"]
+playback_mode = 1
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("11_jewm6")
 
 [node name="MainMenu" type="Control" unique_id=903022407]
 layout_mode = 3
@@ -321,6 +328,10 @@ bus = &"Menu"
 
 [node name="BitClick" type="AudioStreamPlayer" parent="." unique_id=834830118]
 stream = SubResource("AudioStreamRandomizer_jewm6")
+bus = &"Gameplay"
+
+[node name="ErrorClick" type="AudioStreamPlayer" parent="." unique_id=2019607033]
+stream = SubResource("AudioStreamRandomizer_cejvf")
 bus = &"Gameplay"
 
 [connection signal="mouse_entered" from="CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel" to="." method="_on_rich_text_label_mouse_entered"]
