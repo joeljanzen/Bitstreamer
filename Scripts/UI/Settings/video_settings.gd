@@ -26,7 +26,7 @@ func _on_bloom_level_value_changed(value: float) -> void:
 	GameSettings.bloom_strength = value
 	
 	@warning_ignore("narrowing_conversion")
-	var amount: int = value * 2
+	var amount: int = value * 4
 	_bloom_label.text = " " +  str(amount)
 
 
