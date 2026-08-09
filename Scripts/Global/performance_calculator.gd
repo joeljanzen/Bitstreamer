@@ -49,13 +49,13 @@ var clickable_range: float = 200
 ## seconds.
 var approach_time: float
 
-## Contains statistics for the current play.
-var statistics: GameplayStatistics
+## Stores data for the current play.
+var play_data: PlayData
 
 
-## Connects the statistics for the current play to the PerformanceCalculator.
-func connect_gameplay_stats(stats: GameplayStatistics) -> void:
-	statistics = stats
+## Connects the data for the current play to the PerformanceCalculator.
+func connect_play_data(data: PlayData) -> void:
+	play_data = data
 
 
 ## Get the milliseconds + or - a perfect click that is still considered 
@@ -132,9 +132,9 @@ func get_score(accuracy: float) -> int:
 	
 	# Calculate combo bonus.
 	var multiplier := 1.0
-	if statistics.combo >= COMBO_SCORE_BONUS_START:
+	if play_data.combo >= COMBO_SCORE_BONUS_START:
 		# The part of the combo considered for bonuses.
-		var considered_combo: float = statistics.combo - COMBO_SCORE_BONUS_START + 1
+		var considered_combo: float = play_data.combo - COMBO_SCORE_BONUS_START + 1
 		multiplier += float(considered_combo) * COMBO_BONUS_SCALER
 	#print("multiplier is %f" % multiplier)
 	score *= multiplier
@@ -169,7 +169,7 @@ func get_click_quality(raw_score: int) -> ClickQuality:
 func calculate_health_gain(raw_score: int) -> int:
 	var health: int
 	# Only start healing after reaching the required combo.
-	if statistics.combo >= COMBO_HEALTH_RESTORE_START:
+	if play_data.combo >= COMBO_HEALTH_RESTORE_START:
 		match raw_score:
 			PERFECT_CLICK_SCORE:
 				return PERFECT_CLICK_HEAL

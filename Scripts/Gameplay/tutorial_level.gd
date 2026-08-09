@@ -19,9 +19,15 @@ var _dialogue_box: Dialogue
 ## Tracks which section the player is currently on.
 var _current_section: int = 1
 
+## Stores data for the current play of a level, including score, combo, etc.
+var _play_data: PlayData
+
+
 ## Connect to the failed and completed signal and connect the conductor to levelUI.
 func _ready() -> void:
 	_play_area.no_bits_left.connect(_section_end)
+	_play_data = _levelUI.play_data
+	
 	# Hide elements individually so we can slowly reveal them.
 	_levelUI.show_UI()
 	_levelUI.set_accuracy_label_visible(false)
@@ -146,7 +152,7 @@ func _section_end() -> void:
 	
 	match _current_section:
 		1:
-			if (_levelUI.missed_clicks + _levelUI.error_clicks > 
+			if (_play_data.missed_clicks + _play_data.error_clicks > 
 						_SECTION_SUCCESS_THRESHOLD[0]):
 				_dialogue_box.display_dialogue("fail_start")
 			else:
@@ -154,7 +160,7 @@ func _section_end() -> void:
 				_dialogue_box.display_dialogue("enter_bit")
 				_levelUI.set_score_label_visible(true)
 		2:
-			if (_levelUI.missed_clicks + _levelUI.error_clicks > 
+			if (_play_data.missed_clicks + _play_data.error_clicks > 
 						_SECTION_SUCCESS_THRESHOLD[1]):
 				_dialogue_box.display_dialogue("fail_enter_bit")
 			else:
@@ -162,8 +168,8 @@ func _section_end() -> void:
 				_dialogue_box.display_dialogue("back_bit")
 				_levelUI.set_health_bar_visible(true)
 		3:
-			if (_levelUI.missed_clicks + _levelUI.error_clicks > 
-						_SECTION_SUCCESS_THRESHOLD[1]):
+			if (_play_data.missed_clicks + _play_data.error_clicks > 
+						_SECTION_SUCCESS_THRESHOLD[2]):
 				_dialogue_box.display_dialogue("fail_back_bit")
 			else:
 				_dialogue_box.dialogue_exited.disconnect(_start_section)

@@ -1,4 +1,4 @@
-class_name GameplayStatistics
+class_name LevelUI
 extends Control
 ## Tracks statistics during gameplay and updates the level UI with it.
 
@@ -9,29 +9,8 @@ extends Control
 @onready var _accuracy_label: RichTextLabel = $CanvasLayer/Accuracy
 @onready var _progress_circle: TextureProgressBar = $CanvasLayer/LevelProgress
 
-## The score for this play, including all bonuses.
-var score: int = 0
-
-## The number of bits that have been correctly clicked since the last miss.
-var combo: int = 0
-
-## The highest combo achieved in this play.
-var max_combo: int = 0
-
-## The total accuracy of all clicks in this play.
-var accuracy: float = 100
-
-# Tracking amount of each click quality.
-## The number of perfect clicks made in this play.
-var perfect_clicks: int = 0
-## The number of good clicks made in this play.
-var good_clicks: int = 0
-## The number of okay clicks made in this play.
-var okay_clicks: int = 0
-## The number of missed bits in this play.
-var missed_clicks: int = 0
-## The number of error clicks made in this play.
-var error_clicks: int = 0
+## Stores data for the current play of a level, including score, combo, etc.
+var play_data: PlayData = PlayData.new()
 
 ## The score for this play, ignoring any combo bonuses.
 var _raw_score: int = 0
@@ -43,9 +22,10 @@ var _max_accuracy: int = 0
 var _conductor: Conductor
 
 
-## Share statistics with PerformanceCalculator, and connect to gameplay signals.
+## Share play data with the PerformanceCalculator, and connect to gameplay 
+## signals.
 func _ready() -> void:
-	PerformanceCalculator.connect_gameplay_stats(self)
+	PerformanceCalculator.connect_play_data(play_data)
 	Signals.scored.connect(_scored)
 	Signals.missed.connect(_missed)
 
@@ -147,18 +127,18 @@ func set_combo_label_visible(enabled: bool) -> void:
 
 ## Used in the tutorial where there are multiple separate sections.
 func reset_stats() -> void:
-	score = 0
+	play_data.score = 0
 	_score_label.text = "0"
-	combo = 0
+	play_data.combo = 0
 	_combo_label.text = "0x"
 	
-	perfect_clicks = 0
-	good_clicks = 0
-	okay_clicks = 0
-	missed_clicks = 0
-	error_clicks = 0
+	play_data.perfect_clicks = 0
+	play_data.good_clicks = 0
+	play_data.okay_clicks = 0
+	play_data.missed_clicks = 0
+	play_data.error_clicks = 0
 	
-	accuracy = 100
+	play_data.accuracy = 100
 	_accuracy_label.text = "Accuracy 100%%"
 	_max_accuracy = 0
 	_raw_score = 0
@@ -168,39 +148,39 @@ func reset_stats() -> void:
 ## the score given for the click before any bonuses 
 ## (okay, good, or perfect click).
 func _scored(amount: int, raw_amount: int) -> void:
-	score += amount
-	_score_label.text = "%d" % score
-	combo += 1
-	max_combo = max(combo, max_combo)
-	_combo_label.text = "%dx" % combo
+	play_data.score += amount
+	_score_label.text = "%d" % play_data.score
+	play_data.combo += 1
+	play_data.max_combo = max(play_data.combo, play_data.max_combo)
+	_combo_label.text = "%dx" % play_data.combo
 	
 	if _health_bar.value < _health_bar.max_value:
 		_health_bar.value += PerformanceCalculator.calculate_health_gain(raw_amount)
 	
 	match PerformanceCalculator.get_click_quality(raw_amount):
 		PerformanceCalculator.ClickQuality.PERFECT:
-			perfect_clicks += 1
+			play_data.perfect_clicks += 1
 		PerformanceCalculator.ClickQuality.GOOD:
-			good_clicks += 1
+			play_data.good_clicks += 1
 		PerformanceCalculator.ClickQuality.OKAY:
-			okay_clicks += 1
+			play_data.okay_clicks += 1
 	
 	_update_acc(raw_amount)
 
 
 ## The player missed a bit.
 func _missed(damage: int, click_quality: PerformanceCalculator.ClickQuality) -> void:
-	combo = 0
-	_combo_label.text = "%dx" % combo
+	play_data.combo = 0
+	_combo_label.text = "%dx" % play_data.combo
 	_health_bar.value -= damage
 	
 	_update_acc(0)
 	
 	match click_quality:
 		PerformanceCalculator.ClickQuality.MISS:
-			missed_clicks += 1
+			play_data.missed_clicks += 1
 		PerformanceCalculator.ClickQuality.ERROR:
-			error_clicks += 1
+			play_data.error_clicks += 1
 	
 	if _health_bar.value <= 0:
 		# Ignore extra missed and clicked bits, the player already failed.
@@ -214,5 +194,5 @@ func _missed(damage: int, click_quality: PerformanceCalculator.ClickQuality) -> 
 func _update_acc(raw_score: int) -> void:
 	_raw_score += raw_score
 	_max_accuracy += PerformanceCalculator.PERFECT_CLICK_SCORE
-	accuracy = float(_raw_score) / float(_max_accuracy) * 100
-	_accuracy_label.text = "Accuracy %.2f%%" % accuracy
+	play_data.accuracy = float(_raw_score) / float(_max_accuracy) * 100
+	_accuracy_label.text = "Accuracy %.2f%%" % play_data.accuracy

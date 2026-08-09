@@ -10,23 +10,25 @@ extends Control
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
-## Contains statistics for the current play.
-var statistics: GameplayStatistics
+var _level_UI: LevelUI
+
+## Stores data for the current play of a level, including score, combo, etc.
+var _play_data: PlayData
 
 
 ## Display statistics for the play.
 func _ready() -> void:
-	_score_label.text = "Score: %d" % statistics.score
-	_accuracy_label.text = "Accuracy: %.2f%%" % statistics.accuracy
-	_progress_label.text = "Progress: %.2f%%" % statistics.get_current_progress()
+	_score_label.text = "Score: %d" % _play_data.score
+	_accuracy_label.text = "Accuracy: %.2f%%" % _play_data.accuracy
+	_progress_label.text = "Progress: %.2f%%" % _level_UI.get_current_progress()
 	_clicks_label.text = """perfect: %d
 	good: %d
 	okay: %d
 	miss: %d
 	error: %d
-	""" % [statistics.perfect_clicks, statistics.good_clicks, 
-			statistics.okay_clicks, statistics.missed_clicks, 
-			statistics.error_clicks]
+	""" % [_play_data.perfect_clicks, _play_data.good_clicks, 
+			_play_data.okay_clicks, _play_data.missed_clicks, 
+			_play_data.error_clicks]
 
 
 ## Idle animations in this screen, idk.
@@ -34,9 +36,10 @@ func _process(_delta: float) -> void:
 	pass
 
 
-## Connects the statistics for the current play to the GameCrashUI.
-func connect_gameplay_stats(stats: GameplayStatistics) -> void:
-	statistics = stats
+## Connects the LevelUI to the GameCrashUI.
+func connect_level_UI(UI: LevelUI) -> void:
+	_level_UI = UI
+	_play_data = UI.play_data
 
 
 ## The player has pressed the reboot button. Clearly.

@@ -13,13 +13,12 @@ signal resumed
 
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 
-## Contains statistics for the current play.
-var statistics: GameplayStatistics
+var _level_UI: LevelUI
 
 
 ## Set progress amount.
 func _ready() -> void:
-	var progress = statistics.get_current_progress()
+	var progress = _level_UI.get_current_progress()
 	if progress > 0:
 		_progress_label.text = "Current Progress: %.2f%%" % progress
 	else: # progress is not applicable for whatever reason.
@@ -33,9 +32,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		resumed.emit()
 
 
-## Connects the statistics for the current play to the PauseUI.
-func connect_gameplay_stats(stats: GameplayStatistics) -> void:
-	statistics = stats
+## Connects the LevelUI to the PauseUI.
+func connect_level_UI(UI: LevelUI) -> void:
+	_level_UI = UI
 
 
 ## The player has pressed the resume button.

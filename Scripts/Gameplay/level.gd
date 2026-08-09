@@ -2,7 +2,7 @@ class_name GameLevel
 extends Node2D
 ## A game level, where gameplay occurs and all that jazz.
 
-@onready var _levelUI: GameplayStatistics = $LevelUI
+@onready var _levelUI: LevelUI = $LevelUI
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 @onready var _play_area: PlayArea = $PlayArea
 @onready var _music_queue: Timer = $MusicQueue
@@ -188,7 +188,7 @@ func _paused() -> void:
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	_pause_instance = _pause_screen.instantiate()
-	_pause_instance.connect_gameplay_stats(_levelUI)
+	_pause_instance.connect_level_UI(_levelUI)
 	_pause_instance.resumed.connect(_resumed)
 	add_child(_pause_instance)
 	
@@ -228,7 +228,7 @@ func _failed() -> void:
 	conductor.done_timings()
 	
 	var crash_screen: GameCrashUI = _crash_screen.instantiate()
-	crash_screen.connect_gameplay_stats(_levelUI)
+	crash_screen.connect_level_UI(_levelUI)
 	add_child(crash_screen)
 
 
@@ -251,5 +251,5 @@ func _completed() -> void:
 		_environment.environment.glow_bloom = PAUSE_BLUR_STRENGTH
 		
 		var win_screen: GameWinUI = _win_screen.instantiate()
-		win_screen.connect_gameplay_stats(_levelUI)
+		win_screen.connect_play_data(_levelUI.play_data)
 		add_child(win_screen)
