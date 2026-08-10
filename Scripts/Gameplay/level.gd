@@ -253,3 +253,5 @@ func _completed() -> void:
 		var win_screen: GameWinUI = _win_screen.instantiate()
 		win_screen.connect_play_data(_levelUI.play_data)
 		add_child(win_screen)
+		
+		SaveLoad.save_play(level_info, _levelUI.play_data)

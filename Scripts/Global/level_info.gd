@@ -56,7 +56,7 @@ var _bit_time_to_cursor: float
 var _is_valid := false
 
 
-## Initialize the level button, given its full filename.
+## Initialize the level info, given its full filename.
 func _init(filename: String) -> void:
 	file_name = filename
 	
@@ -445,3 +445,9 @@ func load_level_bits_and_delays() -> bool:
 ## Verify that the level information is valid before using it.
 func is_valid() -> bool:
 	return _is_valid
+
+
+## Return the filename without the type (.txt).
+func get_filename_without_type() -> String:
+	var start_of_filetype = file_name.rfind(".")
+	return file_name.substr(0, start_of_filetype)
