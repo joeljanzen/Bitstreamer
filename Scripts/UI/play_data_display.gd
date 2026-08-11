@@ -59,8 +59,8 @@ func _ready() -> void:
 			score_label.modulate = GameSettings.one_bit_colour
 		use_primary = !use_primary
 	
-	accuracy_label.text = "%.2f%% accuracy" % play_data.accuracy
-	max_combo_label.text = str(play_data.max_combo) + "x max combo"
+	accuracy_label.text = "%.2f%% Accuracy" % play_data.accuracy
+	max_combo_label.text = "%dx Max Combo" % play_data.max_combo
 	
 	perfects_label.text = ("[color=%s]Perfect: %d[/color]" % 
 	[GameSettings.perfect_click_colour, play_data.perfect_clicks])
