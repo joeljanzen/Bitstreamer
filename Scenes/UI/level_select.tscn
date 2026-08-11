@@ -78,16 +78,16 @@ scroll_deadzone = 35
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer" unique_id=768856825]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 400
+theme_override_constants/margin_left = 500
 theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 400
+theme_override_constants/margin_right = 500
 theme_override_constants/margin_bottom = 100
 
 [node name="LevelButtonContainer" type="HBoxContainer" parent="CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer/MarginContainer" unique_id=1129383610]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 400
+theme_override_constants/separation = 300
 alignment = 1
 
 [node name="BackButton" type="Button" parent="CanvasLayer" unique_id=222140717]
