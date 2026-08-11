@@ -6,4 +6,4 @@ font_names = PackedStringArray("Consolas")
 [resource]
 default_base_scale = 1.0
 default_font = SubResource("SystemFont_60xwf")
-default_font_size = 35
+default_font_size = 25

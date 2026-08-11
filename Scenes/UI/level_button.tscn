@@ -6,184 +6,196 @@
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_j7lvc"]
 
 [node name="LevelButton" type="Control" unique_id=1822112030]
-custom_minimum_size = Vector2(780, 900)
+custom_minimum_size = Vector2(1000, 300)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 1
 mouse_filter = 1
 script = ExtResource("1_iq6la")
 
-[node name="Panel" type="Panel" parent="." unique_id=1266196469]
+[node name="ButtonPanel" type="PanelContainer" parent="." unique_id=1381182192]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset_ratio = Vector2(0.5, 1)
+pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 1
 theme = ExtResource("1_bbr4g")
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1823341588]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="ButtonPanel" unique_id=1823341588]
+layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=226793183]
+[node name="VBoxContainer" type="VBoxContainer" parent="ButtonPanel/MarginContainer" unique_id=226793183]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 20
+size_flags_vertical = 6
+theme_override_constants/separation = 10
 alignment = 1
 
-[node name="NamePanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=547449358]
-custom_minimum_size = Vector2(0, 200)
+[node name="NamePanel" type="PanelContainer" parent="ButtonPanel/MarginContainer/VBoxContainer" unique_id=851231310]
 layout_mode = 2
-size_flags_vertical = 0
 mouse_filter = 1
 
-[node name="NameLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/NamePanel" unique_id=992663357]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/NamePanel" unique_id=984885814]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/NamePanel/MarginContainer" unique_id=1825903009]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="NameLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/NamePanel/MarginContainer/VBoxContainer" unique_id=992663357]
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 60
-text = "Level Title"
+theme_override_font_sizes/font_size = 50
+text = "Title"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
-clip_text = true
 
-[node name="VersionPanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=1165809003]
-custom_minimum_size = Vector2(0, 90)
+[node name="VersionLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/NamePanel/MarginContainer/VBoxContainer" unique_id=169596192]
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Version"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LevelDetailsContainer" type="HBoxContainer" parent="ButtonPanel/MarginContainer/VBoxContainer" unique_id=1782537921]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BitsPanel" type="PanelContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer" unique_id=1114091073]
 layout_mode = 2
 mouse_filter = 1
 
-[node name="VersionLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/VersionPanel" unique_id=169596192]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-text = "Level Version"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-clip_text = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1009278135]
+[node name="MarginContainer" type="MarginContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/BitsPanel" unique_id=594267429]
 layout_mode = 2
-size_flags_vertical = 4
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
 
-[node name="BitCountLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1127836204]
+[node name="BitCountLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/BitsPanel/MarginContainer" unique_id=1127836204]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 0
 text = "42 bits"
 
-[node name="LengthLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2082293783]
+[node name="LengthPanel" type="PanelContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer" unique_id=448543868]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/LengthPanel" unique_id=192829249]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="LengthLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/LengthPanel/MarginContainer" unique_id=2082293783]
 layout_mode = 2
 size_flags_horizontal = 6
 text = "42s"
 
-[node name="BPMLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1654100771]
+[node name="BPMPanel" type="PanelContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer" unique_id=931620668]
 layout_mode = 2
-size_flags_horizontal = 6
-text = "100 BPM"
-
-[node name="DifficultyPanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=61150594]
-custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
-size_flags_vertical = 4
 mouse_filter = 1
 
-[node name="DifficultyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DifficultyPanel" unique_id=1360617629]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -160.5
-offset_top = -23.0
-offset_right = 160.5
-offset_bottom = 23.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/BPMPanel" unique_id=239441767]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="BPMLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/BPMPanel/MarginContainer" unique_id=1654100771]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "100 BPM"
+
+[node name="Control" type="Control" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer" unique_id=2011382396]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+
+[node name="DifficultyPanel" type="PanelContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer" unique_id=96504871]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DifficultyPanel" unique_id=1199607469]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="DifficultyLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DifficultyPanel/MarginContainer" unique_id=1360617629]
+layout_mode = 2
 size_flags_horizontal = 0
 text = "Difficulty: 7"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpeedPanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=729764941]
-custom_minimum_size = Vector2(0, 75)
+[node name="SpeedPanel" type="PanelContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer" unique_id=1275132609]
 layout_mode = 2
-size_flags_vertical = 4
 mouse_filter = 1
 
-[node name="SpeedLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/SpeedPanel" unique_id=1514991487]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -160.5
-offset_top = -23.0
-offset_right = 160.5
-offset_bottom = 23.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 0
+[node name="MarginContainer" type="MarginContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel" unique_id=1907106109]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="SpeedLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel/MarginContainer" unique_id=1514991487]
+layout_mode = 2
+size_flags_horizontal = 6
 text = "Speed: 7"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DamagePanel" type="Panel" parent="Panel/MarginContainer/VBoxContainer" unique_id=1308391746]
-custom_minimum_size = Vector2(0, 75)
+[node name="DamagePanel" type="PanelContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer" unique_id=302882776]
 layout_mode = 2
-size_flags_vertical = 4
 mouse_filter = 1
 
-[node name="DamageLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DamagePanel" unique_id=642316699]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -160.5
-offset_top = -23.0
-offset_right = 160.5
-offset_bottom = 23.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 0
+[node name="MarginContainer" type="MarginContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel" unique_id=1254500453]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="DamageLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel/MarginContainer" unique_id=642316699]
+layout_mode = 2
+size_flags_horizontal = 8
 text = "Damage: 1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayButton" type="Button" parent="Panel/MarginContainer/VBoxContainer" unique_id=1418447274]
-custom_minimum_size = Vector2(0, 200)
+[node name="PlayButton" type="Button" parent="ButtonPanel/MarginContainer/VBoxContainer" unique_id=1418447274]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_vertical = 8
 mouse_filter = 1
 theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 50
 text = "Launch"
 
 [node name="PopupPanel" type="PanelContainer" parent="." unique_id=380795810]
@@ -195,23 +207,26 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -134.0
-offset_top = -73.0
-offset_right = 134.0
+offset_left = -960.0
+offset_top = -1080.0
+offset_right = -849.0
+offset_bottom = -1044.0
 grow_horizontal = 2
 grow_vertical = 0
+pivot_offset_ratio = Vector2(1, 0)
 mouse_filter = 2
 theme = ExtResource("3_icd4v")
 
 [node name="MarginContainer" type="MarginContainer" parent="PopupPanel" unique_id=699628142]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="PopupPanel/MarginContainer" unique_id=341151961]
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 text = "pop up here"
 fit_content = true
@@ -226,11 +241,11 @@ bus = &"Menu"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/DifficultyPanel" to="." method="_on_difficulty_panel_mouse_entered"]
-[connection signal="mouse_exited" from="Panel/MarginContainer/VBoxContainer/DifficultyPanel" to="." method="_on_difficulty_panel_mouse_exited"]
-[connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/SpeedPanel" to="." method="_on_speed_panel_mouse_entered"]
-[connection signal="mouse_exited" from="Panel/MarginContainer/VBoxContainer/SpeedPanel" to="." method="_on_speed_panel_mouse_exited"]
-[connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/DamagePanel" to="." method="_on_damage_panel_mouse_entered"]
-[connection signal="mouse_exited" from="Panel/MarginContainer/VBoxContainer/DamagePanel" to="." method="_on_damage_panel_mouse_exited"]
-[connection signal="mouse_entered" from="Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
-[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DifficultyPanel" to="." method="_on_difficulty_panel_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DifficultyPanel" to="." method="_on_diff_spd_dmg_panel_mouse_exited"]
+[connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel" to="." method="_on_speed_panel_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel" to="." method="_on_diff_spd_dmg_panel_mouse_exited"]
+[connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel" to="." method="_on_damage_panel_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel" to="." method="_on_diff_spd_dmg_panel_mouse_exited"]
+[connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
+[connection signal="pressed" from="ButtonPanel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]

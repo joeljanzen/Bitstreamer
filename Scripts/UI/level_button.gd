@@ -1,16 +1,16 @@
 class_name LevelButton
 extends Control
 
-@onready var _button_panel = $Panel
-@onready var _name_label = $Panel/MarginContainer/VBoxContainer/NamePanel/NameLabel
-@onready var _bit_count_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/BitCountLabel
-@onready var _version_label = $Panel/MarginContainer/VBoxContainer/VersionPanel/VersionLabel
-@onready var _length_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/LengthLabel
-@onready var _bpm_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/BPMLabel
-@onready var _difficulty_label = $Panel/MarginContainer/VBoxContainer/DifficultyPanel/DifficultyLabel
-@onready var _speed_label = $Panel/MarginContainer/VBoxContainer/SpeedPanel/SpeedLabel
-@onready var _damage_label = $Panel/MarginContainer/VBoxContainer/DamagePanel/DamageLabel
-@onready var _play_button = $Panel/MarginContainer/VBoxContainer/PlayButton
+@onready var _button_panel = $ButtonPanel
+@onready var _name_label = $ButtonPanel/MarginContainer/VBoxContainer/NamePanel/MarginContainer/VBoxContainer/NameLabel
+@onready var _version_label = $ButtonPanel/MarginContainer/VBoxContainer/NamePanel/MarginContainer/VBoxContainer/VersionLabel
+@onready var _bit_count_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/BitsPanel/MarginContainer/BitCountLabel
+@onready var _length_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/LengthPanel/MarginContainer/LengthLabel
+@onready var _bpm_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/BPMPanel/MarginContainer/BPMLabel
+@onready var _difficulty_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DifficultyPanel/MarginContainer/DifficultyLabel
+@onready var _speed_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel/MarginContainer/SpeedLabel
+@onready var _damage_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel/MarginContainer/DamageLabel
+@onready var _play_button = $ButtonPanel/MarginContainer/VBoxContainer/PlayButton
 
 @onready var _popup_panel = $PopupPanel
 @onready var _popup_label = $PopupPanel/MarginContainer/RichTextLabel
@@ -25,7 +25,7 @@ signal button_hovered(level_info: LevelInfo)
 
 ## How many seconds it takes a popup to appear after a level attribute started 
 ## being hovered over.
-const _TIME_TO_SHOW_POPUP = 1
+const _TIME_TO_SHOW_POPUP = 0.5
 
 ## Level info for this button.
 var level_info: LevelInfo
@@ -33,9 +33,6 @@ var level_info: LevelInfo
 ## Start a short timer to wait for a popup to start.
 var _popup_timer_on := false
 var _popup_time: float = 0
-
-## Cycle through the theme colors each time a new level button is made.
-static var current_color_index: int = 0
 
 
 ## Setup the level button with all level details. Call this after instantiation 
@@ -56,11 +53,7 @@ func _ready() -> void:
 	_damage_label.text = "Damage: " + str(level_info.damage)
 	
 	# Aesthetics
-	# Chose a random color from the colors selected for 0, 1, and enter bits.
-	var theme_colors = GameSettings.get_theme_colors()
-	_name_label.modulate = theme_colors[current_color_index % theme_colors.size()]
-	
-	current_color_index += 1
+	update_title_color()
 	
 	_set_play_button_text_color()
 
@@ -73,16 +66,16 @@ func _process(delta: float) -> void:
 			_popup_panel.show()
 	
 	if _popup_panel.visible:
-		_popup_panel.global_position.x = get_global_mouse_position().x + 25
-		_popup_panel.global_position.y = get_global_mouse_position().y + 25
+		_popup_panel.global_position.x = get_global_mouse_position().x - 10 - _popup_panel.size.x
+		_popup_panel.global_position.y = get_global_mouse_position().y + 10
 
 
 ## Update the title color as the theme colors may have been changed.
-func update_button_colors() -> void:
-	var theme_colors = GameSettings.get_theme_colors()
-	_name_label.modulate = theme_colors[current_color_index % theme_colors.size()]
+func update_title_color() -> void:
+	var theme_colours = GameSettings.get_theme_colors()
+	var index = randi_range(0, theme_colours.size() - 1)
 	
-	current_color_index += 1
+	_name_label.modulate = theme_colours[index]
 
 
 ## Converts the level length in seconds to a string in minutes and seconds.
@@ -93,9 +86,11 @@ func _float_as_time(level_length: float) -> String:
 	
 	var string = ""
 	if minutes > 0:
-		string = str(minutes) + "m "
+		string = str(minutes) + "m"
 	
 	if seconds > 0:
+		if minutes > 0:
+			string += " "
 		string +=str(seconds) + "s"
 	
 	return string
@@ -111,7 +106,6 @@ func _trim_decimals(value: float) -> String:
 
 
 func _on_play_button_pressed() -> void:
-	current_color_index = 0 # Resets the theme coloring cycle.
 	button_pressed.emit(level_info)
 
 
@@ -228,13 +222,5 @@ Missing an enter or back bit does not deal damage.\n\n"
 	_start_popup_timer()
 
 
-func _on_difficulty_panel_mouse_exited() -> void:
-	_hide_popup()
-
-
-func _on_speed_panel_mouse_exited() -> void:
-	_hide_popup()
-
-
-func _on_damage_panel_mouse_exited() -> void:
+func _on_diff_spd_dmg_panel_mouse_exited() -> void:
 	_hide_popup()

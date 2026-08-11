@@ -71,7 +71,7 @@ var _auto_open_play_panel := true
 
 ## Load all levels and create buttons for them.
 func _ready() -> void:
-	_scroll_box.set_deferred("scroll_horizontal", _last_level_select_position)
+	_scroll_box.set_deferred("scroll_vertical", _last_level_select_position)
 	
 	if SaveLoad.save_data.tutorial_played:
 		_sort_button.show()
@@ -160,7 +160,7 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 	level_info.load_level_bits_and_delays()
 	
 	if level_info.is_valid():
-		_last_level_select_position = _scroll_box.scroll_horizontal
+		_last_level_select_position = _scroll_box.scroll_vertical
 		
 		var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
 		Bit.in_main_menu = false
@@ -183,7 +183,7 @@ func hide_UI():
 	_plays_panel.hide()
 	
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_IGNORE
-	_last_level_select_position = _scroll_box.scroll_horizontal
+	_last_level_select_position = _scroll_box.scroll_vertical
 	
 	if _sort_panel.visible:
 		# Cannot hide right away as that will trigger filter button to 
@@ -204,13 +204,12 @@ func show_UI():
 		_sort_button.show()
 	
 	# In the event that the theme colors changed.
-	LevelButton.current_color_index = 0
 	for button: LevelButton in _level_button_container.get_children():
-		button.update_button_colors()
+		button.update_title_color()
 	
 	# For some reason scroll pos isn't set properly unless you wait for this.
 	await get_tree().process_frame
-	_scroll_box.scroll_horizontal = _last_level_select_position
+	_scroll_box.scroll_vertical = _last_level_select_position
 
 
 ## Returns if the UI is currently visible.
@@ -319,35 +318,31 @@ func _display_plays(level_info: LevelInfo) -> void:
 	if _current_plays_level != level_info:
 		_current_plays_level = level_info
 		
+		if _auto_open_play_panel:
+			_open_plays_panel()
+		
 		var plays = SaveLoad.load_plays(level_info)
 		var play_count = plays.size()
+	
+		_level_label.text = level_info.song_name + " (" + level_info.version + ")"
 		
-		# We switched to a level with no plays, just close the panel.
-		if _plays_panel_is_open() and plays.is_empty():
-			_close_plays_panel()
+		for child in _plays_container.get_children():
+			_plays_container.remove_child(child)
+		
+		if plays.is_empty():
+			_plays_label.text = "No Plays"
 		else:
-			_level_label.text = level_info.song_name + " (" + level_info.version + ")"
-			
-			for child in _plays_container.get_children():
-				_plays_container.remove_child(child)
-			
-			if plays.is_empty():
-				_plays_label.text = "No Plays"
+			if play_count > 1:
+				_plays_label.text = str(play_count) + " Plays"
 			else:
-				if play_count > 1:
-					_plays_label.text = str(play_count) + " Plays"
-				else:
-					_plays_label.text = "1 Play"
-				
-				if _auto_open_play_panel:
-					_open_plays_panel()
-				
-				# Start with the primary color
-				PlayDataDisplay.use_primary = true
-				for play in plays:
-					var play_display: PlayDataDisplay = _play_display_scene.instantiate()
-					play_display.setup(play)
-					_plays_container.add_child(play_display)
+				_plays_label.text = "1 Play"
+			
+			# Start with the primary color
+			PlayDataDisplay.use_primary = true
+			for play in plays:
+				var play_display: PlayDataDisplay = _play_display_scene.instantiate()
+				play_display.setup(play)
+				_plays_container.add_child(play_display)
 
 
 ## Returns if the plays panel is currently open.

@@ -50,11 +50,11 @@ var _crt_shader: flowerwallCRT
 var fullscreen := true
 
 # Theme colours.
-## The colour of zero bits.
+## The colour of zero bits. Also considered the primary theme colour.
 var zero_bit_colour := Color("#00FF00")
-## The colour of one bits.
+## The colour of one bits. Also considered the secondary theme colour.
 var one_bit_colour := Color("#FF0066")
-## The colour of enter bits.
+## The colour of enter bits. Also considered the tertiary theme colour.
 var enter_bit_colour := Color("#FFFFFF")
 ## The colour of back bits.
 var back_bit_colour := Color("#FFFFFF")
