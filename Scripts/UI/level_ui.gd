@@ -21,6 +21,9 @@ var _max_accuracy: int = 0
 ## Used to look up the current point in the level and display progress.
 var _conductor: Conductor
 
+## If the player fails the level, this value will be set at the time of fail.
+var _progress_at_fail = -1
+
 
 ## Share play data with the PerformanceCalculator, and connect to gameplay 
 ## signals.
@@ -75,14 +78,23 @@ func UI_is_visible() -> bool:
 
 
 ## Get the current percentage of progress into the level the player is.
-## If it returns -1, the current progress does not exist (for tutorial levels)
+## If it returns -1, the current progress does not exist (for tutorial levels).
 func get_current_progress() -> float:
-	var progress = _progress_circle.value / _progress_circle.max_value * 100
-	
-	if progress > 0:
-		return progress
+	if _progress_at_fail > 0:
+		# This means the user made it to the very last click, but missed it and
+		# failed (or clicked it wrong and also late).
+		# They didn't actually finish the level, so lower progress slightly.
+		if _progress_at_fail == 100:
+			_progress_at_fail = 99.99
+		
+		return _progress_at_fail
 	else:
-		return -1
+		var progress = _progress_circle.value / _progress_circle.max_value * 100
+		
+		if progress > 0:
+			return progress
+		else:
+			return -1
 
 
 ## Set the visibility of the level progress circle.
@@ -186,6 +198,7 @@ func _missed(damage: int, click_quality: PerformanceCalculator.ClickQuality) -> 
 		# Ignore extra missed and clicked bits, the player already failed.
 		Signals.missed.disconnect(_missed) 
 		Signals.scored.disconnect(_scored)
+		_progress_at_fail = get_current_progress()
 		Signals.failed.emit()
 
 
