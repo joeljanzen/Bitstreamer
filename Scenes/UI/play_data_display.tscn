@@ -1,0 +1,162 @@
+[gd_scene format=3 uid="uid://cmlh1d0l21w8k"]
+
+[ext_resource type="Script" uid="uid://c7ikv8tv48aqk" path="res://Scripts/UI/play_data_display.gd" id="1_sr7n1"]
+[ext_resource type="Theme" uid="uid://dvm68fnrxg301" path="res://Resources/Themes/play_data_display_theme.tres" id="2_nt5gq"]
+[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="3_nt5gq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sr7n1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sr7n1"]
+bg_color = Color(0.8217887, 0.82178867, 0.82178867, 0.03529412)
+
+[node name="PlayDataDisplay" type="Control" unique_id=1822112030]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+script = ExtResource("1_sr7n1")
+
+[node name="Panel" type="Panel" parent="." unique_id=1266196469]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 1)
+mouse_filter = 1
+theme = ExtResource("2_nt5gq")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1823341588]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=226793183]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MainStats" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1009278135]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="ScoreLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/MainStats" unique_id=1127836204]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 35
+text = "10292038"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MainStats" unique_id=988600234]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="AccuracyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/MainStats/VBoxContainer" unique_id=1224261587]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "57% accuracy"
+
+[node name="MaxComboLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/MainStats/VBoxContainer" unique_id=1167102842]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "50000x max combo"
+
+[node name="ExtraStats" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=290396236]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="PerfectsLabel" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ExtraStats" unique_id=1558168464]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+text = "Perfect: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="GoodsLabel" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ExtraStats" unique_id=1856549225]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+bbcode_enabled = true
+text = "Good: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="OkaysLabel" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ExtraStats" unique_id=1966379292]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+bbcode_enabled = true
+text = "Okay: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="ExtraStats2" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=420328623]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="MissesLabel" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ExtraStats2" unique_id=676614767]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+bbcode_enabled = true
+text = "Miss: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="ErrorsLabel" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ExtraStats2" unique_id=81460480]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+bbcode_enabled = true
+text = "Error: "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="SeeMoreButton" type="Button" parent="." unique_id=1649812238]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_sr7n1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_sr7n1")
+
+[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1570426540]
+stream = ExtResource("3_nt5gq")
+bus = &"Menu"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="SeeMoreButton" to="." method="_on_see_more_pressed"]

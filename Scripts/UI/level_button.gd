@@ -20,6 +20,9 @@ extends Control
 ## This level has been selected to play.
 signal button_pressed(level_info: LevelInfo)
 
+## This level has been focused by the mouse.
+signal button_hovered(level_info: LevelInfo)
+
 ## How many seconds it takes a popup to appear after a level attribute started 
 ## being hovered over.
 const _TIME_TO_SHOW_POPUP = 1
@@ -146,14 +149,15 @@ func _set_play_button_text_color() -> void:
 ## Scale the button and gives it a slight rotation while hovered.
 func _on_mouse_entered() -> void:
 	_hover_button_sound.play()
+	
+	button_hovered.emit(level_info)
+	
 	_button_panel.scale = Vector2(1.03, 1.03)
-	_button_panel.rotation_degrees = randf_range(-1, 1)
 
 
 ## Return the button to its default size and rotation.
 func _on_mouse_exited() -> void:
 	_button_panel.scale = Vector2(1, 1)
-	_button_panel.rotation = 0
 
 
 ## Call when a level attribute is being hovered over. If the cursor remains

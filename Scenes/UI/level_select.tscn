@@ -6,6 +6,43 @@
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_40fl8"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_40fl8"]
 
+[sub_resource type="Animation" id="Animation_1i34c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1858, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_40fl8"]
+resource_name = "popout"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.353, 1),
+"update": 0,
+"values": [Vector2(1858, 0), Vector2(1420, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_texu8"]
+_data = {
+&"RESET": SubResource("Animation_1i34c"),
+&"popout": SubResource("Animation_40fl8")
+}
+
 [node name="LevelSelect" type="Control" unique_id=1472628101]
 layout_mode = 3
 anchors_preset = 15
@@ -18,34 +55,39 @@ script = ExtResource("1_2wnai")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1676497341]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer" unique_id=1268261778]
+[node name="LevelScrollMargin" type="MarginContainer" parent="CanvasLayer" unique_id=2053058175]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/margin_right = 62
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/HBoxContainer" unique_id=878674155]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/LevelScrollMargin" unique_id=1268261778]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/LevelScrollMargin/HBoxContainer" unique_id=878674155]
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 0
 scroll_deadzone = 35
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/ScrollContainer" unique_id=768856825]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer" unique_id=768856825]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 500
+theme_override_constants/margin_left = 400
 theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 500
+theme_override_constants/margin_right = 400
 theme_override_constants/margin_bottom = 100
 
-[node name="LevelButtonContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/ScrollContainer/MarginContainer" unique_id=1129383610]
+[node name="LevelButtonContainer" type="HBoxContainer" parent="CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer/MarginContainer" unique_id=1129383610]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 150
+theme_override_constants/separation = 400
 alignment = 1
 
 [node name="BackButton" type="Button" parent="CanvasLayer" unique_id=222140717]
@@ -177,6 +219,76 @@ theme = ExtResource("2_2wnai")
 theme_override_font_sizes/font_size = 50
 text = "Bit count"
 
+[node name="PlaysPanel" type="Panel" parent="CanvasLayer" unique_id=2066209028]
+custom_minimum_size = Vector2(500, 0)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -62.0
+offset_right = 438.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 0
+theme = ExtResource("3_40fl8")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PlaysPanel" unique_id=1569479601]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 82
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PlaysPanel/MarginContainer" unique_id=644404764]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PlaysLabel" type="Label" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer" unique_id=270762198]
+layout_mode = 2
+theme = ExtResource("2_2wnai")
+theme_override_font_sizes/font_size = 60
+text = "Plays"
+horizontal_alignment = 1
+
+[node name="LevelLabel" type="Label" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer" unique_id=689934967]
+layout_mode = 2
+theme = ExtResource("2_2wnai")
+theme_override_font_sizes/font_size = 25
+text = "name + diff"
+horizontal_alignment = 1
+autowrap_mode = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer" unique_id=214565859]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ScrollbarMargin" type="MarginContainer" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1897226211]
+layout_mode = 2
+
+[node name="PlaysContainer" type="VBoxContainer" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer/ScrollbarMargin" unique_id=756342815]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="PlaysPanel" type="Button" parent="CanvasLayer/PlaysPanel" unique_id=352096214]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 26.0
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = " < "
+
+[node name="PlaysAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/PlaysPanel" unique_id=2139377303]
+libraries/ = SubResource("AnimationLibrary_texu8")
+
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=564885747]
 stream = ExtResource("3_1i34c")
 bus = &"Menu"
@@ -196,3 +308,5 @@ bus = &"Menu"
 [connection signal="pressed" from="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer/Length" to="." method="_on_length_pressed"]
 [connection signal="pressed" from="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer/BPM" to="." method="_on_bpm_pressed"]
 [connection signal="pressed" from="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer/BitCount" to="." method="_on_bit_count_pressed"]
+[connection signal="mouse_exited" from="CanvasLayer/PlaysPanel" to="." method="_on_sort_panel_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/PlaysPanel/PlaysPanel" to="." method="_on_close_plays_panel_pressed"]

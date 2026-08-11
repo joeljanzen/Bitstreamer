@@ -22,11 +22,15 @@ var _current_section: int = 1
 ## Stores data for the current play of a level, including score, combo, etc.
 var _play_data: PlayData
 
+## The total play data for all sections of the tutorial, excluding failed
+## sections.
+var _combined_play_data: PlayData
 
 ## Connect to the failed and completed signal and connect the conductor to levelUI.
 func _ready() -> void:
 	_play_area.no_bits_left.connect(_section_end)
 	_play_data = _levelUI.play_data
+	_combined_play_data = PlayData.new()
 	
 	# Hide elements individually so we can slowly reveal them.
 	_levelUI.show_UI()
@@ -157,6 +161,7 @@ func _section_end() -> void:
 				_dialogue_box.display_dialogue("fail_start")
 			else:
 				_current_section += 1
+				_save_play_data_to_total()
 				_dialogue_box.display_dialogue("enter_bit")
 				_levelUI.set_score_label_visible(true)
 		2:
@@ -165,6 +170,7 @@ func _section_end() -> void:
 				_dialogue_box.display_dialogue("fail_enter_bit")
 			else:
 				_current_section += 1
+				_save_play_data_to_total()
 				_dialogue_box.display_dialogue("back_bit")
 				_levelUI.set_health_bar_visible(true)
 		3:
@@ -172,10 +178,41 @@ func _section_end() -> void:
 						_SECTION_SUCCESS_THRESHOLD[2]):
 				_dialogue_box.display_dialogue("fail_back_bit")
 			else:
+				_save_play_data_to_total()
 				_dialogue_box.dialogue_exited.disconnect(_start_section)
 				_dialogue_box.dialogue_exited.connect(_completed)
 				_dialogue_box.display_dialogue("finish")
 				pass
+
+
+## When a section is successfully completed, save the data from it to the total.
+func _save_play_data_to_total() -> void:
+	_combined_play_data.score += _play_data.score
+	_combined_play_data.max_combo = max(_combined_play_data.max_combo, _play_data.max_combo)
+	
+	# Find the new cumulative accuracy
+	var old_total_bits = (_combined_play_data.perfect_clicks + 
+			_combined_play_data.good_clicks +
+			_combined_play_data.okay_clicks +
+			_combined_play_data.missed_clicks +
+			_combined_play_data.error_clicks)
+	var old_max_score = old_total_bits * PerformanceCalculator.PERFECT_CLICK_SCORE
+	var max_score = _levelUI._max_accuracy + old_max_score
+	
+	var old_raw_score = (_combined_play_data.perfect_clicks * 
+	PerformanceCalculator.PERFECT_CLICK_SCORE +
+	_combined_play_data.good_clicks * PerformanceCalculator.GOOD_CLICK_SCORE + 
+	_combined_play_data.okay_clicks * PerformanceCalculator.OKAY_CLICK_SCORE)
+	var raw_score = _levelUI._raw_score + old_raw_score
+	
+	_combined_play_data.accuracy = float(raw_score) / float(max_score) * 100
+	
+	# Sum click quality counts
+	_combined_play_data.perfect_clicks += _play_data.perfect_clicks
+	_combined_play_data.good_clicks +=_play_data.good_clicks
+	_combined_play_data.okay_clicks +=_play_data.okay_clicks
+	_combined_play_data.missed_clicks +=_play_data.missed_clicks
+	_combined_play_data.error_clicks +=_play_data.error_clicks
 
 
 ## The level has been paused.
@@ -209,4 +246,7 @@ func _completed() -> void:
 	
 	var menu_scene = load("res://Scenes/UI/main_menu.tscn").instantiate()
 	menu_scene.start_in_level_select = true
+	
+	SaveLoad.save_play(level_info, _combined_play_data)
+	
 	get_tree().change_scene_to_node(menu_scene)
