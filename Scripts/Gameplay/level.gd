@@ -227,6 +227,12 @@ func _failed() -> void:
 	_play_area.process_mode = Node.PROCESS_MODE_DISABLED
 	conductor.done_timings()
 	
+	_levelUI.hide_UI()
+	
+	# Enable background blur.
+	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_REPLACE
+	_environment.environment.glow_bloom = PAUSE_BLUR_STRENGTH
+	
 	var crash_screen: GameCrashUI = _crash_screen.instantiate()
 	crash_screen.connect_level_UI(_levelUI)
 	add_child(crash_screen)

@@ -62,15 +62,15 @@ func _ready() -> void:
 	accuracy_label.text = "%.2f%% Accuracy" % play_data.accuracy
 	max_combo_label.text = "%dx Max Combo" % play_data.max_combo
 	
-	perfects_label.text = ("[color=%s]Perfect: %d[/color]" % 
+	perfects_label.text = ("[color=%s]%d Perfect[/color]" % 
 	[GameSettings.perfect_click_colour, play_data.perfect_clicks])
-	goods_label.text = ("[color=%s]Good: %d[/color]" % 
+	goods_label.text = ("[color=%s]%d Good[/color]" % 
 	[GameSettings.good_click_colour, play_data.good_clicks])
-	okays_label.text = ("[color=%s]Okay: %d[/color]" % 
+	okays_label.text = ("[color=%s]%d Okay[/color]" % 
 	[GameSettings.okay_click_colour, play_data.okay_clicks])
-	misses_label.text = ("[color=%s]Miss: %d[/color]" % 
+	misses_label.text = ("[color=%s]%d Miss[/color]" % 
 	[GameSettings.missed_click_colour, play_data.missed_clicks])
-	errors_label.text = ("[color=%s]Error: %d[/color]" % 
+	errors_label.text = ("[color=%s]%d Error[/color]" % 
 	[GameSettings.incorrect_click_colour, play_data.error_clicks])
 
 

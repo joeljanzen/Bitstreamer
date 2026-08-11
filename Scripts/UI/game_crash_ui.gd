@@ -2,10 +2,12 @@ class_name GameCrashUI
 extends Control
 ## Displays when the player loses (the program crashes).
 
-@onready var _accuracy_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Accuracy
-@onready var _progress_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Progress
-@onready var _score_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/Score
-@onready var _clicks_label: RichTextLabel = $CanvasLayer/MarginContainer/Clicks
+@onready var _progress_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/ProgressPanel/MarginContainer/Progress
+@onready var _score_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer/Score
+@onready var _accuracy_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer/Accuracy
+@onready var _combo_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer/Combo
+@onready var _extra_stats_container = $CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer/ExtraStats
+
 # Sounds.
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
@@ -18,17 +20,22 @@ var _play_data: PlayData
 
 ## Display statistics for the play.
 func _ready() -> void:
-	_score_label.text = "Score: %d" % _play_data.score
-	_accuracy_label.text = "Accuracy: %.2f%%" % _play_data.accuracy
-	_progress_label.text = "Progress: %.2f%%" % _level_UI.get_current_progress()
-	_clicks_label.text = """perfect: %d
-	good: %d
-	okay: %d
-	miss: %d
-	error: %d
-	""" % [_play_data.perfect_clicks, _play_data.good_clicks, 
-			_play_data.okay_clicks, _play_data.missed_clicks, 
-			_play_data.error_clicks]
+	_progress_label.text = "%.2f%% Progress" % _level_UI.get_current_progress()
+	_score_label.text = "%d Score" % _play_data.score
+	_accuracy_label.text = "%.2f%% Accuracy" % _play_data.accuracy
+	_combo_label.text = "%dx Maximum Combo" % _play_data.max_combo
+	
+	var stat_label = _extra_stats_container.get_children()
+	stat_label[0].text = ("[color=%s]%d Perfect[/color]" % 
+	[GameSettings.perfect_click_colour, _play_data.perfect_clicks])
+	stat_label[1].text = ("[color=%s]%d Good[/color]" % 
+	[GameSettings.good_click_colour, _play_data.good_clicks])
+	stat_label[2].text = ("[color=%s]%d Okay[/color]" % 
+	[GameSettings.okay_click_colour, _play_data.okay_clicks])
+	stat_label[3].text = ("[color=%s]%d Miss[/color]" % 
+	[GameSettings.missed_click_colour, _play_data.missed_clicks])
+	stat_label[4].text = ("[color=%s]%d Error[/color]" % 
+	[GameSettings.incorrect_click_colour, _play_data.error_clicks])
 
 
 ## Idle animations in this screen, idk.

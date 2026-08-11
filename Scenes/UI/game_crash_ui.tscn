@@ -30,34 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0.47058824, 0.84313726, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=722436615]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-
-[node name="Clicks" type="RichTextLabel" parent="CanvasLayer/MarginContainer" unique_id=572128911]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-theme = ExtResource("3_lbv4o")
-theme_override_font_sizes/normal_font_size = 50
-text = "perfect:
-good:
-okay:
-miss:
-error:"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-horizontal_alignment = 2
+color = Color(0.21549192, 1.0528602e-07, 4.2114408e-08, 0.2509804)
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer" unique_id=1589719795]
 anchors_preset = 15
@@ -73,59 +46,166 @@ theme_override_constants/margin_bottom = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2" unique_id=1089012449]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1666448086]
+[node name="ErrorMsg" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1666448086]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme = ExtResource("3_lbv4o")
 theme_override_font_sizes/font_size = 120
-text = "An error has occured!"
+text = "An Error Has Occured!"
 
-[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1408995123]
-visible = false
-custom_minimum_size = Vector2(0, 50)
+[node name="ProgressPanel" type="PanelContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=275612519]
 layout_mode = 2
+size_flags_horizontal = 4
 
-[node name="Progress" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1716948503]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer/ProgressPanel" unique_id=1283064750]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="Progress" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/ProgressPanel/MarginContainer" unique_id=1716948503]
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme = ExtResource("3_lbv4o")
 theme_override_font_sizes/normal_font_size = 50
-text = "Progress: 92.32%"
+text = "92.32% Progress"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Score" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1884251460]
+[node name="MainStatsPanel" type="PanelContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=584812009]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
-theme = ExtResource("3_lbv4o")
-theme_override_font_sizes/normal_font_size = 50
-text = "Score: 0"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=92562157]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel" unique_id=1476084136]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer" unique_id=424957966]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_override_constants/separation = 75
+alignment = 1
+
+[node name="Score" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer" unique_id=1884251460]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("3_lbv4o")
 theme_override_font_sizes/normal_font_size = 50
-text = "Accuracy: 100%"
+text = "9932 Score"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Accuracy" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer" unique_id=1081513025]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_lbv4o")
+theme_override_font_sizes/normal_font_size = 50
+text = "100% Accuracy"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="Combo" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer" unique_id=984044590]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("3_lbv4o")
+theme_override_font_sizes/normal_font_size = 50
+text = "0x Maximum Combo"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="ExtraStatsPanel" type="PanelContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=495510077]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel" unique_id=861653456]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="ExtraStats" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer" unique_id=912635440]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("3_lbv4o")
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="PerfectsLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer/ExtraStats" unique_id=1223977939]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "3 Perfect"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="GoodsLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer/ExtraStats" unique_id=1476845508]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "2 Good"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="OkaysLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer/ExtraStats" unique_id=236513895]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "1 Okay"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="MissesLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer/ExtraStats" unique_id=1923773387]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "0 Misses"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="ErrorsLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer/ExtraStats" unique_id=106638262]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "2 Errors"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1378365594]
