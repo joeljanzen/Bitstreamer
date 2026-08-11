@@ -15,7 +15,7 @@ class_name LevelSelect
 @onready var _level_label = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/LevelLabel
 @onready var _plays_container = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer/ScrollbarMargin/PlaysContainer
 @onready var _plays_panel_animation = $CanvasLayer/PlaysPanel/PlaysAnimationPlayer
-@onready var _plays_button = $CanvasLayer/PlaysPanel/PlaysPanel
+@onready var _plays_button = $CanvasLayer/PlaysPanel/PlaysButton
 
 @onready var _plays_scroll_box = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer
 @onready var _plays_scroll_margin = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer/ScrollbarMargin
@@ -361,14 +361,10 @@ func _close_plays_panel() -> void:
 		_plays_button.text = " < "
 
 
-func _on_close_plays_panel_pressed() -> void:
+func _on_plays_button_pressed() -> void:
 	_menu_click_sound.play()
-	if _plays_panel_is_open():
-		_close_plays_panel()
-		_auto_open_play_panel = false
-	else:
-		_open_plays_panel()
-		_auto_open_play_panel = true
+	_close_plays_panel()
+	_auto_open_play_panel = false
 
 
 func _plays_scroll_bar_visibility_changed() -> void:
@@ -376,3 +372,10 @@ func _plays_scroll_bar_visibility_changed() -> void:
 		_plays_scroll_margin.add_theme_constant_override("margin_right", 10)
 	else:
 		_plays_scroll_margin.remove_theme_constant_override("margin_right")
+
+
+func _on_plays_button_mouse_entered() -> void:
+	if !_plays_panel_is_open():
+		_menu_click_sound.play()
+		_open_plays_panel()
+		_auto_open_play_panel = true

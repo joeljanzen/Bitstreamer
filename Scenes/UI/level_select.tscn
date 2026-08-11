@@ -247,7 +247,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 10
 
-[node name="PlaysPanel" type="Button" parent="CanvasLayer/PlaysPanel" unique_id=352096214]
+[node name="PlaysButton" type="Button" parent="CanvasLayer/PlaysPanel" unique_id=352096214]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -282,4 +282,5 @@ bus = &"Menu"
 [connection signal="pressed" from="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer/BPM" to="." method="_on_bpm_pressed"]
 [connection signal="pressed" from="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer/BitCount" to="." method="_on_bit_count_pressed"]
 [connection signal="mouse_exited" from="CanvasLayer/PlaysPanel" to="." method="_on_sort_panel_mouse_exited"]
-[connection signal="pressed" from="CanvasLayer/PlaysPanel/PlaysPanel" to="." method="_on_close_plays_panel_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/PlaysPanel/PlaysButton" to="." method="_on_plays_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/PlaysPanel/PlaysButton" to="." method="_on_plays_button_pressed"]
