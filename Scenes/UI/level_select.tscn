@@ -106,7 +106,6 @@ theme_override_font_sizes/font_size = 50
 text = "<"
 
 [node name="SortButton" type="Button" parent="CanvasLayer" unique_id=1064356445]
-visible = false
 z_index = 3
 custom_minimum_size = Vector2(200, 90)
 offset_right = 200.0
@@ -117,107 +116,78 @@ theme = ExtResource("2_2wnai")
 theme_override_font_sizes/font_size = 50
 text = "Sort"
 
-[node name="SortPanel" type="Panel" parent="CanvasLayer" unique_id=724824715]
+[node name="SortPanel" type="PanelContainer" parent="CanvasLayer" unique_id=2084837183]
 visible = false
-custom_minimum_size = Vector2(400, 0)
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 400.0
-offset_bottom = -206.0
-grow_vertical = 2
-size_flags_horizontal = 0
+custom_minimum_size = Vector2(200, 0)
+offset_right = 40.0
+offset_bottom = 40.0
 theme = ExtResource("3_40fl8")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/SortPanel" unique_id=1893955876]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="SortButtonContainer" type="VBoxContainer" parent="CanvasLayer/SortPanel/MarginContainer" unique_id=242675331]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer" unique_id=360882583]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 25
 text = "Sort by..."
+horizontal_alignment = 1
 
 [node name="Name" type="Button" parent="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer" unique_id=1252492490]
 z_index = 3
-custom_minimum_size = Vector2(200, 90)
 layout_mode = 2
 size_flags_vertical = 6
 mouse_filter = 1
-theme = ExtResource("2_2wnai")
-theme_override_font_sizes/font_size = 50
 text = "Name"
 
 [node name="Difficulty" type="Button" parent="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer" unique_id=140369737]
 z_index = 3
-custom_minimum_size = Vector2(200, 90)
 layout_mode = 2
 size_flags_vertical = 6
 mouse_filter = 1
-theme = ExtResource("2_2wnai")
-theme_override_font_sizes/font_size = 50
 text = "Difficulty"
 
 [node name="Speed" type="Button" parent="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer" unique_id=1932111440]
 z_index = 3
-custom_minimum_size = Vector2(200, 90)
 layout_mode = 2
 size_flags_vertical = 6
 mouse_filter = 1
-theme = ExtResource("2_2wnai")
-theme_override_font_sizes/font_size = 50
 text = "Speed"
 
 [node name="Damage" type="Button" parent="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer" unique_id=1142387063]
 z_index = 3
-custom_minimum_size = Vector2(200, 90)
 layout_mode = 2
 size_flags_vertical = 6
 mouse_filter = 1
-theme = ExtResource("2_2wnai")
-theme_override_font_sizes/font_size = 50
 text = "Damage"
 
 [node name="Length" type="Button" parent="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer" unique_id=477238494]
 z_index = 3
-custom_minimum_size = Vector2(200, 90)
 layout_mode = 2
 size_flags_vertical = 6
 mouse_filter = 1
-theme = ExtResource("2_2wnai")
-theme_override_font_sizes/font_size = 50
 text = "Length"
 
 [node name="BPM" type="Button" parent="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer" unique_id=1824936069]
 z_index = 3
-custom_minimum_size = Vector2(200, 90)
 layout_mode = 2
 size_flags_vertical = 6
 mouse_filter = 1
-theme = ExtResource("2_2wnai")
-theme_override_font_sizes/font_size = 50
 text = "BPM"
 
 [node name="BitCount" type="Button" parent="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer" unique_id=1946584379]
 z_index = 3
-custom_minimum_size = Vector2(200, 90)
 layout_mode = 2
 size_flags_vertical = 6
 mouse_filter = 1
-theme = ExtResource("2_2wnai")
-theme_override_font_sizes/font_size = 50
 text = "Bit count"
 
 [node name="PlaysPanel" type="Panel" parent="CanvasLayer" unique_id=2066209028]
