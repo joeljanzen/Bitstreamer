@@ -41,7 +41,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_jewm6"]
 resource_name = "credits_text"
-length = 2.0
+length = 1.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -49,7 +49,7 @@ tracks/0/path = NodePath("CreditsPanel/MarginContainer/RichTextLabel:visible_rat
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 1.25),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -61,7 +61,7 @@ tracks/1/path = NodePath("CreditsPanel:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 1.25),
 "transitions": PackedFloat32Array(0.35355264, 1),
 "update": 0,
 "values": [Vector2(0, 1080), Vector2(0, 700)]
@@ -153,6 +153,7 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+theme_override_font_sizes/normal_font_size = 33
 bbcode_enabled = true
 text = "Bitstreamer
 
@@ -334,8 +335,6 @@ bus = &"Gameplay"
 stream = SubResource("AudioStreamRandomizer_cejvf")
 bus = &"Gameplay"
 
-[connection signal="mouse_entered" from="CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel" to="." method="_on_rich_text_label_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel" to="." method="_on_rich_text_label_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_mouse_entered"]
