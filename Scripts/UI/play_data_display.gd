@@ -27,7 +27,7 @@ const MINIMUM_SIZE_EXPANDED = 100
 
 ## The theme color to use for this PlayDataDisplay's score color.
 ## Alternates between true and false each time one is created.
-static var use_primary := true
+static var use_primary_colour := true
 
 var play_data: PlayData
 
@@ -53,11 +53,11 @@ func _ready() -> void:
 		style_box.bg_color = Color(GameSettings.perfect_click_colour).darkened(PANEL_DARKEN_AMOUNT)
 		panel.add_theme_stylebox_override("panel", style_box)
 	else:
-		if use_primary:
+		if use_primary_colour:
 			score_label.modulate = GameSettings.zero_bit_colour
 		else:
 			score_label.modulate = GameSettings.one_bit_colour
-		use_primary = !use_primary
+		use_primary_colour = !use_primary_colour
 	
 	accuracy_label.text = "%.2f%% Accuracy" % play_data.accuracy
 	max_combo_label.text = "%dx Max Combo" % play_data.max_combo

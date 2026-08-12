@@ -90,7 +90,7 @@ func _ready() -> void:
 	for file in level_filenames:
 		_levels.push_back(LevelInfo.new(file))
 	
-	# Make level buttons
+	# Make level buttons.
 	for level in _levels:
 		if level.is_valid():
 			var level_button: LevelButton = _level_button_scene.instantiate()
@@ -146,6 +146,11 @@ func _sort_levels_by_comparator(sorting_method: SortingType) -> void:
 	# Rearrange children appropriately
 	for i in range(children.size()):
 		_level_button_container.move_child(children[i], i)
+	
+	# Recolour levels so they alternate title colours.
+	LevelButton.use_primary_colour = true
+	for button: LevelButton in _level_button_container.get_children():
+		button.update_title_color()
 	
 	# Save this sorting method to load next time.
 	SaveLoad.save_data.sorting_method = sorting_method
@@ -204,6 +209,7 @@ func show_UI():
 		_sort_button.show()
 	
 	# In the event that the theme colors changed.
+	LevelButton.use_primary_colour = true
 	for button: LevelButton in _level_button_container.get_children():
 		button.update_title_color()
 	
@@ -338,7 +344,7 @@ func _display_plays(level_info: LevelInfo) -> void:
 				_plays_label.text = "1 Play"
 			
 			# Start with the primary color
-			PlayDataDisplay.use_primary = true
+			PlayDataDisplay.use_primary_colour = true
 			for play in plays:
 				var play_display: PlayDataDisplay = _play_display_scene.instantiate()
 				play_display.setup(play)

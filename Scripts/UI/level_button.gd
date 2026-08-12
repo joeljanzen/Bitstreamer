@@ -27,6 +27,10 @@ signal button_hovered(level_info: LevelInfo)
 ## being hovered over.
 const _TIME_TO_SHOW_POPUP = 0.5
 
+## The theme color to use for this LevelButton's title color.
+## Alternates between true and false each time one is created.
+static var use_primary_colour := true
+
 ## Level info for this button.
 var level_info: LevelInfo
 
@@ -72,10 +76,11 @@ func _process(delta: float) -> void:
 
 ## Update the title color as the theme colors may have been changed.
 func update_title_color() -> void:
-	var theme_colours = GameSettings.get_theme_colors()
-	var index = randi_range(0, theme_colours.size() - 1)
-	
-	_name_label.modulate = theme_colours[index]
+	if use_primary_colour:
+		_name_label.modulate = GameSettings.zero_bit_colour
+	else:
+		_name_label.modulate = GameSettings.one_bit_colour
+	use_primary_colour = !use_primary_colour
 
 
 ## Converts the level length in seconds to a string in minutes and seconds.
