@@ -1,4 +1,4 @@
-song_name=Sentience,song=Sentience.wav,version=Insane,bpm=140,speed=7,diff=7,dmg=5,length=81.857,bit_count=256
+song_name=Sentience,song=Sentience.wav,version=Demo Insane,bpm=140,speed=7,diff=7.5,dmg=10,length=81.857,bit_count=256
 
 8,0
 8,1
