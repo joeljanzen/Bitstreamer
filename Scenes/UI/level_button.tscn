@@ -195,19 +195,21 @@ custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="BackButton" type="Button" parent="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer" unique_id=1519296780]
-visible = false
+[node name="PlayButton" type="Button" parent="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer" unique_id=1418447274]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.5
+size_flags_vertical = 8
 mouse_filter = 1
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 50
-text = "Back"
+text = "Launch"
 
 [node name="PracticeContainer" type="VBoxContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer" unique_id=92149805]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.25
 alignment = 1
 
 [node name="TimeSliderLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer" unique_id=1928758406]
@@ -222,15 +224,14 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 mouse_filter = 1
 
-[node name="PlayButton" type="Button" parent="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer" unique_id=1418447274]
-custom_minimum_size = Vector2(0, 80)
+[node name="BackButton" type="Button" parent="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer" unique_id=1519296780]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 8
+size_flags_stretch_ratio = 0.2
 mouse_filter = 1
-theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 50
-text = "Launch"
+text = "x"
 
 [node name="PracticeButton" type="Button" parent="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer" unique_id=1575207933]
 layout_mode = 2
@@ -292,9 +293,9 @@ bus = &"Menu"
 [connection signal="mouse_exited" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel" to="." method="_on_diff_spd_dmg_panel_mouse_exited"]
 [connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel" to="." method="_on_damage_panel_mouse_entered"]
 [connection signal="mouse_exited" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel" to="." method="_on_diff_spd_dmg_panel_mouse_exited"]
-[connection signal="pressed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="drag_started" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSlider" to="." method="_on_time_slider_drag_started"]
-[connection signal="value_changed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSlider" to="." method="_on_time_slider_value_changed"]
 [connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
 [connection signal="pressed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="drag_started" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSlider" to="." method="_on_time_slider_drag_started"]
+[connection signal="value_changed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSlider" to="." method="_on_time_slider_value_changed"]
+[connection signal="pressed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeButton" to="." method="_on_practice_button_pressed"]
