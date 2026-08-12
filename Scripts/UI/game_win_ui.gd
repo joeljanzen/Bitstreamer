@@ -18,7 +18,11 @@ var _play_data: PlayData
 
 ## Display statistics for the play.
 func _ready() -> void:
+	# When a play is perfect, make score color perfect.
+	if _play_data.accuracy == 100:
+		_score_label.modulate = GameSettings.perfect_click_colour
 	_score_label.text = str(_play_data.score)
+	
 	_accuracy_label.text = "%.2f%% Accuracy" % _play_data.accuracy
 	_combo_label.text = "%dx Maximum Combo" % _play_data.max_combo
 	
