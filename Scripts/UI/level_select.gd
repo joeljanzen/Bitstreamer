@@ -15,6 +15,7 @@ class_name LevelSelect
 @onready var _level_label = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/LevelLabel
 @onready var _plays_container = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer/ScrollbarMargin/PlaysContainer
 @onready var _plays_panel_animation = $CanvasLayer/PlaysPanel/PlaysAnimationPlayer
+@onready var _level_scroll_margin_animation = $CanvasLayer/LevelScrollMargin/ScrollMarginModifier
 @onready var _plays_button = $CanvasLayer/PlaysPanel/PlaysButton
 
 @onready var _plays_scroll_box = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer
@@ -42,11 +43,8 @@ const _tutorial_level_filenames: PackedStringArray = [
 	"tutorial1.txt",
 ]
 
-## Level scroll margin when plays panel is closed.
-const LEVEL_SCROLL_MARGIN_DEFAULT = 62
-
-## Level scroll margin when the plays panel is open.
-const LEVEL_SCROLL_MARGIN_PLAYS = 500
+## Additional level scroll margin when the plays panel is open.
+const LEVEL_SCROLL_MARGIN_PLAYS = 300
 
 ## The last position the player was on the level selection menu (on the 
 ## scrollbar).
@@ -91,6 +89,7 @@ func _ready() -> void:
 		_levels.push_back(LevelInfo.new(file))
 	
 	# Make level buttons.
+	LevelButton.use_primary_colour = true
 	for level in _levels:
 		if level.is_valid():
 			var level_button: LevelButton = _level_button_scene.instantiate()
@@ -357,6 +356,8 @@ func _plays_panel_is_open() -> bool:
 
 
 func _open_plays_panel() -> void:
+	if !_plays_panel_is_open():
+		_level_scroll_margin_animation.play("slide_left")
 	_plays_panel_animation.play("popout")
 	_plays_button.text = " > "
 
@@ -364,6 +365,7 @@ func _open_plays_panel() -> void:
 func _close_plays_panel() -> void:
 	if _plays_panel_is_open():
 		_plays_panel_animation.play_backwards("popout")
+		_level_scroll_margin_animation.play_backwards("slide_left")
 		_plays_button.text = " < "
 
 
