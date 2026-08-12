@@ -33,7 +33,7 @@ layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="ErrorMsg" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1331932642]
+[node name="WinMsg" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1331932642]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10

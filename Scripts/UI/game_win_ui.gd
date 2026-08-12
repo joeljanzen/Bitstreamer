@@ -8,6 +8,8 @@ extends Control
 @onready var _score_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/ScorePanel/MarginContainer/Score
 @onready var _extra_stats_container = $CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer/ExtraStats
 
+@onready var _win_message = $CanvasLayer/MarginContainer2/VBoxContainer/WinMsg
+
 # Sounds.
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
@@ -18,6 +20,10 @@ var _play_data: PlayData
 
 ## Display statistics for the play.
 func _ready() -> void:
+	# If the level was completed in practice mode, change the message.
+	if GameLevel.last_offset > 0:
+		_win_message.text = "Practice Completed!"
+	
 	# When a play is perfect, make score color perfect.
 	if _play_data.accuracy == 100:
 		_score_label.modulate = GameSettings.perfect_click_colour

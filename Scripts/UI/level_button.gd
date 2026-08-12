@@ -10,12 +10,19 @@ extends Control
 @onready var _difficulty_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DifficultyPanel/MarginContainer/DifficultyLabel
 @onready var _speed_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel/MarginContainer/SpeedLabel
 @onready var _damage_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel/MarginContainer/DamageLabel
-@onready var _play_button = $ButtonPanel/MarginContainer/VBoxContainer/PlayButton
+
+@onready var _play_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PlayButton
+@onready var _back_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/BackButton
+@onready var _practice_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeButton
+@onready var _practice_container = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer
+@onready var _time_slider_label = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSliderLabel
+@onready var _time_slider = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSlider
 
 @onready var _popup_panel = $PopupPanel
 @onready var _popup_label = $PopupPanel/MarginContainer/RichTextLabel
 
 @onready var _hover_button_sound = $HoverButton
+@onready var _click_button_sound = $ClickButton
 
 ## This level has been selected to play.
 signal button_pressed(level_info: LevelInfo)
@@ -27,6 +34,11 @@ signal button_hovered(level_info: LevelInfo)
 ## being hovered over.
 const _TIME_TO_SHOW_POPUP = 0.5
 
+## This value is how many seconds before the end of the level that the player
+## is allowed to start from. This ensures there is at least a little bit of the
+## level left if they choose the maximum offset in practice mode.
+const _MINIMUM_PLAY_TIME = 5
+
 ## The theme color to use for this LevelButton's title color.
 ## Alternates between true and false each time one is created.
 static var use_primary_colour := true
@@ -37,6 +49,9 @@ var level_info: LevelInfo
 ## Start a short timer to wait for a popup to start.
 var _popup_timer_on := false
 var _popup_time: float = 0
+
+## The offset to start the level at in practice, in seconds.
+var _practice_offset: float = 0
 
 
 ## Setup the level button with all level details. Call this after instantiation 
@@ -58,6 +73,12 @@ func _ready() -> void:
 	
 	# Aesthetics
 	update_title_color()
+	
+	if level_info.version == "Tutorial":
+		_practice_button.hide()
+	
+	# Set range for time slider if they wanna practice.
+	_time_slider.max_value = level_info.length - _MINIMUM_PLAY_TIME
 	
 	_set_play_button_text_color()
 
@@ -98,6 +119,9 @@ func _float_as_time(level_length: float) -> String:
 			string += " "
 		string +=str(seconds) + "s"
 	
+	if string.is_empty():
+		string = "0s"
+	
 	return string
 
 
@@ -111,6 +135,7 @@ func _trim_decimals(value: float) -> String:
 
 
 func _on_play_button_pressed() -> void:
+	GameLevel.last_offset = _practice_offset
 	button_pressed.emit(level_info)
 
 
@@ -229,3 +254,32 @@ Missing an enter or back bit does not deal damage.\n\n"
 
 func _on_diff_spd_dmg_panel_mouse_exited() -> void:
 	_hide_popup()
+
+
+func _on_practice_button_pressed() -> void:
+	_click_button_sound.play()
+	
+	_practice_button.hide()
+	_back_button.show()
+	_practice_container.show()
+	
+	_on_time_slider_value_changed(_time_slider.value)
+
+
+func _on_back_button_pressed() -> void:
+	_click_button_sound.play()
+	
+	_practice_offset = 0
+	_back_button.hide()
+	_practice_container.hide()
+	_practice_button.show()
+
+
+func _on_time_slider_value_changed(value: float) -> void:
+	_practice_offset = value
+	var progress = value / level_info.length * 100
+	_time_slider_label.text = "Start at %s (%.2f%%)" % [_float_as_time(value), progress]
+
+
+func _on_time_slider_drag_started() -> void:
+	_click_button_sound.play()

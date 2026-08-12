@@ -11,6 +11,9 @@ extends Node2D
 ## The strength of blur when the game is paused.
 const PAUSE_BLUR_STRENGTH := 0.5
 
+## The last level offset used, in seconds.
+static var last_offset: float = 0
+
 var _crash_screen = preload("res://Scenes/UI/game_crash_ui.tscn")
 var _win_screen = preload("res://Scenes/UI/game_win_ui.tscn")
 var _pause_screen = preload("res://Scenes/UI/pause_ui.tscn")
@@ -52,7 +55,7 @@ func _ready() -> void:
 	bit_queue = level_info.bit_queue
 	delay_queue = level_info.delay_queue
 	
-	start_level()
+	start_level(last_offset)
 	
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
@@ -260,4 +263,6 @@ func _completed() -> void:
 		win_screen.connect_play_data(_levelUI.play_data)
 		add_child(win_screen)
 		
-		SaveLoad.save_play(level_info, _levelUI.play_data)
+		# Only save if it was a full play.
+		if last_offset == 0:
+			SaveLoad.save_play(level_info, _levelUI.play_data)

@@ -64,12 +64,16 @@ var _current_plays_level: LevelInfo
 
 ## If true, the play panel opens by itself. Otherwise, it only opens when 
 ## clicked.
-var _auto_open_play_panel := true
+static var _auto_open_play_panel := true
 
 
 ## Load all levels and create buttons for them.
 func _ready() -> void:
 	_scroll_box.set_deferred("scroll_vertical", _last_level_select_position)
+	
+	# Every time a level is quit, reset the offset so playing a level without
+	# modifying the offset actually starts at the beginning again.
+	GameLevel.last_offset = 0
 	
 	if SaveLoad.save_data.tutorial_played:
 		_sort_button.show()
