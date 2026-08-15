@@ -39,11 +39,6 @@ The standard version names are as follows, in order of overall difficulty:
 
 Despite that, a level's version can be called anything at all (there are no actual restrictions). Not all versions of a level may be of a different overall difficulty; they may be different in other aspects, such as their speed, required accuracy (difficulty, not to be confused with *overall* difficulty), damage dealt, and most importantly the bit patterns that make up the level.
 
-Recommended version names for other kinds of variation:
-- Increased speed (and also difficulty) - overclocked
-- Increased damage - unstable
-- Increased length - extended
-
 ### BPM
 
 The beats per minute of the song. Can be a fractional value, if for some reason that is needed. Right now, BPM must be constant throughout the entire song.
