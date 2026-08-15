@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_s1d3e"]
 
 [node name="LevelButton" type="Control" unique_id=1822112030]
-custom_minimum_size = Vector2(1000, 300)
+custom_minimum_size = Vector2(1150, 300)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -61,7 +61,7 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="NameLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/NamePanel/MarginContainer/VBoxContainer" unique_id=992663357]
-custom_minimum_size = Vector2(1000, 0)
+custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 50
@@ -71,7 +71,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="VersionLabel" type="Label" parent="ButtonPanel/MarginContainer/VBoxContainer/NamePanel/MarginContainer/VBoxContainer" unique_id=169596192]
-custom_minimum_size = Vector2(1000, 0)
+custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Version"
@@ -81,7 +81,7 @@ autowrap_mode = 3
 
 [node name="LevelDetailsContainer" type="HBoxContainer" parent="ButtonPanel/MarginContainer/VBoxContainer" unique_id=1782537921]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 5
 
 [node name="BitsPanel" type="PanelContainer" parent="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer" unique_id=1114091073]
 layout_mode = 2

@@ -21,6 +21,9 @@ class_name LevelSelect
 @onready var _plays_scroll_box = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer
 @onready var _plays_scroll_margin = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer/ScrollbarMargin
 
+@onready var _mods_panel = $CanvasLayer/ModsPanel
+@onready var _mods_animation = $CanvasLayer/ModsPanel/ModsAnimationPlayer
+
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
@@ -62,6 +65,10 @@ var _levels: Array[LevelInfo]
 ## The level that plays are being displayed for currently. Could be null.
 var _current_plays_level: LevelInfo
 
+## True when the mods panel is open. Ensures the plays panel cannot be opened
+## while the mods panel already is.
+var _mods_panel_open := false
+
 ## If true, the play panel opens by itself. Otherwise, it only opens when 
 ## clicked.
 static var _auto_open_play_panel := true
@@ -75,8 +82,11 @@ func _ready() -> void:
 	# modifying the offset actually starts at the beginning again.
 	GameLevel.last_offset = 0
 	
-	if SaveLoad.save_data.tutorial_played:
-		_sort_button.show()
+	if !SaveLoad.save_data.tutorial_played:
+		_plays_panel.hide()
+		_sort_button.hide()
+		_mods_panel.hide()
+	else:
 		# Add sort button children
 		for child in _sort_button_container.get_children():
 			if child is Button:
@@ -189,6 +199,7 @@ func hide_UI():
 	_sort_button.hide()
 	_level_button_container.hide()
 	_plays_panel.hide()
+	_mods_panel.hide()
 	
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_IGNORE
 	_last_level_select_position = _scroll_box.scroll_vertical
@@ -205,11 +216,12 @@ func hide_UI():
 func show_UI():
 	_back_button.show()
 	_level_button_container.show()
-	_plays_panel.show()
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_STOP
 	
 	if SaveLoad.save_data.tutorial_played:
+		_plays_panel.show()
 		_sort_button.show()
+		_mods_panel.show()
 	
 	# In the event that the theme colors changed.
 	LevelButton.use_primary_colour = true
@@ -327,7 +339,7 @@ func _display_plays(level_info: LevelInfo) -> void:
 	if _current_plays_level != level_info:
 		_current_plays_level = level_info
 		
-		if _auto_open_play_panel:
+		if _auto_open_play_panel and !_plays_button.disabled:
 			_open_plays_panel()
 		
 		var plays = SaveLoad.load_plays(level_info)
@@ -387,7 +399,38 @@ func _plays_scroll_bar_visibility_changed() -> void:
 
 
 func _on_plays_button_mouse_entered() -> void:
-	if !_plays_panel_is_open():
+	if !_plays_panel_is_open() and !_plays_button.disabled and !_plays_panel_animation.is_playing():
 		_menu_click_sound.play()
 		_open_plays_panel()
 		_auto_open_play_panel = true
+
+
+func _open_mods_panel() -> void:
+	_mods_animation.play("popup")
+	if _plays_panel_is_open():
+		_close_plays_panel()
+	
+	_plays_button.disabled = true
+
+
+func _close_mods_panel() -> void:
+	_mods_animation.play_backwards("popup")
+	if _auto_open_play_panel:
+		_open_plays_panel()
+	
+	_plays_button.disabled = false
+
+
+func _on_mods_button_pressed() -> void:
+	_menu_click_sound.play()
+	_mods_panel_open = !_mods_panel_open
+	if _mods_panel_open:
+		_open_mods_panel()
+	else:
+		_close_mods_panel()
+
+
+func _on_mods_close_button_pressed() -> void:
+	_menu_click_sound.play()
+	_mods_panel_open = false
+	_close_mods_panel()
