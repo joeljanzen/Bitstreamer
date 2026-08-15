@@ -10,6 +10,12 @@ const SPEED_MAX = 12
 ## values that are for some reason higher than 100 to be just 100. 100 damage
 ## instakills, so it's really the max damage that should be saved.
 const DAMAGE_MAX = 100
+## The minimum difficulty value a level can have.
+const DIFFICULTY_MIN = 0
+## The minimum speed value a level can have.
+const SPEED_MIN = 1
+## The minimum damage value a level can have.
+const DAMAGE_MIN = 0
 
 ## Stores a reference to the level info of the last level played.
 ## Useful for restarting levels.
@@ -122,7 +128,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				break
 		elif tag.begins_with("speed="):
 			var check = tag.erase(0,6)
-			if check.is_valid_float() and float(check) >= 1 and float(check) <= SPEED_MAX:
+			if check.is_valid_float() and float(check) >= SPEED_MIN and float(check) <= SPEED_MAX:
 				speed = float(check)
 			else:
 				error_loading = true
@@ -130,7 +136,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				break
 		elif tag.begins_with("diff="):
 			var check = tag.erase(0,5)
-			if check.is_valid_float() and float(check) >= 0 and float(check) <= DIFFICULTY_MAX:
+			if check.is_valid_float() and float(check) >= DIFFICULTY_MIN and float(check) <= DIFFICULTY_MAX:
 				difficulty = float(check)
 			else:
 				error_loading = true
@@ -138,7 +144,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				break
 		elif tag.begins_with("dmg="):
 			var check = tag.erase(0,4)
-			if check.is_valid_int() and int(check) >= 0:
+			if check.is_valid_int() and int(check) >= DAMAGE_MIN:
 				damage = min(int(check), DAMAGE_MAX)
 			else:
 				error_loading = true
