@@ -7,7 +7,7 @@
 [ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="3_slgek"]
 
 [node name="ModButton" type="Control" unique_id=1693415256]
-custom_minimum_size = Vector2(523, 250)
+custom_minimum_size = Vector2(523, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,7 +53,7 @@ theme = ExtResource("2_s2y41")
 theme_override_constants/separation = 25
 
 [node name="Icon" type="TextureRect" parent="Button/MarginContainer/VBoxContainer/HBoxContainer" unique_id=845793375]
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(75, 75)
 layout_mode = 2
 texture = ExtResource("2_slgek")
 expand_mode = 1
@@ -74,6 +74,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 18
 text = "this is the mod description here i make it very long and cool"
 fit_content = true
 
