@@ -369,6 +369,14 @@ mod = 3
 mod_name = "Underclocked"
 description = "Having trouble keeping up? Lessen the strain put on the program. Errors are less dangerous and more easily handled."
 
+[node name="ModButton5" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=901601075 instance=ExtResource("4_texu8")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mod = 4
+mod_name = "Zeroed Out"
+description = "By some terrible mistake, all bits have become zeroes! How the program still runs is a great mystery."
+
 [node name="ModsCloseButton" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer" unique_id=101741456]
 custom_minimum_size = Vector2(0, 62)
 layout_mode = 2

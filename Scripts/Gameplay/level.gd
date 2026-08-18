@@ -149,6 +149,8 @@ func start_level(level_offset: float = 0) -> void:
 func _receive_timed_event(event_index: int) -> void:
 	#print("TIMED EVENT OF INDEX %d RECEIVED AT %s" % [event_index, _conductor.get_time()])
 	var bit: Bit.Type = bit_queue[event_index]
+	bit = ModManager.apply_bit_mods(bit)
+	
 	var dmg: int = level_damage
 	if bit == Bit.Type.ENTER:
 		dmg = 0

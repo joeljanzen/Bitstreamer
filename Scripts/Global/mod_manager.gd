@@ -5,6 +5,7 @@ const STABLE_ICON_PATH: String = "res://Resources/Sprites/Mods/stable_mod.png"
 const UNSTABLE_ICON_PATH: String = "res://Resources/Sprites/Mods/unstable_mod.png"
 const OVERCLOCKED_ICON_PATH: String = "res://Resources/Sprites/Mods/overclocked_mod.png"
 const UNDERCLOCKED_ICON_PATH: String = "res://Resources/Sprites/Mods/underclocked_mod.png"
+const ZEROED_OUT_ICON_PATH: String = "res://Resources/Sprites/Mods/zeroed_out_mod.png"
 
 ## The types of mods that can be applied to a level.
 enum ModType {
@@ -12,6 +13,7 @@ enum ModType {
 	UNSTABLE,
 	OVERCLOCKED,
 	UNDERCLOCKED,
+	ZEROED_OUT,
 }
 
 ## An array of all mod buttons. Used to disable mods that are incompatible with
@@ -51,6 +53,8 @@ func get_icon(mod: ModType) -> Texture2D:
 			return load(OVERCLOCKED_ICON_PATH)
 		ModManager.ModType.UNDERCLOCKED:
 			return load(UNDERCLOCKED_ICON_PATH)
+		ModManager.ModType.ZEROED_OUT:
+			return load(ZEROED_OUT_ICON_PATH)
 		_:
 			return load("res://icon.svg")
 
@@ -95,6 +99,8 @@ func toggle_mod_active(mod: ModType) -> void:
 				_active_mods.push_back(OverclockedMod.new())
 			ModManager.ModType.UNDERCLOCKED:
 				_active_mods.push_back(UnderclockedMod.new())
+			ModManager.ModType.ZEROED_OUT:
+				_active_mods.push_back(ZeroedOutMod.new())
 	
 	_toggle_incompatible_mods(mod)
 
@@ -152,3 +158,13 @@ func apply_damage_mods(base_damage: int) -> int:
 		if mod.has_method("mod_damage"):
 			final_damage = mod.mod_damage(final_damage)
 	return final_damage
+
+
+## Apply all active mods with bit type adjustment to a base bit, 
+## returning the modified bit type.
+func apply_bit_mods(base_bit: Bit.Type) -> Bit.Type:
+	var final_bit = base_bit
+	for mod in _active_mods:
+		if mod.has_method("mod_bits"):
+			final_bit = mod.mod_bits(final_bit)
+	return final_bit
