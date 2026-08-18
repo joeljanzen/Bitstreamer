@@ -330,8 +330,12 @@ func _add_to_bit_label_line(string: String) -> void:
 	temp_label.bbcode_enabled = true
 	temp_label.text = _label_lines[curr_line]
 	
-	if temp_label.get_parsed_text().length() < MAX_BITS_DISPLAYED_PER_LINE:
-		_label_lines[curr_line] += string
+	# Basically the same thing as a line clear happens if you fill up an entire
+	# line so we play the sound.
+	if temp_label.get_parsed_text().length() == MAX_BITS_DISPLAYED_PER_LINE:
+		_label_lines[curr_line] = ""
+		_line_clear_sound.play()
+	_label_lines[curr_line] += string
 
 
 ## Fills in the bit label using the values in the _label_lines array.
