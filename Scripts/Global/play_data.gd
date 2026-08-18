@@ -26,3 +26,6 @@ extends Resource
 @export var missed_clicks: int = 0
 ## The number of error clicks made in this play.
 @export var error_clicks: int = 0
+
+## The mods active for this play.
+@export var mods: Array[ModManager.ModType] = []

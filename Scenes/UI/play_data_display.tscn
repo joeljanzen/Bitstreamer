@@ -54,6 +54,18 @@ size_flags_vertical = 3
 [node name="MainStats" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1009278135]
 layout_mode = 2
 size_flags_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/MainStats" unique_id=1150380327]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+
+[node name="ModContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/MainStats/MarginContainer" unique_id=23796734]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
 
 [node name="ScoreLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/MainStats" unique_id=1127836204]
 layout_mode = 2
@@ -150,6 +162,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
+mouse_filter = 1
 theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxEmpty_sr7n1")
 theme_override_styles/hover = SubResource("StyleBoxFlat_sr7n1")

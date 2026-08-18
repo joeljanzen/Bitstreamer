@@ -4,6 +4,7 @@ extends Control
 
 @onready var panel = $Panel
 @onready var score_label = $Panel/MarginContainer/VBoxContainer/MainStats/ScoreLabel
+@onready var mod_container = $Panel/MarginContainer/VBoxContainer/MainStats/MarginContainer/ModContainer
 @onready var accuracy_label = $Panel/MarginContainer/VBoxContainer/MainStats/VBoxContainer/AccuracyLabel
 @onready var max_combo_label = $Panel/MarginContainer/VBoxContainer/MainStats/VBoxContainer/MaxComboLabel
 @onready var perfects_label = $Panel/MarginContainer/VBoxContainer/ExtraStats/PerfectsLabel
@@ -24,6 +25,9 @@ const PANEL_DARKEN_AMOUNT: float = 0.70
 const MINIMUM_SIZE_DEFAULT = 50
 
 const MINIMUM_SIZE_EXPANDED = 100
+
+## The size of mod icons.
+const MOD_ICON_SIZE: int = 32
 
 ## The theme color to use for this PlayDataDisplay's score color.
 ## Alternates between true and false each time one is created.
@@ -72,6 +76,8 @@ func _ready() -> void:
 	[GameSettings.missed_click_colour, play_data.missed_clicks])
 	errors_label.text = ("[color=%s]%d Error[/color]" % 
 	[GameSettings.incorrect_click_colour, play_data.error_clicks])
+	
+	_add_mod_icons()
 
 
 ## Show all stats for the play, or hide those extra stats.
@@ -87,3 +93,18 @@ func _on_see_more_pressed() -> void:
 		custom_minimum_size.y = MINIMUM_SIZE_DEFAULT
 		extra_stats.hide()
 		extra_stats_2.hide()
+
+
+## Add icons for the active mods from the play.
+func _add_mod_icons() -> void:
+	if !play_data.mods.is_empty():
+		$Panel/MarginContainer/VBoxContainer/MainStats/MarginContainer.show()
+		
+		for mod in play_data.mods:
+			var texture_rect = TextureRect.new()
+			texture_rect.texture = ModManager.get_icon(mod)
+			texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+			texture_rect.custom_minimum_size.x = MOD_ICON_SIZE
+			mod_container.add_child(texture_rect)
