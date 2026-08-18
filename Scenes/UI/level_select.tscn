@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_1i34c"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_40fl8"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_40fl8"]
+[ext_resource type="PackedScene" uid="uid://dpi2oef3klh47" path="res://Scenes/UI/mod_button.tscn" id="4_texu8"]
 
 [sub_resource type="Animation" id="Animation_7vwlt"]
 length = 0.001
@@ -285,7 +286,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("3_40fl8")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ModsPanel" unique_id=1294063591]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ModsPanel" unique_id=1271472878]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -299,55 +300,50 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 33
 text = "Modifiers"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ModsPanel/VBoxContainer" unique_id=460459998]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ModsPanel/VBoxContainer" unique_id=723468138]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer" unique_id=744763801]
+[node name="ModButtonContainer" type="GridContainer" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer" unique_id=744763801]
 layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
+theme_override_constants/h_separation = 25
+theme_override_constants/v_separation = 25
 columns = 2
 
-[node name="Button" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/GridContainer" unique_id=956892649]
+[node name="ModButton" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=1693415256 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "testy"
+mod_name = "Stable"
+description = "The program has become so stable that no number of errors will be able to crash it."
 
-[node name="Button2" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/GridContainer" unique_id=934209784]
+[node name="ModButton2" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=983125917 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "testy"
+mod = 1
+mod_name = "Unstable"
+description = "The program is teeming with bugs and is constantly on the verge of crashing. Even a single mistake will result in a catastrophic failure."
 
-[node name="Button3" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/GridContainer" unique_id=424958187]
+[node name="ModButton3" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=241893222 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "testy"
+mod = 2
+mod_name = "Overclocked"
+description = "You hunger for more performance? Push the program to its absolute limits. Errors are more devastating but may still be recovered from."
 
-[node name="Button4" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/GridContainer" unique_id=915980434]
+[node name="ModButton4" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=1385952493 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "testy"
-
-[node name="Button5" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/GridContainer" unique_id=1402390576]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "testy"
-
-[node name="Button6" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/GridContainer" unique_id=1039887583]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "testy"
+mod = 3
+mod_name = "Underclocked"
+description = "Having trouble keeping up? Lessen the strain put on the program. Errors are less dangerous and more easily handled."
 
 [node name="ModsCloseButton" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer" unique_id=101741456]
 custom_minimum_size = Vector2(0, 62)
@@ -356,17 +352,21 @@ theme_override_font_sizes/font_size = 33
 text = "Close"
 
 [node name="ModIcons" type="MarginContainer" parent="CanvasLayer/ModsPanel" unique_id=1894641365]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+offset_right = 489.0
+offset_bottom = 62.0
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 10
 
 [node name="IconContainer" type="HBoxContainer" parent="CanvasLayer/ModsPanel/ModIcons" unique_id=947410012]
-custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-theme_override_constants/separation = 5
+mouse_filter = 2
+theme_override_constants/separation = 50
+alignment = 1
 
 [node name="ModsAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/ModsPanel" unique_id=75553511]
 libraries/ = SubResource("AnimationLibrary_lk0nj")

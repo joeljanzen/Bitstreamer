@@ -64,6 +64,7 @@ var _is_valid := false
 
 ## Initialize the level info, given its full filename.
 func _init(filename: String) -> void:
+	name = filename
 	file_name = filename
 	
 	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)

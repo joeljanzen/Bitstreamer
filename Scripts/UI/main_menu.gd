@@ -49,7 +49,7 @@ var _level_select_scene = preload("res://Scenes/UI/level_select.tscn")
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 var _bit = preload("res://Scenes/bit.tscn")
 
-var level_select_node: Control
+var level_select_node: LevelSelect
 
 # Used in animations that sync to the music.
 ## How often the conductor sends out beats.

@@ -46,6 +46,9 @@ static var use_primary_colour := true
 ## Level info for this button.
 var level_info: LevelInfo
 
+## Level info with modified values from active mods.
+var modded_info: LevelInfo
+
 ## Start a short timer to wait for a popup to start.
 var _popup_timer_on := false
 var _popup_time: float = 0
@@ -62,14 +65,19 @@ func setup(level_information: LevelInfo) -> void:
 
 ## Fills all label text with level info.
 func _ready() -> void:
+	# For some reason duplication doesn't work at all (spent so long tryna 
+	# see why) so I legit uhhh parse the entire level info again ggs.
+	#modded_info = level_info.duplicate(DUPLICATE_INTERNAL_STATE) as LevelInfo
+	modded_info = LevelInfo.new(level_info.file_name)
+	
+	
 	_name_label.text = level_info.song_name
 	_version_label.text = level_info.version
 	_bit_count_label.text = str(level_info.bit_count) + " bits"
 	_length_label.text = _float_as_time(level_info.length)
 	_bpm_label.text = _trim_decimals(level_info.bpm) + " BPM"
-	_difficulty_label.text = "Difficulty: " + _trim_decimals(level_info.difficulty)
-	_speed_label.text = "Speed: " + _trim_decimals(level_info.speed)
-	_damage_label.text = "Damage: " + str(level_info.damage)
+	# This sets the labels for any potentially modified values, such as speed.
+	apply_active_mods()
 	
 	# Aesthetics
 	update_title_color()
@@ -102,6 +110,16 @@ func update_title_color() -> void:
 	else:
 		_name_label.modulate = GameSettings.one_bit_colour
 	use_primary_colour = !use_primary_colour
+
+
+## Apply current active mods to update the level button info.
+func apply_active_mods() -> void:
+	modded_info.difficulty = ModManager.apply_difficulty_mods(level_info.difficulty)
+	modded_info.speed = ModManager.apply_speed_mods(level_info.speed)
+	modded_info.damage = ModManager.apply_damage_mods(level_info.damage)
+	_difficulty_label.text = "Difficulty: " + _trim_decimals(modded_info.difficulty)
+	_speed_label.text = "Speed: " + _trim_decimals(modded_info.speed)
+	_damage_label.text = "Damage: " + str(modded_info.damage)
 
 
 ## Converts the level length in seconds to a string in minutes and seconds.
@@ -205,19 +223,19 @@ get a perfect, good, or okay score, or miss a bit.
 The minimum difficulty is 0 and the maximum is 12."
 	+ "[color=" + GameSettings.perfect_click_colour + "]"
 	+ "\n\nPerfect score: +-" + 
-	str(int(PerformanceCalculator.get_perfect_click_range(level_info.difficulty)))
+	str(int(PerformanceCalculator.get_perfect_click_range(modded_info.difficulty)))
 	+ " ms[/color]"
 	+ "[color=" + GameSettings.good_click_colour + "]"
 	+ "\nGood score: +-" + 
-	str(int(PerformanceCalculator.get_good_click_range(level_info.difficulty)))
+	str(int(PerformanceCalculator.get_good_click_range(modded_info.difficulty)))
 	+ " ms[/color]"
 	+ "[color=" + GameSettings.okay_click_colour + "]"
 	+ "\nOkay score: +-" + 
-	str(int(PerformanceCalculator.get_okay_click_range(level_info.difficulty)))
+	str(int(PerformanceCalculator.get_okay_click_range(modded_info.difficulty)))
 	+ " ms[/color]"
 	+ "[color=" + GameSettings.missed_click_colour + "]"
 	+ "\nMiss: >" + 
-	str(int(PerformanceCalculator.get_okay_click_range(level_info.difficulty)))
+	str(int(PerformanceCalculator.get_okay_click_range(modded_info.difficulty)))
 	+ " ms"
 	)
 	
@@ -231,7 +249,7 @@ func _on_speed_panel_mouse_entered() -> void:
 cursor after appearing on screen. The minimum speed is
 1 and the maximum is 12.\n\n"
 	+ "[color=" + GameSettings.perfect_click_colour + "]Bit time to cursor: " +
-	str(int(PerformanceCalculator.get_approach_time(level_info.speed) * 1000)) 
+	str(int(PerformanceCalculator.get_approach_time(modded_info.speed) * 1000)) 
 	+ " ms"
 	)
 	
@@ -245,7 +263,7 @@ func _on_damage_panel_mouse_entered() -> void:
 that is lost after missing or incorrectly receiving a bit.
 Missing an enter or back bit does not deal damage.\n\n" 
 	+ "[color=" + GameSettings.incorrect_click_colour + "]Damage: "
-	+ str(level_info.damage) + "% of total health"
+	+ str(modded_info.damage) + "% of total health"
 	)
 	
 	_popup_panel.size = Vector2.ZERO # This forces the panel to resize.

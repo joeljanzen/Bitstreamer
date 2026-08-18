@@ -2,7 +2,6 @@ extends Control
 class_name LevelSelect
 ## Where the player selects which level to play.
 
-@onready var _level_scroll_margin = $CanvasLayer/LevelScrollMargin
 @onready var _level_button_container = $CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer/MarginContainer/LevelButtonContainer
 @onready var _back_button = $CanvasLayer/BackButton
 @onready var _scroll_box = $CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer
@@ -23,6 +22,8 @@ class_name LevelSelect
 
 @onready var _mods_panel = $CanvasLayer/ModsPanel
 @onready var _mods_animation = $CanvasLayer/ModsPanel/ModsAnimationPlayer
+@onready var _mod_button_container = $CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer
+@onready var _mod_icon_container = $CanvasLayer/ModsPanel/ModIcons/IconContainer
 
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
@@ -46,12 +47,19 @@ const _tutorial_level_filenames: PackedStringArray = [
 	"tutorial1.txt",
 ]
 
+## The size of mod icons visible at the top of the modifiers panel.
+const MOD_ICON_SIZE: int = 40
+
 ## Additional level scroll margin when the plays panel is open.
 const LEVEL_SCROLL_MARGIN_PLAYS = 300
 
 ## The last position the player was on the level selection menu (on the 
 ## scrollbar).
 static var _last_level_select_position: int = 0
+
+## If true, the play panel opens by itself. Otherwise, it only opens when 
+## clicked.
+static var _auto_open_play_panel := true
 
 ## All the buttons to choose a level sorting method from.
 var _sort_buttons: Array[Button]
@@ -68,10 +76,6 @@ var _current_plays_level: LevelInfo
 ## True when the mods panel is open. Ensures the plays panel cannot be opened
 ## while the mods panel already is.
 var _mods_panel_open := false
-
-## If true, the play panel opens by itself. Otherwise, it only opens when 
-## clicked.
-static var _auto_open_play_panel := true
 
 
 ## Load all levels and create buttons for them.
@@ -121,6 +125,28 @@ func _ready() -> void:
 	# This triggers a margin to change to make room for a visible scroll bar.
 	var v_scroll_bar: VScrollBar = _plays_scroll_box.get_v_scroll_bar()
 	v_scroll_bar.visibility_changed.connect(_plays_scroll_bar_visibility_changed)
+	
+	# Give ModManager mod button references and attach all button signals.
+	var mod_buttons: Array[ModButton] = []
+	for mod_button: ModButton in _mod_button_container.get_children():
+		mod_buttons.push_back(mod_button)
+		mod_button.pressed.connect(_mod_button_pressed)
+		mod_button.mouse_entered.connect(_mod_button_hovered)
+		
+		_update_active_mod_icons()
+	ModManager.mod_buttons = mod_buttons
+	ModManager.set_mod_button_states()
+
+
+## Input handling.
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_close_dialog"):
+		if UI_is_visible():
+			if _mods_panel_open:
+				_menu_click_sound.play()
+				_close_mods_panel()
+				accept_event()
+
 
 ## Return the comparator function for the given sorting method.
 func _get_sorting_comparator(sorting_method: SortingType) -> Callable:
@@ -240,6 +266,7 @@ func UI_is_visible() -> bool:
 
 func _on_back_button_pressed() -> void:
 	hide_UI()
+	_close_mods_panel()
 	selection_closed.emit()
 
 
@@ -269,7 +296,7 @@ static func _compare_level_name(a: LevelButton, b: LevelButton) -> bool:
 
 ## Compares 2 levels based on their speed, from low to high.
 static func _compare_level_speed(a: LevelButton, b: LevelButton) -> bool:
-	return a.level_info.speed < b.level_info.speed
+	return a.modded_info.speed < b.modded_info.speed
 
 
 ## Compares 2 levels based on their BPM, from low to high.
@@ -279,12 +306,12 @@ static func _compare_level_bpm(a: LevelButton, b: LevelButton) -> bool:
 
 ## Compares 2 levels based on their difficulty, from low to high.
 static func _compare_level_difficulty(a: LevelButton, b: LevelButton) -> bool:
-	return a.level_info.difficulty < b.level_info.difficulty
+	return a.modded_info.difficulty < b.modded_info.difficulty
 
 
 ## Compares 2 levels based on their damage, from low to high.
 static func _compare_level_damage(a: LevelButton, b: LevelButton) -> bool:
-	return a.level_info.damage < b.level_info.damage
+	return a.modded_info.damage < b.modded_info.damage
 
 
 ## Compares 2 levels based on their length (in seconds), from low to high.
@@ -406,6 +433,8 @@ func _on_plays_button_mouse_entered() -> void:
 
 
 func _open_mods_panel() -> void:
+	_mods_panel_open = true
+	
 	_mods_animation.play("popup")
 	if _plays_panel_is_open():
 		_close_plays_panel()
@@ -414,23 +443,59 @@ func _open_mods_panel() -> void:
 
 
 func _close_mods_panel() -> void:
+	_mods_panel_open = false
+	
 	_mods_animation.play_backwards("popup")
 	if _auto_open_play_panel:
 		_open_plays_panel()
 	
 	_plays_button.disabled = false
+	
+	# Update all level button values.
+	for button: LevelButton in _level_button_container.get_children():
+		if button.level_info.version != "Tutorial":
+			button.apply_active_mods()
 
 
 func _on_mods_button_pressed() -> void:
 	_menu_click_sound.play()
-	_mods_panel_open = !_mods_panel_open
 	if _mods_panel_open:
-		_open_mods_panel()
-	else:
 		_close_mods_panel()
+	else:
+		_open_mods_panel()
 
 
 func _on_mods_close_button_pressed() -> void:
 	_menu_click_sound.play()
-	_mods_panel_open = false
 	_close_mods_panel()
+
+
+## Toggle a mod to active or inactive through the ModManager.
+func _mod_button_pressed(mod: ModManager.ModType) -> void:
+	_menu_click_sound.play()
+	ModManager.toggle_mod_active(mod)
+	_update_active_mod_icons()
+
+
+## For each active mod, show its icon in the top of the modifiers panel.
+func _update_active_mod_icons() -> void:
+	var icons: Array[Texture2D] = ModManager.get_active_mod_icons()
+	
+	# Clear existing icons.
+	for child in _mod_icon_container.get_children():
+		_mod_icon_container.remove_child(child)
+	
+	# Add current active icons as TextureRect nodes.
+	for icon in icons:
+		var texture_rect = TextureRect.new()
+		texture_rect.texture = icon
+		texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		texture_rect.custom_minimum_size.x = MOD_ICON_SIZE
+		texture_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_mod_icon_container.add_child(texture_rect)
+
+
+func _mod_button_hovered() -> void:
+	_menu_focus_sound.play()

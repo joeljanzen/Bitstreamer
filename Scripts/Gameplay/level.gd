@@ -30,6 +30,9 @@ var completed := false
 
 var level_info: LevelInfo
 
+## This value is set using level info and active mods before the level begins.
+var level_damage: int
+
 # Level playback.
 ## A queue of upcoming bits.
 var bit_queue: Array[Bit.Type]
@@ -86,8 +89,12 @@ func _unhandled_input(event: InputEvent) -> void:
 func start_level(level_offset: float = 0) -> void:
 	_levelUI.set_level_length(level_info.length)
 	
-	PerformanceCalculator.set_difficulty(level_info.difficulty)
-	bit_time_to_cursor = PerformanceCalculator.set_approach_time(level_info.speed)
+	# Apply all mods, then set values.
+	var final_diff = ModManager.apply_difficulty_mods(level_info.difficulty)
+	PerformanceCalculator.set_difficulty(final_diff)
+	var final_speed = ModManager.apply_speed_mods(level_info.speed)
+	bit_time_to_cursor = PerformanceCalculator.set_approach_time(final_speed)
+	level_damage = ModManager.apply_damage_mods(level_info.damage)
 	
 	conductor.set_song(level_info.song)
 	conductor.timed_event.connect(_receive_timed_event)
@@ -142,7 +149,7 @@ func start_level(level_offset: float = 0) -> void:
 func _receive_timed_event(event_index: int) -> void:
 	#print("TIMED EVENT OF INDEX %d RECEIVED AT %s" % [event_index, _conductor.get_time()])
 	var bit: Bit.Type = bit_queue[event_index]
-	var dmg: int = level_info.damage
+	var dmg: int = level_damage
 	if bit == Bit.Type.ENTER:
 		dmg = 0
 	_play_area.send_bit(bit, bit_time_to_cursor, dmg, conductor)
