@@ -72,6 +72,49 @@ func get_active_mod_icons() -> Array[Texture2D]:
 	return icons
 
 
+## Ensures all mods are sorted so that they are applied in the correct 
+## order. Call this before applying mods to anything!
+func fix_mod_order() -> void:
+	# Bit mods should be applied in the order of:
+	# overclocked -> single-lane -> zeroed out.
+	# Right now those are the only mods where order matters.
+	var bit_mods = []
+	var all_mods = []
+	
+	for mod in _active_mods:
+		if mod.has_method("mod_bits"):
+			# It's first in bit mod order so you can push it with the other mods.
+			if mod.type == ModType.OVERCLOCKED:
+				all_mods.push_back(mod)
+			else:
+				bit_mods.push_back(mod)
+		else:
+			all_mods.push_back(mod)
+	
+	# If there are one or more bit mods left to order, continue.
+	var remaining_bit_mods = bit_mods.size()
+	if remaining_bit_mods == 1:
+			all_mods.push_back(bit_mods.front())
+	elif remaining_bit_mods > 1:
+		# Only one case left where we have to ensure zeroed out is after
+		# single-lane.
+		if bit_mods.front().type == ModType.ZEROED_OUT:
+			all_mods.push_back(bit_mods.back())
+			all_mods.push_back(bit_mods.front())
+		else:
+			all_mods.push_back(bit_mods.front())
+			all_mods.push_back(bit_mods.back())
+	
+	_active_mods = all_mods
+
+
+## Prints out all active mods in their order of application to the level.
+## Only for debugging purposes.
+func _print_mods() -> void:
+	for mod in _active_mods:
+		print(ModType.keys()[mod.type] + ", ")
+
+
 ## When loading the level select scene, set all mod buttons to their correct
 ## states (as some mods may be active currently).
 func set_mod_button_states() -> void:
