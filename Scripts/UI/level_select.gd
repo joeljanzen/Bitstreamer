@@ -249,6 +249,10 @@ func show_UI():
 		_sort_button.show()
 		_mods_panel.show()
 	
+	# Mod panel was in the middle of moving, nah bro put it back in its place.
+	if _mods_animation.is_playing():
+		_mods_animation.play("RESET")
+	
 	# In the event that the theme colors changed.
 	LevelButton.use_primary_colour = true
 	for button: LevelButton in _level_button_container.get_children():
@@ -366,7 +370,7 @@ func _display_plays(level_info: LevelInfo) -> void:
 	if _current_plays_level != level_info:
 		_current_plays_level = level_info
 		
-		if _auto_open_play_panel and !_plays_button.disabled:
+		if _auto_open_play_panel:
 			_open_plays_panel()
 		
 		var plays = SaveLoad.load_plays(level_info)
@@ -426,7 +430,7 @@ func _plays_scroll_bar_visibility_changed() -> void:
 
 
 func _on_plays_button_mouse_entered() -> void:
-	if !_plays_panel_is_open() and !_plays_button.disabled and !_plays_panel_animation.is_playing():
+	if !_plays_panel_is_open() && !_plays_panel_animation.is_playing():
 		_menu_click_sound.play()
 		_open_plays_panel()
 		_auto_open_play_panel = true
@@ -434,22 +438,13 @@ func _on_plays_button_mouse_entered() -> void:
 
 func _open_mods_panel() -> void:
 	_mods_panel_open = true
-	
 	_mods_animation.play("popup")
-	if _plays_panel_is_open():
-		_close_plays_panel()
-	
-	_plays_button.disabled = true
 
 
 func _close_mods_panel() -> void:
 	_mods_panel_open = false
 	
 	_mods_animation.play_backwards("popup")
-	if _auto_open_play_panel:
-		_open_plays_panel()
-	
-	_plays_button.disabled = false
 	
 	# Update all level button values.
 	for button: LevelButton in _level_button_container.get_children():
