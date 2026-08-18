@@ -343,7 +343,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mod_name = "Stable"
-description = "The program has become so stable that no number of errors will be able to crash it."
+description = "The program is so stable that no number of errors will be able to crash it."
 
 [node name="ModButton2" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=983125917 instance=ExtResource("4_texu8")]
 layout_mode = 2
@@ -359,7 +359,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mod = 2
 mod_name = "Overclocked"
-description = "You hunger for more performance? Push the program to its absolute limits. Errors are more devastating but may still be recovered from."
+description = "Hunger for more performance? Push the program to its absolute limits. Errors are more devastating but may still be recovered from."
 
 [node name="ModButton4" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=1385952493 instance=ExtResource("4_texu8")]
 layout_mode = 2
@@ -375,7 +375,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mod = 4
 mod_name = "Zeroed Out"
-description = "By some terrible mistake, all bits have become zeroes! How the program still runs is a great mystery."
+description = "By a terrible mistake, all bits have become zeroes! How the program still runs is a great mystery."
+
+[node name="ModButton6" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=181478866 instance=ExtResource("4_texu8")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mod = 5
+mod_name = "Single-lane"
+description = "All bits are received on the first lane. The program will never go down a line."
 
 [node name="ModsCloseButton" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer" unique_id=101741456]
 custom_minimum_size = Vector2(0, 62)

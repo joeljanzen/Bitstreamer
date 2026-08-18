@@ -6,6 +6,7 @@ const UNSTABLE_ICON_PATH: String = "res://Resources/Sprites/Mods/unstable_mod.pn
 const OVERCLOCKED_ICON_PATH: String = "res://Resources/Sprites/Mods/overclocked_mod.png"
 const UNDERCLOCKED_ICON_PATH: String = "res://Resources/Sprites/Mods/underclocked_mod.png"
 const ZEROED_OUT_ICON_PATH: String = "res://Resources/Sprites/Mods/zeroed_out_mod.png"
+const SINGLE_LANE_ICON_PATH: String = "res://Resources/Sprites/Mods/single_lane_mod.png"
 
 ## The types of mods that can be applied to a level.
 enum ModType {
@@ -14,6 +15,7 @@ enum ModType {
 	OVERCLOCKED,
 	UNDERCLOCKED,
 	ZEROED_OUT,
+	SINGLE_LANE,
 }
 
 ## An array of all mod buttons. Used to disable mods that are incompatible with
@@ -55,6 +57,8 @@ func get_icon(mod: ModType) -> Texture2D:
 			return load(UNDERCLOCKED_ICON_PATH)
 		ModManager.ModType.ZEROED_OUT:
 			return load(ZEROED_OUT_ICON_PATH)
+		ModManager.ModType.SINGLE_LANE:
+			return load(SINGLE_LANE_ICON_PATH)
 		_:
 			return load("res://icon.svg")
 
@@ -101,6 +105,8 @@ func toggle_mod_active(mod: ModType) -> void:
 				_active_mods.push_back(UnderclockedMod.new())
 			ModManager.ModType.ZEROED_OUT:
 				_active_mods.push_back(ZeroedOutMod.new())
+			ModManager.ModType.SINGLE_LANE:
+				_active_mods.push_back(SingleLaneMod.new())
 	
 	_toggle_incompatible_mods(mod)
 
@@ -161,10 +167,11 @@ func apply_damage_mods(base_damage: int) -> int:
 
 
 ## Apply all active mods with bit type adjustment to a base bit, 
-## returning the modified bit type.
-func apply_bit_mods(base_bit: Bit.Type) -> Bit.Type:
+## returning the modified bit type. Some mods may also make use of the bit
+## that was sent before this bit.
+func apply_bit_mods(base_bit: Bit.Type, last_bit: Bit.Type) -> Bit.Type:
 	var final_bit = base_bit
 	for mod in _active_mods:
 		if mod.has_method("mod_bits"):
-			final_bit = mod.mod_bits(final_bit)
+			final_bit = mod.mod_bits(final_bit, last_bit)
 	return final_bit

@@ -40,6 +40,9 @@ var bit_queue: Array[Bit.Type]
 var delay_queue: Array[float]
 ## The delay between a bit being sent and it reaching the cursor, in seconds.
 var bit_time_to_cursor: float
+## The type of the last bit that was sent. Used in mods that affect bit type.
+## We treat the very first bit in the level as if a one bit was sent before it.
+var last_bit := Bit.Type.ONE
 
 
 ## Connect to the failed and completed signal and connect the conductor to levelUI.
@@ -149,7 +152,10 @@ func start_level(level_offset: float = 0) -> void:
 func _receive_timed_event(event_index: int) -> void:
 	#print("TIMED EVENT OF INDEX %d RECEIVED AT %s" % [event_index, _conductor.get_time()])
 	var bit: Bit.Type = bit_queue[event_index]
-	bit = ModManager.apply_bit_mods(bit)
+	bit = ModManager.apply_bit_mods(bit, last_bit)
+	
+	# Update the last bit for next timed event.
+	last_bit = bit
 	
 	var dmg: int = level_damage
 	if bit == Bit.Type.ENTER:

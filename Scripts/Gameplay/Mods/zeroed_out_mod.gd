@@ -6,7 +6,7 @@ extends Node
 var type = ModManager.ModType.ZEROED_OUT
 
 
-func mod_bits(base_bit: Bit.Type) -> Bit.Type:
+func mod_bits(base_bit: Bit.Type, _last_bit: Bit.Type) -> Bit.Type:
 	match base_bit:
 		Bit.Type.ONE:
 			return Bit.Type.ZERO
