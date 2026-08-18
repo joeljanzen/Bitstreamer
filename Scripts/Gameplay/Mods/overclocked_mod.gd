@@ -12,7 +12,7 @@ func mod_difficulty(base_difficulty: float) -> float:
 
 
 func mod_speed(base_speed: float) -> float:
-	var new_speed = base_speed + 2
+	var new_speed = base_speed + 3
 	return min(new_speed, LevelInfo.SPEED_MAX)
 
 
