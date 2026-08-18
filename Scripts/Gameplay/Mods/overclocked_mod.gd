@@ -19,3 +19,14 @@ func mod_speed(base_speed: float) -> float:
 func mod_damage(base_damage: int) -> int:
 	var new_damage = base_damage * 1.5
 	return min(new_damage, LevelInfo.DAMAGE_MAX)
+
+
+## Swap zeroes and ones to make the level feel different from the original.
+func mod_bits(base_bit: Bit.Type, _last_bit: Bit.Type) -> Bit.Type:
+	match base_bit:
+		Bit.Type.ONE:
+			return Bit.Type.ZERO
+		Bit.Type.ZERO:
+			return Bit.Type.ONE
+		_:
+			return base_bit
