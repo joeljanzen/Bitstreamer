@@ -208,6 +208,14 @@ scroll_active = false
 autowrap_mode = 0
 vertical_alignment = 1
 
+[node name="ModsContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=2138701651]
+visible = false
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 50
+alignment = 1
+
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1378365594]
 layout_mode = 2
 size_flags_vertical = 10

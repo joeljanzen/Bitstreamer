@@ -7,12 +7,15 @@ extends Control
 @onready var _combo_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer/Combo
 @onready var _score_label: RichTextLabel = $CanvasLayer/MarginContainer2/VBoxContainer/ScorePanel/MarginContainer/Score
 @onready var _extra_stats_container = $CanvasLayer/MarginContainer2/VBoxContainer/ExtraStatsPanel/MarginContainer/ExtraStats
-
+@onready var _mods_container = $CanvasLayer/MarginContainer2/VBoxContainer/ModsContainer
 @onready var _win_message = $CanvasLayer/MarginContainer2/VBoxContainer/WinMsg
 
 # Sounds.
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
+
+## The size of mod icons.
+const MOD_ICON_SIZE: int = 100
 
 ## Stores data for the current play of a level, including score, combo, etc.
 var _play_data: PlayData
@@ -43,6 +46,26 @@ func _ready() -> void:
 	[GameSettings.missed_click_colour, _play_data.missed_clicks])
 	stat_label[4].text = ("[color=%s]%d Error[/color]" % 
 	[GameSettings.incorrect_click_colour, _play_data.error_clicks])
+	
+	if ModManager.has_active_mods():
+		_mods_container.show()
+		_add_mod_icons()
+
+
+## For each active mod, display its icon on the crash screen.
+func _add_mod_icons() -> void:
+	var icons: Array[Texture2D] = ModManager.get_active_mod_icons()
+	
+	# Add current active icons as TextureRect nodes.
+	for icon in icons:
+		var texture_rect = TextureRect.new()
+		texture_rect.texture = icon
+		texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		texture_rect.custom_minimum_size.x = MOD_ICON_SIZE
+		texture_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_mods_container.add_child(texture_rect)
 
 
 ## Idle animations in this screen, idk.
