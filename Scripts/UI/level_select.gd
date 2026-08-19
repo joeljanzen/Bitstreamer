@@ -486,6 +486,9 @@ func _mod_button_pressed(mod: ModManager.ModType) -> void:
 
 ## For each active mod, show its icon in the top of the modifiers panel.
 func _update_active_mod_icons() -> void:
+	# Before updating the icons, make sure they're in the right order.
+	ModManager.fix_mod_order()
+	
 	var icons: Array[Texture2D] = ModManager.get_active_mod_icons()
 	
 	# Clear existing icons.

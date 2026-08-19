@@ -28,6 +28,9 @@ var _progress_at_fail = -1
 ## Share play data with the PerformanceCalculator, and connect to gameplay 
 ## signals.
 func _ready() -> void:
+	# Attach mod list to the play data in case it is saved later.
+	play_data.mods = ModManager.get_mod_list()
+	
 	PerformanceCalculator.connect_play_data(play_data)
 	Signals.scored.connect(_scored)
 	Signals.missed.connect(_missed)

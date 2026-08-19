@@ -77,8 +77,10 @@ func get_active_mod_icons() -> Array[Texture2D]:
 func fix_mod_order() -> void:
 	# Bit mods should be applied in the order of:
 	# overclocked -> single-lane -> zeroed out.
-	# Right now those are the only mods where order matters.
+	# Underclocked must be applied before unstable otherwise unstable's 100 
+	# damage will be reduced to 75 by underclocked.
 	var bit_mods = []
+	var unstable_mod = null
 	var all_mods = []
 	
 	for mod in _active_mods:
@@ -88,8 +90,15 @@ func fix_mod_order() -> void:
 				all_mods.push_back(mod)
 			else:
 				bit_mods.push_back(mod)
+		elif mod.type == ModType.UNSTABLE:
+			unstable_mod = mod
 		else:
 			all_mods.push_back(mod)
+	
+	# If unstable mod exists, push it to the array now. If underclocked is also
+	# active it will have already been added in the for loop above.
+	if unstable_mod != null:
+		all_mods.push_back(unstable_mod)
 	
 	# If there are one or more bit mods left to order, continue.
 	var remaining_bit_mods = bit_mods.size()
