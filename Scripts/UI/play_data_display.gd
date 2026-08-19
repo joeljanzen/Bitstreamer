@@ -83,9 +83,7 @@ func _ready() -> void:
 
 
 ## Show all stats for the play, or hide those extra stats.
-func _on_see_more_pressed() -> void:
-	_menu_click_sound.play()
-	
+func toggle_see_more() -> void:
 	see_more = !see_more # Toggle value.
 	if see_more:
 		custom_minimum_size.y = MINIMUM_SIZE_EXPANDED
@@ -95,6 +93,15 @@ func _on_see_more_pressed() -> void:
 		custom_minimum_size.y = MINIMUM_SIZE_DEFAULT
 		extra_stats.hide()
 		extra_stats_2.hide()
+
+
+## Show all stats for the play, or hide those extra stats.
+func _on_see_more_pressed() -> void:
+	_menu_click_sound.play()
+	toggle_see_more()
+	# For the one in the pause screen.
+	if get_parent().name == "CurrentPlayContainer":
+		PauseUI.expanded_play_display = !PauseUI.expanded_play_display
 
 
 ## Add icons for the active mods from the play.

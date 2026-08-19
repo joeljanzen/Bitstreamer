@@ -73,6 +73,37 @@ theme = ExtResource("1_bthaf")
 theme_override_font_sizes/font_size = 40
 text = "Current Progress: 92.23%"
 
+[node name="CurrentPlay" type="MarginContainer" parent="CanvasLayer" unique_id=337436802]
+offset_right = 10.0
+offset_bottom = 10.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme = ExtResource("1_bthaf")
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+
+[node name="CurrentPlayContainer" type="VBoxContainer" parent="CanvasLayer/CurrentPlay" unique_id=1256928690]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/CurrentPlay/CurrentPlayContainer" unique_id=2016853050]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CurrentPlay/CurrentPlayContainer/PanelContainer" unique_id=1944388109]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PlayLabel" type="Label" parent="CanvasLayer/CurrentPlay/CurrentPlayContainer/PanelContainer/MarginContainer" unique_id=988116115]
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "This Play"
+
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1362538356]
 stream = ExtResource("3_cf5hy")
 bus = &"Menu"

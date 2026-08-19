@@ -3,15 +3,22 @@ extends Control
 ## Pause the current game, letting the player quit, change settings, or resume.
 
 @onready var _progress_label = $CanvasLayer/VBoxContainer/Progress
+# Hide this to hide the whole thing, for the tutorial basically
+#@onready var _current_play = $CanvasLayer/CurrentPlay
+@onready var _current_play_container = $CanvasLayer/CurrentPlay/CurrentPlayContainer
 
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 @onready var _canvas = $CanvasLayer
 
+## If the play display was expanded last time the player resumed playing.
+static var expanded_play_display := true
+
 ## Emitted when the resume button is pressed.
 signal resumed
 
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
+var _play_display_scene = preload("res://Scenes/UI/play_data_display.tscn")
 
 var _level_UI: LevelUI
 
@@ -23,6 +30,16 @@ func _ready() -> void:
 		_progress_label.text = "Current Progress: %.2f%%" % progress
 	else: # progress is not applicable for whatever reason.
 		_progress_label.hide()
+	
+	# Add play display with current playdata.
+	# Ensure primary color is used.
+	PlayDataDisplay.use_primary_colour = true
+	var play_display: PlayDataDisplay = _play_display_scene.instantiate()
+	play_display.setup(_level_UI.play_data)
+	_current_play_container.add_child(play_display)
+	
+	if expanded_play_display:
+		play_display.toggle_see_more()
 
 
 ## Input handling.
