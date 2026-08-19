@@ -100,8 +100,6 @@ func _on_see_more_pressed() -> void:
 ## Add icons for the active mods from the play.
 func _add_mod_icons() -> void:
 	if !play_data.mods.is_empty():
-		#mod_container.show()
-		
 		for mod in play_data.mods:
 			var texture_rect = TextureRect.new()
 			texture_rect.texture = ModManager.get_icon(mod)

@@ -92,8 +92,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func start_level(level_offset: float = 0) -> void:
 	_levelUI.set_level_length(level_info.length)
 	
-	# Apply all mods, then set values.
+	# Ensure the correct mod order and then save list to play data.
 	ModManager.fix_mod_order()
+	_levelUI.play_data.mods = ModManager.get_mod_list()
+	
+	# Apply all mods, then set values.
 	var final_diff = ModManager.apply_difficulty_mods(level_info.difficulty)
 	PerformanceCalculator.set_difficulty(final_diff)
 	var final_speed = ModManager.apply_speed_mods(level_info.speed)
