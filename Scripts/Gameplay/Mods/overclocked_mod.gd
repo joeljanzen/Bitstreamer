@@ -12,8 +12,14 @@ func mod_difficulty(base_difficulty: float) -> float:
 
 
 func mod_speed(base_speed: float) -> float:
-	var new_speed = base_speed + 3
-	return min(new_speed, LevelInfo.SPEED_MAX)
+	if base_speed <= LevelInfo.SPEED_MAX:
+		var new_speed = base_speed + 2
+		return min(new_speed, LevelInfo.SPEED_MAX)
+	else:
+	# If the double time mod increased the speed above the maximum value, we 
+	# simply do not change the speed value at all. We CANNOT decrease it to the
+	# maximum speed, and certainly shouldn't increase it even more.
+		return base_speed
 
 
 func mod_damage(base_damage: int) -> int:

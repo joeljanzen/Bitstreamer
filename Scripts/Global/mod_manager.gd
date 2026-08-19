@@ -7,6 +7,8 @@ const OVERCLOCKED_ICON_PATH: String = "res://Resources/Sprites/Mods/overclocked_
 const UNDERCLOCKED_ICON_PATH: String = "res://Resources/Sprites/Mods/underclocked_mod.png"
 const ZEROED_OUT_ICON_PATH: String = "res://Resources/Sprites/Mods/zeroed_out_mod.png"
 const SINGLE_LANE_ICON_PATH: String = "res://Resources/Sprites/Mods/single_lane_mod.png"
+const DOUBLE_TIME_ICON_PATH: String = "res://Resources/Sprites/Mods/double_time_mod.png"
+const HALF_TIME_ICON_PATH: String = "res://Resources/Sprites/Mods/half_time_mod.png"
 
 ## The types of mods that can be applied to a level.
 enum ModType {
@@ -16,6 +18,8 @@ enum ModType {
 	UNDERCLOCKED,
 	ZEROED_OUT,
 	SINGLE_LANE,
+	DOUBLE_TIME,
+	HALF_TIME,
 }
 
 ## An array of all mod buttons. Used to disable mods that are incompatible with
@@ -59,6 +63,10 @@ func get_icon(mod: ModType) -> Texture2D:
 			return load(ZEROED_OUT_ICON_PATH)
 		ModManager.ModType.SINGLE_LANE:
 			return load(SINGLE_LANE_ICON_PATH)
+		ModManager.ModType.DOUBLE_TIME:
+			return load(DOUBLE_TIME_ICON_PATH)
+		ModManager.ModType.HALF_TIME:
+			return load(HALF_TIME_ICON_PATH)
 		_:
 			return load("res://icon.svg")
 
@@ -159,6 +167,10 @@ func toggle_mod_active(mod: ModType) -> void:
 				_active_mods.push_back(ZeroedOutMod.new())
 			ModManager.ModType.SINGLE_LANE:
 				_active_mods.push_back(SingleLaneMod.new())
+			ModManager.ModType.DOUBLE_TIME:
+				_active_mods.push_back(DoubleTimeMod.new())
+			ModManager.ModType.HALF_TIME:
+				_active_mods.push_back(HalfTimeMod.new())
 	
 	_toggle_incompatible_mods(mod)
 
@@ -183,6 +195,10 @@ func _toggle_incompatible_mods(mod: ModType) -> void:
 			_toggle_button_disabled(ModType.UNDERCLOCKED)
 		ModManager.ModType.UNDERCLOCKED:
 			_toggle_button_disabled(ModType.OVERCLOCKED)
+		ModManager.ModType.DOUBLE_TIME:
+			_toggle_button_disabled(ModType.HALF_TIME)
+		ModManager.ModType.HALF_TIME:
+			_toggle_button_disabled(ModType.DOUBLE_TIME)
 
 
 func _toggle_button_disabled(button_type: ModType) -> void:
@@ -236,3 +252,13 @@ func apply_bit_mods(base_bit: Bit.Type, last_bit: Bit.Type) -> Bit.Type:
 		if mod.has_method("mod_bits"):
 			final_bit = mod.mod_bits(final_bit, last_bit)
 	return final_bit
+
+
+## Returns the speed factor to play the level at. For instance, a value of 2
+## would mean the level should be played at 2x speed.
+func get_playback_speed_factor() -> float:
+	var final_playback_speed = 1
+	for mod in _active_mods:
+		if mod.has_method("mod_playback_speed"):
+			final_playback_speed = mod.mod_playback_speed(final_playback_speed)
+	return final_playback_speed

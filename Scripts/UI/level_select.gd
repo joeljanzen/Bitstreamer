@@ -22,7 +22,7 @@ class_name LevelSelect
 
 @onready var _mods_panel = $CanvasLayer/ModsPanel
 @onready var _mods_animation = $CanvasLayer/ModsPanel/ModsAnimationPlayer
-@onready var _mod_button_container = $CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer
+@onready var _mod_button_container = $CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer
 @onready var _mod_icon_container = $CanvasLayer/ModsPanel/ModIcons/IconContainer
 @onready var _clear_mods_button = $CanvasLayer/ModsPanel/ClearMods/ClearModsButton
 
@@ -458,6 +458,7 @@ func _apply_mods_to_level_buttons() -> void:
 	for button: LevelButton in _level_button_container.get_children():
 		if button.level_info.version != "Tutorial":
 			button.apply_active_mods()
+			button.update_labels()
 
 
 func _on_mods_button_pressed() -> void:

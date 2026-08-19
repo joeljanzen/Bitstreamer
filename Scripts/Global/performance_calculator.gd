@@ -96,6 +96,15 @@ func set_approach_time(speed: float) -> float:
 	return approach_time
 
 
+## Get the speed value for a given approach time. Useful when you want the 
+## speed increased/decreased by a certain factor for double/half time mods.
+func get_speed_from_approach_time(approach_time_: float) -> float:
+	if approach_time_ >= 0.75:
+		return (3 - approach_time_) / 0.25 + 1
+	else:
+		return (0.75 - approach_time_) / 0.125 + 10
+
+
 ## Returns if a click is close enough to the perfect click time to be clickable,
 ## given accuracy in milliseconds off the perfect click.
 func is_clickable(accuracy: float) -> bool:

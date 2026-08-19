@@ -100,6 +100,7 @@ func start_level(level_offset: float = 0) -> void:
 	level_damage = ModManager.apply_damage_mods(level_info.damage)
 	
 	conductor.set_song(level_info.song)
+	conductor.apply_tempo_scaling()
 	conductor.timed_event.connect(_receive_timed_event)
 
 	# The total time in the song when the next bit should be sent.

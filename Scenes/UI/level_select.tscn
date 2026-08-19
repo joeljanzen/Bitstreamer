@@ -332,20 +332,33 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="ModButtonContainer" type="GridContainer" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer" unique_id=744763801]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer" unique_id=1623365777]
 layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="ScrollbarMargin" type="MarginContainer" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer" unique_id=831658143]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 10
+
+[node name="ModButtonContainer" type="GridContainer" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin" unique_id=744763801]
+custom_minimum_size = Vector2(0, 950)
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/h_separation = 25
 theme_override_constants/v_separation = 25
 columns = 2
 
-[node name="ModButton" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=1693415256 instance=ExtResource("4_texu8")]
+[node name="ModButton" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=1693415256 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mod_name = "Stable"
 description = "The program is so stable that no number of errors will be able to crash it."
 
-[node name="ModButton2" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=983125917 instance=ExtResource("4_texu8")]
+[node name="ModButton2" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=983125917 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -353,7 +366,7 @@ mod = 1
 mod_name = "Unstable"
 description = "The program is teeming with bugs and is constantly on the verge of crashing. Even a single mistake will result in a catastrophic failure."
 
-[node name="ModButton3" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=241893222 instance=ExtResource("4_texu8")]
+[node name="ModButton3" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=241893222 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -361,7 +374,7 @@ mod = 2
 mod_name = "Overclocked"
 description = "Hunger for more performance? Push the program to its absolute limits. Errors are more devastating but may still be recovered from."
 
-[node name="ModButton4" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=1385952493 instance=ExtResource("4_texu8")]
+[node name="ModButton4" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=1385952493 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -369,7 +382,23 @@ mod = 3
 mod_name = "Underclocked"
 description = "Having trouble keeping up? Lessen the strain put on the program. Errors are less dangerous and more easily handled."
 
-[node name="ModButton5" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=901601075 instance=ExtResource("4_texu8")]
+[node name="ModButton5" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=2130985400 instance=ExtResource("4_texu8")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mod = 6
+mod_name = "Double Time"
+description = "The program is running a lot faster than normal!"
+
+[node name="ModButton6" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=1280130979 instance=ExtResource("4_texu8")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mod = 7
+mod_name = "Half Time"
+description = "The program is running a lot slower than normal!"
+
+[node name="ModButton7" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=901601075 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -377,7 +406,7 @@ mod = 4
 mod_name = "Zeroed Out"
 description = "By a terrible mistake, all bits have become zeroes! How the program still runs is a great mystery."
 
-[node name="ModButton6" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer" unique_id=181478866 instance=ExtResource("4_texu8")]
+[node name="ModButton8" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=181478866 instance=ExtResource("4_texu8")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

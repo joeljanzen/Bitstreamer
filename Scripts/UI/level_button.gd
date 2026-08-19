@@ -70,14 +70,13 @@ func _ready() -> void:
 	#modded_info = level_info.duplicate(DUPLICATE_INTERNAL_STATE) as LevelInfo
 	modded_info = LevelInfo.new(level_info.file_name)
 	
-	
 	_name_label.text = level_info.song_name
 	_version_label.text = level_info.version
 	_bit_count_label.text = str(level_info.bit_count) + " bits"
-	_length_label.text = _float_as_time(level_info.length)
-	_bpm_label.text = _trim_decimals(level_info.bpm) + " BPM"
-	# This sets the labels for any potentially modified values, such as speed.
-	apply_active_mods()
+	
+	if level_info.version != "Tutorial":
+		apply_active_mods()
+	update_labels()
 	
 	# Aesthetics
 	update_title_color()
@@ -114,12 +113,41 @@ func update_title_color() -> void:
 
 ## Apply current active mods to update the level button info.
 func apply_active_mods() -> void:
+	var speed_factor = ModManager.get_playback_speed_factor()
+	modded_info.length = level_info.length / speed_factor
+	modded_info.bpm = level_info.bpm * speed_factor
+	
 	modded_info.difficulty = ModManager.apply_difficulty_mods(level_info.difficulty)
-	modded_info.speed = ModManager.apply_speed_mods(level_info.speed)
 	modded_info.damage = ModManager.apply_damage_mods(level_info.damage)
+	
+	# Calculate the effective speed value given a speed factor other than 1.
+	# Mods that effect level playback speed like double time affect this.
+	
+	if speed_factor != 1:
+		var base_approach_time = PerformanceCalculator.get_approach_time(level_info.speed)
+		var approach_time = base_approach_time / speed_factor
+		modded_info.speed = PerformanceCalculator.get_speed_from_approach_time(approach_time)
+		modded_info.speed = ModManager.apply_speed_mods(modded_info.speed)
+	else:
+		modded_info.speed = ModManager.apply_speed_mods(level_info.speed)
+
+
+## Update all labels with level info (includes active mods have been applied).
+func update_labels() -> void:
+	_length_label.text = _float_as_time(modded_info.length)
+	_bpm_label.text = _trim_decimals(round(modded_info.bpm)) + " BPM"
 	_difficulty_label.text = "Difficulty: " + _trim_decimals(modded_info.difficulty)
-	_speed_label.text = "Speed: " + _trim_decimals(modded_info.speed)
+	
 	_damage_label.text = "Damage: " + str(modded_info.damage)
+	
+	# A few mods have the potential to lower the speed value below the minimum 
+	# or increase it above the normal maximum. Allow the value to increase
+	# above the maximum, but it has potential to become negative if the 
+	# approach time is very long. Instead, show a speed of zero.
+	var display_speed = modded_info.speed
+	if modded_info.speed < LevelInfo.SPEED_MIN:
+		display_speed = 0
+	_speed_label.text = "Speed: " + _trim_decimals(display_speed)
 
 
 ## Converts the level length in seconds to a string in minutes and seconds.
@@ -219,8 +247,8 @@ func _hide_popup() -> void:
 func _on_difficulty_panel_mouse_entered() -> void:	
 	_popup_label.text = (
 "Difficulty determines the click accuracy required to
-get a perfect, good, or okay score, or miss a bit. 
-The minimum difficulty is 0 and the maximum is 12."
+get a perfect, good, or okay score, or miss a bit. The 
+minimum unmodded difficulty is 0 and the maximum is 12."
 	+ "[color=" + GameSettings.perfect_click_colour + "]"
 	+ "\n\nPerfect score: +-" + 
 	str(int(PerformanceCalculator.get_perfect_click_range(modded_info.difficulty)))
@@ -246,8 +274,8 @@ The minimum difficulty is 0 and the maximum is 12."
 func _on_speed_panel_mouse_entered() -> void:
 	_popup_label.text = (
 "Speed determines how long the bit takes to reach the
-cursor after appearing on screen. The minimum speed is
-1 and the maximum is 12.\n\n"
+cursor after appearing on screen. The minimum unmodded
+speed is 1 and the maximum is 12.\n\n"
 	+ "[color=" + GameSettings.perfect_click_colour + "]Bit time to cursor: " +
 	str(int(PerformanceCalculator.get_approach_time(modded_info.speed) * 1000)) 
 	+ " ms"

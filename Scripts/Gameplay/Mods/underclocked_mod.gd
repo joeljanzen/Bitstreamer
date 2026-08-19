@@ -12,8 +12,14 @@ func mod_difficulty(base_difficulty: float) -> float:
 
 
 func mod_speed(base_speed: float) -> float:
-	var new_speed = base_speed - 3
-	return max(new_speed, LevelInfo.SPEED_MIN)
+	if base_speed >= LevelInfo.SPEED_MIN:
+		var new_speed = base_speed - 2
+		return max(new_speed, LevelInfo.SPEED_MIN)
+	else:
+	# If the half time mod decreased the speed below the minimum value, we 
+	# simply do not change the speed value at all. We CANNOT increase it to the
+	# minimum speed, and certainly shouldn't lower it even more.
+		return base_speed
 
 
 func mod_damage(base_damage: int) -> int:

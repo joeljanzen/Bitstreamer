@@ -1,4 +1,4 @@
-song_name=Short Test,bpm=100,speed=7.5,diff=10,dmg=100,song=Memecore.wav,length=4.2,bit_count=4
+song_name=Short Test,bpm=100,speed=12,diff=12,dmg=100,song=Memecore.wav,length=4.2,bit_count=4
 
 4,0
 1,0

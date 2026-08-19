@@ -42,6 +42,11 @@ func set_song(song: AudioStream) -> void:
 	stream = song
 
 
+## Adjusts playback speed based on active mods.
+func apply_tempo_scaling() -> void:
+	pitch_scale = ModManager.get_playback_speed_factor()
+
+
 ## Sets up the beat signal given a bpm and returns the seconds per beat (how 
 ## much time will pass between each beat signal emission). The beat frequency is 
 ## multiplied by the beat coefficient. If you want the beat signal to occur 
