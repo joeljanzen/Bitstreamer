@@ -24,6 +24,7 @@ class_name LevelSelect
 @onready var _mods_animation = $CanvasLayer/ModsPanel/ModsAnimationPlayer
 @onready var _mod_button_container = $CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ModButtonContainer
 @onready var _mod_icon_container = $CanvasLayer/ModsPanel/ModIcons/IconContainer
+@onready var _clear_mods_button = $CanvasLayer/ModsPanel/ClearMods/ClearModsButton
 
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
@@ -136,6 +137,9 @@ func _ready() -> void:
 		_update_active_mod_icons()
 	ModManager.mod_buttons = mod_buttons
 	ModManager.set_mod_button_states()
+	
+	if ModManager.has_active_mods():
+		_clear_mods_button.show()
 
 
 ## Input handling.
@@ -446,7 +450,11 @@ func _close_mods_panel() -> void:
 	
 	_mods_animation.play_backwards("popup")
 	
-	# Update all level button values.
+	_apply_mods_to_level_buttons()
+
+
+## For each level button, update its stats according to current active mods.
+func _apply_mods_to_level_buttons() -> void:
 	for button: LevelButton in _level_button_container.get_children():
 		if button.level_info.version != "Tutorial":
 			button.apply_active_mods()
@@ -470,6 +478,10 @@ func _mod_button_pressed(mod: ModManager.ModType) -> void:
 	_menu_click_sound.play()
 	ModManager.toggle_mod_active(mod)
 	_update_active_mod_icons()
+	if ModManager.has_active_mods():
+		_clear_mods_button.show()
+	else:
+		_clear_mods_button.hide()
 
 
 ## For each active mod, show its icon in the top of the modifiers panel.
@@ -494,3 +506,11 @@ func _update_active_mod_icons() -> void:
 
 func _mod_button_hovered() -> void:
 	_menu_focus_sound.play()
+
+
+func _on_clear_mods_button_pressed() -> void:
+	_menu_click_sound.play()
+	ModManager.clear_all_mods()
+	_update_active_mod_icons()
+	_apply_mods_to_level_buttons() # This will reset their values to normal.
+	_clear_mods_button.hide()

@@ -154,6 +154,15 @@ func toggle_mod_active(mod: ModType) -> void:
 	_toggle_incompatible_mods(mod)
 
 
+## Remove all currently active mods.
+func clear_all_mods() -> void:
+	_active_mods = []
+	for button in mod_buttons:
+		if button.is_disabled():
+			button.toggle_disabled()
+		button.set_pressed(false)
+
+
 ## Toggle the disabled state of mod buttons incompatible with the mod given.
 func _toggle_incompatible_mods(mod: ModType) -> void:
 	match mod:
@@ -176,7 +185,7 @@ func _toggle_button_disabled(button_type: ModType) -> void:
 func _set_button_pressed(button_type: ModType) -> void:
 	for button in mod_buttons:
 		if button.mod == button_type:
-			button.set_pressed()
+			button.set_pressed(true)
 
 
 ## Apply all active mods with difficulty adjustment to a base difficulty, 

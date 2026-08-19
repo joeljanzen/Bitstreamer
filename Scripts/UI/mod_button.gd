@@ -46,9 +46,13 @@ func _on_button_mouse_entered() -> void:
 		mouse_entered.emit()
 
 
+func is_disabled() -> bool:
+	return button.disabled
+
+
 func toggle_disabled() -> void:
 	button.disabled = !button.disabled
 
 
-func set_pressed() -> void:
-	button.set_pressed_no_signal(true)
+func set_pressed(pressed: bool) -> void:
+	button.set_pressed_no_signal(pressed)
