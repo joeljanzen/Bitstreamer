@@ -4,9 +4,9 @@ extends Control
 
 @onready var panel = $Panel
 @onready var score_label = $Panel/MarginContainer/VBoxContainer/MainStats/ScoreLabel
-@onready var mod_container = $Panel/MarginContainer/VBoxContainer/MainStats/MarginContainer/ModContainer
-@onready var accuracy_label = $Panel/MarginContainer/VBoxContainer/MainStats/VBoxContainer/AccuracyLabel
-@onready var max_combo_label = $Panel/MarginContainer/VBoxContainer/MainStats/VBoxContainer/MaxComboLabel
+@onready var mod_container = $Panel/MarginContainer/VBoxContainer/MainStats/ModContainer
+@onready var accuracy_label = $Panel/MarginContainer/VBoxContainer/SecondaryStats/AccuracyLabel
+@onready var max_combo_label = $Panel/MarginContainer/VBoxContainer/SecondaryStats/MaxComboLabel
 @onready var perfects_label = $Panel/MarginContainer/VBoxContainer/ExtraStats/PerfectsLabel
 @onready var goods_label = $Panel/MarginContainer/VBoxContainer/ExtraStats/GoodsLabel
 @onready var okays_label = $Panel/MarginContainer/VBoxContainer/ExtraStats/OkaysLabel
@@ -20,11 +20,11 @@ extends Control
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
 ## How much to darken the pinkified panel displayed for perfect scores.
-const PANEL_DARKEN_AMOUNT: float = 0.70
+const PANEL_DARKEN_AMOUNT: float = 0.80
 
-const MINIMUM_SIZE_DEFAULT = 50
+const MINIMUM_SIZE_DEFAULT = 85
 
-const MINIMUM_SIZE_EXPANDED = 100
+const MINIMUM_SIZE_EXPANDED = 135
 
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 32
@@ -47,6 +47,8 @@ func setup(data: PlayData) -> void:
 ## Dynamic stylebox colouring.
 ## Set all label values.
 func _ready() -> void:
+	custom_minimum_size.y = MINIMUM_SIZE_DEFAULT
+	
 	score_label.text = str(play_data.score)
 	
 	# Dynamic colouring stuff.
@@ -98,7 +100,7 @@ func _on_see_more_pressed() -> void:
 ## Add icons for the active mods from the play.
 func _add_mod_icons() -> void:
 	if !play_data.mods.is_empty():
-		$Panel/MarginContainer/VBoxContainer/MainStats/MarginContainer.show()
+		#mod_container.show()
 		
 		for mod in play_data.mods:
 			var texture_rect = TextureRect.new()
