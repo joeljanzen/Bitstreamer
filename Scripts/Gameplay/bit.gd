@@ -66,6 +66,10 @@ var _is_missed = false
 ## True if the mouse is within the bit's area2D currently.
 var _mouse_hovered_in_menu = false
 
+## The playback speed factor used for this play.
+var _speed_factor: float = 1
+
+
 ## The width of a bit, in pixels.
 ## WARNING: NOT GOOD TO HARDCODE THIS, SHOULD BE CALCULATED SOMEHOW
 static func get_width() -> int:
@@ -125,8 +129,13 @@ func create(value: Bit.Type, cursor_y: float, cursor_x: float,
 	var distance_to_cursor = starting_x - cursor_x # In pixels.
 	_speed = distance_to_cursor / time_to_cursor
 	if !in_main_menu:
-		@warning_ignore("narrowing_conversion")
-		_speed *= ModManager.get_playback_speed_factor()
+		var temp_speed_factor = ModManager.get_playback_speed_factor()
+		# In the tutorial the conductor is left at 1x speed (pitch scale)
+		# so this ensures even with mods active we don't change speed there.
+		if conductor.pitch_scale == temp_speed_factor:
+			_speed_factor = temp_speed_factor
+			@warning_ignore("narrowing_conversion")
+			_speed *= _speed_factor
 	
 	_damage = damage
 	_conductor = conductor
@@ -213,7 +222,7 @@ func kill(is_perfect_click: bool) -> void:
 ## and a negative value is late.
 func get_accuracy() -> int:
 	var time_of_click = _conductor.get_time()
-	return round((_time_of_perfect_click - time_of_click) * 1000) / ModManager.get_playback_speed_factor()
+	return round((_time_of_perfect_click - time_of_click) * 1000) / _speed_factor
 
 
 ## Play animations for a correct click.
