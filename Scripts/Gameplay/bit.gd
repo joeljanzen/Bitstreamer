@@ -170,40 +170,36 @@ func set_bit_visuals(type: Type) -> void:
 ## If not, the bit keeps going and can try to be clicked again.
 func click(value: Bit.Type) -> bool:
 	var accuracy = get_accuracy()
-	#print("Click accuracy: %.2f ms for bit of type %d" % [accuracy, _value])
+	#print("Click accuracy: %.2f ms for bit of type %s" % [accuracy, Type.keys()[_value]])
 	var is_perfect_click = false
 	
+	# First ensure the bit is actually within the clickable time window.
 	if PerformanceCalculator.is_clickable(accuracy):
 		# Successfully clicked the bit.
 		if get_value() == value:
 			_is_clicked = true
 			var raw_score = PerformanceCalculator.get_raw_score(accuracy)
 			Signals.scored.emit(PerformanceCalculator.get_score(accuracy), raw_score)
-			var click_quality: PerformanceCalculator.ClickQuality = PerformanceCalculator.get_click_quality(raw_score)
+			var click_quality = PerformanceCalculator.get_click_quality(raw_score)
 			_score_animation(click_quality)
 			
 			if click_quality == PerformanceCalculator.ClickQuality.PERFECT:
 				is_perfect_click = true
-			
-		# Clicked the bit in time, but clicked the wrong key.
-		else:
-			# Enter bit can only be clicked if you actually press enter, and
-			# clicking enter does nothing to the other bits.
-			if get_value() == Bit.Type.ENTER or value == Bit.Type.ENTER:
-				return false
-			# Back bit behaves the same as the enter key.
-			if get_value() == Bit.Type.BACK or value == Bit.Type.BACK:
-				return false
-			# Take damage and lose combo, as if you missed the bit.
-			elif get_value() == Bit.Type.ZERO or get_value() == Bit.Type.ONE:
+		# Clicked the bit, but clicked the wrong key. Take damage and lose combo.
+		elif ((get_value() == Bit.Type.ZERO and value == Bit.Type.ONE)
+			or (get_value() == Bit.Type.ONE and value == Bit.Type.ZERO)
+			or (get_value() == Bit.Type.ENTER and value == Bit.Type.BACK)
+			or (get_value() == Bit.Type.BACK and value == Bit.Type.ENTER)):
 				_is_clicked = true
+				_is_missed = true
 				Signals.missed.emit(_damage, PerformanceCalculator.ClickQuality.ERROR)
 				_score_animation(PerformanceCalculator.ClickQuality.ERROR)
-				_is_missed = true
+		# Other combinations of bit and click values do not count as errors, they 
+		# simply ignore each other and are not considered clicked.
+	
+	if _is_clicked:
 		kill(is_perfect_click)
-		return true
-	else:
-		return false
+	return _is_clicked
 
 
 ## Get rid of the bit (either right away, or let it fade away).

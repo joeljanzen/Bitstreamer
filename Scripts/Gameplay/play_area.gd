@@ -181,9 +181,9 @@ func _click_bit(value: Bit.Type) -> bool:
 	if !_bitstream.is_empty():
 		var curr_bit: Bit = _bitstream[0]
 		
-		if curr_bit.click(value): # if this isn't true, bit is not clickable
+		if curr_bit.click(value): # If this isn't true, bit is not clickable.
 			var correct_click = curr_bit.get_value() == value
-			if correct_click: # will be popped off in the missed_bit func otherwise
+			if correct_click: # Will be popped off in the missed_bit func otherwise.
 				_bitstream.pop_front()
 			
 			match value:
@@ -192,29 +192,33 @@ func _click_bit(value: Bit.Type) -> bool:
 				Bit.Type.ONE:
 					_click_one(correct_click)
 				Bit.Type.ENTER:
-					_click_enter()
+					_click_enter(correct_click)
 				Bit.Type.BACK:
-					_click_back()
+					_click_back(correct_click)
 			return true
 	return false # bit stream was empty
 
 
-## Missed a bit, so remove from the stream.
+## Missed a bit, so remove from the stream. Misses AND errors will call this
+## function, however overall an error is still counted as a click since it still 
+## removes the bit. Regardless, misses and errors pop their bits from the stream
+## inside this function (normally clicked bits are popped in _click_bit() above).
 func _missed_bit(_damage, _click_quality):
 	if !_bitstream.is_empty():
 		var missed: Bit = _bitstream.pop_front()
 		
-		match missed.get_value():
-			Bit.Type.ZERO:
-				if _click_quality == PerformanceCalculator.ClickQuality.MISS:
+		if _click_quality == PerformanceCalculator.ClickQuality.MISS:
+			match missed.get_value():
+				Bit.Type.ZERO:
 					_miss_zero_one()
-			Bit.Type.ONE:
-				if _click_quality == PerformanceCalculator.ClickQuality.MISS:
+				Bit.Type.ONE:
 					_miss_zero_one()
-			Bit.Type.ENTER:
-				_miss_enter()
-			Bit.Type.BACK:
-				_miss_back()
+				Bit.Type.ENTER:
+					_miss_enter()
+				Bit.Type.BACK:
+					_miss_back()
+		# Otherwise the miss was an error, which counts as clicking the bit
+		# and was already handled in the various _click_bit functions.
 
 # Updating the play area in response to inputs,
 # including animations and sounds.
@@ -255,8 +259,7 @@ func _miss_back() -> void:
 	_new_line(false)
 
 
-## The animations and sounds that trigger when clicking a zero bit
-## (different outcome depending on correct or incorrect click).
+## The animations and sounds that trigger when clicking a zero bit.
 func _click_zero(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
@@ -268,8 +271,7 @@ func _click_zero(correct_click: bool) -> void:
 	_fill_bit_label_lines()
 
 
-## The animations and sounds that trigger when clicking a one bit
-## (different outcome depending on correct or incorrect click).
+## The animations and sounds that trigger when clicking a one bit.
 func _click_one(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
@@ -281,22 +283,26 @@ func _click_one(correct_click: bool) -> void:
 	_fill_bit_label_lines()
 
 
-## The animations and sounds that trigger when clicking an enter bit
-## (you cannot incorrectly click an enter bit, you either click it right or 
-## the game clicks it for you).
-func _click_enter() -> void:
+## The animations and sounds that trigger when clicking an enter bit.
+func _click_enter(correct_click: bool) -> void:
 	_cursor.play("enter")
-	_enter_back_click_sound.play()
-	_new_line(true)
+	if correct_click:
+		_enter_back_click_sound.play()
+		_new_line(true)
+	else:
+		_error_click_sound.play()
+		_new_line(false) # Still ensure the cursor goes the right way.
 
 
-## The animations and sounds that trigger when clicking a back bit
-## (you cannot incorrectly click a back bit, you either click it right or 
-## the game clicks it for you).
-func _click_back() -> void:
+## The animations and sounds that trigger when clicking a back bit.
+func _click_back(correct_click: bool) -> void:
 	_cursor.play("back")
-	_enter_back_click_sound.play()
-	_new_line(false)
+	if correct_click:
+		_enter_back_click_sound.play()
+		_new_line(false)
+	else:
+		_error_click_sound.play()
+		_new_line(true) # Still ensure the cursor goes the right way.
 
 
 ## The animations and sounds that trigger when moving to the next line. Moves 
