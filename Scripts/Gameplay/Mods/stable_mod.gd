@@ -8,3 +8,7 @@ var type = ModManager.ModType.STABLE
 
 func mod_damage(_base_damage: int) -> int:
 	return 0
+
+
+func mod_score_multiplier(base_multiplier: float) -> float:
+	return base_multiplier * 0.5

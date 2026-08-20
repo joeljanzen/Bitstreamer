@@ -54,5 +54,5 @@ func toggle_disabled() -> void:
 	button.disabled = !button.disabled
 
 
-func set_pressed(pressed: bool) -> void:
-	button.set_pressed_no_signal(pressed)
+func set_pressed(press: bool) -> void:
+	button.set_pressed_no_signal(press)

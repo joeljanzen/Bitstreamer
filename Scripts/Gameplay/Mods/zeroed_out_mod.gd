@@ -12,3 +12,7 @@ func mod_bits(base_bit: Bit.Type, _last_bit: Bit.Type) -> Bit.Type:
 			return Bit.Type.ZERO
 		_:
 			return base_bit
+
+
+func mod_score_multiplier(base_multiplier: float) -> float:
+	return base_multiplier * 0.75

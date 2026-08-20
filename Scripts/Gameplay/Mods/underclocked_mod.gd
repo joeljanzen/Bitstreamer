@@ -25,3 +25,7 @@ func mod_speed(base_speed: float) -> float:
 func mod_damage(base_damage: int) -> int:
 	var new_damage = base_damage * 0.75
 	return max(new_damage, LevelInfo.DAMAGE_MIN)
+
+
+func mod_score_multiplier(base_multiplier: float) -> float:
+	return base_multiplier * 0.75

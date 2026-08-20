@@ -7,3 +7,7 @@ var type = ModManager.ModType.UNSTABLE
 
 func mod_damage(_base_damage: int) -> int:
 	return 100
+
+
+func mod_score_multiplier(base_multiplier: float) -> float:
+	return base_multiplier

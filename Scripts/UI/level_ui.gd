@@ -18,6 +18,9 @@ var _raw_score: int = 0
 ## The maximum raw score obtainable in this play.
 var _max_accuracy: int = 0
 
+## The value to multiply the player's score by. This value is set by active mods.
+var _score_multiplier: float = 1
+
 ## Used to look up the current point in the level and display progress.
 var _conductor: Conductor
 
@@ -25,9 +28,13 @@ var _conductor: Conductor
 var _progress_at_fail = -1
 
 
-## Share play data with the PerformanceCalculator, and connect to gameplay 
-## signals.
+## Get the score multiplier from ModManager, attach the modlist to playdata,
+## share that play data with the PerformanceCalculator, and connect to gameplay 
+## score and miss signals.
 func _ready() -> void:
+	_score_multiplier = ModManager.get_score_multiplier()
+	print("score multiplier for this play is %.2f" % _score_multiplier)
+	
 	# Attach mod list to the play data in case it is saved later.
 	play_data.mods = ModManager.get_mod_list()
 	
@@ -159,11 +166,11 @@ func reset_stats() -> void:
 	_raw_score = 0
 
 
-## Points have been scored. amount is the total score gained, and raw_amount is
+## Points have been scored. Amount is the total score gained, and raw_amount is
 ## the score given for the click before any bonuses 
 ## (okay, good, or perfect click).
 func _scored(amount: int, raw_amount: int) -> void:
-	play_data.score += amount
+	play_data.score += round(amount * _score_multiplier)
 	_score_label.text = "%d" % play_data.score
 	play_data.combo += 1
 	play_data.max_combo = max(play_data.combo, play_data.max_combo)

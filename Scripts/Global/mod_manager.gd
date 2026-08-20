@@ -262,3 +262,12 @@ func get_playback_speed_factor() -> float:
 		if mod.has_method("mod_playback_speed"):
 			final_playback_speed = mod.mod_playback_speed(final_playback_speed)
 	return final_playback_speed
+
+
+## Returns the value to multiply the player's score by, based on the active 
+## mods. Some mods increase score, while others decrease it.
+func get_score_multiplier() -> float:
+	var final_score_multiplier = 1
+	for mod in _active_mods:
+		final_score_multiplier = mod.mod_score_multiplier(final_score_multiplier)
+	return final_score_multiplier
