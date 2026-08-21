@@ -148,6 +148,11 @@ func update_labels() -> void:
 	if modded_info.speed < LevelInfo.SPEED_MIN:
 		display_speed = 0
 	_speed_label.text = "Speed: " + _trim_decimals(display_speed)
+	
+	# If the practice slider is open, we should update the current value
+	# since the level length might have changed.
+	if _practice_container.visible:
+		_on_time_slider_value_changed(_time_slider.value)
 
 
 ## Converts the level length in seconds to a string in minutes and seconds.
@@ -323,8 +328,11 @@ func _on_back_button_pressed() -> void:
 
 func _on_time_slider_value_changed(value: float) -> void:
 	_practice_offset = value
-	var progress = value / level_info.length * 100
-	_time_slider_label.text = "Start at %s (%.2f%%)" % [_float_as_time(value), progress]
+	
+	var mod_factor = modded_info.length / level_info.length
+	var value_modded = value * mod_factor
+	var progress = value_modded / modded_info.length * 100
+	_time_slider_label.text = "Start at %s (%.2f%%)" % [_float_as_time(value_modded), progress]
 
 
 func _on_time_slider_drag_started() -> void:
