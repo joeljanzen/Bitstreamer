@@ -423,7 +423,7 @@ layout_mode = 2
 [node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton6" unique_id=1042089148]
 layout_mode = 2
 mouse_filter = 1
-text = "Pause or Resume Level"
+text = "Pause and Resume Level"
 
 [node name="PauseResume" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton6" unique_id=86993352]
 custom_minimum_size = Vector2(0, 100)
