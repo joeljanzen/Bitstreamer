@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b2xdua12unviw"
+path="res://.godot/imported/Terminal Velocity.wav-5b670af7b2bcab5fc2761eab8ade5481.sample"
+
+[deps]
+
+source_file="res://Resources/Audio/LevelTracks/Terminal Velocity.wav"
+dest_files=["res://.godot/imported/Terminal Velocity.wav-5b670af7b2bcab5fc2761eab8ade5481.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
