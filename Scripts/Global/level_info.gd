@@ -311,14 +311,12 @@ static func get_random_level_info() -> LevelInfo:
 	# Load all level info filenames
 	var level_filenames: PackedStringArray = DirAccess.get_files_at("res://Levels")
 	
+	# Ensure we do not select the tutorial.
+	level_filenames.erase("tutorial1.txt")
+	
 	# Pick one
 	var random_index = randi_range(0, level_filenames.size() - 1)
-	
-	# Never pick the tutorial level.
-	if level_filenames[random_index] == "tutorial1.txt":
-		level_filenames.remove_at(random_index)
-		random_index = randi_range(0, level_filenames.size() - 1)
-	
+
 	# Ensure you never get the same one twice in a row.
 	if last_played != null:
 		if level_filenames[random_index] == last_played.file_name:
@@ -331,6 +329,8 @@ static func get_random_level_info() -> LevelInfo:
 			random_index = randi_range(0, level_filenames.size() - 1)
 	
 	last_played = LevelInfo.new(level_filenames[random_index])
+	
+	print("We picked %s" % (last_played.song_filename))
 	return last_played
 
 
