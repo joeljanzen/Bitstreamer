@@ -437,23 +437,43 @@ mouse_filter = 2
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="ClearMods" type="MarginContainer" parent="CanvasLayer/ModsPanel" unique_id=1253399288]
-custom_minimum_size = Vector2(0, 62)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -113.0
-offset_bottom = 62.0
-grow_horizontal = 0
-mouse_filter = 2
-theme_override_constants/margin_right = 50
-
-[node name="ClearModsButton" type="Button" parent="CanvasLayer/ModsPanel/ClearMods" unique_id=666696250]
+[node name="ModBar" type="HBoxContainer" parent="CanvasLayer/ModsPanel" unique_id=1426524980]
 visible = false
+layout_mode = 0
+offset_left = 650.0
+offset_right = 1150.0
+offset_bottom = 62.0
+mouse_filter = 2
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ModsPanel/ModBar" unique_id=517657313]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ModsPanel/ModBar/PanelContainer" unique_id=1492560625]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MultiplierLabel" type="Label" parent="CanvasLayer/ModsPanel/ModBar/PanelContainer/MarginContainer" unique_id=27637830]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "1.25x score"
+
+[node name="Spacer" type="Control" parent="CanvasLayer/ModsPanel/ModBar" unique_id=1461079113]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ClearModsButton" type="Button" parent="CanvasLayer/ModsPanel/ModBar" unique_id=666696250]
 custom_minimum_size = Vector2(0, 62)
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_font_sizes/font_size = 33
 text = "Clear All"
 flat = true
@@ -554,6 +574,6 @@ bus = &"Menu"
 [connection signal="pressed" from="CanvasLayer/SortPanel/MarginContainer/SortButtonContainer/BitCount" to="." method="_on_bit_count_pressed"]
 [connection signal="pressed" from="CanvasLayer/ModsPanel/VBoxContainer/ModsButton" to="." method="_on_mods_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ModsPanel/VBoxContainer/ModsCloseButton" to="." method="_on_mods_close_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/ModsPanel/ClearMods/ClearModsButton" to="." method="_on_clear_mods_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/ModsPanel/ModBar/ClearModsButton" to="." method="_on_clear_mods_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/PlaysPanel/PlaysButton" to="." method="_on_plays_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/PlaysPanel/PlaysButton" to="." method="_on_plays_button_pressed"]

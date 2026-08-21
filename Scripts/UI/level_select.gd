@@ -24,7 +24,8 @@ class_name LevelSelect
 @onready var _mods_animation = $CanvasLayer/ModsPanel/ModsAnimationPlayer
 @onready var _mod_button_container = $CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer
 @onready var _mod_icon_container = $CanvasLayer/ModsPanel/ModIcons/IconContainer
-@onready var _clear_mods_button = $CanvasLayer/ModsPanel/ClearMods/ClearModsButton
+@onready var _mod_bar = $CanvasLayer/ModsPanel/ModBar
+@onready var _score_multiplier_label = $CanvasLayer/ModsPanel/ModBar/PanelContainer/MarginContainer/MultiplierLabel
 
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
@@ -139,7 +140,7 @@ func _ready() -> void:
 	ModManager.set_mod_button_states()
 	
 	if ModManager.has_active_mods():
-		_clear_mods_button.show()
+		_show_updated_mod_bar()
 
 
 ## Input handling.
@@ -480,9 +481,9 @@ func _mod_button_pressed(mod: ModManager.ModType) -> void:
 	ModManager.toggle_mod_active(mod)
 	_update_active_mod_icons()
 	if ModManager.has_active_mods():
-		_clear_mods_button.show()
+		_show_updated_mod_bar()
 	else:
-		_clear_mods_button.hide()
+		_mod_bar.hide()
 
 
 ## For each active mod, show its icon in the top of the modifiers panel.
@@ -517,4 +518,11 @@ func _on_clear_mods_button_pressed() -> void:
 	ModManager.clear_all_mods()
 	_update_active_mod_icons()
 	_apply_mods_to_level_buttons() # This will reset their values to normal.
-	_clear_mods_button.hide()
+	_mod_bar.hide()
+
+
+## Update the mod bar and then make it visible, displaying the current score
+## multiplier and the clear mods button.
+func _show_updated_mod_bar() -> void:
+	_score_multiplier_label.text = "%.2fx score" % ModManager.get_score_multiplier()
+	_mod_bar.show()
