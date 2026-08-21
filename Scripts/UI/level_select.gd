@@ -84,10 +84,6 @@ var _mods_panel_open := false
 func _ready() -> void:
 	_scroll_box.set_deferred("scroll_vertical", _last_level_select_position)
 	
-	# Every time a level is quit, reset the offset so playing a level without
-	# modifying the offset actually starts at the beginning again.
-	GameLevel.last_offset = 0
-	
 	if !SaveLoad.save_data.tutorial_played:
 		_plays_panel.hide()
 		_sort_button.hide()

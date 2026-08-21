@@ -88,6 +88,11 @@ func _ready() -> void:
 	_time_slider.max_value = level_info.length - _MINIMUM_PLAY_TIME
 	
 	_set_play_button_text_color()
+	
+	# Keep the last offset at first, if the offset is not too large for this 
+	# level.
+	if GameLevel.last_offset < _time_slider.max_value:
+		_time_slider.value = GameLevel.last_offset
 
 
 ## Set popup positions and time when it should show.
@@ -186,7 +191,11 @@ func _trim_decimals(value: float) -> String:
 
 
 func _on_play_button_pressed() -> void:
-	GameLevel.last_offset = _practice_offset
+	# Only use an offset if they actually selected practice, duh.
+	if _practice_container.visible:
+		GameLevel.last_offset = _practice_offset
+	else:
+		GameLevel.last_offset = 0
 	button_pressed.emit(level_info)
 
 
