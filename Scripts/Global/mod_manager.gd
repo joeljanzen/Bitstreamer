@@ -271,3 +271,12 @@ func get_score_multiplier() -> float:
 	for mod in _active_mods:
 		final_score_multiplier = mod.mod_score_multiplier(final_score_multiplier)
 	return final_score_multiplier
+
+
+## Returns true if enter and back bits do damage, or false if they don't (which
+## is the default).
+func enters_and_backs_deal_damage() -> bool:
+	for mod in _active_mods:
+		if mod.has_method("enable_enters_and_backs_damage"):
+			return true
+	return false

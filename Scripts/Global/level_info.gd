@@ -329,8 +329,6 @@ static func get_random_level_info() -> LevelInfo:
 			random_index = randi_range(0, level_filenames.size() - 1)
 	
 	last_played = LevelInfo.new(level_filenames[random_index])
-	
-	print("We picked %s" % (last_played.song_filename))
 	return last_played
 
 

@@ -31,7 +31,10 @@ var completed := false
 var level_info: LevelInfo
 
 ## This value is set using level info and active mods before the level begins.
-var level_damage: int
+var _level_damage: int
+## This value is set using active mods before the level begins. If true, 
+## the enter and back bit also do damage.
+var _enter_back_damage: bool
 
 # Level playback.
 ## A queue of upcoming bits.
@@ -97,7 +100,8 @@ func start_level(level_offset: float = 0) -> void:
 	PerformanceCalculator.set_difficulty(final_diff)
 	var final_speed = ModManager.apply_speed_mods(level_info.speed)
 	bit_time_to_cursor = PerformanceCalculator.set_approach_time(final_speed)
-	level_damage = ModManager.apply_damage_mods(level_info.damage)
+	_level_damage = ModManager.apply_damage_mods(level_info.damage)
+	_enter_back_damage = ModManager.enters_and_backs_deal_damage()
 	
 	conductor.set_song(level_info.song)
 	conductor.apply_tempo_scaling()
@@ -158,9 +162,10 @@ func _receive_timed_event(event_index: int) -> void:
 	# Update the last bit for next timed event.
 	last_bit = bit
 	
-	var dmg: int = level_damage
-	if bit == Bit.Type.ENTER:
+	var dmg: int = _level_damage
+	if !_enter_back_damage and (bit == Bit.Type.ENTER or bit == Bit.Type.BACK):
 		dmg = 0
+	
 	_play_area.send_bit(bit, bit_time_to_cursor, dmg, conductor)
 	
 	var delay_queue_index = event_index + 1

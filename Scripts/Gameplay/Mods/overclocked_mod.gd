@@ -40,3 +40,8 @@ func mod_bits(base_bit: Bit.Type, _last_bit: Bit.Type) -> Bit.Type:
 
 func mod_score_multiplier(base_multiplier: float) -> float:
 	return base_multiplier * 1.25
+
+
+## A mod simply having this method will enable the damage.
+func enable_enters_and_backs_damage() -> void:
+	pass

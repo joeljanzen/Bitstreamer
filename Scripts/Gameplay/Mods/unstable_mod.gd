@@ -11,3 +11,8 @@ func mod_damage(_base_damage: int) -> int:
 
 func mod_score_multiplier(base_multiplier: float) -> float:
 	return base_multiplier
+
+
+## A mod simply having this method will enable the damage.
+func enable_enters_and_backs_damage() -> void:
+	pass

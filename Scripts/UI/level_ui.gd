@@ -33,7 +33,6 @@ var _progress_at_fail = -1
 ## score and miss signals.
 func _ready() -> void:
 	_score_multiplier = ModManager.get_score_multiplier()
-	print("score multiplier for this play is %.2f" % _score_multiplier)
 	
 	# Attach mod list to the play data in case it is saved later.
 	play_data.mods = ModManager.get_mod_list()
