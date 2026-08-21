@@ -327,7 +327,7 @@ static func _compare_level_speed(a: LevelButton, b: LevelButton) -> bool:
 
 ## Compares 2 levels based on their BPM, from low to high.
 static func _compare_level_bpm(a: LevelButton, b: LevelButton) -> bool:
-	return a.level_info.bpm < b.level_info.bpm
+	return a.modded_info.bpm < b.modded_info.bpm
 
 
 ## Compares 2 levels based on their difficulty, from low to high.
@@ -342,7 +342,7 @@ static func _compare_level_damage(a: LevelButton, b: LevelButton) -> bool:
 
 ## Compares 2 levels based on their length (in seconds), from low to high.
 static func _compare_level_length(a: LevelButton, b: LevelButton) -> bool:
-	return a.level_info.length < b.level_info.length
+	return a.modded_info.length < b.modded_info.length
 
 
 ## Compares 2 levels based on their bit count, from low to high.
@@ -465,10 +465,11 @@ func _open_mods_panel() -> void:
 
 func _close_mods_panel() -> void:
 	_mods_panel_open = false
-	
 	_mods_animation.play_backwards("popup")
 	
 	_apply_mods_to_level_buttons()
+	# Since tutorial isn't affected by mods we have to sort levels again.
+	_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
 
 
 ## For each level button, update its stats according to current active mods.
@@ -535,6 +536,8 @@ func _on_clear_mods_button_pressed() -> void:
 	ModManager.clear_all_mods()
 	_update_active_mod_icons()
 	_apply_mods_to_level_buttons() # This will reset their values to normal.
+	# Gotta resort since the dumb tutorial isn't affected by mods.
+	_sort_levels_by_comparator(SaveLoad.save_data.sorting_method) 
 	_mod_bar.hide()
 
 
