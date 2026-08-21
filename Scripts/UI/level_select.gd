@@ -151,6 +151,23 @@ func _unhandled_input(event: InputEvent) -> void:
 				_menu_click_sound.play()
 				_close_mods_panel()
 				accept_event()
+	if event.is_action_pressed("toggle_mods_panel"):
+		_menu_click_sound.play()
+		if _mods_panel_open:
+			_close_mods_panel()
+		else:
+			_menu_click_sound.play()
+			_open_mods_panel()
+		accept_event()
+	if event.is_action_pressed("toggle_plays_panel"):
+		_menu_click_sound.play()
+		if _plays_panel_is_open():
+			_close_plays_panel()
+			_auto_open_play_panel = false
+		else:
+			_open_plays_panel()
+			_auto_open_play_panel = true
+		accept_event()
 
 
 ## Return the comparator function for the given sorting method.

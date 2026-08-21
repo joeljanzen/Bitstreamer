@@ -503,6 +503,44 @@ text = "Interface"
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
+[node name="KeybindButton9" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=259912966]
+layout_mode = 2
+
+[node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton9" unique_id=1711904777]
+layout_mode = 2
+mouse_filter = 1
+text = "Toggle Mods Panel"
+
+[node name="ToggleModsPanel" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton9" unique_id=146068081]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+theme = ExtResource("2_ym2e5")
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton9" unique_id=473718540]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="KeybindButton10" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=714731917]
+layout_mode = 2
+
+[node name="ActionLabel" type="Label" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton10" unique_id=85898291]
+layout_mode = 2
+mouse_filter = 1
+text = "Toggle Plays Panel"
+
+[node name="TogglePlaysPanel" type="Button" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton10" unique_id=1018022348]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+theme = ExtResource("2_ym2e5")
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton10" unique_id=1828351665]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
 [node name="KeybindButton5" type="HBoxContainer" parent="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=972426781]
 layout_mode = 2
 
@@ -664,6 +702,8 @@ bus = &"Menu"
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton6/PauseResume" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_pause_resume_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton7/Restart" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_restart_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton8/Quit" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_quit_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton9/ToggleModsPanel" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_toggle_mods_panel_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton10/TogglePlaysPanel" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_toggle_plays_panel_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_toggle_level_ui_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_color_changed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_pressed"]

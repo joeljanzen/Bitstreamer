@@ -8,8 +8,12 @@ extends Control
 @onready var _back_bit_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton4/BackBitClick
 @onready var _pause_resume_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton6/PauseResume
 @onready var _restart_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton7/Restart
-@onready var _level_ui_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI
 @onready var _quit_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton8/Quit
+@onready var _level_ui_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI
+
+@onready var _mods_panel_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton9/ToggleModsPanel
+@onready var _plays_panel_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton10/TogglePlaysPanel
+
 @onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
 
 const BINDABLE_ACTIONS: Array[String] = [
@@ -21,6 +25,8 @@ const BINDABLE_ACTIONS: Array[String] = [
 	"restart",
 	"quit",
 	"toggle_level_UI",
+	"toggle_mods_panel",
+	"toggle_plays_panel",
 ]
 
 var current_action: String
@@ -38,6 +44,8 @@ func setup() -> void:
 	_set_button_text_to_bind(_restart_button, "restart")
 	_set_button_text_to_bind(_quit_button, "quit")
 	_set_button_text_to_bind(_level_ui_button, "toggle_level_UI")
+	_set_button_text_to_bind(_mods_panel_button, "toggle_mods_panel")
+	_set_button_text_to_bind(_plays_panel_button, "toggle_plays_panel")
 
 
 func _ready() -> void:
@@ -148,4 +156,20 @@ func _on_quit_pressed() -> void:
 	waiting_for_input = true
 	current_action = "quit"
 	current_button = _quit_button
+	current_button.text = " Press any key "
+
+
+func _on_toggle_mods_panel_pressed() -> void:
+	_menu_click_sound.play()
+	waiting_for_input = true
+	current_action = "toggle_mods_panel"
+	current_button = _mods_panel_button
+	current_button.text = " Press any key "
+
+
+func _on_toggle_plays_panel_pressed() -> void:
+	_menu_click_sound.play()
+	waiting_for_input = true
+	current_action = "toggle_plays_panel"
+	current_button = _plays_panel_button
 	current_button.text = " Press any key "
