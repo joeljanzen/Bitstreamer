@@ -421,6 +421,7 @@ func _plays_panel_is_open() -> bool:
 func _open_plays_panel() -> void:
 	if !_plays_panel_is_open():
 		_level_scroll_margin_animation.play("slide_left")
+	_plays_panel_animation.play("RESET") # So if it was playing, it starts over.
 	_plays_panel_animation.play("popout")
 	_plays_button.text = " > "
 
