@@ -105,6 +105,31 @@ func get_speed_from_approach_time(approach_time_: float) -> float:
 		return (0.75 - approach_time_) / 0.125 + 10
 
 
+## Mods that change playback speed effectively change how long a second is.
+## This makes the speed value inaccurate to represent the real amount of time
+## that passes. The effective speed is the actual amount of time that will
+## pass for a bit to approach, given active mods.
+func get_effective_speed(base_speed: float) -> float:
+	var speed_factor = ModManager.get_playback_speed_factor()
+	if speed_factor != 1:
+		var base_approach_time = get_approach_time(base_speed)
+		var effective_approach_time = base_approach_time / speed_factor
+		return get_speed_from_approach_time(effective_approach_time)
+	else:
+		return base_speed
+
+
+## Reverses the get_effective_speed function.
+func get_speed_from_effective_speed(base_speed: float) -> float:
+	var speed_factor = ModManager.get_playback_speed_factor()
+	if speed_factor != 1:
+		var base_approach_time = get_approach_time(base_speed)
+		var relative_approach_time = base_approach_time * speed_factor
+		return get_speed_from_approach_time(relative_approach_time)
+	else:
+		return base_speed
+
+
 ## Returns if a click is close enough to the perfect click time to be clickable,
 ## given accuracy in milliseconds off the perfect click.
 func is_clickable(accuracy: float) -> bool:

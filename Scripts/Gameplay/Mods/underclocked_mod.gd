@@ -12,14 +12,17 @@ func mod_difficulty(base_difficulty: float) -> float:
 
 
 func mod_speed(base_speed: float) -> float:
-	if base_speed >= LevelInfo.SPEED_MIN:
-		var new_speed = base_speed - 2
-		return max(new_speed, LevelInfo.SPEED_MIN)
-	else:
-	# If the half time mod decreased the speed below the minimum value, we 
-	# simply do not change the speed value at all. We CANNOT increase it to the
-	# minimum speed, and certainly shouldn't lower it even more.
+	var effective_speed = PerformanceCalculator.get_effective_speed(base_speed)
+	# If the effective speed is already at or below the minimum speed, we
+	# do nothing.
+	if effective_speed <= LevelInfo.SPEED_MIN:
 		return base_speed
+	else:
+		# We want to change the effective speed value by 2, not the actual
+		# speed, and ensure effective speed doesn't go below speed 1.
+		var new_speed = max(effective_speed - 2, LevelInfo.SPEED_MIN)
+		# convert our new effective speed into actual speed then return it.
+		return PerformanceCalculator.get_speed_from_effective_speed(new_speed)
 
 
 func mod_damage(base_damage: int) -> int:

@@ -12,14 +12,17 @@ func mod_difficulty(base_difficulty: float) -> float:
 
 
 func mod_speed(base_speed: float) -> float:
-	if base_speed <= LevelInfo.SPEED_MAX:
-		var new_speed = base_speed + 2
-		return min(new_speed, LevelInfo.SPEED_MAX)
-	else:
-	# If the double time mod increased the speed above the maximum value, we 
-	# simply do not change the speed value at all. We CANNOT decrease it to the
-	# maximum speed, and certainly shouldn't increase it even more.
+	var effective_speed = PerformanceCalculator.get_effective_speed(base_speed)
+	# If the effective speed is already at or above the maximum speed, we
+	# do nothing.
+	if effective_speed >= LevelInfo.SPEED_MAX:
 		return base_speed
+	else:
+		# We want to change the effective speed value by 2, not the actual
+		# speed, and ensure effective speed doesn't go above speed 12.
+		var new_speed = min(effective_speed + 2, LevelInfo.SPEED_MAX)
+		# convert our new effective speed into actual speed then return it.
+		return PerformanceCalculator.get_speed_from_effective_speed(new_speed)
 
 
 func mod_damage(base_damage: int) -> int:

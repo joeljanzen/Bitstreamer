@@ -125,16 +125,8 @@ func apply_active_mods() -> void:
 	modded_info.difficulty = ModManager.apply_difficulty_mods(level_info.difficulty)
 	modded_info.damage = ModManager.apply_damage_mods(level_info.damage)
 	
-	# Calculate the effective speed value given a speed factor other than 1.
-	# Mods that effect level playback speed like double time affect this.
-	
-	if speed_factor != 1:
-		var base_approach_time = PerformanceCalculator.get_approach_time(level_info.speed)
-		var approach_time = base_approach_time / speed_factor
-		modded_info.speed = PerformanceCalculator.get_speed_from_approach_time(approach_time)
-		modded_info.speed = ModManager.apply_speed_mods(modded_info.speed)
-	else:
-		modded_info.speed = ModManager.apply_speed_mods(level_info.speed)
+	modded_info.speed = ModManager.apply_speed_mods(level_info.speed)
+	modded_info.speed = PerformanceCalculator.get_effective_speed(modded_info.speed)
 
 
 ## Update all labels with level info (includes active mods have been applied).
@@ -150,7 +142,8 @@ func update_labels() -> void:
 	# above the maximum, but it has potential to become negative if the 
 	# approach time is very long. Instead, show a speed of zero.
 	var display_speed = modded_info.speed
-	if modded_info.speed < LevelInfo.SPEED_MIN:
+	print(display_speed)
+	if modded_info.speed < 0:
 		display_speed = 0
 	_speed_label.text = "Speed: " + _trim_decimals(display_speed)
 	
