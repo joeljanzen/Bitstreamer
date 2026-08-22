@@ -32,8 +32,6 @@ func _ready() -> void:
 		_progress_label.hide()
 	
 	# Add play display with current playdata.
-	# Ensure primary color is used.
-	PlayDataDisplay.use_primary_colour = true
 	var play_display: PlayDataDisplay = _play_display_scene.instantiate()
 	play_display.setup(_level_UI.play_data)
 	_current_play_container.add_child(play_display)

@@ -407,8 +407,6 @@ func _display_plays(level_info: LevelInfo) -> void:
 			else:
 				_plays_label.text = "1 Play"
 			
-			# Start with the primary color
-			PlayDataDisplay.use_primary_colour = true
 			for play in plays:
 				var play_display: PlayDataDisplay = _play_display_scene.instantiate()
 				play_display.setup(play)

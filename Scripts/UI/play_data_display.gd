@@ -20,7 +20,7 @@ extends Control
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
 ## How much to darken the pinkified panel displayed for perfect scores.
-const PANEL_DARKEN_AMOUNT: float = 0.80
+const PANEL_DARKEN_AMOUNT: float = 0.85
 
 const MINIMUM_SIZE_DEFAULT = 85
 
@@ -28,10 +28,6 @@ const MINIMUM_SIZE_EXPANDED = 135
 
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 32
-
-## The theme color to use for this PlayDataDisplay's score color.
-## Alternates between true and false each time one is created.
-static var use_primary_colour := true
 
 var play_data: PlayData
 
@@ -51,23 +47,28 @@ func _ready() -> void:
 	
 	score_label.text = str(play_data.score)
 	
-	# Dynamic colouring stuff.
+	# Dynamic colouring depending on the play data.
+	var color: Color = GameSettings.zero_bit_colour
+	
+	# Use white for normal plays if the player is using the perfect color
+	# already as their primary theme colour.
+	if color == Color(GameSettings.perfect_click_colour):
+		color = Color.WHITE
+	
 	if play_data.accuracy == 100:
-		score_label.modulate = GameSettings.perfect_click_colour
-		
-		var style_box = StyleBoxFlat.new()
-		style_box.bg_color = Color(GameSettings.perfect_click_colour).darkened(PANEL_DARKEN_AMOUNT)
-		panel.add_theme_stylebox_override("panel", style_box)
-	else:
-		if use_primary_colour:
-			score_label.modulate = GameSettings.zero_bit_colour
+		color = Color(GameSettings.perfect_click_colour)
+		_recolor_panel(color)
+	# Colour the panel with the darkened primary if the play was a full combo.
+	elif (play_data.missed_clicks + play_data.error_clicks) == 0:
+		if color != Color.WHITE:
+			_recolor_panel(color)
 		else:
-			score_label.modulate = GameSettings.one_bit_colour
-		use_primary_colour = !use_primary_colour
+			# The darkened white looks bad so substitute it for this gray.
+			_recolor_panel(Color.DIM_GRAY)
+	score_label.modulate = color
 	
-	accuracy_label.text = "%.2f%% Accuracy" % play_data.accuracy
+	accuracy_label.text = _trim_decimals(play_data.accuracy) + "% Accuracy"
 	max_combo_label.text = "%dx Max Combo" % play_data.max_combo
-	
 	perfects_label.text = ("[color=%s]%d Perfect[/color]" % 
 	[GameSettings.perfect_click_colour, play_data.perfect_clicks])
 	goods_label.text = ("[color=%s]%d Good[/color]" % 
@@ -115,3 +116,16 @@ func _add_mod_icons() -> void:
 			texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 			texture_rect.custom_minimum_size.x = MOD_ICON_SIZE
 			mod_container.add_child(texture_rect)
+
+
+## Recolour the display panel.
+func _recolor_panel(color: Color) -> void:
+	var style_box = StyleBoxFlat.new()
+	style_box.bg_color = color.darkened(PANEL_DARKEN_AMOUNT)
+	panel.add_theme_stylebox_override("panel", style_box)
+
+
+## If the float has decimal places, it rounds up to 2 places. Otherwise, it 
+## includes no decimal places.
+func _trim_decimals(value: float) -> String:
+	return str(snappedf(value, 0.01)).rstrip("0").rstrip(".")

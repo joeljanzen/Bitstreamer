@@ -142,7 +142,6 @@ func update_labels() -> void:
 	# above the maximum, but it has potential to become negative if the 
 	# approach time is very long. Instead, show a speed of zero.
 	var display_speed = modded_info.speed
-	print(display_speed)
 	if modded_info.speed < 0:
 		display_speed = 0
 	_speed_label.text = "Speed: " + _trim_decimals(display_speed)
@@ -174,13 +173,10 @@ func _float_as_time(level_length: float) -> String:
 	return string
 
 
-## If the float has decimal places, it rounds to 2 places. Otherwise, it 
-## includes no decimal places and treats it like an int.
+## If the float has decimal places, it rounds up to 2 places. Otherwise, it 
+## includes no decimal places.
 func _trim_decimals(value: float) -> String:
-	if fmod(value, 1.0) == 0.0: # The float is really just an int.
-		return str(int(value))
-	else:
-		return str(snappedf(value, 0.01))
+	return str(snappedf(value, 0.01)).rstrip("0").rstrip(".")
 
 
 func _on_play_button_pressed() -> void:
