@@ -72,6 +72,9 @@ var _play_display_scene = preload("res://Scenes/UI/play_data_display.tscn")
 ## An array of all level info
 var _levels: Array[LevelInfo]
 
+## Access the array of PlayData for a level given the level filename.
+var _level_plays: Dictionary
+
 ## The level that plays are being displayed for currently. Could be null.
 var _current_plays_level: LevelInfo
 
@@ -137,6 +140,9 @@ func _ready() -> void:
 	
 	if ModManager.has_active_mods():
 		_show_updated_mod_bar()
+	
+	# Request level plays in the background.
+	SaveLoad.request_plays(_levels)
 
 
 ## Input handling.
@@ -391,7 +397,14 @@ func _display_plays(level_info: LevelInfo) -> void:
 		if _auto_open_play_panel:
 			_open_plays_panel()
 		
-		var plays = SaveLoad.load_plays(level_info)
+		var plays: Array[PlayData]
+		# Check if the plays have already been loaded.
+		if _level_plays.has(level_info.file_name):
+			plays = _level_plays.get(level_info.file_name)
+		# If they haven't, attempt to load them, then save them to the dict.
+		else:
+			plays = SaveLoad.load_plays(level_info)
+			_level_plays.set(level_info.file_name, plays)
 		var play_count = plays.size()
 	
 		_level_label.text = level_info.song_name + " (" + level_info.version + ")"
