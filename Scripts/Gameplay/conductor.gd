@@ -68,7 +68,7 @@ func set_beat_signal(bpm: float,  beat_coefficient: float = 1) -> float:
 ## arguments, instead of calling the inherited play() function.
 func play_with_offset(offset: float = 0, event_index: int = 0) -> void:
 	_time_delay_ends = 0
-	_time_of_next_beat = 0
+	_time_of_next_beat = offset
 	_timing_event_index = event_index
 	play(offset)
 
@@ -85,7 +85,7 @@ func fade_to_new_song(new_song: AudioStream, offset: float = 0, transition_speed
 	start_new_song.emit()
 	set_song(new_song)
 	_time_delay_ends = 0
-	_time_of_next_beat = 0
+	_time_of_next_beat = offset
 	_timing_event_index = 0
 	play(offset)
 	_volume_fade_in_animation.play("fade_in", -1, fade_speed_factor * 4)

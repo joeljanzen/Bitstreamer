@@ -128,9 +128,18 @@ func _ready() -> void:
 			level_button.button_hovered.connect(_display_plays)
 			level_button.button_hovered.connect(
 				func(info: LevelInfo) -> void: 
-					if LevelInfo.last_played_in_menu.song_name != info.song_name:
-						#preview_level_song.emit(info, info.length / 2)
-						preview_level_song.emit(info, 0)
+					if (LevelInfo.last_played_in_menu.song_name != info.song_name
+						|| LevelInfo.last_played_in_menu.length != info.length):
+						var offset: float
+						if info.version == "Tutorial":
+							# This is because the length value for levels
+							# isn't actually the length of the song that is
+							# in the level, it's an estimate of how long the
+							# tutorial will take.
+							offset = info.song.get_length() / 2
+						else:
+							offset = info.length / 2
+						preview_level_song.emit(info, offset)
 			)
 			_level_button_container.add_child(level_button)
 			if (LevelInfo.last_played != null
