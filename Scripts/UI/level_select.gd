@@ -35,7 +35,7 @@ signal selection_closed
 
 ## Emitted when a level has been focused for long enough that a preview of the
 ## song should play.
-signal preview_level_song(level_info: LevelInfo, offset: float)
+signal preview_level_song(level_info: LevelInfo)
 
 ## The methods of sorting available for levels.
 enum SortingType {
@@ -129,17 +129,9 @@ func _ready() -> void:
 			level_button.button_hovered.connect(
 				func(info: LevelInfo) -> void: 
 					if (LevelInfo.last_played_in_menu.song_name != info.song_name
-						|| LevelInfo.last_played_in_menu.length != info.length):
-						var offset: float
-						if info.version == "Tutorial":
-							# This is because the length value for levels
-							# isn't actually the length of the song that is
-							# in the level, it's an estimate of how long the
-							# tutorial will take.
-							offset = info.song.get_length() / 2
-						else:
-							offset = info.length / 2
-						preview_level_song.emit(info, offset)
+						|| LevelInfo.last_played_in_menu.song_preview 
+						!= info.song_preview):
+						preview_level_song.emit(info)
 			)
 			_level_button_container.add_child(level_button)
 			if (LevelInfo.last_played != null

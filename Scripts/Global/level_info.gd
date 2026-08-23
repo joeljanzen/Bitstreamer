@@ -2,6 +2,10 @@ class_name LevelInfo
 extends Node
 ## Stores information about a level.
 
+## The song preview for a level must be at least this long or it is invalid and
+## the preview will resort to the default offset.
+const MINIMUM_SONG_PREVIEW_LENGTH = 5
+
 ## The maximum difficulty value a level can have.
 const DIFFICULTY_MAX = 12
 ## The maximum speed value a level can have.
@@ -34,6 +38,8 @@ var song_filename: String = ""
 var song_name: String = ""
 ## The actual audio stream for the song of the level.
 var song: AudioStream
+## The offset from the start of the song in seconds to start the song preview.
+var song_preview: float = -1
 ## The beats per minute of the music (good luck if the song changes bpm bro).
 var bpm: float = -1
 ## The speed at which bits fly across the screen.
@@ -110,6 +116,13 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				error_loading = true
 				push_error("%s is not a valid song filename" % check)
 				break
+		# This tag is optional (default is halfway through the level's length).
+		elif tag.begins_with("song_preview="):
+			var check = tag.erase(0,"song_preview=".length())
+			if check.is_valid_float() and float(check) >= 0:
+				song_preview = float(check)
+			else:
+				push_error("%s is not a valid song preview offset" % check)
 		# This tag is optional (default version is "Normal").
 		elif tag.begins_with("version="):
 			var check = tag.erase(0, 8) 
@@ -206,6 +219,17 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 			push_error("Level length calculated as %f was invalid!" % length)
 		else: # We calculated a valid length, save it to file.
 			_save_tag_to_file("length", length)
+	
+	# The preview offset is optional, so if it doesn't exist or was set wrong
+	# we can generate a valid one.
+	var preview_too_close_to_end = song_preview > length - MINIMUM_SONG_PREVIEW_LENGTH
+	if preview_too_close_to_end:
+		push_error("Song preview offset is too close to the end of the song!")
+	if song_preview < 0 || preview_too_close_to_end:
+		song_preview = min(length / 2, length - MINIMUM_SONG_PREVIEW_LENGTH)
+		# If the total length is less than 5 seconds, the preview offset has to be zero.
+		song_preview = max(0, song_preview)
+	
 	if bit_count < 0:
 		if !_calculate_bit_count():
 			error_loading = true

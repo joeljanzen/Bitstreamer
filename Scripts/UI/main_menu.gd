@@ -137,9 +137,10 @@ func _start_song() -> void:
 
 
 ## Play a preview of the song for the currently focused level.
-func _preview_level_song(level_info: LevelInfo, offset: float = 0) -> void:
+func _preview_level_song(level_info: LevelInfo) -> void:
 	LevelInfo.last_played_in_menu = level_info
-	_conductor.fade_to_new_song(level_info.song, offset, _NEW_SONG_TRANSITION_TIME)
+	_conductor.fade_to_new_song(level_info.song, level_info.song_preview,
+		_NEW_SONG_TRANSITION_TIME)
 	await _conductor.start_new_song
 	
 	_now_playing_label.text = level_info.song_name
