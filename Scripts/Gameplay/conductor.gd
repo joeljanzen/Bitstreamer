@@ -2,6 +2,8 @@ class_name Conductor
 extends AudioStreamPlayer
 ## Controls the timing 
 
+@onready var _volume_fade_in_animation = $VolumeFade
+
 ## A precisely timed event trigger, set to be emitted after a given delay by the
 ## set_timed_event function. The index, starting at 0, indicates a specific
 ## timed event in the song, allowing the ability to send timed events for any
@@ -12,6 +14,9 @@ signal timed_event(event_index: int)
 ## regularly every beat of the song. This signal is distinct and unaffected by 
 ## the timed_event signal and set_timed_event function.
 signal beat
+
+## Emitted after fade_to_new_song is called, when the new song starts.
+signal start_new_song
 
 ## The seconds per beat (the time between beat signal emissions).
 ## If this value is zero, no beat signals are being sent.
@@ -66,6 +71,24 @@ func play_with_offset(offset: float = 0, event_index: int = 0) -> void:
 	_time_of_next_beat = 0
 	_timing_event_index = event_index
 	play(offset)
+
+
+## Fade out the current song if it is playing, then fade into the song with the
+## given offset. This all occurs over the time of transition speed in seconds.
+func fade_to_new_song(new_song: AudioStream, offset: float = 0, transition_speed: float = 1) -> void:
+	# Since we have to fade out and back in, we need the speed of each animation
+	# to be twice as fast as the total transition time.
+	var fade_speed_factor: float = 1 / transition_speed
+	_volume_fade_in_animation.play("fade_in", -1, -fade_speed_factor * 4 / 3, true)
+	await _volume_fade_in_animation.animation_finished
+	
+	start_new_song.emit()
+	set_song(new_song)
+	_time_delay_ends = 0
+	_time_of_next_beat = 0
+	_timing_event_index = 0
+	play(offset)
+	_volume_fade_in_animation.play("fade_in", -1, fade_speed_factor * 4)
 
 
 ## Pause or unpause the song.

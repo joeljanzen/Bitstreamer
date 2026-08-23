@@ -41,6 +41,9 @@ const BACKGROUND_BLUR_STRENGTH: float = 0.5
 ## Strength of the pulsing of the credits text.
 const CREDITS_PULSE_STRENGTH: float = 0.35
 
+## How many seconds it takes for one song to fade out and another to fade in.
+const _NEW_SONG_TRANSITION_TIME: float = 0.75
+
 const splash_text_filepath = "res://Resources/Text/splash_text.json"
 
 # WARNING: if not preloaded this scene can cause a noticable delay (it has to
@@ -133,6 +136,18 @@ func _start_song() -> void:
 	_conductor.play_with_offset()
 
 
+## Play a preview of the song for the currently focused level.
+func _preview_level_song(level_info: LevelInfo, offset: float = 0) -> void:
+	LevelInfo.last_played_in_menu = level_info
+	_conductor.fade_to_new_song(level_info.song, offset, _NEW_SONG_TRANSITION_TIME)
+	await _conductor.start_new_song
+	
+	_now_playing_label.text = level_info.song_name
+	beat_time = _conductor.set_beat_signal(level_info.bpm, BEAT_COEFFICIENT)
+	bit_time_to_cross_screen = beat_time * 8
+	title_pulse_interval = 0
+
+
 ## Fades title bit alpha. When the title pulses its alpha is reset.
 func _process(delta: float) -> void:
 	var fade_amount = delta / beat_time / (TITLE_PULSE_RATE + 1) * TITLE_FADE_COEFFICIENT
@@ -217,7 +232,8 @@ func _open_level_select() -> void:
 	
 	if level_select_node == null:
 		level_select_node = _level_select_scene.instantiate()
-		level_select_node.connect("selection_closed", _show_menu)
+		level_select_node.selection_closed.connect(_show_menu)
+		level_select_node.preview_level_song.connect(_preview_level_song)
 		add_child(level_select_node)
 	else:
 		level_select_node.show_UI()

@@ -33,6 +33,10 @@ class_name LevelSelect
 ## Emitted when the close button is pressed, or esc is pressed.
 signal selection_closed
 
+## Emitted when a level has been focused for long enough that a preview of the
+## song should play.
+signal preview_level_song(level_info: LevelInfo, offset: float)
+
 ## The methods of sorting available for levels.
 enum SortingType {
 	NAME,
@@ -122,6 +126,12 @@ func _ready() -> void:
 			level_button.setup(level)
 			level_button.button_pressed.connect(_level_button_pressed)
 			level_button.button_hovered.connect(_display_plays)
+			level_button.button_hovered.connect(
+				func(info: LevelInfo) -> void: 
+					if LevelInfo.last_played_in_menu.song_name != info.song_name:
+						#preview_level_song.emit(info, info.length / 2)
+						preview_level_song.emit(info, 0)
+			)
 			_level_button_container.add_child(level_button)
 			if (LevelInfo.last_played != null
 					and level.file_name == LevelInfo.last_played.file_name 
