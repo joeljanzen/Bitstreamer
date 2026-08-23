@@ -1,4 +1,4 @@
-song_name=First Steps,song=Tutorial S1.wav,version=Tutorial,bpm=100,speed=3.5,diff=0,dmg=0,length=180,bit_count=26
+song_name=First Steps,song=Tutorial S1.wav,song_preview=4.7,version=Tutorial,bpm=100,speed=3.5,diff=0,dmg=0,length=180,bit_count=26
 
 # Learn the zero and one bit.
 

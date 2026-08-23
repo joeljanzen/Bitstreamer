@@ -1,4 +1,4 @@
-song_name=Snowed Inn,song=Snowed Inn.wav,version=Normal,bpm=170,speed=5,diff=5,dmg=6,length=150.309,bit_count=250
+song_name=Snowed Inn,song=Snowed Inn.wav,song_preview=80,version=Normal,bpm=170,speed=5,diff=5,dmg=6,length=150.309,bit_count=250
 
 # 4s
 

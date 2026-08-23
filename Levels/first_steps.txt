@@ -1,4 +1,4 @@
-song_name=First Steps,song=First Steps.wav,version=Easy,bpm=100,speed=4,diff=1,dmg=2,length=98.4,bit_count=69
+song_name=First Steps,song=First Steps.wav,song_preview=45,version=Easy,bpm=100,speed=4,diff=1,dmg=2,length=98.4,bit_count=69
 
 4,0
 2,0

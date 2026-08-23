@@ -1,4 +1,4 @@
-song_name=Memecore,song=Memecore.wav,version=Normal,bpm=119,speed=5,diff=6,dmg=8,length=199.538,bit_count=188
+song_name=Memecore,song=Memecore.wav,song_preview=88,version=Normal,bpm=119,speed=5,diff=6,dmg=8,length=199.538,bit_count=188
 
 8,enter
 
