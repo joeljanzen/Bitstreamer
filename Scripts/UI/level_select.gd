@@ -55,6 +55,10 @@ const MOD_ICON_SIZE: int = 40
 ## Additional level scroll margin when the plays panel is open.
 const LEVEL_SCROLL_MARGIN_PLAYS = 300
 
+## How many seconds you aim to take to display all the plays for a level.
+## If there are a crazy amount of plays this time will be disregarded.
+const TARGET_TIME_TO_DISPLAY_PLAYS: float = 0.25
+
 ## The last position the player was on the level selection menu (on the 
 ## scrollbar).
 static var _last_level_select_position: int = 0
@@ -74,6 +78,9 @@ var _levels: Array[LevelInfo]
 
 ## Access the array of PlayData for a level given the level filename.
 var _level_plays: Dictionary
+
+## When true, any play display data that was gradually being loaded will halt.
+var _halt_plays_display_spawns := false
 
 ## The level that plays are being displayed for currently. Could be null.
 var _current_plays_level: LevelInfo
@@ -420,10 +427,39 @@ func _display_plays(level_info: LevelInfo) -> void:
 			else:
 				_plays_label.text = "1 Play"
 			
-			for play in plays:
-				var play_display: PlayDataDisplay = _play_display_scene.instantiate()
-				play_display.setup(play)
-				_plays_container.add_child(play_display)
+			# Stop the previous spawn_nodes func.
+			_halt_plays_display_spawns = true
+			await get_tree().process_frame
+			_halt_plays_display_spawns = false
+			_spawn_plays_nodes_over_time(plays, TARGET_TIME_TO_DISPLAY_PLAYS)
+
+
+func _spawn_plays_nodes_over_time(plays: Array[PlayData], target_duration: float) -> void:
+	# If the framerate is low enough that the target quantity is higher than 5 per frame, still only
+	# spawn 5 per frame. It will just spawn them all in slower.
+	const MAXIMUM_TARGET_QUANTITY = 5
+	
+	# Use the target FPS to gauge how many play display nodes can be added to the scene per frame
+	# in a timely fashion.
+	var fps = Engine.max_fps
+	if fps == 0 and DisplayServer.window_get_vsync_mode() != DisplayServer.VSyncMode.VSYNC_DISABLED:
+		fps = DisplayServer.screen_get_refresh_rate()
+	
+	var target_quantity_per_frame = int(ceil(plays.size() / target_duration / fps))
+	target_quantity_per_frame = min(target_quantity_per_frame, MAXIMUM_TARGET_QUANTITY)
+	
+	var play_display: PlayDataDisplay
+	for i in range(plays.size()):
+		if _halt_plays_display_spawns:
+			break
+		
+		play_display = _play_display_scene.instantiate()
+		play_display.setup(plays[i])
+		_plays_container.add_child(play_display)
+		
+		# Wait for the next frame before adding the next child
+		if i % target_quantity_per_frame == 0:
+			await get_tree().process_frame
 
 
 ## Returns if the plays panel is currently open.
