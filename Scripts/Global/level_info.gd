@@ -17,11 +17,11 @@ const SPEED_MIN = 1
 ## The minimum damage value a level can have.
 const DAMAGE_MIN = 0
 
-## Stores a reference to the level info of the last level played.
+## Stores the level info of the last level played.
 ## Useful for restarting levels.
 static var last_played: LevelInfo
 
-## The last level music played in the menu.
+## Stores the level whose music was last played in the main menu.
 static var last_played_in_menu: LevelInfo
 
 ## The file storing the info for this level.
@@ -317,7 +317,8 @@ static func get_random_level_info() -> LevelInfo:
 	# Pick one
 	var random_index = randi_range(0, level_filenames.size() - 1)
 
-	# Ensure you never get the same one twice in a row.
+	# Ensure you never get the same one twice in a row (either the last one
+	# played in the menu OR the last level that was played).
 	if last_played != null:
 		if level_filenames[random_index] == last_played.file_name:
 			level_filenames.remove_at(random_index)
@@ -328,8 +329,8 @@ static func get_random_level_info() -> LevelInfo:
 			level_filenames.remove_at(random_index)
 			random_index = randi_range(0, level_filenames.size() - 1)
 	
-	last_played = LevelInfo.new(level_filenames[random_index])
-	return last_played
+	last_played_in_menu = LevelInfo.new(level_filenames[random_index])
+	return last_played_in_menu
 
 
 ## Recalculates values of this level that typically change during level 

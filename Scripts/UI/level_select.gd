@@ -123,6 +123,10 @@ func _ready() -> void:
 			level_button.button_pressed.connect(_level_button_pressed)
 			level_button.button_hovered.connect(_display_plays)
 			_level_button_container.add_child(level_button)
+			if (LevelInfo.last_played != null
+					and level.file_name == LevelInfo.last_played.file_name 
+					and GameLevel.last_offset > 0):
+				level_button.enable_practice_mode()
 	
 	# If this isn't true, then there are no sort buttons yet so we can't try to
 	# sort anything (will get an out of bounds error since the buttons are 

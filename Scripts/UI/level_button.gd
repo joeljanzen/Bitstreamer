@@ -89,9 +89,9 @@ func _ready() -> void:
 	
 	_set_play_button_text_color()
 	
-	# Keep the last offset at first, if the offset is not too large for this 
-	# level.
-	if GameLevel.last_offset < _time_slider.max_value:
+	# Keep the last offset if this is the last level that was played.
+	if (LevelInfo.last_played != null 
+			and level_info.file_name == LevelInfo.last_played.file_name):
 		_time_slider.value = GameLevel.last_offset
 
 
@@ -150,6 +150,15 @@ func update_labels() -> void:
 	# since the level length might have changed.
 	if _practice_container.visible:
 		_on_time_slider_value_changed(_time_slider.value)
+
+
+## Enable practice mode for the level, showing a slider allowing the player
+## to choose where they want to start the level from.
+func enable_practice_mode() -> void:
+	_practice_button.hide()
+	_back_button.show()
+	_practice_container.show()
+	_on_time_slider_value_changed(_time_slider.value)
 
 
 ## Converts the level length in seconds to a string in minutes and seconds.
@@ -308,11 +317,7 @@ func _on_diff_spd_dmg_panel_mouse_exited() -> void:
 func _on_practice_button_pressed() -> void:
 	_click_button_sound.play()
 	
-	_practice_button.hide()
-	_back_button.show()
-	_practice_container.show()
-	
-	_on_time_slider_value_changed(_time_slider.value)
+	enable_practice_mode()
 
 
 func _on_back_button_pressed() -> void:
