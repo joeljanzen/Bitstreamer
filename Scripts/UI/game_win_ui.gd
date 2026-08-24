@@ -19,11 +19,22 @@ extends Control
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 100
 
+## How many seconds it should take for the score to reach its final value.
+const SCORE_ANIMATION_TIME: float = 1.5
+
+## A value between 0 and 1. Closer to 0 means more easing to the final value.
+const SCORE_ANIMATION_EASE: float = 0.21
+
 ## Stores data for the current play of a level, including score, combo, etc.
 var _play_data: PlayData
 
 ## The conductor controlling the music. Used to fade it out and do whatever else.
 var _conductor: Conductor
+
+## True after the score counting up animation has finished.
+var _score_animation_complete := false
+## Tracks the weight to lerp between 0 and the actual score.
+var _score_animation_weight: float = 0
 
 
 ## Display statistics for the play.
@@ -32,9 +43,6 @@ func _ready() -> void:
 	if GameLevel.last_offset > 0:
 		_win_message.text = "Practice Completed!"
 	
-	# When a play is perfect, make score color perfect.
-	if _play_data.accuracy == 100:
-		_score_label.modulate = GameSettings.perfect_click_colour
 	_score_label.text = str(_play_data.score)
 	
 	_accuracy_label.text = "%.2f%% Accuracy" % _play_data.accuracy
@@ -75,9 +83,22 @@ func _add_mod_icons() -> void:
 		_mods_container.add_child(texture_rect)
 
 
-## Idle animations in this screen, idk.
-func _process(_delta: float) -> void:
-	pass
+## Score counting up animation.
+func _process(delta: float) -> void:
+	if _score_animation_weight < 1:
+		var curr_weight: float = _score_animation_weight + (delta / SCORE_ANIMATION_TIME)
+		_score_animation_weight = min(1, curr_weight)
+		# Smooth out animation with easing.
+		var final_weight = ease(_score_animation_weight, SCORE_ANIMATION_EASE)
+		var score_value: int = lerp(0, _play_data.score, final_weight)
+		_score_label.text = str(score_value)
+	# When a play is perfect, make score color perfect.
+	elif !_score_animation_complete:
+		# Can play a cool sound here idk.
+		#_menu_click_sound.play()
+		if _play_data.accuracy == 100:
+			_score_label.modulate = GameSettings.perfect_click_colour
+		_score_animation_complete = true
 
 
 ## Connects the data for the current play to the GameWinUI.

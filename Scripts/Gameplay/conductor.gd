@@ -135,7 +135,6 @@ func fade_in(time: float) -> void:
 
 ## Slow down and decrease the pitch of the music drastically over the time given.
 func speed_and_pitch_down(time: float) -> void:
-	print("DO ITTT")
 	var fade_factor: float = 1 / time
 	_pitch_speed_fade_animation.play("speed_pitch_down", 1, fade_factor)
 
