@@ -49,5 +49,6 @@ one_shot = true
 position = Vector2(207.5, 82.5)
 
 [node name="TransitionCanvas" type="CanvasLayer" parent="." unique_id=604356436]
+layer = 2
 
 [node name="ArrowTransition" parent="TransitionCanvas" unique_id=2132846819 instance=ExtResource("7_8c0lf")]

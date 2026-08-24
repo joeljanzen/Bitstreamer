@@ -239,7 +239,6 @@ static func restart(current_tree: SceneTree) -> void:
 	# Check if current level is a tutorial.
 	if LevelInfo.last_played.version == "Tutorial":
 		level_scene.set_script(load("res://Scripts/Gameplay/tutorial_level.gd"))
-	
 	current_tree.change_scene_to_node(level_scene)
 
 

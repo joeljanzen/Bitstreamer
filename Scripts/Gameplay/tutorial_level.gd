@@ -68,6 +68,9 @@ func _ready() -> void:
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
 	_environment.environment.glow_bloom = GameSettings.bloom_strength
+	
+	_arrow_transition.fade_in()
+	await _arrow_transition.animation_finished
 
 
 ## Input handling.
@@ -75,9 +78,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause") and !paused and !completed:
 		_paused()
 	elif event.is_action_pressed("restart"):
-		restart(get_tree())
+		_arrow_transition.fade_out()
+		await _arrow_transition.animation_finished
+		if is_inside_tree():
+			restart(get_tree())
 	elif event.is_action_pressed("quit"):
-		quit(get_tree())
+		_arrow_transition.fade_out()
+		await _arrow_transition.animation_finished
+		if is_inside_tree():
+			quit(get_tree())
+
 
 ## Starts the level. Optionally, an offset in seconds can be 
 ## given, which will skip to that point in the level and play from there.
@@ -248,5 +258,8 @@ func _completed() -> void:
 	menu_scene.start_in_level_select = true
 	
 	SaveLoad.save_play(level_info, _combined_play_data)
+	
+	_arrow_transition.fade_out()
+	await _arrow_transition.animation_finished
 	
 	get_tree().change_scene_to_node(menu_scene)
