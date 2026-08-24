@@ -11,6 +11,8 @@ extends Control
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 @onready var _canvas = $CanvasLayer
 
+@onready var _arrow_transition: ArrowTransition = $CanvasLayer/ArrowTransition
+
 ## If the play display was expanded last time the player resumed playing.
 static var expanded_play_display := true
 
@@ -38,6 +40,8 @@ func _ready() -> void:
 	
 	if expanded_play_display:
 		play_display.toggle_see_more()
+	
+	_arrow_transition.prep_for_fade_out()
 
 
 ## Input handling.
@@ -78,12 +82,18 @@ func _settings_closed() -> void:
 ## Return to the main menu.
 func _on_quit_pressed() -> void:
 	_menu_click_sound.play()
-	await _menu_click_sound.finished
+	_arrow_transition.fade_out()
+	await _arrow_transition.animation_finished
+	
 	GameLevel.quit(get_tree())
 
 
 ## The player has pressed the reboot button. Clearly.
 func _on_reboot_pressed() -> void:
+	_menu_click_sound.play()
+	_arrow_transition.fade_out()
+	await _arrow_transition.animation_finished
+	
 	GameLevel.restart(get_tree())
 
 

@@ -32,6 +32,9 @@ var _progress_at_fail = -1
 ## share that play data with the PerformanceCalculator, and connect to gameplay 
 ## score and miss signals.
 func _ready() -> void:
+	# This makes sure a progress value of zero makes the circle look empty
+	# before the level starts, instead of full.
+	_progress_circle.max_value = 1 
 	_score_multiplier = ModManager.get_score_multiplier()
 	
 	# Attach mod list to the play data in case it is saved later.

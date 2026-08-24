@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bmyyd40hpvw2l" path="res://Scenes/play_area.tscn" id="3_wqkje"]
 [ext_resource type="Texture2D" uid="uid://ck0tbadym1fsj" path="res://Resources/Sprites/UI/Windows-BSOD-scaled.jpg" id="4_81xng"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="5_wqkje"]
+[ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="7_8c0lf"]
 
 [sub_resource type="Environment" id="Environment_81xng"]
 background_mode = 3
@@ -46,3 +47,7 @@ one_shot = true
 
 [node name="PlayArea" parent="." unique_id=1773739756 instance=ExtResource("3_wqkje")]
 position = Vector2(207.5, 82.5)
+
+[node name="TransitionCanvas" type="CanvasLayer" parent="." unique_id=604356436]
+
+[node name="ArrowTransition" parent="TransitionCanvas" unique_id=2132846819 instance=ExtResource("7_8c0lf")]

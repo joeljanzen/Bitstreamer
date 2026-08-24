@@ -10,6 +10,8 @@ extends Control
 @onready var _mods_container = $CanvasLayer/MarginContainer2/VBoxContainer/ModsContainer
 @onready var _win_message = $CanvasLayer/MarginContainer2/VBoxContainer/WinMsg
 
+@onready var _arrow_transition: ArrowTransition = $CanvasLayer/ArrowTransition
+
 # Sounds.
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
@@ -50,6 +52,8 @@ func _ready() -> void:
 	if ModManager.has_active_mods():
 		_mods_container.show()
 		_add_mod_icons()
+	
+	_arrow_transition.prep_for_fade_out()
 
 
 ## For each active mod, display its icon on the crash screen.
@@ -80,13 +84,19 @@ func connect_play_data(data: PlayData) -> void:
 
 ## The player has pressed the play again button. Clearly.
 func _on_play_again_pressed() -> void:
+	_menu_click_sound.play()
+	_arrow_transition.fade_out()
+	await _arrow_transition.animation_finished
+	
 	GameLevel.restart(get_tree())
 
 
 ## Return to the main menu.
 func _on_quit_pressed() -> void:
 	_menu_click_sound.play()
-	await _menu_click_sound.finished
+	_arrow_transition.fade_out()
+	await _arrow_transition.animation_finished
+	
 	GameLevel.quit(get_tree())
 
 

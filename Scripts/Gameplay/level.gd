@@ -6,6 +6,9 @@ extends Node2D
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 @onready var _play_area: PlayArea = $PlayArea
 @onready var _music_queue: Timer = $MusicQueue
+
+@onready var _arrow_transition: ArrowTransition = $TransitionCanvas/ArrowTransition
+
 @onready var conductor: Conductor = $Conductor
 
 ## The strength of blur when the game is paused.
@@ -64,11 +67,13 @@ func _ready() -> void:
 	bit_queue = level_info.bit_queue
 	delay_queue = level_info.delay_queue
 	
-	start_level(last_offset)
-	
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
 	_environment.environment.glow_bloom = GameSettings.bloom_strength
+	_arrow_transition.fade_in()
+	await _arrow_transition.animation_finished
+	
+	start_level(last_offset)
 
 
 ## Input handling.
@@ -84,12 +89,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Update game settings to remember if the player had UI on or not.
 		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
 	elif event.is_action_pressed("restart"):
+		_arrow_transition.fade_out()
+		await _arrow_transition.animation_finished
 		restart(get_tree())
 	elif event.is_action_pressed("quit"):
+		_arrow_transition.fade_out()
+		await _arrow_transition.animation_finished
 		quit(get_tree())
 
 
-## Starts the music for the level. Optionally, an offset in seconds can be 
+## Starts the music for the level. Onew_animationptionally, an offset in seconds can be 
 ## given, which will skip to that point in the level and play from there.
 ## Must successfully call load_level with no errors for this func to work.
 func start_level(level_offset: float = 0) -> void:

@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_bthaf"]
 [ext_resource type="Script" uid="uid://dpvq8ox1q4rjb" path="res://Scripts/UI/pause_ui.gd" id="1_srqh7"]
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_cf5hy"]
+[ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="3_i0vfa"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_w3mym"]
 
 [node name="PauseUI" type="Control" unique_id=1762296446]
@@ -103,6 +104,8 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_font_sizes/font_size = 35
 text = "This Play"
+
+[node name="ArrowTransition" parent="CanvasLayer" unique_id=161824251 instance=ExtResource("3_i0vfa")]
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1362538356]
 stream = ExtResource("3_cf5hy")

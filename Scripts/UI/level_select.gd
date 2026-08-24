@@ -27,6 +27,8 @@ class_name LevelSelect
 @onready var _mod_bar = $CanvasLayer/ModsPanel/ModBar
 @onready var _score_multiplier_label = $CanvasLayer/ModsPanel/ModBar/PanelContainer/MarginContainer/MultiplierLabel
 
+@onready var _arrow_transition: ArrowTransition = $CanvasLayer/ArrowTransition
+
 @onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
 @onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 
@@ -165,6 +167,13 @@ func _ready() -> void:
 	
 	# Request level plays in the background.
 	SaveLoad.request_plays(_levels)
+	
+	# This means we are returning to the level select from a level and should
+	# play the transition.
+	if LevelInfo.last_played != null:
+		_arrow_transition.fade_in()
+	else:
+		_arrow_transition.prep_for_fade_out()
 
 
 ## Input handling.
@@ -245,21 +254,23 @@ func _sort_levels_by_comparator(sorting_method: SortingType) -> void:
 ## Start the level that has been selected.
 func _level_button_pressed(level_info: LevelInfo) -> void:
 	_menu_click_sound.play()
-	await _menu_click_sound.finished
-	
 	level_info.load_level_bits_and_delays()
 	
 	if level_info.is_valid():
 		_last_level_select_position = _scroll_box.scroll_vertical
 		
 		var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
-		Bit.in_main_menu = false
-		LevelInfo.last_played = level_info
 		
 		# Attach tutorial script for the tutorial level.
 		if level_info.version == "Tutorial":
 			level_scene.set_script(load("res://Scripts/Gameplay/tutorial_level.gd"))
 		
+		# Fade out level select.
+		_arrow_transition.fade_out()
+		await _arrow_transition.animation_finished
+		
+		LevelInfo.last_played = level_info
+		Bit.in_main_menu = false
 		get_tree().change_scene_to_node(level_scene)
 	else:
 		push_error("Failed to load the level!")
