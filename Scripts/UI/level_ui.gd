@@ -48,7 +48,13 @@ func _ready() -> void:
 ## Updates the level progress circle.
 func _process(_delta: float) -> void:
 	if UI_is_visible() and _progress_circle.visible:
-		_progress_circle.value = _conductor.get_time()
+		var time = _conductor.get_time()
+		# This is so if the offset is not zero, the circle at least is not
+		# empty while the conductor has yet to start.
+		if time == 0:
+			_progress_circle.value = GameLevel.last_offset
+		else:
+			_progress_circle.value = time
 
 
 ## Connects the current level to the level UI.

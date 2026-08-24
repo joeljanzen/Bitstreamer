@@ -18,10 +18,20 @@ extends Control
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 100
 
+## How many seconds it should take for the music to fade away.
+const MUSIC_FADE_TIME: float = 12
+
+## How many seconds it should take for the music to stop decreasing pitch
+## and speed.
+const PITCH_DECREASE_TIME: float = 8
+
 var _level_UI: LevelUI
 
 ## Stores data for the current play of a level, including score, combo, etc.
 var _play_data: PlayData
+
+## The conductor controlling the music. Used to fade it out and do whatever else.
+var _conductor: Conductor
 
 
 ## Display statistics for the play.
@@ -48,6 +58,8 @@ func _ready() -> void:
 		_add_mod_icons()
 	
 	_arrow_transition.prep_for_fade_out()
+	_conductor.fade_out(MUSIC_FADE_TIME)
+	_conductor.speed_and_pitch_down(PITCH_DECREASE_TIME)
 
 
 ## For each active mod, display its icon on the crash screen.
@@ -77,9 +89,16 @@ func connect_level_UI(UI: LevelUI) -> void:
 	_play_data = UI.play_data
 
 
+## Connects the conductor to the GameCrashUI.
+func connect_conductor(conductor: Conductor) -> void:
+	_conductor = conductor
+
+
 ## The player has pressed the reboot button. Clearly.
 func _on_reboot_pressed() -> void:
 	_menu_click_sound.play()
+	
+	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
 	await _arrow_transition.animation_finished
 	
@@ -89,6 +108,8 @@ func _on_reboot_pressed() -> void:
 ## Return to the main menu.
 func _on_quit_pressed() -> void:
 	_menu_click_sound.play()
+	
+	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
 	await _arrow_transition.animation_finished
 	

@@ -235,6 +235,7 @@ func _open_level_select() -> void:
 		level_select_node = _level_select_scene.instantiate()
 		level_select_node.selection_closed.connect(_show_menu)
 		level_select_node.preview_level_song.connect(_preview_level_song)
+		level_select_node.level_selected.connect(_fade_music)
 		add_child(level_select_node)
 	else:
 		level_select_node.show_UI()
@@ -334,6 +335,11 @@ func _on_next_song_button_mouse_entered() -> void:
 
 func _on_next_song_button_mouse_exited() -> void:
 	_next_song_button.modulate = Color("fff")
+
+
+## Simply fade out the music.
+func _fade_music() -> void:
+	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 
 
 ## A bit flying across the background has been clicked.

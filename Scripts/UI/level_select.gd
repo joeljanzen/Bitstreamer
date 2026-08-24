@@ -39,6 +39,9 @@ signal selection_closed
 ## song should play.
 signal preview_level_song(level_info: LevelInfo)
 
+## Kinda just used to tell the main menu to fade out the music.
+signal level_selected
+
 ## The methods of sorting available for levels.
 enum SortingType {
 	NAME,
@@ -266,6 +269,7 @@ func _level_button_pressed(level_info: LevelInfo) -> void:
 			level_scene.set_script(load("res://Scripts/Gameplay/tutorial_level.gd"))
 		
 		# Fade out level select.
+		level_selected.emit() # This tells the main menu to fade the music.
 		_arrow_transition.fade_out()
 		await _arrow_transition.animation_finished
 		

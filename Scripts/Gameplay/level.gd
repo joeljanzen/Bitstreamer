@@ -70,8 +70,11 @@ func _ready() -> void:
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
 	_environment.environment.glow_bloom = GameSettings.bloom_strength
+	
 	_arrow_transition.fade_in()
-	await _arrow_transition.animation_finished
+	# We are starting somewhere in the middle of the song, so fade in.
+	if last_offset != 0:
+		conductor.fade_in(ArrowTransition.TRANSITION_FADE_SPEED)
 	
 	start_level(last_offset)
 
@@ -89,11 +92,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Update game settings to remember if the player had UI on or not.
 		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
 	elif event.is_action_pressed("restart"):
+		conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 		_arrow_transition.fade_out()
 		await _arrow_transition.animation_finished
 		if is_inside_tree():
 			restart(get_tree())
 	elif event.is_action_pressed("quit"):
+		conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 		_arrow_transition.fade_out()
 		await _arrow_transition.animation_finished
 		if is_inside_tree():
@@ -104,7 +109,7 @@ func _unhandled_input(event: InputEvent) -> void:
 ## given, which will skip to that point in the level and play from there.
 ## Must successfully call load_level with no errors for this func to work.
 func start_level(level_offset: float = 0) -> void:
-	_levelUI.set_level_length(level_info.length)
+	_levelUI.set_level_length(level_info.length) 
 	
 	# Apply all mods, then set values.
 	var final_diff = ModManager.apply_difficulty_mods(level_info.difficulty)
@@ -158,6 +163,10 @@ func start_level(level_offset: float = 0) -> void:
 		 # This sets the cursor to the exact line it would be at that point in 
 		 # the level.
 		_play_area.override_line_num(curr_line)
+		
+		# Everything is ready, so just wait for the arrow transition to finish,
+		# then start.
+		await _arrow_transition.animation_finished
 		
 		conductor.play_with_offset(level_offset, event_index)
 		conductor.set_timed_event(total_time)
@@ -269,6 +278,7 @@ func _failed() -> void:
 	
 	var crash_screen: GameCrashUI = _crash_screen.instantiate()
 	crash_screen.connect_level_UI(_levelUI)
+	crash_screen.connect_conductor(conductor)
 	add_child(crash_screen)
 
 
@@ -292,6 +302,7 @@ func _completed() -> void:
 		
 		var win_screen: GameWinUI = _win_screen.instantiate()
 		win_screen.connect_play_data(_levelUI.play_data)
+		win_screen.connect_conductor(conductor)
 		add_child(win_screen)
 		
 		# Only save if it was a full play.

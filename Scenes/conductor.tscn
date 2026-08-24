@@ -27,15 +27,67 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.5176319, 1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [-40.0, 0.0]
+"values": [-60.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_lxpo4"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -60.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lxpo4"]
 _data = {
 &"RESET": SubResource("Animation_l17rm"),
-&"fade_in": SubResource("Animation_bhvky")
+&"fade_in": SubResource("Animation_bhvky"),
+&"fade_out": SubResource("Animation_lxpo4")
+}
+
+[sub_resource type="Animation" id="Animation_0sa1t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:pitch_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_132nx"]
+resource_name = "speed_pitch_down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:pitch_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.09999999999999999]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0sa1t"]
+_data = {
+&"RESET": SubResource("Animation_0sa1t"),
+&"speed_pitch_down": SubResource("Animation_132nx")
 }
 
 [node name="Conductor" type="AudioStreamPlayer" unique_id=1369693212]
@@ -44,3 +96,6 @@ script = ExtResource("1_l17rm")
 
 [node name="VolumeFade" type="AnimationPlayer" parent="." unique_id=520790211]
 libraries/ = SubResource("AnimationLibrary_lxpo4")
+
+[node name="PitchSpeedFade" type="AnimationPlayer" parent="." unique_id=1038703341]
+libraries/ = SubResource("AnimationLibrary_0sa1t")

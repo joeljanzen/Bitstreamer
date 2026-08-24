@@ -2,7 +2,8 @@ class_name Conductor
 extends AudioStreamPlayer
 ## Controls the timing 
 
-@onready var _volume_fade_in_animation = $VolumeFade
+@onready var _volume_fade_animation: AnimationPlayer = $VolumeFade
+@onready var _pitch_speed_fade_animation: AnimationPlayer = $PitchSpeedFade
 
 ## A precisely timed event trigger, set to be emitted after a given delay by the
 ## set_timed_event function. The index, starting at 0, indicates a specific
@@ -79,8 +80,8 @@ func fade_to_new_song(new_song: AudioStream, offset: float = 0, transition_speed
 	# Since we have to fade out and back in, we need the speed of each animation
 	# to be twice as fast as the total transition time.
 	var fade_speed_factor: float = 1 / transition_speed
-	_volume_fade_in_animation.play("fade_in", -1, -fade_speed_factor * 4 / 3, true)
-	await _volume_fade_in_animation.animation_finished
+	_volume_fade_animation.play("fade_out", -1, fade_speed_factor * 4 / 3)
+	await _volume_fade_animation.animation_finished
 	
 	start_new_song.emit()
 	set_song(new_song)
@@ -88,7 +89,7 @@ func fade_to_new_song(new_song: AudioStream, offset: float = 0, transition_speed
 	_time_of_next_beat = offset
 	_timing_event_index = 0
 	play(offset)
-	_volume_fade_in_animation.play("fade_in", -1, fade_speed_factor * 4)
+	_volume_fade_animation.play("fade_in", -1, fade_speed_factor * 4)
 
 
 ## Pause or unpause the song.
@@ -117,6 +118,26 @@ func set_timed_event(delay: float) -> void:
 ## affect the beat signal, which continues to the end of the song.
 func done_timings() -> void:
 	_done_timings = true
+
+
+## Fade out the music over the time given.
+func fade_out(time: float) -> void:
+	#if _volume_fade_animation.is_playing()
+	var fade_speed_factor: float = 1 / time
+	_volume_fade_animation.play("fade_out", 1, fade_speed_factor)
+
+
+## Fade in the music over the time given.
+func fade_in(time: float) -> void:
+	var fade_speed_factor: float = 1 / time
+	_volume_fade_animation.play("fade_in", 1, fade_speed_factor)
+
+
+## Slow down and decrease the pitch of the music drastically over the time given.
+func speed_and_pitch_down(time: float) -> void:
+	print("DO ITTT")
+	var fade_factor: float = 1 / time
+	_pitch_speed_fade_animation.play("speed_pitch_down", 1, fade_factor)
 
 
 ## Most accurately measures the current song time and sends timed events based

@@ -22,6 +22,9 @@ const MOD_ICON_SIZE: int = 100
 ## Stores data for the current play of a level, including score, combo, etc.
 var _play_data: PlayData
 
+## The conductor controlling the music. Used to fade it out and do whatever else.
+var _conductor: Conductor
+
 
 ## Display statistics for the play.
 func _ready() -> void:
@@ -82,9 +85,16 @@ func connect_play_data(data: PlayData) -> void:
 	_play_data = data
 
 
+## Connects the conductor to the GameWinUI.
+func connect_conductor(conductor: Conductor) -> void:
+	_conductor = conductor
+
+
 ## The player has pressed the play again button. Clearly.
 func _on_play_again_pressed() -> void:
 	_menu_click_sound.play()
+	
+	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
 	await _arrow_transition.animation_finished
 	
@@ -94,6 +104,8 @@ func _on_play_again_pressed() -> void:
 ## Return to the main menu.
 func _on_quit_pressed() -> void:
 	_menu_click_sound.play()
+	
+	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
 	await _arrow_transition.animation_finished
 	
