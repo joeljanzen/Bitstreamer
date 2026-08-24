@@ -91,11 +91,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("restart"):
 		_arrow_transition.fade_out()
 		await _arrow_transition.animation_finished
-		restart(get_tree())
+		if is_inside_tree():
+			restart(get_tree())
 	elif event.is_action_pressed("quit"):
 		_arrow_transition.fade_out()
 		await _arrow_transition.animation_finished
-		quit(get_tree())
+		if is_inside_tree():
+			quit(get_tree())
 
 
 ## Starts the music for the level. Onew_animationptionally, an offset in seconds can be 
