@@ -104,7 +104,11 @@ func _ready() -> void:
 	# Music.
 	_conductor.connect("beat", _on_beat)
 	_conductor.connect("finished", _start_song)
-	_start_song()
+	# If no level has been played yet, we play music for one randomly.
+	# Otherwise the last level played will trigger its song preview to play
+	# when we re-enter the main menu scene.
+	if LevelInfo.last_played == null:
+		_start_song()
 	
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
@@ -141,7 +145,6 @@ func _preview_level_song(level_info: LevelInfo) -> void:
 	LevelInfo.last_played_in_menu = level_info
 	_conductor.fade_to_new_song(level_info.song, level_info.song_preview,
 		_NEW_SONG_TRANSITION_TIME)
-	await _conductor.start_new_song
 	
 	_now_playing_label.text = level_info.song_name
 	beat_time = _conductor.set_beat_signal(level_info.bpm, BEAT_COEFFICIENT)

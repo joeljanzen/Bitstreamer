@@ -91,8 +91,8 @@ var _level_plays: Dictionary
 ## When true, any play display data that was gradually being loaded will halt.
 var _halt_plays_display_spawns := false
 
-## The level that plays are being displayed for currently. Could be null.
-var _current_plays_level: LevelInfo
+## The level button that is currently focused. Could be null.
+var _current_focused_level: LevelButton
 
 ## True when the mods panel is open. Ensures the plays panel cannot be opened
 ## while the mods panel already is.
@@ -123,26 +123,31 @@ func _ready() -> void:
 	for file in level_filenames:
 		_levels.push_back(LevelInfo.new(file))
 	
+	# Request plays for all levels in the background.
+	SaveLoad.request_plays(_levels)
+	
 	# Make level buttons.
 	LevelButton.use_primary_colour = true
 	for level in _levels:
 		if level.is_valid():
 			var level_button: LevelButton = _level_button_scene.instantiate()
 			level_button.setup(level)
-			level_button.button_pressed.connect(_level_button_pressed)
-			level_button.button_hovered.connect(_display_plays)
-			level_button.button_hovered.connect(
-				func(info: LevelInfo) -> void: 
-					if (LevelInfo.last_played_in_menu.song_name != info.song_name
-						|| LevelInfo.last_played_in_menu.song_preview 
-						!= info.song_preview):
-						preview_level_song.emit(info)
-			)
+			level_button.launch_button_pressed.connect(_level_launch_button_pressed)
+			level_button.button_focused.connect(_focus_level_button)
 			_level_button_container.add_child(level_button)
 			if (LevelInfo.last_played != null
 					and level.file_name == LevelInfo.last_played.file_name 
 					and GameLevel.last_offset > 0):
 				level_button.enable_practice_mode()
+			# Focus the button automatically if it was the last played level.
+			if (LevelInfo.last_played != null 
+					and level.file_name == LevelInfo.last_played.file_name):
+				level_button.focus_button()
+				# Force the song preview to play (normally it would see
+				# that the last played song preview was the same and not
+				# start a new preview, but in this case we just entered the 
+				# scene and the preview is not already playing).
+				preview_level_song.emit(level)
 	
 	# If this isn't true, then there are no sort buttons yet so we can't try to
 	# sort anything (will get an out of bounds error since the buttons are 
@@ -168,13 +173,11 @@ func _ready() -> void:
 	if ModManager.has_active_mods():
 		_show_updated_mod_bar()
 	
-	# Request level plays in the background.
-	SaveLoad.request_plays(_levels)
-	
 	# This means we are returning to the level select from a level and should
 	# play the transition.
 	if LevelInfo.last_played != null:
 		_arrow_transition.fade_in()
+		
 	else:
 		_arrow_transition.prep_for_fade_out()
 
@@ -254,8 +257,28 @@ func _sort_levels_by_comparator(sorting_method: SortingType) -> void:
 	SaveLoad.save_game()
 
 
+## A new level button has been focused. Defocus the others, play preview music,
+## and open the plays panel for this level.
+func _focus_level_button(button: LevelButton) -> void:
+	var level_info = button.level_info
+	_menu_click_sound.play()
+	
+	## Defocus the previously focused level button.
+	if _current_focused_level != null:
+		_current_focused_level.defocus_button()
+	_current_focused_level = button
+	
+	_display_plays(level_info)
+	
+	## Song preview
+	if (LevelInfo.last_played_in_menu.song_name != level_info.song_name
+		|| LevelInfo.last_played_in_menu.song_preview 
+		!= level_info.song_preview):
+		preview_level_song.emit(level_info)
+
+
 ## Start the level that has been selected.
-func _level_button_pressed(level_info: LevelInfo) -> void:
+func _level_launch_button_pressed(level_info: LevelInfo) -> void:
 	_menu_click_sound.play()
 	level_info.load_level_bits_and_delays()
 	
@@ -427,41 +450,37 @@ func _on_bit_count_pressed() -> void:
 
 ## Display the plays for the given level info in the plays panel.
 func _display_plays(level_info: LevelInfo) -> void:
-	# Only do stuff if we are loading plays for a different level.
-	if _current_plays_level != level_info:
-		_current_plays_level = level_info
-		
-		if _auto_open_play_panel:
-			_open_plays_panel()
-		
-		var plays: Array[PlayData]
-		# Check if the plays have already been loaded.
-		if _level_plays.has(level_info.file_name):
-			plays = _level_plays.get(level_info.file_name)
-		# If they haven't, attempt to load them, then save them to the dict.
-		else:
-			plays = SaveLoad.load_plays(level_info)
-			_level_plays.set(level_info.file_name, plays)
-		var play_count = plays.size()
+	if _auto_open_play_panel:
+		_open_plays_panel()
 	
-		_level_label.text = level_info.song_name + " (" + level_info.version + ")"
-		
-		for child in _plays_container.get_children():
-			_plays_container.remove_child(child)
-		
-		if plays.is_empty():
-			_plays_label.text = "No Plays"
+	var plays: Array[PlayData]
+	# Check if the plays have already been loaded.
+	if _level_plays.has(level_info.file_name):
+		plays = _level_plays.get(level_info.file_name)
+	# If they haven't, attempt to load them, then save them to the dict.
+	else:
+		plays = SaveLoad.load_plays(level_info)
+		_level_plays.set(level_info.file_name, plays)
+	var play_count = plays.size()
+
+	_level_label.text = level_info.song_name + " (" + level_info.version + ")"
+	
+	for child in _plays_container.get_children():
+		_plays_container.remove_child(child)
+	
+	if plays.is_empty():
+		_plays_label.text = "No Plays"
+	else:
+		if play_count > 1:
+			_plays_label.text = str(play_count) + " Plays"
 		else:
-			if play_count > 1:
-				_plays_label.text = str(play_count) + " Plays"
-			else:
-				_plays_label.text = "1 Play"
-			
-			# Stop the previous spawn_nodes func.
-			_halt_plays_display_spawns = true
-			await get_tree().process_frame
-			_halt_plays_display_spawns = false
-			_spawn_plays_nodes_over_time(plays, TARGET_TIME_TO_DISPLAY_PLAYS)
+			_plays_label.text = "1 Play"
+		
+		# Stop the previous spawn_nodes func.
+		_halt_plays_display_spawns = true
+		await get_tree().process_frame
+		_halt_plays_display_spawns = false
+		_spawn_plays_nodes_over_time(plays, TARGET_TIME_TO_DISPLAY_PLAYS)
 
 
 func _spawn_plays_nodes_over_time(plays: Array[PlayData], target_duration: float) -> void:
@@ -497,12 +516,14 @@ func _plays_panel_is_open() -> bool:
 	return _plays_button.text.contains(">")
 
 
+## Only opens if there is a currently focused level to display the plays for.
 func _open_plays_panel() -> void:
-	if !_plays_panel_is_open():
-		_level_scroll_margin_animation.play("slide_left")
-	_plays_panel_animation.play("RESET") # So if it was playing, it starts over.
-	_plays_panel_animation.play("popout")
-	_plays_button.text = " > "
+	if _current_focused_level != null:
+		if !_plays_panel_is_open():
+			_level_scroll_margin_animation.play("slide_left")
+		_plays_panel_animation.play("RESET") # So if it was playing, it starts over.
+		_plays_panel_animation.play("popout")
+		_plays_button.text = " > "
 
 
 func _close_plays_panel() -> void:

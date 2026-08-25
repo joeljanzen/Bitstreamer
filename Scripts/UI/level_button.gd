@@ -24,11 +24,11 @@ extends Control
 @onready var _hover_button_sound = $HoverButton
 @onready var _click_button_sound = $ClickButton
 
-## This level has been selected to play.
-signal button_pressed(level_info: LevelInfo)
+## This level has been focused by clicking on it.
+signal button_focused(button: LevelButton)
 
-## This level has been focused by the mouse.
-signal button_hovered(level_info: LevelInfo)
+## This level has been selected to play.
+signal launch_button_pressed(level_info: LevelInfo)
 
 ## How many seconds it takes a popup to appear after a level attribute started 
 ## being hovered over.
@@ -39,6 +39,9 @@ const _TIME_TO_SHOW_POPUP = 0.5
 ## level left if they choose the maximum offset in practice mode.
 const _MINIMUM_PLAY_TIME = 5
 
+## How many pixels of vertical mouse drag should be ignored.
+const _MOUSE_DRAG_DEADZONE = 30
+
 ## The theme color to use for this LevelButton's title color.
 ## Alternates between true and false each time one is created.
 static var use_primary_colour := true
@@ -48,6 +51,14 @@ var level_info: LevelInfo
 
 ## Level info with modified values from active mods.
 var modded_info: LevelInfo
+
+## This level button has been clicked and should be focused.
+var is_focused := false
+
+## The initial y position a mouse drag is started from.
+## Used to detect if a mouse click is for dragging vertically or just a click.
+var _initial_drag_y_pos := 0
+
 
 ## Start a short timer to wait for a popup to start.
 var _popup_timer_on := false
@@ -105,6 +116,40 @@ func _process(delta: float) -> void:
 	if _popup_panel.visible:
 		_popup_panel.global_position.x = get_global_mouse_position().x - 10 - _popup_panel.size.x
 		_popup_panel.global_position.y = get_global_mouse_position().y + 10
+
+
+## Ignore a mouse click if it's the start of a drag. If it is a proper click,
+## focus the button.
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.is_pressed():
+			_initial_drag_y_pos = event.global_position.y
+		elif event.is_released():
+			var vertical_distance = abs(_initial_drag_y_pos - event.global_position.y)
+			if vertical_distance < _MOUSE_DRAG_DEADZONE:
+				focus_button()
+
+
+## Focus the level button, which causes some visual changes and emits the
+## button_focused signal.
+func focus_button() -> void:
+	if !is_focused:
+		is_focused = true
+		button_focused.emit(self)
+		
+		_button_panel.scale = Vector2(1.04, 1.04)
+		
+		## Make a different coloured stylebox thats lighter (not white but yk)
+		#_button_panel.add_theme_stylebox_override("panel", )
+
+
+## Press the level button, focusing it but not starting its level.
+func defocus_button() -> void:
+	is_focused = false
+	
+	#_button_panel.remove_theme_stylebox_override("panel")
+	
+	_button_panel.scale = Vector2(1, 1)
 
 
 ## Update the title color as the theme colors may have been changed.
@@ -194,7 +239,7 @@ func _on_play_button_pressed() -> void:
 		GameLevel.last_offset = _practice_offset
 	else:
 		GameLevel.last_offset = 0
-	button_pressed.emit(level_info)
+	launch_button_pressed.emit(level_info)
 
 
 func _on_play_button_mouse_entered() -> void:
@@ -231,15 +276,14 @@ func _set_play_button_text_color() -> void:
 ## Scale the button and gives it a slight rotation while hovered.
 func _on_mouse_entered() -> void:
 	_hover_button_sound.play()
-	
-	button_hovered.emit(level_info)
-	
-	_button_panel.scale = Vector2(1.03, 1.03)
+	if !is_focused:
+		_button_panel.scale = Vector2(1.015, 1.015)
 
 
 ## Return the button to its default size and rotation.
 func _on_mouse_exited() -> void:
-	_button_panel.scale = Vector2(1, 1)
+	if !is_focused:
+		_button_panel.scale = Vector2(1, 1)
 
 
 ## Call when a level attribute is being hovered over. If the cursor remains

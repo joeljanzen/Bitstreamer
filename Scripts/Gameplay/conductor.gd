@@ -16,9 +16,6 @@ signal timed_event(event_index: int)
 ## the timed_event signal and set_timed_event function.
 signal beat
 
-## Emitted after fade_to_new_song is called, when the new song starts.
-signal start_new_song
-
 ## The seconds per beat (the time between beat signal emissions).
 ## If this value is zero, no beat signals are being sent.
 var seconds_per_beat: float = 0
@@ -68,6 +65,7 @@ func set_beat_signal(bpm: float,  beat_coefficient: float = 1) -> float:
 ## Use this function to play the conductor with no offset by passing no 
 ## arguments, instead of calling the inherited play() function.
 func play_with_offset(offset: float = 0, event_index: int = 0) -> void:
+	volume_db = 0 # Since we go to -60 when nothing is playing.
 	_time_delay_ends = 0
 	_time_of_next_beat = offset
 	_timing_event_index = event_index
@@ -80,10 +78,11 @@ func fade_to_new_song(new_song: AudioStream, offset: float = 0, transition_speed
 	# Since we have to fade out and back in, we need the speed of each animation
 	# to be twice as fast as the total transition time.
 	var fade_speed_factor: float = 1 / transition_speed
-	_volume_fade_animation.play("fade_out", -1, fade_speed_factor * 4 / 3)
-	await _volume_fade_animation.animation_finished
 	
-	start_new_song.emit()
+	if playing:
+		_volume_fade_animation.play("fade_out", -1, fade_speed_factor * 4 / 3)
+		await _volume_fade_animation.animation_finished
+	
 	set_song(new_song)
 	_time_delay_ends = 0
 	_time_of_next_beat = offset
