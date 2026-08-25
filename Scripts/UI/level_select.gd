@@ -184,13 +184,14 @@ func _ready() -> void:
 
 ## Input handling.
 func _unhandled_input(event: InputEvent) -> void:
+	var tutorial_played = SaveLoad.save_data.tutorial_played
 	if event.is_action_pressed("ui_close_dialog"):
 		if UI_is_visible():
 			if _mods_panel_open:
 				_menu_click_sound.play()
 				_close_mods_panel()
 				accept_event()
-	if event.is_action_pressed("toggle_mods_panel"):
+	if event.is_action_pressed("toggle_mods_panel") and tutorial_played:
 		_menu_click_sound.play()
 		if _mods_panel_open:
 			_close_mods_panel()
@@ -198,7 +199,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_menu_click_sound.play()
 			_open_mods_panel()
 		accept_event()
-	if event.is_action_pressed("toggle_plays_panel"):
+	if event.is_action_pressed("toggle_plays_panel") and tutorial_played:
 		_menu_click_sound.play()
 		if _plays_panel_is_open():
 			_close_plays_panel()
@@ -261,7 +262,6 @@ func _sort_levels_by_comparator(sorting_method: SortingType) -> void:
 ## and open the plays panel for this level.
 func _focus_level_button(button: LevelButton) -> void:
 	var level_info = button.level_info
-	_menu_click_sound.play()
 	
 	## Defocus the previously focused level button.
 	if _current_focused_level != null:
@@ -517,8 +517,9 @@ func _plays_panel_is_open() -> bool:
 
 
 ## Only opens if there is a currently focused level to display the plays for.
+## Also doesn't open if the tutorial hasn't been played.
 func _open_plays_panel() -> void:
-	if _current_focused_level != null:
+	if _current_focused_level != null and SaveLoad.save_data.tutorial_played:
 		if !_plays_panel_is_open():
 			_level_scroll_margin_animation.play("slide_left")
 		_plays_panel_animation.play("RESET") # So if it was playing, it starts over.
@@ -559,12 +560,13 @@ func _open_mods_panel() -> void:
 
 
 func _close_mods_panel() -> void:
-	_mods_panel_open = false
-	_mods_animation.play_backwards("popup")
-	
-	_apply_mods_to_level_buttons()
-	# Since tutorial isn't affected by mods we have to sort levels again.
-	_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
+	if _mods_panel_open:
+		_mods_panel_open = false
+		_mods_animation.play_backwards("popup")
+		
+		_apply_mods_to_level_buttons()
+		# Since tutorial isn't affected by mods we have to sort levels again.
+		_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
 
 
 ## For each level button, update its stats according to current active mods.

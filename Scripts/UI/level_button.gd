@@ -11,6 +11,7 @@ extends Control
 @onready var _speed_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel/MarginContainer/SpeedLabel
 @onready var _damage_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel/MarginContainer/DamageLabel
 
+@onready var _play_practice_container = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer
 @onready var _play_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PlayButton
 @onready var _back_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/BackButton
 @onready var _practice_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeButton
@@ -41,6 +42,13 @@ const _MINIMUM_PLAY_TIME = 5
 
 ## How many pixels of vertical mouse drag should be ignored.
 const _MOUSE_DRAG_DEADZONE = 30
+
+
+const _MIN_Y_SIZE = 200
+
+const _MAX_Y_SIZE = 300
+
+
 
 ## The theme color to use for this LevelButton's title color.
 ## Alternates between true and false each time one is created.
@@ -127,7 +135,12 @@ func _gui_input(event: InputEvent) -> void:
 		elif event.is_released():
 			var vertical_distance = abs(_initial_drag_y_pos - event.global_position.y)
 			if vertical_distance < _MOUSE_DRAG_DEADZONE:
-				focus_button()
+				# Focus button already checks if the button is focused, but we 
+				# need to ensure the sound only plays here when the unfocused 
+				# button is clicked, not every time focus_button is called.
+				if !is_focused:
+					_click_button_sound.play()
+					focus_button()
 
 
 ## Focus the level button, which causes some visual changes and emits the
@@ -137,19 +150,29 @@ func focus_button() -> void:
 		is_focused = true
 		button_focused.emit(self)
 		
+		custom_minimum_size.y = _MAX_Y_SIZE
 		_button_panel.scale = Vector2(1.04, 1.04)
 		
-		## Make a different coloured stylebox thats lighter (not white but yk)
-		#_button_panel.add_theme_stylebox_override("panel", )
+		var style_box = StyleBoxFlat.new()
+		style_box.bg_color = Color.DIM_GRAY.darkened(.6)
+		#_name_label.modulate.darkened(0.9)
+		_button_panel.add_theme_stylebox_override("panel", style_box)
+		
+		_play_practice_container.show()
 
 
 ## Press the level button, focusing it but not starting its level.
 func defocus_button() -> void:
-	is_focused = false
-	
-	#_button_panel.remove_theme_stylebox_override("panel")
-	
-	_button_panel.scale = Vector2(1, 1)
+	if is_focused:
+		is_focused = false
+		
+		size.y = _MIN_Y_SIZE
+		custom_minimum_size.y = _MIN_Y_SIZE
+		_button_panel.scale = Vector2(1, 1)
+		
+		_button_panel.remove_theme_stylebox_override("panel")
+		
+		_play_practice_container.hide()
 
 
 ## Update the title color as the theme colors may have been changed.

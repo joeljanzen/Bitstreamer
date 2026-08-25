@@ -184,13 +184,13 @@ mouse_filter = 2
 theme_override_constants/margin_left = 150
 theme_override_constants/margin_top = 150
 theme_override_constants/margin_right = 150
-theme_override_constants/margin_bottom = 150
+theme_override_constants/margin_bottom = 300
 
 [node name="LevelButtonContainer" type="VBoxContainer" parent="CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer/MarginContainer" unique_id=1490967062]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-theme_override_constants/separation = 50
+theme_override_constants/separation = 40
 alignment = 1
 
 [node name="ScrollMarginModifier" type="AnimationPlayer" parent="CanvasLayer/LevelScrollMargin" unique_id=212686849]

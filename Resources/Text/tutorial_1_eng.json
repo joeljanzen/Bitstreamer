@@ -28,7 +28,7 @@
 	"back_bit": [
 		"Excellent! When you start running real programs, you should be aware of its {perfect_click_color}health[/color], displayed in the bottom left. If you make too many errors the program will crash!",
 		"Missing or incorrectly receiving bits will {perfect_click_color}damage the program[/color]. Missing my enter bits will not, as they don't affect the program's data.",
-		"You can regain health by rebuilding your {perfect_click_color}combo[/color]. Receiving bits more accurately will heal the program faster.",
+		"You can regain health by rebuilding your {perfect_click_color}combo[/color]. Receiving bits more accurately will restore the program faster.",
 		"One last thing! I may send you a different queue to switch lines, called a {perfect_click_color}back bit[/color]. It behaves just like the enter bit, but instead of moving down you move back {perfect_click_color}up[/color] a line.",
 		"To receive a back bit press {back_bit_keybind}. Don't worry about damaging the program for now, let's practice!",
 		"",
