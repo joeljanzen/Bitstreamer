@@ -49,20 +49,19 @@ func save_play(level_info: LevelInfo, play_data: PlayData) -> void:
 	ResourceSaver.save(play_data, play_file)
 
 
-## Request to the ResourceLoader to load the plays for the given levels.
+## Request to the ResourceLoader to load the plays for the given level.
 ## Get these plays with load_plays().
-func request_plays(all_level_info: Array[LevelInfo]) -> void:
-	for level_info: LevelInfo in all_level_info:
-		var play_directory = SAVE_PLAYS_LOCATION + "/" + level_info.get_filename_without_type()
+func request_plays(level_info: LevelInfo) -> void:
+	var play_directory = SAVE_PLAYS_LOCATION + "/" + level_info.get_filename_without_type()
+	
+	if DirAccess.dir_exists_absolute(play_directory):
+		var num_plays: int = DirAccess.get_files_at(play_directory).size()
 		
-		if DirAccess.dir_exists_absolute(play_directory):
-			var num_plays: int = DirAccess.get_files_at(play_directory).size()
-			
-			# Start from last play so newer plays are requested first.
-			for i in range(num_plays - 1, -1, -1):
-				var play_file = play_directory + "/play_" + str(i) + ".tres"
-				# could try using subthreads
-				ResourceLoader.load_threaded_request(play_file, "PlayData")
+		# Start from last play so newer plays are requested first.
+		for i in range(num_plays - 1, -1, -1):
+			var play_file = play_directory + "/play_" + str(i) + ".tres"
+			# could try using subthreads
+			ResourceLoader.load_threaded_request(play_file, "PlayData")
 
 
 ## Loads all completed plays for a level, in order of most to least recent.

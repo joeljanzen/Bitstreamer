@@ -82,8 +82,18 @@ var _sort_buttons: Array[Button]
 var _level_button_scene = preload("res://Scenes/UI/level_button.tscn")
 var _play_display_scene = preload("res://Scenes/UI/play_data_display.tscn")
 
-## An array of all level info
-var _levels: Array[LevelInfo]
+## A list of all the level filenames that should have their info loaded and 
+## level buttons added to the scene.
+var _level_filenames: PackedStringArray = _tutorial_level_filenames
+
+## The index of the next level fiile to load in _level_filenames. This is used 
+## in _process() to gradually load levels across frames instead of all at once.
+## The -1 index indicates to first load the last played level, as it is of 
+## highest priority.
+var _level_load_index: int = -1
+
+## True after all valid levels have been loaded in.
+var _done_loading_levels := false
 
 ## Access the array of PlayData for a level given the level filename.
 var _level_plays: Dictionary
@@ -101,59 +111,22 @@ var _mods_panel_open := false
 
 ## Load all levels and create buttons for them.
 func _ready() -> void:
-	_scroll_box.set_deferred("scroll_vertical", _last_level_select_position)
-	
 	if !SaveLoad.save_data.tutorial_played:
 		_plays_panel.hide()
 		_sort_button.hide()
 		_mods_panel.hide()
 	else:
-		# Add sort button children
+		# Add sort button children.
 		for child in _sort_button_container.get_children():
 			if child is Button:
 				_sort_buttons.push_back(child)
-		
+		# Disable the button for the current sorting method.
 		_sort_buttons[SaveLoad.save_data.sorting_method].disabled = true
 	
-	# Load level info
-	var level_filenames: PackedStringArray = _tutorial_level_filenames
+	# Add all level filenames after the tutorial is played, so the player has
+	# access to all levels.
 	if SaveLoad.save_data.tutorial_played:
-		level_filenames = DirAccess.get_files_at("res://Levels")
-	
-	for file in level_filenames:
-		_levels.push_back(LevelInfo.new(file))
-	
-	# Request plays for all levels in the background.
-	SaveLoad.request_plays(_levels)
-	
-	# Make level buttons.
-	LevelButton.use_primary_colour = true
-	for level in _levels:
-		if level.is_valid():
-			var level_button: LevelButton = _level_button_scene.instantiate()
-			level_button.setup(level)
-			level_button.launch_button_pressed.connect(_level_launch_button_pressed)
-			level_button.button_focused.connect(_focus_level_button)
-			_level_button_container.add_child(level_button)
-			if (LevelInfo.last_played != null
-					and level.file_name == LevelInfo.last_played.file_name 
-					and GameLevel.last_offset > 0):
-				level_button.enable_practice_mode()
-			# Focus the button automatically if it was the last played level.
-			if (LevelInfo.last_played != null 
-					and level.file_name == LevelInfo.last_played.file_name):
-				level_button.focus_button()
-				# Force the song preview to play (normally it would see
-				# that the last played song preview was the same and not
-				# start a new preview, but in this case we just entered the 
-				# scene and the preview is not already playing).
-				preview_level_song.emit(level)
-	
-	# If this isn't true, then there are no sort buttons yet so we can't try to
-	# sort anything (will get an out of bounds error since the buttons are 
-	# references in that func).
-	if SaveLoad.save_data.tutorial_played:
-		_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
+		_level_filenames = DirAccess.get_files_at("res://Levels")
 	
 	# This triggers a margin to change to make room for a visible scroll bar.
 	var v_scroll_bar: VScrollBar = _plays_scroll_box.get_v_scroll_bar()
@@ -177,9 +150,70 @@ func _ready() -> void:
 	# play the transition.
 	if LevelInfo.last_played != null:
 		_arrow_transition.fade_in()
-		
 	else:
 		_arrow_transition.prep_for_fade_out()
+
+
+## Load all the level info and add their buttons over multiple frames.
+func _process(_delta: float) -> void:
+	# Load the last played level first, since it will be the focused level
+	# and its song preview will play immediately.
+	if _level_load_index == -1:
+		if LevelInfo.last_played != null:
+			print("Frame %d: loading level %s" % [_level_load_index, LevelInfo.last_played.file_name])
+			_load_level_and_add_button(LevelInfo.last_played, true)
+			preview_level_song.emit(LevelInfo.last_played)
+			
+			# Remove this level from the filenames so it isn't loaded again.
+			_level_filenames.erase(LevelInfo.last_played.file_name)
+		_level_load_index += 1
+	
+	# Load all other levels.
+	if _level_load_index < _level_filenames.size():
+		var level_file = _level_filenames[_level_load_index]
+		print("Frame %d: loading level %s" % [_level_load_index, level_file])
+		
+		var level = LevelInfo.new(level_file)
+		if level.is_valid():
+			_load_level_and_add_button(level, false)
+		_level_load_index += 1
+	elif !_done_loading_levels:
+		_done_loading_levels = true
+		print("done loading")
+		
+		# Now that all levels are in, you can scroll to where the player last
+		# was.
+		_scroll_box.scroll_vertical = _last_level_select_position
+		
+		# If this isn't true, then there are no sort buttons yet so we can't try
+		# to sort anything yet (there is just the tutorial level(s)).
+		if SaveLoad.save_data.tutorial_played:
+			_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
+
+
+## Does what it says. Provide if this was the last played level or not, in which
+## case some extra button setup occurs (it is auto-focused).
+func _load_level_and_add_button(level_info: LevelInfo, last_played: bool) -> void:
+	# Request the plays for this level in the background so we can
+	# get them later.
+	SaveLoad.request_plays(level_info)
+	
+	var level_button: LevelButton = _level_button_scene.instantiate()
+	level_button.setup(level_info)
+	level_button.launch_button_pressed.connect(_level_launch_button_pressed)
+	level_button.button_focused.connect(_focus_level_button)
+	_level_button_container.add_child(level_button)
+	
+	if last_played:
+		_setup_last_played_level(level_button)
+
+
+## The passed button is focused and its practice slider is shown if it was just 
+## used for practice.
+func _setup_last_played_level(level_button: LevelButton) -> void:
+	level_button.focus_button()
+	if GameLevel.last_offset > 0:
+		level_button.enable_practice_mode()
 
 
 ## Input handling.
@@ -200,13 +234,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			_open_mods_panel()
 		accept_event()
 	if event.is_action_pressed("toggle_plays_panel") and tutorial_played:
-		_menu_click_sound.play()
 		if _plays_panel_is_open():
+			_menu_click_sound.play()
 			_close_plays_panel()
 			_auto_open_play_panel = false
 		else:
-			_open_plays_panel()
-			_auto_open_play_panel = true
+			if _open_plays_panel():
+				_menu_click_sound.play()
+				_auto_open_play_panel = true
 		accept_event()
 
 
@@ -518,13 +553,17 @@ func _plays_panel_is_open() -> bool:
 
 ## Only opens if there is a currently focused level to display the plays for.
 ## Also doesn't open if the tutorial hasn't been played.
-func _open_plays_panel() -> void:
+## Returns if the panel actually opened.
+func _open_plays_panel() -> bool:
 	if _current_focused_level != null and SaveLoad.save_data.tutorial_played:
 		if !_plays_panel_is_open():
 			_level_scroll_margin_animation.play("slide_left")
 		_plays_panel_animation.play("RESET") # So if it was playing, it starts over.
 		_plays_panel_animation.play("popout")
 		_plays_button.text = " > "
+		return true
+	else:
+		return false
 
 
 func _close_plays_panel() -> void:
@@ -535,9 +574,10 @@ func _close_plays_panel() -> void:
 
 
 func _on_plays_button_pressed() -> void:
-	_menu_click_sound.play()
-	_close_plays_panel()
-	_auto_open_play_panel = false
+	if _plays_panel_is_open():
+		_menu_click_sound.play()
+		_close_plays_panel()
+		_auto_open_play_panel = false
 
 
 func _plays_scroll_bar_visibility_changed() -> void:
@@ -549,9 +589,9 @@ func _plays_scroll_bar_visibility_changed() -> void:
 
 func _on_plays_button_mouse_entered() -> void:
 	if !_plays_panel_is_open() && !_plays_panel_animation.is_playing():
-		_menu_click_sound.play()
-		_open_plays_panel()
-		_auto_open_play_panel = true
+		if _open_plays_panel():
+			_menu_click_sound.play()
+			_auto_open_play_panel = true
 
 
 func _open_mods_panel() -> void:

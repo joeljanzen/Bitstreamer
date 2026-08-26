@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dml5ob2ulln2d" path="res://Resources/Sprites/UI/song_icon.png" id="4_lrjdf"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_gih0s"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
+[ext_resource type="PackedScene" uid="uid://3lxad050esl2" path="res://Scenes/UI/level_select.tscn" id="7_cejvf"]
 [ext_resource type="AudioStream" uid="uid://rl8f7krqudnc" path="res://Resources/Audio/SFX/BitClick.wav" id="10_wqme5"]
 [ext_resource type="AudioStream" uid="uid://bm45yq771u653" path="res://Resources/Audio/SFX/ErrorClick.wav" id="11_jewm6"]
 
@@ -317,6 +318,9 @@ focus_previous = NodePath("../../../CanvasLayer/MarginContainer/VBoxContainer/Sh
 icon = ExtResource("4_k33u3")
 flat = true
 
+[node name="LevelSelect" parent="." unique_id=1472628101 instance=ExtResource("7_cejvf")]
+layout_mode = 1
+
 [node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
 stream = ExtResource("4_4pqbp")
 bus = &"Menu"
@@ -346,3 +350,6 @@ bus = &"Gameplay"
 [connection signal="mouse_entered" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_mouse_exited"]
 [connection signal="pressed" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_pressed"]
+[connection signal="level_selected" from="LevelSelect" to="." method="_fade_music"]
+[connection signal="preview_level_song" from="LevelSelect" to="." method="_preview_level_song"]
+[connection signal="selection_closed" from="LevelSelect" to="." method="_show_menu"]

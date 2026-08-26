@@ -14,6 +14,8 @@ extends Control
 @onready var _conductor: Conductor = $Conductor
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 
+@onready var _level_select: LevelSelect = $LevelSelect
+
 @onready var _credits_text = $CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel
 @onready var _credits_animation: AnimationPlayer = $CanvasLayer/CreditsPanel/CreditsAnimation
 
@@ -46,13 +48,8 @@ const _NEW_SONG_TRANSITION_TIME: float = 0.75
 
 const splash_text_filepath = "res://Resources/Text/splash_text.json"
 
-# WARNING: if not preloaded this scene can cause a noticable delay (it has to
-# load all the level files and display the info).
-var _level_select_scene = preload("res://Scenes/UI/level_select.tscn")
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
 var _bit = preload("res://Scenes/bit.tscn")
-
-var level_select_node: LevelSelect
 
 # Used in animations that sync to the music.
 ## How often the conductor sends out beats.
@@ -101,6 +98,16 @@ func _ready() -> void:
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
+	# Level select setup.
+	if start_in_level_select:
+		_hide_menu()
+	else:
+		_level_select.hide_UI()
+		
+		# Aesthetics (ensure blur is off).
+		_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
+		_environment.environment.glow_bloom = GameSettings.bloom_strength
+	
 	# Music.
 	_conductor.connect("beat", _on_beat)
 	_conductor.connect("finished", _start_song)
@@ -109,20 +116,13 @@ func _ready() -> void:
 	# when we re-enter the main menu scene.
 	if LevelInfo.last_played == null:
 		_start_song()
-	
-	# Aesthetics.
-	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
-	_environment.environment.glow_bloom = GameSettings.bloom_strength
-	
-	if start_in_level_select:
-		_open_level_select()
 
 
 ## Input handling.
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_close_dialog") and level_select_node != null:
-		if level_select_node.UI_is_visible():
-			level_select_node.hide_UI()
+	if event.is_action_pressed("ui_close_dialog") and _level_select != null:
+		if _level_select.UI_is_visible():
+			_level_select.hide_UI()
 			_show_menu()
 
 
@@ -233,15 +233,7 @@ func _load_splash_text(filePath: String):
 ## to start in the level select scene).
 func _open_level_select() -> void:
 	_hide_menu()
-	
-	if level_select_node == null:
-		level_select_node = _level_select_scene.instantiate()
-		level_select_node.selection_closed.connect(_show_menu)
-		level_select_node.preview_level_song.connect(_preview_level_song)
-		level_select_node.level_selected.connect(_fade_music)
-		add_child(level_select_node)
-	else:
-		level_select_node.show_UI()
+	_level_select.show_UI()
 
 
 func _on_play_button_pressed() -> void:
@@ -355,4 +347,3 @@ func _bit_clicked(correct_click: bool) -> void:
 		_bit_error_click_sound.play()
 		_clicked_bit_count = 0
 		_bit_click_counter_label.text = ""
-	

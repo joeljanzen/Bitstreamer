@@ -155,7 +155,6 @@ func focus_button() -> void:
 		
 		var style_box = StyleBoxFlat.new()
 		style_box.bg_color = Color.DIM_GRAY.darkened(.6)
-		#_name_label.modulate.darkened(0.9)
 		_button_panel.add_theme_stylebox_override("panel", style_box)
 		
 		_play_practice_container.show()
