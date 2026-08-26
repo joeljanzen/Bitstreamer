@@ -171,7 +171,6 @@ mouse_filter = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/LevelScrollMargin/HBoxContainer" unique_id=878674155]
 layout_mode = 2
 size_flags_horizontal = 3
-follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 scroll_deadzone = 35

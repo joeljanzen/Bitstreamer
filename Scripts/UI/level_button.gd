@@ -43,12 +43,11 @@ const _MINIMUM_PLAY_TIME = 5
 ## How many pixels of vertical mouse drag should be ignored.
 const _MOUSE_DRAG_DEADZONE = 30
 
-
+## The minimum size of the button when it is unfocused.
 const _MIN_Y_SIZE = 200
 
+## The maximum size of the button when it is focused.
 const _MAX_Y_SIZE = 300
-
-
 
 ## The theme color to use for this LevelButton's title color.
 ## Alternates between true and false each time one is created.

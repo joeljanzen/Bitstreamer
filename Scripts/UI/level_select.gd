@@ -2,6 +2,7 @@ extends Control
 class_name LevelSelect
 ## Where the player selects which level to play.
 
+@onready var _level_button_margin: MarginContainer = $CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer/MarginContainer
 @onready var _level_button_container = $CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer/MarginContainer/LevelButtonContainer
 @onready var _back_button = $CanvasLayer/BackButton
 @onready var _scroll_box = $CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer
@@ -76,9 +77,17 @@ const TARGET_TIME_TO_DISPLAY_PLAYS: float = 0.25
 ## level (not when opening from the main menu).
 const LEVEL_FADE_IN_TIME: float = 0.1
 
+## How long it should take to auto-scroll to a focused level (to focus a level
+## it has to be visible, so it won't be very far from the center of the screen
+## as is). Time is in seconds obviously.
+const AUTO_SCROLL_TIME: float = 0.4
+
+## A value between 0 and 1. Closer to 0 means more easing to the final value.
+const AUTO_SCROLL_EASE: float = 0.5
+
 ## The last position the player was on the level selection menu (on the 
 ## scrollbar).
-static var _last_level_select_position: int = 0
+static var _last_level_select_position: float = 0
 
 ## If true, the play panel opens by itself. Otherwise, it only opens when 
 ## clicked.
@@ -119,6 +128,19 @@ var _current_focused_level: LevelButton
 ## True when the mods panel is open. Ensures the plays panel cannot be opened
 ## while the mods panel already is.
 var _mods_panel_open := false
+
+# Stuff to do with auto-scrolling to focused levels.
+
+## The current position on the scroll bar when the button was focused.
+var _starting_scroll_position: int
+
+## The position of the focused level in the scroll container.
+var _focused_level_position: int
+
+## Tracks the weight to lerp between current scroll position and the focused
+## level position. When the weight reaches 1, auto-scrolling has finished.
+var _scroll_to_focused_level_weight: float = 1
+
 
 
 ## Load all levels and create buttons for them.
@@ -234,6 +256,14 @@ func _process(delta: float) -> void:
 			and _level_button_container.modulate.a < 1):
 		_level_button_container.show()
 		_level_button_container.modulate.a += delta / LEVEL_FADE_IN_TIME
+	
+	if _scroll_to_focused_level_weight < 1:
+		var curr_weight: float = _scroll_to_focused_level_weight + delta / AUTO_SCROLL_TIME
+		_scroll_to_focused_level_weight = min(1, curr_weight)
+		# Smooth out scroll motion with easing.
+		var final_weight = ease(_scroll_to_focused_level_weight, AUTO_SCROLL_EASE)
+		var scroll_to = lerp(_starting_scroll_position, _focused_level_position, final_weight)
+		_scroll_box.scroll_vertical = scroll_to
 
 
 ## Does what it says. Provide if this was the last played level or not, in which
@@ -257,6 +287,7 @@ func _load_level_and_add_button(level_info: LevelInfo, last_played: bool) -> voi
 ## used for practice.
 func _setup_last_played_level(level_button: LevelButton) -> void:
 	level_button.focus_button()
+	
 	if GameLevel.last_offset > 0:
 		level_button.enable_practice_mode()
 
@@ -343,7 +374,7 @@ func _sort_levels_by_comparator(sorting_method: SortingType) -> void:
 func _focus_level_button(button: LevelButton) -> void:
 	var level_info = button.level_info
 	
-	## Defocus the previously focused level button.
+	# Defocus the previously focused level button.
 	if _current_focused_level != null:
 		_current_focused_level.defocus_button()
 	_current_focused_level = button
@@ -355,6 +386,49 @@ func _focus_level_button(button: LevelButton) -> void:
 		|| LevelInfo.last_played_in_menu.song_preview 
 		!= level_info.song_preview):
 		preview_level_song.emit(level_info)
+	
+	# We need to wait for all level buttons to be defocused so we can properly 
+	# know the position of the focused level button in the scroll bar (since 
+	# focused buttons are bigger the previously focused button affects the pos 
+	# of the button we are about to focus).
+	await get_tree().process_frame
+	
+	# Auto-center the level button on the screen.
+	# Only do it if levels have already all loaded because when you return to 
+	# the level select from a level, that level is focused which will try to 
+	# center it, but we already saved what position we should be in the scroll
+	# container after returning from the level so we don't need to center it
+	# again.
+	if _done_loading_levels:
+		_starting_scroll_position = _scroll_box.scroll_vertical
+		var scroll_to = _get_level_scroll_position(button)
+		_focused_level_position = scroll_to
+		_scroll_to_focused_level_weight = 0
+
+
+## Get the position of the level button on the scroll container. Setting the
+## scroll_vertical to this value will center the given button on the screen.
+func _get_level_scroll_position(button: LevelButton) -> int:
+	# Get the position of the middle of the button on the scroll bar.
+	var top_margin = _level_button_margin.get_theme_constant("margin_top")
+	@warning_ignore("integer_division")
+	var scroll_to: int = button.position.y + LevelButton._MAX_Y_SIZE / 2 + top_margin
+	# Move the middle of the button to the middle of the screen.
+	scroll_to = scroll_to - _scroll_box.size.y / 2
+	# Scrolling to a negative value ain't possible.
+	scroll_to = max(0, scroll_to)
+	
+	# For some reason getting the max value of the vscrollbar isn't accurate, so
+	# instead test if setting vertical_scroll to scroll_to actually works or the
+	# vertical_scroll is clamped to be less than scroll_to.
+	var temp = _scroll_box.scroll_vertical
+	_scroll_box.scroll_vertical = scroll_to
+	if _scroll_box.scroll_vertical < scroll_to:
+		# The value of scroll_to is higher than the max, so lower it.
+		scroll_to = _scroll_box.scroll_vertical
+	_scroll_box.scroll_vertical = temp # Restore original value.
+	
+	return scroll_to
 
 
 ## Start the level that has been selected.
@@ -363,7 +437,8 @@ func _level_launch_button_pressed(level_info: LevelInfo) -> void:
 	level_info.load_level_bits_and_delays()
 	
 	if level_info.is_valid():
-		_last_level_select_position = _scroll_box.scroll_vertical
+		# Save the position of the button so it will be centered when we come back.
+		_last_level_select_position = _get_level_scroll_position(_current_focused_level)
 		
 		var level_scene: GameLevel = load("res://Scenes/level.tscn").instantiate()
 		
