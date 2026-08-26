@@ -440,39 +440,69 @@ func _on_sort_panel_mouse_exited() -> void:
 
 # Various comparator functions, for sorting levels by various properties.
 
-## Compares 2 levels based on their name, in alphabetical order.
+## Compares 2 levels based on their song name in alphabetical order.
+## If the song names are equal, use the version name instead.
+## This is commonly used as a tiebreaker comparator if the primary sorting 
+## method resulted in an equality between levels.
 static func _compare_level_name(a: LevelButton, b: LevelButton) -> bool:
-	return a.level_info.song_name < b.level_info.song_name
+	if a.level_info.song_name != b.level_info.song_name:
+		return a.level_info.song_name < b.level_info.song_name
+	else:
+		return a.level_info.version < b.level_info.version
 
 
 ## Compares 2 levels based on their speed, from low to high.
+## If these values are equal, the _compare_level_name comparator breaks ties. 
 static func _compare_level_speed(a: LevelButton, b: LevelButton) -> bool:
-	return a.modded_info.speed < b.modded_info.speed
+	if a.modded_info.speed != b.modded_info.speed:
+		return a.modded_info.speed < b.modded_info.speed
+	else:
+		return _compare_level_name(a, b)
 
 
 ## Compares 2 levels based on their BPM, from low to high.
+## If these values are equal, the _compare_level_name comparator breaks ties. 
 static func _compare_level_bpm(a: LevelButton, b: LevelButton) -> bool:
-	return a.modded_info.bpm < b.modded_info.bpm
+	if a.modded_info.bpm != b.modded_info.bpm:
+		return a.modded_info.bpm < b.modded_info.bpm
+	else:
+		return _compare_level_name(a, b)
 
 
 ## Compares 2 levels based on their difficulty, from low to high.
+## If these values are equal, the _compare_level_name comparator breaks ties. 
 static func _compare_level_difficulty(a: LevelButton, b: LevelButton) -> bool:
-	return a.modded_info.difficulty < b.modded_info.difficulty
+	if a.modded_info.difficulty != b.modded_info.difficulty:
+		return a.modded_info.difficulty < b.modded_info.difficulty
+	else:
+		return _compare_level_name(a, b)
 
 
 ## Compares 2 levels based on their damage, from low to high.
+## If these values are equal, the _compare_level_name comparator breaks ties. 
 static func _compare_level_damage(a: LevelButton, b: LevelButton) -> bool:
-	return a.modded_info.damage < b.modded_info.damage
+	if a.modded_info.damage != b.modded_info.damage:
+		return a.modded_info.damage < b.modded_info.damage
+	else:
+		return _compare_level_name(a, b)
 
 
 ## Compares 2 levels based on their length (in seconds), from low to high.
+## If these values are equal, the _compare_level_name comparator breaks ties. 
 static func _compare_level_length(a: LevelButton, b: LevelButton) -> bool:
-	return a.modded_info.length < b.modded_info.length
+	if a.modded_info.length != b.modded_info.length:
+		return a.modded_info.length < b.modded_info.length
+	else:
+		return _compare_level_name(a, b)
 
 
 ## Compares 2 levels based on their bit count, from low to high.
+## If these values are equal, the _compare_level_name comparator breaks ties. 
 static func _compare_level_bit_count(a: LevelButton, b: LevelButton) -> bool:
-	return a.level_info.bit_count < b.level_info.bit_count
+	if a.level_info.bit_count != b.level_info.bit_count:
+		return a.level_info.bit_count < b.level_info.bit_count
+	else:
+		return _compare_level_name(a, b)
 
 # Various level sorting buttons.
 

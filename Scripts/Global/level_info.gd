@@ -34,7 +34,7 @@ var file_name: String
 var version: String = "Normal"
 ## The name of the audio file of the song to play.
 var song_filename: String = ""
-## THe name of the song.
+## The name of the song.
 var song_name: String = ""
 ## The actual audio stream for the song of the level.
 var song: AudioStream
