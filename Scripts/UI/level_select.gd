@@ -64,6 +64,10 @@ const MOD_ICON_SIZE: int = 40
 ## Additional level scroll margin when the plays panel is open.
 const LEVEL_SCROLL_MARGIN_PLAYS = 300
 
+## How many seconds you aim to take to display all the levels.
+## If there are too many levels this time will be disregarded.
+const TARGET_TIME_TO_DISPLAY_LEVELS: float = 0.05
+
 ## How many seconds you aim to take to display all the plays for a level.
 ## If there are a crazy amount of plays this time will be disregarded.
 const TARGET_TIME_TO_DISPLAY_PLAYS: float = 0.25
@@ -91,6 +95,10 @@ var _level_filenames: PackedStringArray = _tutorial_level_filenames
 ## The -1 index indicates to first load the last played level, as it is of 
 ## highest priority.
 var _level_load_index: int = -1
+
+## How many levels aim to be loaded per frame. Uses the current framerate and 
+## value of TARGET_TIME_TO_DISPLAY_LEVELS to be calculated.
+var _target_level_loads_per_frame: int
 
 ## True after all valid levels have been loaded in.
 var _done_loading_levels := false
@@ -128,6 +136,21 @@ func _ready() -> void:
 	if SaveLoad.save_data.tutorial_played:
 		_level_filenames = DirAccess.get_files_at("res://Levels")
 	
+	# Calculate the target quantity of levels we want to load per frame.
+	# If the framerate is low enough that the target quantity is higher than 5 
+	# per frame, still only spawn 5 per frame. It will just spawn them all in 
+	# slower.
+	const MAXIMUM_TARGET_QUANTITY = 5
+	
+	# Use the target FPS to gauge how many LevelButton nodes can be added to the
+	# scene per frame in a timely fashion.
+	var fps = Engine.max_fps
+	if fps == 0 and DisplayServer.window_get_vsync_mode() != DisplayServer.VSyncMode.VSYNC_DISABLED:
+		fps = DisplayServer.screen_get_refresh_rate()
+	
+	_target_level_loads_per_frame = int(ceil(_level_filenames.size() / TARGET_TIME_TO_DISPLAY_LEVELS / fps))
+	_target_level_loads_per_frame = min(_target_level_loads_per_frame, MAXIMUM_TARGET_QUANTITY)
+	
 	# This triggers a margin to change to make room for a visible scroll bar.
 	var v_scroll_bar: VScrollBar = _plays_scroll_box.get_v_scroll_bar()
 	v_scroll_bar.visibility_changed.connect(_plays_scroll_bar_visibility_changed)
@@ -160,7 +183,6 @@ func _process(_delta: float) -> void:
 	# and its song preview will play immediately.
 	if _level_load_index == -1:
 		if LevelInfo.last_played != null:
-			print("Frame %d: loading level %s" % [_level_load_index, LevelInfo.last_played.file_name])
 			_load_level_and_add_button(LevelInfo.last_played, true)
 			preview_level_song.emit(LevelInfo.last_played)
 			
@@ -170,19 +192,25 @@ func _process(_delta: float) -> void:
 	
 	# Load all other levels.
 	if _level_load_index < _level_filenames.size():
-		var level_file = _level_filenames[_level_load_index]
-		print("Frame %d: loading level %s" % [_level_load_index, level_file])
-		
-		var level = LevelInfo.new(level_file)
-		if level.is_valid():
-			_load_level_and_add_button(level, false)
-		_level_load_index += 1
+		#print("Frame %d" % (_level_load_index / _target_level_loads_per_frame))
+		for i in range(0, _target_level_loads_per_frame):
+			if _level_load_index == _level_filenames.size():
+				break
+			
+			var level_file = _level_filenames[_level_load_index]
+			#print("Loading level %s" % [level_file])
+			
+			var level = LevelInfo.new(level_file)
+			
+			if level.is_valid():
+				_load_level_and_add_button(level, false)
+			_level_load_index += 1
 	elif !_done_loading_levels:
 		_done_loading_levels = true
-		print("done loading")
 		
 		# Now that all levels are in, you can scroll to where the player last
-		# was.
+		# was (otherwise the scroll container will not have expanded to the
+		# right size yet).
 		_scroll_box.scroll_vertical = _last_level_select_position
 		
 		# If this isn't true, then there are no sort buttons yet so we can't try
