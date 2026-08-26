@@ -72,6 +72,10 @@ const TARGET_TIME_TO_DISPLAY_LEVELS: float = 0.05
 ## If there are a crazy amount of plays this time will be disregarded.
 const TARGET_TIME_TO_DISPLAY_PLAYS: float = 0.25
 
+## How many seconds it takes to fade back in the levels when returning from a 
+## level (not when opening from the main menu).
+const LEVEL_FADE_IN_TIME: float = 0.1
+
 ## The last position the player was on the level selection menu (on the 
 ## scrollbar).
 static var _last_level_select_position: int = 0
@@ -136,7 +140,13 @@ func _ready() -> void:
 	if SaveLoad.save_data.tutorial_played:
 		_level_filenames = DirAccess.get_files_at("res://Levels")
 	
+	# By default we hide the button container until the levels are loaded.
+	# This will be undone if show_UI is called.
+	_level_button_container.modulate.a = 0
+	
+	
 	# Calculate the target quantity of levels we want to load per frame.
+	
 	# If the framerate is low enough that the target quantity is higher than 5 
 	# per frame, still only spawn 5 per frame. It will just spawn them all in 
 	# slower.
@@ -150,6 +160,7 @@ func _ready() -> void:
 	
 	_target_level_loads_per_frame = int(ceil(_level_filenames.size() / TARGET_TIME_TO_DISPLAY_LEVELS / fps))
 	_target_level_loads_per_frame = min(_target_level_loads_per_frame, MAXIMUM_TARGET_QUANTITY)
+	
 	
 	# This triggers a margin to change to make room for a visible scroll bar.
 	var v_scroll_bar: VScrollBar = _plays_scroll_box.get_v_scroll_bar()
@@ -178,7 +189,7 @@ func _ready() -> void:
 
 
 ## Load all the level info and add their buttons over multiple frames.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	# Load the last played level first, since it will be the focused level
 	# and its song preview will play immediately.
 	if _level_load_index == -1:
@@ -217,6 +228,12 @@ func _process(_delta: float) -> void:
 		# to sort anything yet (there is just the tutorial level(s)).
 		if SaveLoad.save_data.tutorial_played:
 			_sort_levels_by_comparator(SaveLoad.save_data.sorting_method)
+	
+	# Fade in the level buttons when loading is complete.
+	if (_done_loading_levels and UI_is_visible() 
+			and _level_button_container.modulate.a < 1):
+		_level_button_container.show()
+		_level_button_container.modulate.a += delta / LEVEL_FADE_IN_TIME
 
 
 ## Does what it says. Provide if this was the last played level or not, in which
@@ -389,6 +406,7 @@ func hide_UI():
 func show_UI():
 	_back_button.show()
 	_level_button_container.show()
+	_level_button_container.modulate.a = 1
 	_scroll_box.mouse_filter = _scroll_box.MOUSE_FILTER_STOP
 	
 	if SaveLoad.save_data.tutorial_played:
@@ -412,7 +430,8 @@ func show_UI():
 
 ## Returns if the UI is currently visible.
 func UI_is_visible() -> bool:
-	return _level_button_container.visible
+	# This works cuz the only way this button is visible is if the rest is.
+	return _back_button.visible 
 
 
 func _on_back_button_pressed() -> void:
