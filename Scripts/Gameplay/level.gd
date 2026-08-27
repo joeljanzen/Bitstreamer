@@ -64,6 +64,13 @@ func _ready() -> void:
 	# instantiates, so in all cases this works fine.
 	level_info = LevelInfo.last_played
 	
+	# WARNING THIS LINE OF CODE WILL ALWAYS RELOAD THE LEVEL INFO, GOOD WHEN YOU
+	# ARE MAKING THE LEVEL BUT SHOULD NOT RUN ON RELEASE!
+	if OS.is_debug_build():
+		level_info = LevelInfo.new(level_info.file_name)
+		level_info.load_level_bits_and_delays()
+		level_info.last_played = level_info
+	
 	bit_queue = level_info.bit_queue
 	delay_queue = level_info.delay_queue
 	
