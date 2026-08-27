@@ -29,9 +29,19 @@ const MINIMUM_SIZE_EXPANDED = 135
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 32
 
+## How many pixels of vertical mouse drag should be ignored.
+## NOTE: It is useful to have the Scroll Deadzone property of the scroll
+## container this button is in to be the same value. Otherwise you might be able
+## to drag buttons around and also click one at the same time.
+const _MOUSE_DRAG_DEADZONE = 35
+
 var play_data: PlayData
 
 var see_more := false
+
+## The initial y position a mouse drag is started from.
+## Used to detect if a mouse click is for dragging vertically or just a click.
+var _initial_drag_y_pos := 0
 
 
 ## Setup the play data display. Call this after instantiation of the scene but 
@@ -83,6 +93,23 @@ func _ready() -> void:
 	_add_mod_icons()
 
 
+## Ignore a mouse click if it's the start of a drag. If it is a proper click,
+## focus the button.
+## NOTE: The SeeMoreButton in this scene does not actually trigger anything when
+## it is clicked (its signals are not attached to anything), it is only there
+## for the visual affects of lightening and darkening the panel to behave like
+## a button. This function is what actually catches the mouse click and decides
+## whether it is a click on the button or dragging motion to ignore.
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.is_pressed():
+			_initial_drag_y_pos = event.global_position.y
+		elif event.is_released():
+			var vertical_distance = abs(_initial_drag_y_pos - event.global_position.y)
+			if vertical_distance < _MOUSE_DRAG_DEADZONE:
+				_on_display_pressed()
+
+
 ## Show all stats for the play, or hide those extra stats.
 func toggle_see_more() -> void:
 	see_more = !see_more # Toggle value.
@@ -97,7 +124,7 @@ func toggle_see_more() -> void:
 
 
 ## Show all stats for the play, or hide those extra stats.
-func _on_see_more_pressed() -> void:
+func _on_display_pressed() -> void:
 	_menu_click_sound.play()
 	toggle_see_more()
 	# For the one in the pause screen.

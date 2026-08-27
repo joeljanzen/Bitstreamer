@@ -44,7 +44,10 @@ const _TIME_TO_SHOW_POPUP = 0.5
 const _MINIMUM_PLAY_TIME = 5
 
 ## How many pixels of vertical mouse drag should be ignored.
-const _MOUSE_DRAG_DEADZONE = 30
+## NOTE: It is useful to have the Scroll Deadzone property of the scroll
+## container this button is in to be the same value. Otherwise you might be able
+## to drag buttons around and also click one at the same time.
+const _MOUSE_DRAG_DEADZONE = 35
 
 ## The minimum size of the button when it is unfocused.
 const _MIN_Y_SIZE = 200

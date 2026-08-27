@@ -527,6 +527,7 @@ autowrap_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
+scroll_deadzone = 35
 
 [node name="ScrollbarMargin" type="MarginContainer" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1897226211]
 layout_mode = 2
