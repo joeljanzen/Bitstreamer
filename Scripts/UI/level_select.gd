@@ -38,7 +38,7 @@ signal selection_closed
 
 ## Emitted when a level has been focused for long enough that a preview of the
 ## song should play.
-signal preview_level_song(level_info: LevelInfo)
+signal preview_level_song(level_info: LevelInfo, offset: float)
 
 ## Kinda just used to tell the main menu to fade out the music.
 signal level_selected
@@ -215,9 +215,15 @@ func _process(delta: float) -> void:
 	# Load the last played level first, since it will be the focused level
 	# and its song preview will play immediately.
 	if _level_load_index == -1:
-		if LevelInfo.last_played != null:
-			_load_level_and_add_button(LevelInfo.last_played, true)
-			preview_level_song.emit(LevelInfo.last_played)
+		var last_played := LevelInfo.last_played
+		if last_played != null:
+			_load_level_and_add_button(last_played, true)
+			
+			if GameLevel.last_offset == 0:
+				preview_level_song.emit(last_played, last_played.song_preview)
+			# If it isn't the preview will actually be triggered by the practice
+			# panel opening for the level, and it will play from the practice
+			# offset point.
 			
 			# Remove this level from the filenames so it isn't loaded again.
 			_level_filenames.erase(LevelInfo.last_played.file_name)
@@ -276,7 +282,9 @@ func _load_level_and_add_button(level_info: LevelInfo, last_played: bool) -> voi
 	var level_button: LevelButton = _level_button_scene.instantiate()
 	level_button.setup(level_info)
 	level_button.launch_button_pressed.connect(_level_launch_button_pressed)
+	level_button.practice_offset_changed.connect(_level_practice_offset_changed)
 	level_button.button_focused.connect(_focus_level_button)
+	
 	_level_button_container.add_child(level_button)
 	
 	if last_played:
@@ -381,11 +389,17 @@ func _focus_level_button(button: LevelButton) -> void:
 	
 	_display_plays(level_info)
 	
-	## Song preview
+	# Song preview
 	if (LevelInfo.last_played_in_menu.song_name != level_info.song_name
 		|| LevelInfo.last_played_in_menu.song_preview 
 		!= level_info.song_preview):
-		preview_level_song.emit(level_info)
+			
+		# If practice mode is enabled, start the song preview from that 
+		# point. Otherwise play it from the default song preview offset.
+		if button.do_practice:
+			preview_level_song.emit(level_info, button.practice_offset)
+		else:
+			preview_level_song.emit(level_info, level_info.song_preview)
 	
 	# We need to wait for all level buttons to be defocused so we can properly 
 	# know the position of the focused level button in the scroll bar (since 
@@ -456,6 +470,12 @@ func _level_launch_button_pressed(level_info: LevelInfo) -> void:
 		get_tree().change_scene_to_node(level_scene)
 	else:
 		push_error("Failed to load the level!")
+
+
+## The currently focused level changed its offset.
+func _level_practice_offset_changed(new_offset: float) -> void:
+	if _current_focused_level != null:
+		preview_level_song.emit(_current_focused_level.level_info, new_offset)
 
 
 ## Hides the level select UI.

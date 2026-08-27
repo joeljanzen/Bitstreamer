@@ -31,6 +31,9 @@ signal button_focused(button: LevelButton)
 ## This level has been selected to play.
 signal launch_button_pressed(level_info: LevelInfo)
 
+## The practice slider has been moved, setting a new level offset.
+signal practice_offset_changed(new_offset: float)
+
 ## How many seconds it takes a popup to appear after a level attribute started 
 ## being hovered over.
 const _TIME_TO_SHOW_POPUP = 0.5
@@ -59,6 +62,12 @@ var level_info: LevelInfo
 ## Level info with modified values from active mods.
 var modded_info: LevelInfo
 
+## True the level is to be played in practice mode.
+var do_practice := false
+
+## The offset to start the level at in practice, in seconds.
+var practice_offset: float = 0
+
 ## This level button has been clicked and should be focused.
 var is_focused := false
 
@@ -71,8 +80,7 @@ var _initial_drag_y_pos := 0
 var _popup_timer_on := false
 var _popup_time: float = 0
 
-## The offset to start the level at in practice, in seconds.
-var _practice_offset: float = 0
+
 
 
 ## Setup the level button with all level details. Call this after instantiation 
@@ -215,16 +223,30 @@ func update_labels() -> void:
 	# If the practice slider is open, we should update the current value
 	# since the level length might have changed.
 	if _practice_container.visible:
-		_on_time_slider_value_changed(_time_slider.value)
+		_set_slider(_time_slider.value)
 
 
 ## Enable practice mode for the level, showing a slider allowing the player
 ## to choose where they want to start the level from.
 func enable_practice_mode() -> void:
+	do_practice = true
 	_practice_button.hide()
 	_back_button.show()
 	_practice_container.show()
-	_on_time_slider_value_changed(_time_slider.value)
+	_set_slider(_time_slider.value)
+	
+	if practice_offset != 0:
+		practice_offset_changed.emit(practice_offset)
+
+
+## update the preview time slider with the given value.
+func _set_slider(value: float) -> void:
+	practice_offset = value
+	
+	var mod_factor = modded_info.length / level_info.length
+	var value_modded = value * mod_factor
+	var progress = value_modded / modded_info.length * 100
+	_time_slider_label.text = "Start at %s (%.2f%%)" % [_float_as_time(value_modded), progress]
 
 
 ## Converts the level length in seconds to a string in minutes and seconds.
@@ -257,7 +279,7 @@ func _trim_decimals(value: float) -> String:
 func _on_play_button_pressed() -> void:
 	# Only use an offset if they actually selected practice, duh.
 	if _practice_container.visible:
-		GameLevel.last_offset = _practice_offset
+		GameLevel.last_offset = practice_offset
 	else:
 		GameLevel.last_offset = 0
 	launch_button_pressed.emit(level_info)
@@ -381,26 +403,21 @@ func _on_diff_spd_dmg_panel_mouse_exited() -> void:
 
 func _on_practice_button_pressed() -> void:
 	_click_button_sound.play()
-	
 	enable_practice_mode()
 
 
 func _on_back_button_pressed() -> void:
 	_click_button_sound.play()
 	
-	_practice_offset = 0
+	do_practice = false
 	_back_button.hide()
 	_practice_container.hide()
 	_practice_button.show()
 
 
 func _on_time_slider_value_changed(value: float) -> void:
-	_practice_offset = value
-	
-	var mod_factor = modded_info.length / level_info.length
-	var value_modded = value * mod_factor
-	var progress = value_modded / modded_info.length * 100
-	_time_slider_label.text = "Start at %s (%.2f%%)" % [_float_as_time(value_modded), progress]
+	_set_slider(value)
+	practice_offset_changed.emit(practice_offset)
 
 
 func _on_time_slider_drag_started() -> void:
