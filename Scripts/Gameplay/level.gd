@@ -79,10 +79,6 @@ func _ready() -> void:
 	_environment.environment.glow_bloom = GameSettings.bloom_strength
 	
 	_arrow_transition.fade_in()
-	# We are starting somewhere in the middle of the song, so fade in.
-	if last_offset != 0:
-		conductor.fade_in(ArrowTransition.TRANSITION_FADE_SPEED)
-	
 	start_level(last_offset)
 
 
@@ -95,7 +91,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_levelUI.hide_UI()
 		else:
 			_levelUI.show_UI()
-			
+		
 		# Update game settings to remember if the player had UI on or not.
 		GameSettings.level_UI_enabled = _levelUI.UI_is_visible()
 	elif event.is_action_pressed("restart"):
@@ -175,7 +171,14 @@ func start_level(level_offset: float = 0) -> void:
 		# then start.
 		await _arrow_transition.animation_finished
 		
-		conductor.play_with_offset(level_offset, event_index)
+		# Figure out if we will fade in or start with max volume for the 
+		# conductor play_with_offset() call (if the offset is not zero, we will
+		# fade in).
+		var start_with_max_volume = last_offset == 0
+		conductor.play_with_offset(level_offset, event_index, start_with_max_volume)
+		if !start_with_max_volume:
+			conductor.fade_in(Conductor.RECOMMENDED_FADE_TIME / 2)
+		
 		conductor.set_timed_event(total_time)
 
 

@@ -16,6 +16,10 @@ signal timed_event(event_index: int)
 ## the timed_event signal and set_timed_event function.
 signal beat
 
+## The recommended amount of time it takes to fade out and in a new song. Just
+## fading out or just fading in should take half as long.
+const RECOMMENDED_FADE_TIME: float = 0.75
+
 ## The seconds per beat (the time between beat signal emissions).
 ## If this value is zero, no beat signals are being sent.
 var seconds_per_beat: float = 0
@@ -64,8 +68,13 @@ func set_beat_signal(bpm: float,  beat_coefficient: float = 1) -> float:
 ## next event that should be played.
 ## Use this function to play the conductor with no offset by passing no 
 ## arguments, instead of calling the inherited play() function.
-func play_with_offset(offset: float = 0, event_index: int = 0) -> void:
-	volume_db = 0 # Since we go to -60 when nothing is playing.
+## WARNING: If you are calling fade_in() as you call this, make sure you pass
+## false for set_max_volume, otherwise the volume will be set to max
+## for a moment while fading in and cause a nasty audio clipping artifact.
+func play_with_offset(offset: float = 0, event_index: int = 0, set_max_volume: bool = true) -> void:
+	if set_max_volume:
+		volume_db = 0
+	
 	_time_delay_ends = 0
 	_time_of_next_beat = offset
 	_timing_event_index = event_index
@@ -121,15 +130,14 @@ func done_timings() -> void:
 
 ## Fade out the music over the time given.
 func fade_out(time: float) -> void:
-	#if _volume_fade_animation.is_playing()
 	var fade_speed_factor: float = 1 / time
-	_volume_fade_animation.play("fade_out", 1, fade_speed_factor)
+	_volume_fade_animation.play("fade_out", -1, fade_speed_factor)
 
 
 ## Fade in the music over the time given.
 func fade_in(time: float) -> void:
 	var fade_speed_factor: float = 1 / time
-	_volume_fade_animation.play("fade_in", 1, fade_speed_factor)
+	_volume_fade_animation.play("fade_in", -1, fade_speed_factor)
 
 
 ## Slow down and decrease the pitch of the music drastically over the time given.

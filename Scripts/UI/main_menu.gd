@@ -43,9 +43,6 @@ const BACKGROUND_BLUR_STRENGTH: float = 0.5
 ## Strength of the pulsing of the credits text.
 const CREDITS_PULSE_STRENGTH: float = 0.35
 
-## How many seconds it takes for one song to fade out and another to fade in.
-const _NEW_SONG_TRANSITION_TIME: float = 0.75
-
 const splash_text_filepath = "res://Resources/Text/splash_text.json"
 
 var _settings_scene = preload("res://Scenes/UI/settings_ui.tscn")
@@ -143,7 +140,7 @@ func _start_song() -> void:
 ## Play a preview of the song for the currently focused level.
 func _preview_level_song(level_info: LevelInfo, offset: float) -> void:
 	LevelInfo.last_played_in_menu = level_info
-	_conductor.fade_to_new_song(level_info.song, offset, _NEW_SONG_TRANSITION_TIME)
+	_conductor.fade_to_new_song(level_info.song, offset, Conductor.RECOMMENDED_FADE_TIME)
 	
 	_now_playing_label.text = level_info.song_name
 	beat_time = _conductor.set_beat_signal(level_info.bpm, BEAT_COEFFICIENT)
@@ -333,7 +330,7 @@ func _on_next_song_button_mouse_exited() -> void:
 
 ## Simply fade out the music.
 func _fade_music() -> void:
-	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
+	_conductor.fade_out(Conductor.RECOMMENDED_FADE_TIME / 2)
 
 
 ## A bit flying across the background has been clicked.
