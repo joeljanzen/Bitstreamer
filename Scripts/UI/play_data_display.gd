@@ -22,9 +22,9 @@ extends Control
 ## How much to darken the pinkified panel displayed for perfect scores.
 const PANEL_DARKEN_AMOUNT: float = 0.85
 
-const MINIMUM_SIZE_DEFAULT = 85
-
-const MINIMUM_SIZE_EXPANDED = 135
+# Some constants to ensure correct sizing, pretty bad implementation
+const MINIMUM_Y_SIZE_DEFAULT = 85
+const MINIMUM_Y_SIZE_EXPANDED = 135
 
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 32
@@ -37,7 +37,8 @@ const _MOUSE_DRAG_DEADZONE = 35
 
 var play_data: PlayData
 
-var see_more := false
+## True if you can see all of the stats for the play.
+var can_see_more := false
 
 ## The initial y position a mouse drag is started from.
 ## Used to detect if a mouse click is for dragging vertically or just a click.
@@ -53,7 +54,7 @@ func setup(data: PlayData) -> void:
 ## Dynamic stylebox colouring.
 ## Set all label values.
 func _ready() -> void:
-	custom_minimum_size.y = MINIMUM_SIZE_DEFAULT
+	custom_minimum_size.y = MINIMUM_Y_SIZE_DEFAULT
 	
 	score_label.text = str(play_data.score)
 	
@@ -112,15 +113,28 @@ func _gui_input(event: InputEvent) -> void:
 
 ## Show all stats for the play, or hide those extra stats.
 func toggle_see_more() -> void:
-	see_more = !see_more # Toggle value.
-	if see_more:
-		custom_minimum_size.y = MINIMUM_SIZE_EXPANDED
-		extra_stats.show()
-		extra_stats_2.show()
+	if can_see_more:
+		see_less()
 	else:
-		custom_minimum_size.y = MINIMUM_SIZE_DEFAULT
-		extra_stats.hide()
-		extra_stats_2.hide()
+		see_more()
+
+
+## Show all stats for the play.
+func see_more() -> void:
+	can_see_more = true
+	custom_minimum_size.y = MINIMUM_Y_SIZE_EXPANDED
+	
+	extra_stats.show()
+	extra_stats_2.show()
+
+
+## Hide extra stats for the play.
+func see_less() -> void:
+	can_see_more = false
+	custom_minimum_size.y = MINIMUM_Y_SIZE_DEFAULT
+	
+	extra_stats.hide()
+	extra_stats_2.hide()
 
 
 ## Show all stats for the play, or hide those extra stats.

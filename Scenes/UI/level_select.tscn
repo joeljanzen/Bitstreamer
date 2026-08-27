@@ -499,10 +499,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 82
+theme_override_constants/margin_left = 72
 theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PlaysPanel/MarginContainer" unique_id=644404764]
 layout_mode = 2
@@ -531,11 +531,16 @@ scroll_deadzone = 35
 
 [node name="ScrollbarMargin" type="MarginContainer" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1897226211]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="PlaysContainer" type="VBoxContainer" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer/ScrollbarMargin" unique_id=756342815]
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_constants/separation = 10
+
+[node name="ExpandShrinkPlaysButton" type="Button" parent="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer" unique_id=1759421079]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Expand All"
 
 [node name="PlaysButton" type="Button" parent="CanvasLayer/PlaysPanel" unique_id=352096214]
 layout_mode = 1
@@ -576,5 +581,6 @@ bus = &"Menu"
 [connection signal="pressed" from="CanvasLayer/ModsPanel/VBoxContainer/ModsButton" to="." method="_on_mods_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ModsPanel/VBoxContainer/ModsCloseButton" to="." method="_on_mods_close_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ModsPanel/ModBar/ClearModsButton" to="." method="_on_clear_mods_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ExpandShrinkPlaysButton" to="." method="_on_expand_shrink_plays_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/PlaysPanel/PlaysButton" to="." method="_on_plays_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/PlaysPanel/PlaysButton" to="." method="_on_plays_button_pressed"]

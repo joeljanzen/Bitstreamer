@@ -17,6 +17,7 @@ class_name LevelSelect
 @onready var _plays_panel_animation = $CanvasLayer/PlaysPanel/PlaysAnimationPlayer
 @onready var _level_scroll_margin_animation = $CanvasLayer/LevelScrollMargin/ScrollMarginModifier
 @onready var _plays_button = $CanvasLayer/PlaysPanel/PlaysButton
+@onready var _expand_shrink_plays_button = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ExpandShrinkPlaysButton
 
 @onready var _plays_scroll_box = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer
 @onready var _plays_scroll_margin = $CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ScrollContainer/ScrollbarMargin
@@ -711,6 +712,7 @@ func _spawn_plays_nodes_over_time(plays: Array[PlayData], target_duration: float
 		
 		play_display = _play_display_scene.instantiate()
 		play_display.setup(plays[i])
+		print(play_display.size_flags_horizontal == SIZE_EXPAND_FILL)
 		_plays_container.add_child(play_display)
 		
 		# Wait for the next frame before adding the next child
@@ -733,6 +735,10 @@ func _open_plays_panel() -> bool:
 		_plays_panel_animation.play("RESET") # So if it was playing, it starts over.
 		_plays_panel_animation.play("popout")
 		_plays_button.text = " > "
+		
+		# Since we're loading in new plays that are not showing all stats,  set 
+		# the expand/shrink button to expand when clicked.
+		_set_expand_plays_button(true) 
 		return true
 	else:
 		return false
@@ -855,3 +861,23 @@ func _on_clear_mods_button_pressed() -> void:
 func _show_updated_mod_bar() -> void:
 	_score_multiplier_label.text = "%.2fx score" % ModManager.get_score_multiplier()
 	_mod_bar.show()
+
+
+func _on_expand_shrink_plays_button_pressed() -> void:
+	_menu_click_sound.play()
+	if _expand_shrink_plays_button.text == "Expand All":
+		for play: PlayDataDisplay in _plays_container.get_children():
+			play.see_more()
+		_set_expand_plays_button(false)
+	else:
+		for play: PlayDataDisplay in _plays_container.get_children():
+			play.see_less()
+		_set_expand_plays_button(true)
+
+
+## Set the button to expand or shrink plays when clicked.
+func _set_expand_plays_button(expand: bool) -> void:
+	if expand:
+		_expand_shrink_plays_button.text = "Expand All"
+	else:
+		_expand_shrink_plays_button.text = "Shrink All"
