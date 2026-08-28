@@ -1,4 +1,4 @@
-song_name=Terminal Velocity,song=Terminal Velocity.wav,song_preview=89.5,version=Insane,bpm=160,speed=7,diff=7,dmg=8,length=251.906,bit_count=710
+song_name=Terminal Velocity,song=Terminal Velocity.wav,song_preview=89.5,version=Insane,bpm=160,speed=7,diff=7,dmg=7,length=251.906,bit_count=710
 
 4,0
 4,1

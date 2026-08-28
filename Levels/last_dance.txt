@@ -1,4 +1,4 @@
-song_name=Last Dance,song=Last Dance.wav,song_preview=109,version=Hard,bpm=128,speed=6,diff=6,dmg=6,length=214.805,bit_count=594
+song_name=Last Dance,song=Last Dance.wav,song_preview=109,version=Hard,bpm=128,speed=6,diff=6.5,dmg=6,length=214.805,bit_count=594
 
 12,0
 2,0
@@ -348,14 +348,12 @@ song_name=Last Dance,song=Last Dance.wav,song_preview=109,version=Hard,bpm=128,s
 3/4,1
 3/4,1
 3/4,enter
-1/2,1
+1/2,0
 
 # Guitar solo first 4 bars - 1m 52s
 
 1/2,enter
-1/2,0
-1/2,1
-1/2,1
+3/2,1
 1/2,0
 1/2,1
 1/4,0

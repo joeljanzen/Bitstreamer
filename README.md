@@ -29,15 +29,28 @@ Self-explanatory parameters are not listed here. See their minimal explanations 
 Used to distinguish levels that use the same song. For the most part, the version of a level should generally be described in terms of its overall difficulty (there is no value associated with a level for overall difficulty yet, as there are too many factors going into a level's difficulty at the moment and no formula has yet been devised to compile those factors into a single value).
 
 The standard version names are as follows, in order of overall difficulty:
-- easy
-- normal
-- hard
-- insane
-- expert
-- extreme
-- unreal
+- Easy
+- Normal
+- Hard
+- Insane
+- Expert
+- Extreme
+- Unreal
 
 Despite that, a level's version can be called anything at all (there are no actual restrictions). Not all versions of a level may be of a different overall difficulty; they may be different in other aspects, such as their speed, required accuracy (difficulty, not to be confused with *overall* difficulty), damage dealt, and most importantly the bit patterns that make up the level.
+
+#### Standard Level Parameters by Version
+Though there are no strict restrictions on the parameters a particular standard version should have, some basic guidelines may be useful:
+
+- Easy: 0-3 difficulty, 1-3 speed
+- Normal: 4-5 difficulty and speed
+- Hard: 6 difficulty, 6 speed
+- Insane: 7-8 difficulty and speed
+- Expert: 9-10 difficulty, 8-10 speed
+- Extreme: 11 difficulty, 9-11 speed
+- Unreal: 12 difficulty, 10-12 speed
+
+Damage is not standardized as it depends heavily on a level's mapping. Generally, it will be low (1-5 damage) for easy to normal levels, increase for hard to insane levels (6-10 damage), and remain similar or even decrease for levels of higher difficulty, to compensate for more frequently spawning bits. As a general rule, damage should never exceed 20 unless affected by mods.
 
 ### BPM
 
