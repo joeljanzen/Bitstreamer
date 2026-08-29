@@ -42,9 +42,6 @@ environment = SubResource("Environment_81xng")
 
 [node name="Conductor" parent="." unique_id=1369693212 instance=ExtResource("5_wqkje")]
 
-[node name="MusicQueue" type="Timer" parent="." unique_id=105400590]
-one_shot = true
-
 [node name="PlayArea" parent="." unique_id=1773739756 instance=ExtResource("3_wqkje")]
 position = Vector2(207.5, 82.5)
 

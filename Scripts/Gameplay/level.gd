@@ -5,14 +5,17 @@ extends Node2D
 @onready var _levelUI: LevelUI = $LevelUI
 @onready var _environment: WorldEnvironment = $WorldEnvironment
 @onready var _play_area: PlayArea = $PlayArea
-@onready var _music_queue: Timer = $MusicQueue
-
 @onready var _arrow_transition: ArrowTransition = $TransitionCanvas/ArrowTransition
-
 @onready var conductor: Conductor = $Conductor
 
 ## The strength of blur when the game is paused.
 const PAUSE_BLUR_STRENGTH := 0.5
+
+## The level start delay when starting the level from the beginning.
+const LEVEL_START_DELAY := 0.75
+
+## The level start delay when practicing the level not from the beginning.
+const PRACTICE_START_DELAY := 0.35
 
 ## The last level offset used, in seconds.
 static var last_offset: float = 0
@@ -84,7 +87,8 @@ func _ready() -> void:
 
 ## Input handling.
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause") and !paused and !failed and !completed:
+	if (event.is_action_pressed("pause") and !paused and !failed and !completed
+			and conductor.playing):
 		_paused()
 	elif event.is_action_pressed("toggle_level_UI") and !paused and !failed and !completed:
 		if _levelUI.UI_is_visible():
@@ -173,6 +177,14 @@ func start_level(level_offset: float = 0) -> void:
 		# then start.
 		await _arrow_transition.animation_finished
 		
+		# Give the player a little time to get ready.
+		if level_offset == 0:
+			print("normal delay")
+			await get_tree().create_timer(LEVEL_START_DELAY).timeout
+		else:
+			print("prac delay")
+			await get_tree().create_timer(PRACTICE_START_DELAY).timeout
+		
 		# Figure out if we will fade in or start with max volume for the 
 		# conductor play_with_offset() call (if the offset is not zero, we will
 		# fade in).
@@ -213,7 +225,6 @@ func _receive_timed_event(event_index: int) -> void:
 ## The level has been unpaused.
 func _resumed() -> void:
 	paused = false
-	_music_queue.set_paused(false)
 	conductor.toggle_paused()
 	
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -234,7 +245,6 @@ func _resumed() -> void:
 ## The level has been paused.
 func _paused() -> void:
 	paused = true
-	_music_queue.set_paused(true)
 	conductor.toggle_paused()
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
