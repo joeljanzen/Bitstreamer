@@ -3,8 +3,6 @@
 [ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="1_bbr4g"]
 [ext_resource type="Script" uid="uid://c0dcx5ksg78n5" path="res://Scripts/UI/level_button.gd" id="1_iq6la"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_icd4v"]
-[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_j7lvc"]
-[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_s1d3e"]
 
 [node name="LevelButton" type="Control" unique_id=1822112030]
 custom_minimum_size = Vector2(1150, 200)
@@ -278,14 +276,6 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HoverButton" type="AudioStreamPlayer" parent="." unique_id=254220930]
-stream = ExtResource("3_j7lvc")
-bus = &"Menu"
-
-[node name="ClickButton" type="AudioStreamPlayer" parent="." unique_id=1151272473]
-stream = ExtResource("5_s1d3e")
-bus = &"Menu"
-
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DifficultyPanel" to="." method="_on_difficulty_panel_mouse_entered"]
@@ -298,5 +288,7 @@ bus = &"Menu"
 [connection signal="pressed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="drag_started" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSlider" to="." method="_on_time_slider_drag_started"]
 [connection signal="value_changed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSlider" to="." method="_on_time_slider_value_changed"]
+[connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/BackButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="mouse_entered" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeButton" to="." method="_on_practice_button_pressed"]

@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c7ikv8tv48aqk" path="res://Scripts/UI/play_data_display.gd" id="1_sr7n1"]
 [ext_resource type="Theme" uid="uid://dvm68fnrxg301" path="res://Resources/Themes/play_data_display_theme.tres" id="2_nt5gq"]
-[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="3_nt5gq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sr7n1"]
 
@@ -158,10 +157,6 @@ mouse_filter = 1
 theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxEmpty_sr7n1")
 theme_override_styles/hover = SubResource("StyleBoxFlat_sr7n1")
-
-[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1570426540]
-stream = ExtResource("3_nt5gq")
-bus = &"Menu"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

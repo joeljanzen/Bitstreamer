@@ -7,8 +7,6 @@ extends Control
 
 @onready var _bloom_label = $MarginContainer/VBoxContainer/HBoxContainer3/Label2
 
-@onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
-
 
 ## Set all video settings to their current states.
 func setup() -> void:
@@ -22,7 +20,7 @@ func _ready() -> void:
 
 
 func _on_bloom_level_value_changed(value: float) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	GameSettings.bloom_strength = value
 	
 	@warning_ignore("narrowing_conversion")
@@ -31,10 +29,10 @@ func _on_bloom_level_value_changed(value: float) -> void:
 
 
 func _on_crt_filter_toggled(toggled_on: bool) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	GameSettings.set_crt_filter(toggled_on)
 
 
 func _on_fullscreen_toggled(toggled_on: bool) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	GameSettings.set_fullscreen(toggled_on)

@@ -12,10 +12,6 @@ extends Control
 
 @onready var _arrow_transition: ArrowTransition = $CanvasLayer/ArrowTransition
 
-# Sounds.
-@onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
-@onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
-
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 100
 
@@ -113,7 +109,7 @@ func connect_conductor(conductor: Conductor) -> void:
 
 ## The player has pressed the play again button. Clearly.
 func _on_play_again_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	
 	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
@@ -124,7 +120,7 @@ func _on_play_again_pressed() -> void:
 
 ## Return to the main menu.
 func _on_quit_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	
 	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
@@ -133,9 +129,5 @@ func _on_quit_pressed() -> void:
 	GameLevel.quit(get_tree())
 
 
-func _on_play_again_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_quit_mouse_entered() -> void:
-	_menu_focus_sound.play()
+func _on_button_hovered() -> void:
+	SoundManager.play_menu_focus()

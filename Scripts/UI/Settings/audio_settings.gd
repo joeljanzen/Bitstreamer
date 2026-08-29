@@ -11,8 +11,6 @@ extends Control
 @onready var _gameplay_label = $MarginContainer/VBoxContainer/HBoxContainer4/Label2
 @onready var _menu_label = $MarginContainer/VBoxContainer/HBoxContainer3/Label2
 
-@onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
-
 
 ## Set sliders to their appropriate positions (where volumes are currently at).
 func setup() -> void:
@@ -72,4 +70,4 @@ func get_percent_text(value: float) -> String:
 # UI SFX
 
 func _on_volume_drag_started() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()

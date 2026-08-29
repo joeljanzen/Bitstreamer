@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://cwbi68efajbok"]
+
+[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="1_1ohty"]
+[ext_resource type="Script" uid="uid://bodhqpvdjrntw" path="res://Scripts/Global/sound_manager.gd" id="1_tox07"]
+[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="2_tox07"]
+[ext_resource type="AudioStream" uid="uid://rafd6tbh6o81" path="res://Resources/Audio/SFX/launchwoosh.wav" id="3_wyfeo"]
+[ext_resource type="AudioStream" uid="uid://c4fdwblqh0n1x" path="res://Resources/Audio/SFX/ColorClick.wav" id="4_rqs6t"]
+[ext_resource type="AudioStream" uid="uid://rl8f7krqudnc" path="res://Resources/Audio/SFX/BitClick.wav" id="5_lw6xy"]
+[ext_resource type="AudioStream" uid="uid://dlyactmlyespp" path="res://Resources/Audio/SFX/EnterClick.wav" id="6_rqs6t"]
+[ext_resource type="AudioStream" uid="uid://8gt8sj4us0p8" path="res://Resources/Audio/SFX/BitMiss.wav" id="7_h0di3"]
+[ext_resource type="AudioStream" uid="uid://bm45yq771u653" path="res://Resources/Audio/SFX/ErrorClick.wav" id="8_n5cwv"]
+[ext_resource type="AudioStream" uid="uid://dwh14dbk4rfv5" path="res://Resources/Audio/SFX/EmptyClick.wav" id="9_w8ulo"]
+[ext_resource type="AudioStream" uid="uid://dv5v112ayx1xe" path="res://Resources/Audio/SFX/LineClear.wav" id="10_sojss"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_kquec"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("5_lw6xy")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_lb7tw"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("6_rqs6t")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_20vxg"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("7_h0di3")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_i418q"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("8_n5cwv")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_y0hwn"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("9_w8ulo")
+
+[node name="SoundManager" type="Node" unique_id=1536887220]
+script = ExtResource("1_tox07")
+
+[node name="MenuBus" type="Node" parent="." unique_id=1283829502]
+
+[node name="MenuClick" type="AudioStreamPlayer" parent="MenuBus" unique_id=1797507897]
+stream = ExtResource("2_tox07")
+bus = &"Menu"
+
+[node name="MenuFocus" type="AudioStreamPlayer" parent="MenuBus" unique_id=499880758]
+stream = ExtResource("1_1ohty")
+max_polyphony = 3
+bus = &"Menu"
+
+[node name="ColorClick" type="AudioStreamPlayer" parent="MenuBus" unique_id=744296969]
+stream = ExtResource("4_rqs6t")
+bus = &"Menu"
+
+[node name="LaunchWoosh" type="AudioStreamPlayer" parent="MenuBus" unique_id=1021698585]
+stream = ExtResource("3_wyfeo")
+bus = &"Menu"
+
+[node name="GameplayBus" type="Node" parent="." unique_id=1576007171]
+
+[node name="BitClick" type="AudioStreamPlayer" parent="GameplayBus" unique_id=1265923955]
+stream = SubResource("AudioStreamRandomizer_kquec")
+max_polyphony = 2
+bus = &"Gameplay"
+
+[node name="EnterBackClick" type="AudioStreamPlayer" parent="GameplayBus" unique_id=722103309]
+stream = SubResource("AudioStreamRandomizer_lb7tw")
+max_polyphony = 2
+bus = &"Gameplay"
+
+[node name="BitMiss" type="AudioStreamPlayer" parent="GameplayBus" unique_id=77981120]
+stream = SubResource("AudioStreamRandomizer_20vxg")
+max_polyphony = 2
+bus = &"Gameplay"
+
+[node name="ErrorClick" type="AudioStreamPlayer" parent="GameplayBus" unique_id=1688094842]
+stream = SubResource("AudioStreamRandomizer_i418q")
+max_polyphony = 2
+bus = &"Gameplay"
+
+[node name="EmptyClick" type="AudioStreamPlayer" parent="GameplayBus" unique_id=474556057]
+stream = SubResource("AudioStreamRandomizer_y0hwn")
+max_polyphony = 2
+bus = &"Gameplay"
+
+[node name="LineClear" type="AudioStreamPlayer" parent="GameplayBus" unique_id=838566080]
+stream = ExtResource("10_sojss")
+bus = &"Gameplay"

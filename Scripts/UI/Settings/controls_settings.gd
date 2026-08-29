@@ -14,8 +14,6 @@ extends Control
 @onready var _mods_panel_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton9/ToggleModsPanel
 @onready var _plays_panel_button = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton10/TogglePlaysPanel
 
-@onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
-
 const BINDABLE_ACTIONS: Array[String] = [
 	"0_bit",
 	"1_bit",
@@ -55,7 +53,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if waiting_for_input:
 		if event is InputEventKey || event is InputEventMouseButton and event.is_pressed():
-			_menu_click_sound.play()
+			SoundManager.play_menu_click()
 			accept_event() # Makes sure that clicking enter does not click the button again after.
 			
 			var same_control_selected := false
@@ -96,7 +94,7 @@ func _set_button_text_to_bind(button: Button, event: String) -> void:
 
 
 func _on_zero_bit_click_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "0_bit"
 	current_button = _zero_bit_button
@@ -104,7 +102,7 @@ func _on_zero_bit_click_pressed() -> void:
 
 
 func _on_one_bit_click_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "1_bit"
 	current_button = _one_bit_button
@@ -112,7 +110,7 @@ func _on_one_bit_click_pressed() -> void:
 
 
 func _on_enter_bit_click_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "enter_bit"
 	current_button = _enter_bit_button
@@ -120,7 +118,7 @@ func _on_enter_bit_click_pressed() -> void:
 
 
 func _on_back_bit_click_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "back_bit"
 	current_button = _back_bit_button
@@ -128,7 +126,7 @@ func _on_back_bit_click_pressed() -> void:
 
 
 func _on_toggle_level_ui_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "toggle_level_UI"
 	current_button = _level_ui_button
@@ -136,7 +134,7 @@ func _on_toggle_level_ui_pressed() -> void:
 
 
 func _on_pause_resume_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "pause"
 	current_button = _pause_resume_button
@@ -144,7 +142,7 @@ func _on_pause_resume_pressed() -> void:
 
 
 func _on_restart_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "restart"
 	current_button = _restart_button
@@ -152,7 +150,7 @@ func _on_restart_pressed() -> void:
 
 
 func _on_quit_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "quit"
 	current_button = _quit_button
@@ -160,7 +158,7 @@ func _on_quit_pressed() -> void:
 
 
 func _on_toggle_mods_panel_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "toggle_mods_panel"
 	current_button = _mods_panel_button
@@ -168,7 +166,7 @@ func _on_toggle_mods_panel_pressed() -> void:
 
 
 func _on_toggle_plays_panel_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	waiting_for_input = true
 	current_action = "toggle_plays_panel"
 	current_button = _plays_panel_button

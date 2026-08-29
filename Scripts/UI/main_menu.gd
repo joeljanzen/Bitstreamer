@@ -1,9 +1,5 @@
 extends Control
 
-@onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
-@onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
-@onready var _bit_click_sound: AudioStreamPlayer = $BitClick
-@onready var _bit_error_click_sound: AudioStreamPlayer = $ErrorClick
 @onready var _canvas = $CanvasLayer
 @onready var _title = $MarginContainer/Title
 @onready var _splash_text_label = $SplashTextLabel
@@ -233,7 +229,7 @@ func _open_level_select() -> void:
 
 
 func _on_play_button_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	
 	_open_level_select()
 
@@ -252,7 +248,7 @@ func _on_settings_button_pressed() -> void:
 
 ## Show game credits.
 func _on_credits_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	
 	if (_credits_text.visible_ratio == 0
 			or _credits_animation.get_playing_speed() < 0):
@@ -277,7 +273,6 @@ func _hide_menu() -> void:
 ## splash text.
 func _show_menu() -> void:
 	_canvas.show()
-	_menu_click_sound.play() # For the button they pressed to return to menu.
 	
 	Bit.clickable_in_main_menu = true
 	
@@ -290,16 +285,8 @@ func _on_shutdown_button_pressed() -> void:
 	get_tree().quit(0)
 
 
-func _on_play_button_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_settings_button_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_shutdown_button_mouse_entered() -> void:
-	_menu_focus_sound.play()
+func _on_button_hovered() -> void:
+	SoundManager.play_menu_focus()
 
 
 func _on_next_song_button_pressed() -> void:
@@ -307,7 +294,7 @@ func _on_next_song_button_pressed() -> void:
 
 
 func _on_next_song_button_mouse_entered() -> void:
-	_menu_focus_sound.play()
+	SoundManager.play_menu_focus()
 	
 	# Choose a random theme color for the button icon.
 	var theme_colors = GameSettings.get_theme_colors()
@@ -336,10 +323,10 @@ func _fade_music() -> void:
 ## A bit flying across the background has been clicked.
 func _bit_clicked(correct_click: bool) -> void:
 	if correct_click:
-		_bit_click_sound.play()
+		SoundManager.play_bit_click()
 		_clicked_bit_count += 1
 		_bit_click_counter_label.text = "Bits clicked: " + str(_clicked_bit_count)
 	else:
-		_bit_error_click_sound.play()
+		SoundManager.play_error_bit_click()
 		_clicked_bit_count = 0
 		_bit_click_counter_label.text = ""

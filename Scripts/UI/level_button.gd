@@ -1,5 +1,7 @@
 class_name LevelButton
 extends Control
+## Displays level information and allows clicking to start the level. Includes a
+## practice option to start anywhere in the level.
 
 @onready var _button_panel = $ButtonPanel
 @onready var _name_label = $ButtonPanel/MarginContainer/VBoxContainer/NamePanel/MarginContainer/VBoxContainer/NameLabel
@@ -21,9 +23,6 @@ extends Control
 
 @onready var _popup_panel = $PopupPanel
 @onready var _popup_label = $PopupPanel/MarginContainer/RichTextLabel
-
-@onready var _hover_button_sound = $HoverButton
-@onready var _click_button_sound = $ClickButton
 
 ## This level has been focused by clicking on it.
 signal button_focused(button: LevelButton)
@@ -149,7 +148,7 @@ func _gui_input(event: InputEvent) -> void:
 				# need to ensure the sound only plays here when the unfocused 
 				# button is clicked, not every time focus_button is called.
 				if !is_focused:
-					_click_button_sound.play()
+					SoundManager.play_menu_click()
 					focus_button()
 
 
@@ -289,6 +288,7 @@ func _on_play_button_pressed() -> void:
 
 
 func _on_play_button_mouse_entered() -> void:
+	SoundManager.play_menu_focus()
 	_set_play_button_text_color()
 
 
@@ -321,8 +321,8 @@ func _set_play_button_text_color() -> void:
 
 ## Scale the button and gives it a slight rotation while hovered.
 func _on_mouse_entered() -> void:
-	_hover_button_sound.play()
 	if !is_focused:
+		SoundManager.play_menu_focus()
 		_button_panel.scale = Vector2(1.015, 1.015)
 
 
@@ -405,12 +405,12 @@ func _on_diff_spd_dmg_panel_mouse_exited() -> void:
 
 
 func _on_practice_button_pressed() -> void:
-	_click_button_sound.play()
+	SoundManager.play_menu_click()
 	enable_practice_mode()
 
 
 func _on_back_button_pressed() -> void:
-	_click_button_sound.play()
+	SoundManager.play_menu_click()
 	
 	do_practice = false
 	_back_button.hide()
@@ -424,4 +424,8 @@ func _on_time_slider_value_changed(value: float) -> void:
 
 
 func _on_time_slider_drag_started() -> void:
-	_click_button_sound.play()
+	SoundManager.play_menu_click()
+
+
+func _on_button_hovered() -> void:
+	SoundManager.play_menu_focus()

@@ -2,9 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bps4r7xs057l3" path="res://Scripts/UI/level_select.gd" id="1_2wnai"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_2wnai"]
-[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_1i34c"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_40fl8"]
-[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_40fl8"]
 [ext_resource type="PackedScene" uid="uid://dpi2oef3klh47" path="res://Scenes/UI/mod_button.tscn" id="4_texu8"]
 [ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="6_7vwlt"]
 
@@ -559,15 +557,7 @@ libraries/ = SubResource("AnimationLibrary_texu8")
 
 [node name="ArrowTransition" parent="CanvasLayer" unique_id=161824251 instance=ExtResource("6_7vwlt")]
 
-[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=564885747]
-stream = ExtResource("3_1i34c")
-bus = &"Menu"
-
-[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=723314131]
-stream = ExtResource("4_40fl8")
-bus = &"Menu"
-
-[connection signal="mouse_entered" from="CanvasLayer/BackButton" to="." method="_on_back_button_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/BackButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/SortButton" to="." method="_on_sort_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/SortPanel" to="." method="_on_sort_panel_mouse_exited"]
@@ -581,6 +571,7 @@ bus = &"Menu"
 [connection signal="pressed" from="CanvasLayer/ModsPanel/VBoxContainer/ModsButton" to="." method="_on_mods_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ModsPanel/VBoxContainer/ModsCloseButton" to="." method="_on_mods_close_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ModsPanel/ModBar/ClearModsButton" to="." method="_on_clear_mods_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ExpandShrinkPlaysButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/PlaysPanel/MarginContainer/VBoxContainer/ExpandShrinkPlaysButton" to="." method="_on_expand_shrink_plays_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/PlaysPanel/PlaysButton" to="." method="_on_plays_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/PlaysPanel/PlaysButton" to="." method="_on_plays_button_pressed"]

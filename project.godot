@@ -25,6 +25,7 @@ GameSettings="*uid://btgjt44yi3mpp"
 Signals="*uid://crtud41x335yx"
 PerformanceCalculator="*uid://cavskhjwn6yn1"
 SaveLoad="*uid://che2koeyadvig"
+SoundManager="*uid://cwbi68efajbok"
 ModManager="*uid://boalvxl74iypt"
 flowerwall_crt="*uid://cc1fomjf362h5"
 

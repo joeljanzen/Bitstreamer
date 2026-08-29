@@ -31,9 +31,6 @@ class_name LevelSelect
 
 @onready var _arrow_transition: ArrowTransition = $CanvasLayer/ArrowTransition
 
-@onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
-@onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
-
 ## Emitted when the close button is pressed, or esc is pressed.
 signal selection_closed
 
@@ -194,7 +191,7 @@ func _ready() -> void:
 	for mod_button: ModButton in _mod_button_container.get_children():
 		mod_buttons.push_back(mod_button)
 		mod_button.pressed.connect(_mod_button_pressed)
-		mod_button.mouse_entered.connect(_mod_button_hovered)
+		mod_button.mouse_entered.connect(_on_button_hovered)
 		
 		_update_active_mod_icons()
 	ModManager.mod_buttons = mod_buttons
@@ -307,25 +304,25 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_close_dialog"):
 		if UI_is_visible():
 			if _mods_panel_open:
-				_menu_click_sound.play()
+				SoundManager.play_menu_click()
 				_close_mods_panel()
 				accept_event()
 	if event.is_action_pressed("toggle_mods_panel") and tutorial_played:
-		_menu_click_sound.play()
+		SoundManager.play_menu_click()
 		if _mods_panel_open:
 			_close_mods_panel()
 		else:
-			_menu_click_sound.play()
+			SoundManager.play_menu_click()
 			_open_mods_panel()
 		accept_event()
 	if event.is_action_pressed("toggle_plays_panel") and tutorial_played:
 		if _plays_panel_is_open():
-			_menu_click_sound.play()
+			SoundManager.play_menu_click()
 			_close_plays_panel()
 			_auto_open_play_panel = false
 		else:
 			if _open_plays_panel():
-				_menu_click_sound.play()
+				SoundManager.play_menu_click()
 				_auto_open_play_panel = true
 		accept_event()
 
@@ -448,7 +445,7 @@ func _get_level_scroll_position(button: LevelButton) -> int:
 
 ## Start the level that has been selected.
 func _level_launch_button_pressed(level_info: LevelInfo) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_launch_level()
 	level_info.load_level_bits_and_delays()
 	
 	if level_info.is_valid():
@@ -531,18 +528,15 @@ func UI_is_visible() -> bool:
 
 
 func _on_back_button_pressed() -> void:
+	SoundManager.play_menu_click()
 	hide_UI()
 	_close_mods_panel()
 	selection_closed.emit()
 
 
-func _on_back_button_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
 ## Show the sort panel.
 func _on_sort_button_mouse_entered() -> void:
-	_menu_focus_sound.play()
+	SoundManager.play_menu_focus()
 	_sort_panel.show()
 	_sort_button.hide()
 
@@ -622,37 +616,37 @@ static func _compare_level_bit_count(a: LevelButton, b: LevelButton) -> bool:
 # Various level sorting buttons.
 
 func _on_name_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_sort_levels_by_comparator(SortingType.NAME)
 
 
 func _on_difficulty_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_sort_levels_by_comparator(SortingType.DIFFICULTY)
 
 
 func _on_speed_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_sort_levels_by_comparator(SortingType.SPEED)
 
 
 func _on_damage_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_sort_levels_by_comparator(SortingType.DAMAGE)
 
 
 func _on_length_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_sort_levels_by_comparator(SortingType.LENGTH)
 
 
 func _on_bpm_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_sort_levels_by_comparator(SortingType.BPM)
 
 
 func _on_bit_count_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_sort_levels_by_comparator(SortingType.BIT_COUNT)
 
 
@@ -752,7 +746,7 @@ func _close_plays_panel() -> void:
 
 func _on_plays_button_pressed() -> void:
 	if _plays_panel_is_open():
-		_menu_click_sound.play()
+		SoundManager.play_menu_click()
 		_close_plays_panel()
 		_auto_open_play_panel = false
 
@@ -767,7 +761,7 @@ func _plays_scroll_bar_visibility_changed() -> void:
 func _on_plays_button_mouse_entered() -> void:
 	if !_plays_panel_is_open() && !_plays_panel_animation.is_playing():
 		if _open_plays_panel():
-			_menu_click_sound.play()
+			SoundManager.play_menu_click()
 			_auto_open_play_panel = true
 
 
@@ -795,7 +789,7 @@ func _apply_mods_to_level_buttons() -> void:
 
 
 func _on_mods_button_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	if _mods_panel_open:
 		_close_mods_panel()
 	else:
@@ -803,13 +797,13 @@ func _on_mods_button_pressed() -> void:
 
 
 func _on_mods_close_button_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_close_mods_panel()
 
 
 ## Toggle a mod to active or inactive through the ModManager.
 func _mod_button_pressed(mod: ModManager.ModType) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	ModManager.toggle_mod_active(mod)
 	_update_active_mod_icons()
 	if ModManager.has_active_mods():
@@ -841,12 +835,8 @@ func _update_active_mod_icons() -> void:
 		_mod_icon_container.add_child(texture_rect)
 
 
-func _mod_button_hovered() -> void:
-	_menu_focus_sound.play()
-
-
 func _on_clear_mods_button_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	ModManager.clear_all_mods()
 	_update_active_mod_icons()
 	_apply_mods_to_level_buttons() # This will reset their values to normal.
@@ -863,7 +853,7 @@ func _show_updated_mod_bar() -> void:
 
 
 func _on_expand_shrink_plays_button_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	if _expand_shrink_plays_button.text == "Expand All":
 		for play: PlayDataDisplay in _plays_container.get_children():
 			play.see_more()
@@ -880,3 +870,7 @@ func _set_expand_plays_button(expand: bool) -> void:
 		_expand_shrink_plays_button.text = "Expand All"
 	else:
 		_expand_shrink_plays_button.text = "Shrink All"
+
+
+func _on_button_hovered() -> void:
+	SoundManager.play_menu_focus()

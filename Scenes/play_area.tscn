@@ -9,12 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://cd67wwlog7jx3" path="res://Resources/Sprites/Cursor/cursor_enter.png" id="5_8vi7n"]
 [ext_resource type="Texture2D" uid="uid://bxalqsmxkj2j0" path="res://Resources/Sprites/Cursor/cursor.png" id="6_pcu3v"]
 [ext_resource type="Texture2D" uid="uid://dfpghwucv3n7n" path="res://Resources/Sprites/Cursor/cursor_up.png" id="7_3d5pw"]
-[ext_resource type="AudioStream" uid="uid://rl8f7krqudnc" path="res://Resources/Audio/SFX/BitClick.wav" id="10_40bvh"]
-[ext_resource type="AudioStream" uid="uid://dlyactmlyespp" path="res://Resources/Audio/SFX/EnterClick.wav" id="11_3ggqm"]
-[ext_resource type="AudioStream" uid="uid://8gt8sj4us0p8" path="res://Resources/Audio/SFX/BitMiss.wav" id="11_40bvh"]
-[ext_resource type="AudioStream" uid="uid://bm45yq771u653" path="res://Resources/Audio/SFX/ErrorClick.wav" id="12_2f6dp"]
-[ext_resource type="AudioStream" uid="uid://dwh14dbk4rfv5" path="res://Resources/Audio/SFX/EmptyClick.wav" id="12_40bvh"]
-[ext_resource type="AudioStream" uid="uid://dv5v112ayx1xe" path="res://Resources/Audio/SFX/LineClear.wav" id="15_3ggqm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dtjkg"]
 animations = [{
@@ -78,30 +72,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3ggqm"]
-playback_mode = 1
-random_pitch = 1.0594631
-streams_count = 1
-stream_0/stream = ExtResource("10_40bvh")
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3ex8o"]
-playback_mode = 1
-random_pitch = 1.0594631
-streams_count = 1
-stream_0/stream = ExtResource("11_40bvh")
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_f4f56"]
-playback_mode = 1
-random_pitch = 1.0594631
-streams_count = 1
-stream_0/stream = ExtResource("12_2f6dp")
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2drmg"]
-playback_mode = 1
-random_pitch = 1.0594631
-streams_count = 1
-stream_0/stream = ExtResource("12_40bvh")
-
 [node name="PlayArea" type="Node2D" unique_id=1773739756]
 light_mask = 3
 script = ExtResource("1_5dgnu")
@@ -149,27 +119,3 @@ position = Vector2(38, 78)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dtjkg")
 animation = &"flicker"
-
-[node name="BitClick" type="AudioStreamPlayer" parent="." unique_id=762070170]
-stream = SubResource("AudioStreamRandomizer_3ggqm")
-bus = &"Gameplay"
-
-[node name="EnterBackClick" type="AudioStreamPlayer" parent="." unique_id=1705735391]
-stream = ExtResource("11_3ggqm")
-bus = &"Gameplay"
-
-[node name="BitMiss" type="AudioStreamPlayer" parent="." unique_id=652054374]
-stream = SubResource("AudioStreamRandomizer_3ex8o")
-bus = &"Gameplay"
-
-[node name="ErrorClick" type="AudioStreamPlayer" parent="." unique_id=236475421]
-stream = SubResource("AudioStreamRandomizer_f4f56")
-bus = &"Gameplay"
-
-[node name="EmptyClick" type="AudioStreamPlayer" parent="." unique_id=269752902]
-stream = SubResource("AudioStreamRandomizer_2drmg")
-bus = &"Gameplay"
-
-[node name="LineClear" type="AudioStreamPlayer" parent="." unique_id=1645525711]
-stream = ExtResource("15_3ggqm")
-bus = &"Gameplay"

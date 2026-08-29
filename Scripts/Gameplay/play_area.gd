@@ -5,12 +5,6 @@ extends Node2D
 @onready var _cursor: AnimatedSprite2D = $Cursor
 @onready var _bit_label: RichTextLabel = $BitLabel
 @onready var _border: ColorRect = $Border
-@onready var _bit_click_sound: AudioStreamPlayer = $BitClick
-@onready var _enter_back_click_sound: AudioStreamPlayer = $EnterBackClick
-@onready var _bit_miss_sound: AudioStreamPlayer = $BitMiss
-@onready var _error_click_sound: AudioStreamPlayer = $ErrorClick
-@onready var _empty_click_sound: AudioStreamPlayer = $EmptyClick
-@onready var _line_clear_sound: AudioStreamPlayer = $LineClear
 @onready var _bit = preload("res://Scenes/bit.tscn")
 
 ## The speed of manually spawned bits.
@@ -226,14 +220,14 @@ func _missed_bit(_damage, _click_quality):
 ## The animations and sounds that trigger when miss-clicking a zero or one bit.
 func _miss_click_zero_one() -> void:
 	_cursor.play("click")
-	_empty_click_sound.play()
+	SoundManager.play_empty_bit_click()
 
 
 ## The animations and sounds that trigger when miss-clicking an enter or back 
 ## bit.
 func _miss_click_enter_back() -> void:
 	_cursor.play("cannot_enter")
-	_empty_click_sound.play()
+	SoundManager.play_empty_bit_click()
 
 
 ## The animations and sounds that trigger when missing a zero or one bit.
@@ -242,20 +236,20 @@ func _miss_click_enter_back() -> void:
 func _miss_zero_one() -> void:
 	_add_to_bit_label_line("[color=%s]_[/color]" % GameSettings.missed_bit_colour)
 	_fill_bit_label_lines()
-	_bit_miss_sound.play()
+	SoundManager.play_bit_miss()
 
 
 ## The animations and sounds that trigger when entirely missing an enter bit.
 func _miss_enter() -> void:
 	_cursor.play("enter")
-	_bit_miss_sound.play()
+	SoundManager.play_bit_miss()
 	_new_line(true)
 
 
 ## The animations and sounds that trigger when entirely missing a back bit.
 func _miss_back() -> void:
 	_cursor.play("back")
-	_bit_miss_sound.play()
+	SoundManager.play_bit_miss()
 	_new_line(false)
 
 
@@ -263,10 +257,10 @@ func _miss_back() -> void:
 func _click_zero(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
-		_bit_click_sound.play()
+		SoundManager.play_bit_click()
 		_add_to_bit_label_line("0")
 	else:
-		_error_click_sound.play()
+		SoundManager.play_error_bit_click()
 		_add_to_bit_label_line("[color=%s]0[/color]" % GameSettings.incorrect_bit_colour)
 	_fill_bit_label_lines()
 
@@ -275,10 +269,10 @@ func _click_zero(correct_click: bool) -> void:
 func _click_one(correct_click: bool) -> void:
 	_cursor.play("click")
 	if correct_click:
-		_bit_click_sound.play()
+		SoundManager.play_bit_click()
 		_add_to_bit_label_line("1")
 	else:
-		_error_click_sound.play()
+		SoundManager.play_error_bit_click()
 		_add_to_bit_label_line("[color=%s]1[/color]" % GameSettings.incorrect_bit_colour)
 	_fill_bit_label_lines()
 
@@ -287,10 +281,10 @@ func _click_one(correct_click: bool) -> void:
 func _click_enter(correct_click: bool) -> void:
 	_cursor.play("enter")
 	if correct_click:
-		_enter_back_click_sound.play()
+		SoundManager.play_enter_back_click()
 		_new_line(true)
 	else:
-		_error_click_sound.play()
+		SoundManager.play_error_bit_click()
 		_new_line(false) # Still ensure the cursor goes the right way.
 
 
@@ -298,10 +292,10 @@ func _click_enter(correct_click: bool) -> void:
 func _click_back(correct_click: bool) -> void:
 	_cursor.play("back")
 	if correct_click:
-		_enter_back_click_sound.play()
+		SoundManager.play_enter_back_click()
 		_new_line(false)
 	else:
-		_error_click_sound.play()
+		SoundManager.play_error_bit_click()
 		_new_line(true) # Still ensure the cursor goes the right way.
 
 
@@ -313,7 +307,7 @@ func _new_line(move_down: bool) -> void:
 	# enter bits before the one on the last line have all been hit/missed 
 	# already.
 	if _ready_for_line_clear and _cursor.global_position.y == _ending_cursor_y and move_down:
-		_line_clear_sound.play()
+		SoundManager.play_line_clear()
 		_cursor.position.y -= _line_height * (MAX_LINE_NUM - 1)
 		_ready_for_line_clear = false
 		_clear_bit_label_lines()
@@ -340,7 +334,7 @@ func _add_to_bit_label_line(string: String) -> void:
 	# line so we play the sound.
 	if temp_label.get_parsed_text().length() == MAX_BITS_DISPLAYED_PER_LINE:
 		_label_lines[curr_line] = ""
-		_line_clear_sound.play()
+		SoundManager.play_line_clear()
 	_label_lines[curr_line] += string
 
 

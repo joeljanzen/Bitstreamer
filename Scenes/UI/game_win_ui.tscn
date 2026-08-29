@@ -3,8 +3,6 @@
 [ext_resource type="Script" uid="uid://cew6oygr25lcw" path="res://Scripts/UI/game_win_ui.gd" id="1_ied5b"]
 [ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="3_014sn"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="3_e04pd"]
-[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="4_e04pd"]
-[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_i62qj"]
 
 [node name="GameWinUI" type="Control" unique_id=1755645710]
 layout_mode = 3
@@ -213,15 +211,7 @@ text = "Quit"
 
 [node name="ArrowTransition" parent="CanvasLayer" unique_id=161824251 instance=ExtResource("3_014sn")]
 
-[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1371278344]
-stream = ExtResource("4_e04pd")
-bus = &"Menu"
-
-[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1631289638]
-stream = ExtResource("5_i62qj")
-bus = &"Menu"
-
-[connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/PlayAgain" to="." method="_on_play_again_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/PlayAgain" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/PlayAgain" to="." method="_on_play_again_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Quit" to="." method="_on_quit_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Quit" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]

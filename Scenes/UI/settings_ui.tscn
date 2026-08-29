@@ -7,9 +7,7 @@
 [ext_resource type="Script" uid="uid://dn8pescend2an" path="res://Scripts/UI/Settings/gameplay_settings.gd" id="5_o3mvw"]
 [ext_resource type="Script" uid="uid://dl1yrbxq1qtwl" path="res://Scripts/UI/Settings/controls_settings.gd" id="6_4ws3r"]
 [ext_resource type="Script" uid="uid://b101e07ttbgf" path="res://Scripts/UI/Settings/theme_settings.gd" id="6_ijavf"]
-[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="7_xoqkd"]
 [ext_resource type="PackedScene" uid="uid://btn2epedit6s3" path="res://Scenes/UI/color_button.tscn" id="7_ym2e5"]
-[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="8_ct0jw"]
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="9_o3mvw"]
 [ext_resource type="AudioStream" uid="uid://c4fdwblqh0n1x" path="res://Resources/Audio/SFX/ColorClick.wav" id="10_7p8ph"]
 
@@ -663,14 +661,6 @@ theme = ExtResource("9_o3mvw")
 theme_override_font_sizes/font_size = 50
 text = " Restore Defaults "
 
-[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=560583228]
-stream = ExtResource("7_xoqkd")
-bus = &"Menu"
-
-[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=683666101]
-stream = ExtResource("8_ct0jw")
-bus = &"Menu"
-
 [node name="ColorClick" type="AudioStreamPlayer" parent="." unique_id=1978047853]
 stream = ExtResource("10_7p8ph")
 bus = &"Menu"
@@ -706,14 +696,14 @@ bus = &"Menu"
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton10/TogglePlaysPanel" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_toggle_plays_panel_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Controls/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/KeybindButton5/ToggleLevelUI" to="CanvasLayer/MarginContainer/TabContainer/Controls" method="_on_toggle_level_ui_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_color_changed"]
-[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_zero_bit_color_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer/ZeroBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_button_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2/OneBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_one_bit_color_color_changed"]
-[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2/OneBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_one_bit_color_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer2/OneBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_button_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_enter_bit_color_color_changed"]
-[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_enter_bit_color_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_button_pressed"]
 [connection signal="color_changed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_color_changed"]
-[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_back_bit_color_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/BackButton" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TabContainer/Theme/MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor" to="CanvasLayer/MarginContainer/TabContainer/Theme" method="_on_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/BackButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/BackButton" to="." method="_close_settings"]
-[connection signal="mouse_entered" from="CanvasLayer/RestoreButton" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/RestoreButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/RestoreButton" to="." method="_on_restore_button_pressed"]

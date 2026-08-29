@@ -17,8 +17,6 @@ extends Control
 @onready var extra_stats_2 = $Panel/MarginContainer/VBoxContainer/ExtraStats2
 @onready var see_more_button = $SeeMoreButton
 
-@onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
-
 ## How much to darken the pinkified panel displayed for perfect scores.
 const PANEL_DARKEN_AMOUNT: float = 0.85
 
@@ -139,7 +137,7 @@ func see_less() -> void:
 
 ## Show all stats for the play, or hide those extra stats.
 func _on_display_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	toggle_see_more()
 	# For the one in the pause screen.
 	if get_parent().name == "CurrentPlayContainer":

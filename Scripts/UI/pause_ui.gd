@@ -4,11 +4,8 @@ extends Control
 
 @onready var _progress_label = $CanvasLayer/VBoxContainer/Progress
 # Hide this to hide the whole thing, for the tutorial basically
-#@onready var _current_play = $CanvasLayer/CurrentPlay
 @onready var _current_play_container = $CanvasLayer/CurrentPlay/CurrentPlayContainer
 
-@onready var _menu_focus_sound: AudioStreamPlayer = $MenuFocus
-@onready var _menu_click_sound: AudioStreamPlayer = $MenuClick
 @onready var _canvas = $CanvasLayer
 
 @onready var _arrow_transition: ArrowTransition = $CanvasLayer/ArrowTransition
@@ -75,13 +72,12 @@ func _on_settings_pressed() -> void:
 
 ## The player has left settings.
 func _settings_closed() -> void:
-	_menu_click_sound.play() # For the button they pressed to leave settings.
 	_canvas.show()
 
 
 ## Return to the main menu.
 func _on_quit_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_arrow_transition.fade_out()
 	await _arrow_transition.animation_finished
 	
@@ -90,24 +86,12 @@ func _on_quit_pressed() -> void:
 
 ## The player has pressed the reboot button. Clearly.
 func _on_reboot_pressed() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	_arrow_transition.fade_out()
 	await _arrow_transition.animation_finished
 	
 	GameLevel.restart(get_tree())
 
 
-func _on_resume_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_reboot_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_settings_mouse_entered() -> void:
-	_menu_focus_sound.play()
-
-
-func _on_quit_mouse_entered() -> void:
-	_menu_focus_sound.play()
+func _on_button_hovered() -> void:
+	SoundManager.play_menu_focus()

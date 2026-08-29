@@ -10,8 +10,6 @@ extends Control
 
 @onready var _fade_label = $MarginContainer/VBoxContainer/HBoxContainer3/Label2
 
-@onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
-
 
 ## Set all gameplay settings to their current states.
 func setup() -> void:
@@ -28,12 +26,12 @@ func _ready() -> void:
 
 
 func _on_bit_click_effect_toggled(toggled_on: bool) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	GameSettings.bit_click_effect = toggled_on
 
 
 func _on_ignores_perfect_clicks_toggled(toggled_on: bool) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	GameSettings.ignores_perfect_clicks = toggled_on
 
 
@@ -50,7 +48,7 @@ func _on_fade_time_value_changed(value: float) -> void:
 
 
 func _on_fade_time_drag_started() -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 
 
 ## Get the required padding for a string of a given milliseconds.
@@ -66,15 +64,15 @@ func get_millliseconds_padding(milliseconds: int) -> int:
 
 
 func _on_cursor_flicker_toggled(toggled_on: bool) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	GameSettings.cursor_flicker = toggled_on
 
 
 func _on_level_ui_toggled(toggled_on: bool) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	GameSettings.level_UI_enabled = toggled_on
 
 
 func _on_miss_effect_toggled(toggled_on: bool) -> void:
-	_menu_click_sound.play()
+	SoundManager.play_menu_click()
 	GameSettings.move_offscreen_on_bit_miss = toggled_on

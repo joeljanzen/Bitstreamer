@@ -4,14 +4,10 @@
 [ext_resource type="Script" uid="uid://dmhxr0lxqlsk6" path="res://Scripts/UI/main_menu.gd" id="1_mrfpk"]
 [ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="2_gih0s"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="2_wqme5"]
-[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="4_4pqbp"]
 [ext_resource type="Texture2D" uid="uid://dvtx834d5ab72" path="res://Resources/Sprites/UI/next_song_button.png" id="4_k33u3"]
 [ext_resource type="Texture2D" uid="uid://dml5ob2ulln2d" path="res://Resources/Sprites/UI/song_icon.png" id="4_lrjdf"]
-[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="5_gih0s"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
 [ext_resource type="PackedScene" uid="uid://3lxad050esl2" path="res://Scenes/UI/level_select.tscn" id="7_cejvf"]
-[ext_resource type="AudioStream" uid="uid://rl8f7krqudnc" path="res://Resources/Audio/SFX/BitClick.wav" id="10_wqme5"]
-[ext_resource type="AudioStream" uid="uid://bm45yq771u653" path="res://Resources/Audio/SFX/ErrorClick.wav" id="11_jewm6"]
 
 [sub_resource type="Animation" id="Animation_wqme5"]
 length = 0.001
@@ -82,18 +78,6 @@ ambient_light_energy = 4.9
 glow_enabled = true
 glow_bloom = 0.2
 glow_hdr_scale = 1.0
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jewm6"]
-playback_mode = 1
-random_pitch = 1.0594631
-streams_count = 1
-stream_0/stream = ExtResource("10_wqme5")
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_cejvf"]
-playback_mode = 1
-random_pitch = 1.0594631
-streams_count = 1
-stream_0/stream = ExtResource("11_jewm6")
 
 [node name="MainMenu" type="Control" unique_id=903022407]
 layout_mode = 3
@@ -321,31 +305,15 @@ flat = true
 [node name="LevelSelect" parent="." unique_id=1472628101 instance=ExtResource("7_cejvf")]
 layout_mode = 1
 
-[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=452381547]
-stream = ExtResource("4_4pqbp")
-bus = &"Menu"
-
-[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=767961663]
-stream = ExtResource("5_gih0s")
-bus = &"Menu"
-
 [node name="Conductor" parent="." unique_id=1369693212 instance=ExtResource("6_gih0s")]
 
-[node name="BitClick" type="AudioStreamPlayer" parent="." unique_id=834830118]
-stream = SubResource("AudioStreamRandomizer_jewm6")
-bus = &"Gameplay"
-
-[node name="ErrorClick" type="AudioStreamPlayer" parent="." unique_id=2019607033]
-stream = SubResource("AudioStreamRandomizer_cejvf")
-bus = &"Gameplay"
-
-[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/Credits" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/Credits" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/Credits" to="." method="_on_credits_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ShutdownButton" to="." method="_on_shutdown_button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer2/HBoxContainer/NextSongButton" to="." method="_on_next_song_button_mouse_exited"]

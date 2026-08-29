@@ -6,9 +6,6 @@ extends Control
 @onready var _enter_bit_color_selector = $MarginContainer/VBoxContainer/HBoxContainer3/EnterBitColor
 @onready var _back_bit_color_selector = $MarginContainer/VBoxContainer/HBoxContainer4/BackBitColor
 
-@onready var _menu_click_sound: AudioStreamPlayer = $"../../../../MenuClick"
-@onready var _color_click_sound: AudioStreamPlayer = $"../../../../ColorClick"
-
 
 ## Set all theme settings to their current states.
 func setup() -> void:
@@ -23,36 +20,24 @@ func _ready() -> void:
 
 
 func _on_zero_bit_color_color_changed(color: Color) -> void:
-	_color_click_sound.play()
+	SoundManager.play_color_select()
 	GameSettings.zero_bit_colour = color
 
 
 func _on_one_bit_color_color_changed(color: Color) -> void:
-	_color_click_sound.play()
+	SoundManager.play_color_select()
 	GameSettings.one_bit_colour = color
 
 
 func _on_enter_bit_color_color_changed(color: Color) -> void:
-	_color_click_sound.play()
+	SoundManager.play_color_select()
 	GameSettings.enter_bit_colour = color
 
 
 func _on_back_bit_color_color_changed(color: Color) -> void:
-	_color_click_sound.play()
+	SoundManager.play_color_select()
 	GameSettings.back_bit_colour = color
 
 
-func _on_zero_bit_color_pressed() -> void:
-	_menu_click_sound.play()
-
-
-func _on_one_bit_color_pressed() -> void:
-	_menu_click_sound.play()
-
-
-func _on_enter_bit_color_pressed() -> void:
-	_menu_click_sound.play()
-
-
-func _on_back_bit_color_pressed() -> void:
-	_menu_click_sound.play()
+func _on_button_pressed() -> void:
+	SoundManager.play_menu_click()

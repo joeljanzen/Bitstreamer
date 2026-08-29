@@ -2,9 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_bthaf"]
 [ext_resource type="Script" uid="uid://dpvq8ox1q4rjb" path="res://Scripts/UI/pause_ui.gd" id="1_srqh7"]
-[ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="3_cf5hy"]
 [ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="3_i0vfa"]
-[ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="4_w3mym"]
 
 [node name="PauseUI" type="Control" unique_id=1762296446]
 layout_mode = 3
@@ -107,19 +105,11 @@ text = "This Play"
 
 [node name="ArrowTransition" parent="CanvasLayer" unique_id=161824251 instance=ExtResource("3_i0vfa")]
 
-[node name="MenuFocus" type="AudioStreamPlayer" parent="." unique_id=1362538356]
-stream = ExtResource("3_cf5hy")
-bus = &"Menu"
-
-[node name="MenuClick" type="AudioStreamPlayer" parent="." unique_id=1198576290]
-stream = ExtResource("4_w3mym")
-bus = &"Menu"
-
-[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Resume" to="." method="_on_resume_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Resume" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Reboot" to="." method="_on_reboot_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Reboot" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Reboot" to="." method="_on_reboot_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Settings" to="." method="_on_settings_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Settings" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Quit" to="." method="_on_quit_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/Quit" to="." method="_on_button_hovered"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
