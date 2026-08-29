@@ -62,7 +62,6 @@ func _on_resume_pressed() -> void:
 func _on_settings_pressed() -> void:
 	# The bloom slider actually plays the click sound when it's set to the 
 	# current value of bloom so we don't need to play it again lol!
-	#_menu_click_sound.play()
 	
 	var settings: SettingsUI = _settings_scene.instantiate()
 	settings.settings_closed.connect(_settings_closed)
@@ -79,6 +78,7 @@ func _settings_closed() -> void:
 func _on_quit_pressed() -> void:
 	SoundManager.play_menu_click()
 	_arrow_transition.fade_out()
+	SoundManager.play_woosh()
 	await _arrow_transition.animation_finished
 	
 	GameLevel.quit(get_tree())
@@ -88,6 +88,7 @@ func _on_quit_pressed() -> void:
 func _on_reboot_pressed() -> void:
 	SoundManager.play_menu_click()
 	_arrow_transition.fade_out()
+	SoundManager.play_woosh()
 	await _arrow_transition.animation_finished
 	
 	GameLevel.restart(get_tree())

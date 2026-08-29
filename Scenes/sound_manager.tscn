@@ -3,14 +3,18 @@
 [ext_resource type="AudioStream" uid="uid://dwyebhm5je5x6" path="res://Resources/Audio/SFX/MenuFocus.wav" id="1_1ohty"]
 [ext_resource type="Script" uid="uid://bodhqpvdjrntw" path="res://Scripts/Global/sound_manager.gd" id="1_tox07"]
 [ext_resource type="AudioStream" uid="uid://cmnpxs8mq0ia5" path="res://Resources/Audio/SFX/MenuClick.wav" id="2_tox07"]
-[ext_resource type="AudioStream" uid="uid://rafd6tbh6o81" path="res://Resources/Audio/SFX/launchwoosh.wav" id="3_wyfeo"]
 [ext_resource type="AudioStream" uid="uid://c4fdwblqh0n1x" path="res://Resources/Audio/SFX/ColorClick.wav" id="4_rqs6t"]
 [ext_resource type="AudioStream" uid="uid://rl8f7krqudnc" path="res://Resources/Audio/SFX/BitClick.wav" id="5_lw6xy"]
+[ext_resource type="AudioStream" uid="uid://nys6cbs3nokn" path="res://Resources/Audio/SFX/Launch.wav" id="5_sojss"]
 [ext_resource type="AudioStream" uid="uid://dlyactmlyespp" path="res://Resources/Audio/SFX/EnterClick.wav" id="6_rqs6t"]
+[ext_resource type="AudioStream" uid="uid://dco3jqi7cndwo" path="res://Resources/Audio/SFX/Woosh.wav" id="6_sojss"]
 [ext_resource type="AudioStream" uid="uid://8gt8sj4us0p8" path="res://Resources/Audio/SFX/BitMiss.wav" id="7_h0di3"]
+[ext_resource type="AudioStream" uid="uid://jtf7b457r7y5" path="res://Resources/Audio/SFX/ModActivate.wav" id="7_w8ulo"]
 [ext_resource type="AudioStream" uid="uid://bm45yq771u653" path="res://Resources/Audio/SFX/ErrorClick.wav" id="8_n5cwv"]
+[ext_resource type="AudioStream" uid="uid://d2dml3isk3icc" path="res://Resources/Audio/SFX/ModDeactivate.wav" id="8_sojss"]
 [ext_resource type="AudioStream" uid="uid://dwh14dbk4rfv5" path="res://Resources/Audio/SFX/EmptyClick.wav" id="9_w8ulo"]
 [ext_resource type="AudioStream" uid="uid://dv5v112ayx1xe" path="res://Resources/Audio/SFX/LineClear.wav" id="10_sojss"]
+[ext_resource type="AudioStream" uid="uid://jop81mu3b38q" path="res://Resources/Audio/SFX/ScoreIncrease.wav" id="15_sojss"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_kquec"]
 random_pitch = 1.0594631
@@ -48,6 +52,7 @@ bus = &"Menu"
 
 [node name="MenuFocus" type="AudioStreamPlayer" parent="MenuBus" unique_id=499880758]
 stream = ExtResource("1_1ohty")
+volume_db = -10.0
 max_polyphony = 3
 bus = &"Menu"
 
@@ -55,8 +60,20 @@ bus = &"Menu"
 stream = ExtResource("4_rqs6t")
 bus = &"Menu"
 
-[node name="LaunchWoosh" type="AudioStreamPlayer" parent="MenuBus" unique_id=1021698585]
-stream = ExtResource("3_wyfeo")
+[node name="Launch" type="AudioStreamPlayer" parent="MenuBus" unique_id=1021698585]
+stream = ExtResource("5_sojss")
+bus = &"Menu"
+
+[node name="Woosh" type="AudioStreamPlayer" parent="MenuBus" unique_id=1624817103]
+stream = ExtResource("6_sojss")
+bus = &"Menu"
+
+[node name="ModActivate" type="AudioStreamPlayer" parent="MenuBus" unique_id=1517042236]
+stream = ExtResource("7_w8ulo")
+bus = &"Menu"
+
+[node name="ModDeactivate" type="AudioStreamPlayer" parent="MenuBus" unique_id=789813828]
+stream = ExtResource("8_sojss")
 bus = &"Menu"
 
 [node name="GameplayBus" type="Node" parent="." unique_id=1576007171]
@@ -88,4 +105,11 @@ bus = &"Gameplay"
 
 [node name="LineClear" type="AudioStreamPlayer" parent="GameplayBus" unique_id=838566080]
 stream = ExtResource("10_sojss")
+bus = &"Gameplay"
+
+[node name="ScoreIncrease" type="AudioStreamPlayer" parent="GameplayBus" unique_id=1971064277]
+stream = ExtResource("15_sojss")
+bus = &"Gameplay"
+
+[node name="ScoreHit" type="AudioStreamPlayer" parent="GameplayBus" unique_id=1568751259]
 bus = &"Gameplay"

@@ -97,12 +97,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("restart"):
 		conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 		_arrow_transition.fade_out()
+		SoundManager.play_woosh()
 		await _arrow_transition.animation_finished
 		if is_inside_tree():
 			restart(get_tree())
 	elif event.is_action_pressed("quit"):
 		conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 		_arrow_transition.fade_out()
+		SoundManager.play_woosh()
 		await _arrow_transition.animation_finished
 		if is_inside_tree():
 			quit(get_tree())

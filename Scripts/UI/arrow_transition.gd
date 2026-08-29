@@ -8,8 +8,7 @@ signal animation_finished(_anim_name: StringName)
 
 ## How long it takes to fade out or in to a level. The total transition time is
 ## double this value.
-const TRANSITION_FADE_SPEED: float = 0.2
-
+const TRANSITION_FADE_SPEED: float = 0.25
 
 func _ready() -> void:
 	_animation_player.animation_finished.connect(func(_anim_name): animation_finished.emit())

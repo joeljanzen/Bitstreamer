@@ -60,6 +60,9 @@ func _ready() -> void:
 		_mods_container.show()
 		_add_mod_icons()
 	
+	if _play_data.score > 0:
+		SoundManager.play_score_increase()
+	
 	_arrow_transition.prep_for_fade_out()
 
 
@@ -90,10 +93,15 @@ func _process(delta: float) -> void:
 		_score_label.text = str(score_value)
 	# When a play is perfect, make score color perfect.
 	elif !_score_animation_complete:
-		# Can play a cool sound here idk.
-		#_menu_click_sound.play()
-		if _play_data.accuracy == 100:
-			_score_label.modulate = GameSettings.perfect_click_colour
+		if _play_data.score > 0:
+			if _play_data.accuracy == 100:
+				_score_label.modulate = GameSettings.perfect_click_colour
+				SoundManager.play_score_hit(true, true)
+			elif _play_data.missed_clicks + _play_data.error_clicks == 0:
+				SoundManager.play_score_hit(true)
+			else:
+				pass
+				SoundManager.play_score_hit()
 		_score_animation_complete = true
 
 
@@ -113,6 +121,7 @@ func _on_play_again_pressed() -> void:
 	
 	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
+	SoundManager.play_woosh()
 	await _arrow_transition.animation_finished
 	
 	GameLevel.restart(get_tree())
@@ -124,6 +133,7 @@ func _on_quit_pressed() -> void:
 	
 	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
+	SoundManager.play_woosh()
 	await _arrow_transition.animation_finished
 	
 	GameLevel.quit(get_tree())

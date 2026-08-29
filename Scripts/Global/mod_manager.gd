@@ -142,7 +142,8 @@ func set_mod_button_states() -> void:
 
 
 ## If the mod given is inactive, activate it. Otherwise, deactivate it.
-func toggle_mod_active(mod: ModType) -> void:
+## Returns true if the mod has been activated or false if deactivated.
+func toggle_mod_active(mod: ModType) -> bool:
 	# Search for the mod to remove it.
 	var mod_was_active = false
 	for i in range(_active_mods.size()):
@@ -173,6 +174,7 @@ func toggle_mod_active(mod: ModType) -> void:
 				_active_mods.push_back(HalfTimeMod.new())
 	
 	_toggle_incompatible_mods(mod)
+	return !mod_was_active # If the mod wasn't active, it now is so return true.
 
 
 ## Remove all currently active mods.

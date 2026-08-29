@@ -803,8 +803,13 @@ func _on_mods_close_button_pressed() -> void:
 
 ## Toggle a mod to active or inactive through the ModManager.
 func _mod_button_pressed(mod: ModManager.ModType) -> void:
-	SoundManager.play_menu_click()
-	ModManager.toggle_mod_active(mod)
+	var activated := ModManager.toggle_mod_active(mod)
+	
+	if activated:
+		SoundManager.play_mod_activate()
+	else:
+		SoundManager.play_mod_deactivate()
+	
 	_update_active_mod_icons()
 	if ModManager.has_active_mods():
 		_show_updated_mod_bar()
@@ -836,7 +841,7 @@ func _update_active_mod_icons() -> void:
 
 
 func _on_clear_mods_button_pressed() -> void:
-	SoundManager.play_menu_click()
+	SoundManager.play_mod_deactivate()
 	ModManager.clear_all_mods()
 	_update_active_mod_icons()
 	_apply_mods_to_level_buttons() # This will reset their values to normal.

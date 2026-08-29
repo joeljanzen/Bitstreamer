@@ -96,6 +96,7 @@ func _on_reboot_pressed() -> void:
 	
 	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
+	SoundManager.play_woosh()
 	await _arrow_transition.animation_finished
 	
 	GameLevel.restart(get_tree())
@@ -107,6 +108,7 @@ func _on_quit_pressed() -> void:
 	
 	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
 	_arrow_transition.fade_out()
+	SoundManager.play_woosh()
 	await _arrow_transition.animation_finished
 	
 	GameLevel.quit(get_tree())
