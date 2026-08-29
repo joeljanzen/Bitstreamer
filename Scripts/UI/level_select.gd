@@ -712,7 +712,6 @@ func _spawn_plays_nodes_over_time(plays: Array[PlayData], target_duration: float
 		
 		play_display = _play_display_scene.instantiate()
 		play_display.setup(plays[i])
-		print(play_display.size_flags_horizontal == SIZE_EXPAND_FILL)
 		_plays_container.add_child(play_display)
 		
 		# Wait for the next frame before adding the next child
