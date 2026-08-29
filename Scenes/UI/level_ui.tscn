@@ -6,16 +6,42 @@
 [ext_resource type="Texture2D" uid="uid://bhxbtam7q8gb6" path="res://Resources/Sprites/UI/ProgressCircle/over.png" id="4_ao4gj"]
 [ext_resource type="Texture2D" uid="uid://c3kaqq8o6a8py" path="res://Resources/Sprites/UI/ProgressCircle/progress.png" id="5_m0wgp"]
 
-[sub_resource type="Gradient" id="Gradient_xdjqv"]
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+[sub_resource type="Animation" id="Animation_m0wgp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_xdjqv"]
-gradient = SubResource("Gradient_xdjqv")
-width = 2000
-height = 40
-fill = 1
-fill_from = Vector2(0, 0.5)
-fill_to = Vector2(0.5, 0.5)
+[sub_resource type="Animation" id="Animation_haw25"]
+resource_name = "fill_bar"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(0.18, 1),
+"update": 0,
+"values": [0.0, 100.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_307ub"]
+_data = {
+&"RESET": SubResource("Animation_m0wgp"),
+&"fill_bar": SubResource("Animation_haw25")
+}
 
 [node name="LevelUI" type="Control" unique_id=1794658101]
 layout_mode = 3
@@ -146,14 +172,7 @@ offset_bottom = -22.0
 grow_vertical = 0
 theme = ExtResource("1_gw16p")
 theme_override_font_sizes/font_size = 35
-value = 100.0
-rounded = true
 show_percentage = false
 
-[node name="Barlight2" type="PointLight2D" parent="CanvasLayer/ProgramHealth" unique_id=122787077]
-visible = false
-position = Vector2(1000, 20)
-color = Color(0.9855049, 0.16399086, 0.37631115, 1)
-energy = 5.0
-texture = SubResource("GradientTexture2D_xdjqv")
-height = 1.0
+[node name="FillUpAnimation" type="AnimationPlayer" parent="CanvasLayer/ProgramHealth" unique_id=296824242]
+libraries/ = SubResource("AnimationLibrary_307ub")

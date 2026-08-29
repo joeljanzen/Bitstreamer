@@ -43,6 +43,9 @@ func _ready() -> void:
 	PerformanceCalculator.connect_play_data(play_data)
 	Signals.scored.connect(_scored)
 	Signals.missed.connect(_missed)
+	
+	# Set off health fill-up animation.
+	$CanvasLayer/ProgramHealth/FillUpAnimation.play("fill_bar")
 
 
 ## Updates the level progress circle.
