@@ -191,7 +191,6 @@ func _ready() -> void:
 	for mod_button: ModButton in _mod_button_container.get_children():
 		mod_buttons.push_back(mod_button)
 		mod_button.pressed.connect(_mod_button_pressed)
-		mod_button.mouse_entered.connect(_on_button_hovered)
 		
 		_update_active_mod_icons()
 	ModManager.mod_buttons = mod_buttons

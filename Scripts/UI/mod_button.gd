@@ -26,9 +26,6 @@ extends Node
 ## Emitted when the button is pressed.
 signal pressed(mod: ModManager.ModType)
 
-## Emitted when the mouse hovers over the button.
-signal mouse_entered()
-
 
 func _ready() -> void:
 	if !Engine.is_editor_hint():
@@ -43,7 +40,7 @@ func _on_button_pressed() -> void:
 
 func _on_button_mouse_entered() -> void:
 	if !button.disabled:
-		mouse_entered.emit()
+		SoundManager.play_menu_focus()
 
 
 func is_disabled() -> bool:
