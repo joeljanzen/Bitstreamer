@@ -31,4 +31,4 @@ func mod_damage(base_damage: int) -> int:
 
 
 func mod_score_multiplier(base_multiplier: float) -> float:
-	return base_multiplier * 0.75
+	return base_multiplier * 0.6
