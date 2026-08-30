@@ -457,9 +457,13 @@ func _level_launch_button_pressed(level_info: LevelInfo) -> void:
 		if level_info.version == "Tutorial":
 			level_scene.set_script(load("res://Scripts/Gameplay/tutorial_level.gd"))
 		
-		# Fade out level select.
+		# Transition stuff.
 		level_selected.emit() # This tells the main menu to fade the music.
 		_arrow_transition.fade_out()
+		
+		_close_plays_panel(2)
+		_close_mods_panel(3)
+		
 		await _arrow_transition.animation_finished
 		
 		LevelInfo.last_played = level_info
@@ -736,10 +740,11 @@ func _open_plays_panel() -> bool:
 		return false
 
 
-func _close_plays_panel() -> void:
+## Pass a custom speed to change the animation speed by that factor.
+func _close_plays_panel(custom_speed: float = 1) -> void:
 	if _plays_panel_is_open():
-		_plays_panel_animation.play_backwards("popout")
-		_level_scroll_margin_animation.play_backwards("slide_left")
+		_plays_panel_animation.play("popout", -1, -custom_speed, true)
+		_level_scroll_margin_animation.play("slide_left", -1, -custom_speed, true)
 		_plays_button.text = " < "
 
 
@@ -769,10 +774,11 @@ func _open_mods_panel() -> void:
 	_mods_animation.play("popup")
 
 
-func _close_mods_panel() -> void:
+## Pass a custom speed to change the animation speed by that factor.
+func _close_mods_panel(custom_speed: float = 1) -> void:
 	if _mods_panel_open:
 		_mods_panel_open = false
-		_mods_animation.play_backwards("popup")
+		_mods_animation.play("popup", -1, -custom_speed, true)
 		
 		_apply_mods_to_level_buttons()
 		# Since tutorial isn't affected by mods we have to sort levels again.
