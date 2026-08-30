@@ -104,6 +104,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		SoundManager.play_woosh()
 		await _arrow_transition.animation_finished
 		if is_inside_tree():
+			SaveLoad.save_data.update_bits_received(_levelUI.play_data)
 			restart(get_tree())
 	elif event.is_action_pressed("quit"):
 		conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
@@ -111,6 +112,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		SoundManager.play_woosh()
 		await _arrow_transition.animation_finished
 		if is_inside_tree():
+			SaveLoad.save_data.update_bits_received(_levelUI.play_data)
 			quit(get_tree())
 
 
@@ -300,6 +302,11 @@ func _failed() -> void:
 	crash_screen.connect_level_UI(_levelUI)
 	crash_screen.connect_conductor(conductor)
 	add_child(crash_screen)
+	
+	if last_offset == 0:
+		SaveLoad.save_data.update_stats_from_failed_play(_levelUI.play_data)
+	else: # Only update bits received if it was a practice play.
+		SaveLoad.save_data.update_bits_received(_levelUI.play_data)
 
 
 ## The level has been completed.
@@ -325,6 +332,8 @@ func _completed() -> void:
 		win_screen.connect_conductor(conductor)
 		add_child(win_screen)
 		
-		# Only save if it was a full play.
 		if last_offset == 0:
 			SaveLoad.save_play(level_info, _levelUI.play_data)
+			SaveLoad.save_data.update_stats_from_completed_play(_levelUI.play_data)
+		else: # Only update bits received if it was a practice play.
+			SaveLoad.save_data.update_bits_received(_levelUI.play_data)

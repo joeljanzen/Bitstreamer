@@ -79,6 +79,8 @@ func _on_quit_pressed() -> void:
 	SoundManager.play_menu_click()
 	_arrow_transition.fade_out()
 	SoundManager.play_woosh()
+	if LevelInfo.last_played.version != "Tutorial":
+		SaveLoad.save_data.update_bits_received(_level_UI.play_data)
 	await _arrow_transition.animation_finished
 	
 	GameLevel.quit(get_tree())
@@ -89,6 +91,8 @@ func _on_reboot_pressed() -> void:
 	SoundManager.play_menu_click()
 	_arrow_transition.fade_out()
 	SoundManager.play_woosh()
+	if LevelInfo.last_played.version != "Tutorial":
+		SaveLoad.save_data.update_bits_received(_level_UI.play_data)
 	await _arrow_transition.animation_finished
 	
 	GameLevel.restart(get_tree())

@@ -78,10 +78,8 @@ func _ready() -> void:
 		if FileAccess.file_exists(GameSettings.USER_SETTINGS_FILEPATH):
 			GameSettings.load_user_settings()
 	else: 
-		# This ensures to save any settings that were affected while the player
-		# was not in the settings menu (such as toggling the ui) are still 
-		# saved.
 		GameSettings.save_settings()
+		SaveLoad.save_game()
 	
 	Bit.in_main_menu = true
 	Bit.clickable_in_main_menu = true

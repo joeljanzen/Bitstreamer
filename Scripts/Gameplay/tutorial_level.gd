@@ -254,7 +254,6 @@ func _dialogue_event(event_name: String) -> void:
 ## The tutorial has been completed successfully.
 func _completed() -> void:
 	SaveLoad.save_data.tutorial_played = true
-	SaveLoad.save_game()
 	
 	var menu_scene = load("res://Scenes/UI/main_menu.tscn").instantiate()
 	menu_scene.start_in_level_select = true
