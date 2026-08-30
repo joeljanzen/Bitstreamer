@@ -270,8 +270,16 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				_click_bit_in_menu(PerformanceCalculator.ClickQuality.PERFECT)
 			elif _value == Type.ZERO:
 				_click_bit_in_menu(PerformanceCalculator.ClickQuality.ERROR)
-		elif event.is_action_pressed("enter_bit") and _value == Type.ENTER:
-			_click_bit_in_menu(PerformanceCalculator.ClickQuality.PERFECT)
+		elif event.is_action_pressed("enter_bit"):
+			if _value == Type.ENTER:
+				_click_bit_in_menu(PerformanceCalculator.ClickQuality.PERFECT)
+			elif _value == Type.BACK:
+				_click_bit_in_menu(PerformanceCalculator.ClickQuality.ERROR)
+		elif event.is_action_pressed("back_bit"):
+			if _value == Type.BACK:
+				_click_bit_in_menu(PerformanceCalculator.ClickQuality.PERFECT)
+			elif _value == Type.ENTER:
+				_click_bit_in_menu(PerformanceCalculator.ClickQuality.ERROR)
 
 
 ## The bit was clicked while in the main menu.

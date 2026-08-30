@@ -51,9 +51,9 @@ var beat_time: float
 var bit_time_to_cross_screen: float
 ## The number of bits that have been sent since the last enter bit.
 var _bit_interval: int = 0
-## Once this many bits have been sent, send an enter bit across the screen and 
-## reset the interval to a new, slightly randomized value.
-var _enter_bit_interval: int = 15
+## Once this many bits have been sent, send an enter/back bit across the screen 
+## and reset the interval to a new, slightly randomized value.
+var _enter_back_bit_interval: int = 15
 ## Track how often title pulses.
 var title_pulse_interval: int = 0
 
@@ -174,13 +174,13 @@ func _send_random_bit() -> void:
 	var y_value = randi_range(BIT_SPAWN_MARGIN, viewport_height - BIT_SPAWN_MARGIN)
 	
 	var bit_type
-	if _bit_interval < _enter_bit_interval:
+	if _bit_interval < _enter_back_bit_interval:
 		_bit_interval += 1
 		bit_type = randi_range(0, 1)
-	else:
-		bit_type = Bit.Type.ENTER
+	else: # Send an enter or back bit.
+		bit_type = randi_range(2, 3)
 		_bit_interval = 0
-		_enter_bit_interval = randi_range(4,16)
+		_enter_back_bit_interval = randi_range(4,16)
 	
 	add_child(new_bit)
 	new_bit.create(bit_type, y_value, 0, bit_time_to_cross_screen, 0, _conductor)
