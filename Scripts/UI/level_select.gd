@@ -2,6 +2,8 @@ extends Control
 class_name LevelSelect
 ## Where the player selects which level to play.
 
+@onready var _canvas_layer: CanvasLayer = $CanvasLayer
+
 @onready var _level_button_margin: MarginContainer = $CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer/MarginContainer
 @onready var _level_button_container = $CanvasLayer/LevelScrollMargin/HBoxContainer/ScrollContainer/MarginContainer/LevelButtonContainer
 @onready var _back_button = $CanvasLayer/BackButton
@@ -186,6 +188,7 @@ func _ready() -> void:
 	var v_scroll_bar: VScrollBar = _plays_scroll_box.get_v_scroll_bar()
 	v_scroll_bar.visibility_changed.connect(_plays_scroll_bar_visibility_changed)
 	
+	
 	# Give ModManager mod button references and attach all button signals.
 	var mod_buttons: Array[ModButton] = []
 	for mod_button in _mod_button_container.get_children():
@@ -243,6 +246,9 @@ func _process(delta: float) -> void:
 			_level_load_index += 1
 	elif !_done_loading_levels:
 		_done_loading_levels = true
+		
+		# Idk there's a weird visual glitch if you don't set this.
+		_level_button_container.modulate.a = 1
 		
 		# Now that all levels are in, you can scroll to where the player last
 		# was (otherwise the scroll container will not have expanded to the
@@ -481,7 +487,7 @@ func _level_practice_offset_changed(new_offset: float) -> void:
 
 ## Hides the level select UI.
 func hide_UI():
-	$CanvasLayer.hide()
+	_canvas_layer.hide()
 	_back_button.hide()
 	_sort_button.hide()
 	_level_button_container.hide()
@@ -501,7 +507,7 @@ func hide_UI():
 
 ## Shows the level select UI.
 func show_UI():
-	$CanvasLayer.show()
+	_canvas_layer.show()
 	_back_button.show()
 	_level_button_container.show()
 	_level_button_container.modulate.a = 1

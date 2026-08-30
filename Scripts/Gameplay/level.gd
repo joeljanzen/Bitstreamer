@@ -179,10 +179,8 @@ func start_level(level_offset: float = 0) -> void:
 		
 		# Give the player a little time to get ready.
 		if level_offset == 0:
-			print("normal delay")
 			await get_tree().create_timer(LEVEL_START_DELAY).timeout
 		else:
-			print("prac delay")
 			await get_tree().create_timer(PRACTICE_START_DELAY).timeout
 		
 		# Figure out if we will fade in or start with max volume for the 

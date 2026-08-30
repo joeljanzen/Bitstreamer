@@ -166,7 +166,7 @@ func focus_button() -> void:
 		_button_panel.scale = Vector2(1.04, 1.04)
 		
 		var style_box = StyleBoxFlat.new()
-		style_box.bg_color = Color.DIM_GRAY.darkened(.6)
+		style_box.bg_color = Color.DIM_GRAY.darkened(0.7)
 		_button_panel.add_theme_stylebox_override("panel", style_box)
 		
 		_play_practice_container.show()

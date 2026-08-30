@@ -88,7 +88,6 @@ var game_loaded := false
 func _ready() -> void:
 	get_tree().root.use_debanding = true
 	get_tree().root.use_hdr_2d = true
-	pass
 
 
 ## Connect the Flowerwall CRT script when it is loaded.

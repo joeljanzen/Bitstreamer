@@ -390,7 +390,7 @@ text = "Modifiers"
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
+theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 0
 
@@ -403,7 +403,7 @@ vertical_scroll_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 25
 
 [node name="ModButtonContainer" type="GridContainer" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin" unique_id=744763801]
 custom_minimum_size = Vector2(0, 950)
@@ -412,6 +412,18 @@ size_flags_horizontal = 3
 theme_override_constants/h_separation = 25
 theme_override_constants/v_separation = 25
 columns = 2
+
+[node name="Spacer" type="Control" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=1797984998]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 1
+
+[node name="Spacer2" type="Control" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=301275458]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 1
 
 [node name="ModButton" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=1693415256 instance=ExtResource("4_texu8")]
 layout_mode = 2
@@ -476,13 +488,13 @@ mod = 5
 mod_name = "Single-lane"
 description = "All bits are received on the first lane. The program will never go down a line."
 
-[node name="Spacer" type="Control" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=1797984998]
+[node name="Spacer3" type="Control" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=624746717]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 1
 
-[node name="Spacer2" type="Control" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=301275458]
+[node name="Spacer4" type="Control" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=1987038945]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
