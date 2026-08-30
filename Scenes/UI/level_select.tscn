@@ -67,6 +67,25 @@ _data = {
 &"slide_left": SubResource("Animation_texu8")
 }
 
+[sub_resource type="Gradient" id="Gradient_texu8"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7vwlt"]
+gradient = SubResource("Gradient_texu8")
+width = 1920
+height = 200
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_40fl8"]
+offsets = PackedFloat32Array(0.0021367522, 1)
+colors = PackedColorArray(0.07058824, 0.07058824, 0.07058824, 1, 0.07058824, 0.07058824, 0.07058824, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_texu8"]
+gradient = SubResource("Gradient_40fl8")
+width = 1150
+height = 300
+fill_from = Vector2(1, 1)
+
 [sub_resource type="Animation" id="Animation_gdhe6"]
 length = 0.001
 tracks/0/type = "value"
@@ -103,6 +122,16 @@ _data = {
 &"RESET": SubResource("Animation_gdhe6"),
 &"popup": SubResource("Animation_v2ws7")
 }
+
+[sub_resource type="Gradient" id="Gradient_7vwlt"]
+colors = PackedColorArray(0.08855995, 0.0885599, 0.0885599, 1, 0.09019608, 0.09019608, 0.09019608, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gdhe6"]
+gradient = SubResource("Gradient_7vwlt")
+width = 300
+height = 1080
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0, 0)
 
 [sub_resource type="Animation" id="Animation_1i34c"]
 length = 0.001
@@ -192,6 +221,26 @@ alignment = 1
 
 [node name="ScrollMarginModifier" type="AnimationPlayer" parent="CanvasLayer/LevelScrollMargin" unique_id=212686849]
 libraries/ = SubResource("AnimationLibrary_7vwlt")
+
+[node name="TextureFade" type="TextureRect" parent="CanvasLayer" unique_id=153194289]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_7vwlt")
+
+[node name="TextureFade2" type="TextureRect" parent="CanvasLayer" unique_id=12771326]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 200.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_7vwlt")
+flip_v = true
 
 [node name="BackButton" type="Button" parent="CanvasLayer" unique_id=222140717]
 custom_minimum_size = Vector2(200, 90)
@@ -306,6 +355,22 @@ grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("3_40fl8")
 
+[node name="TextureFade" type="TextureRect" parent="CanvasLayer/ModsPanel" unique_id=387866651]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -575.0
+offset_top = -212.0
+offset_right = 575.0
+offset_bottom = -62.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_texu8")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ModsPanel" unique_id=1271472878]
 layout_mode = 1
 anchors_preset = 15
@@ -313,6 +378,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
 [node name="ModsButton" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer" unique_id=1443932531]
 custom_minimum_size = Vector2(0, 62)
@@ -326,7 +392,7 @@ size_flags_vertical = 3
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
+theme_override_constants/margin_bottom = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer" unique_id=1623365777]
 layout_mode = 2
@@ -410,6 +476,18 @@ mod = 5
 mod_name = "Single-lane"
 description = "All bits are received on the first lane. The program will never go down a line."
 
+[node name="Spacer" type="Control" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=1797984998]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 1
+
+[node name="Spacer2" type="Control" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=301275458]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 1
+
 [node name="ModsCloseButton" type="Button" parent="CanvasLayer/ModsPanel/VBoxContainer" unique_id=101741456]
 custom_minimum_size = Vector2(0, 62)
 layout_mode = 2
@@ -489,6 +567,16 @@ grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 0
 theme = ExtResource("3_40fl8")
+
+[node name="TextureFade" type="TextureRect" parent="CanvasLayer/PlaysPanel" unique_id=636259694]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_gdhe6")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PlaysPanel" unique_id=1569479601]
 layout_mode = 1

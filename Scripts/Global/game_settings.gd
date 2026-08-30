@@ -83,6 +83,14 @@ var incorrect_click_colour := "FF0000"
 var game_loaded := false
 
 
+## Setup debanding and HDR for 2D, which makes gradient textures actually look
+## smooth.
+func _ready() -> void:
+	get_tree().root.use_debanding = true
+	get_tree().root.use_hdr_2d = true
+	pass
+
+
 ## Connect the Flowerwall CRT script when it is loaded.
 func connect_crt_shader(crt_shader: flowerwallCRT) -> void:
 	_crt_shader = crt_shader

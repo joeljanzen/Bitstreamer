@@ -188,11 +188,11 @@ func _ready() -> void:
 	
 	# Give ModManager mod button references and attach all button signals.
 	var mod_buttons: Array[ModButton] = []
-	for mod_button: ModButton in _mod_button_container.get_children():
-		mod_buttons.push_back(mod_button)
-		mod_button.pressed.connect(_mod_button_pressed)
-		
-		_update_active_mod_icons()
+	for mod_button in _mod_button_container.get_children():
+		if mod_button.has_signal("pressed"):
+			mod_buttons.push_back(mod_button)
+			mod_button.pressed.connect(_mod_button_pressed)
+			_update_active_mod_icons()
 	ModManager.mod_buttons = mod_buttons
 	ModManager.set_mod_button_states()
 	
@@ -481,6 +481,7 @@ func _level_practice_offset_changed(new_offset: float) -> void:
 
 ## Hides the level select UI.
 func hide_UI():
+	$CanvasLayer.hide()
 	_back_button.hide()
 	_sort_button.hide()
 	_level_button_container.hide()
@@ -500,6 +501,7 @@ func hide_UI():
 
 ## Shows the level select UI.
 func show_UI():
+	$CanvasLayer.show()
 	_back_button.show()
 	_level_button_container.show()
 	_level_button_container.modulate.a = 1
