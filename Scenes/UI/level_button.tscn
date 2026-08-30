@@ -4,6 +4,43 @@
 [ext_resource type="Script" uid="uid://c0dcx5ksg78n5" path="res://Scripts/UI/level_button.gd" id="1_iq6la"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_icd4v"]
 
+[sub_resource type="Animation" id="Animation_j7lvc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ButtonPanel:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_icd4v"]
+resource_name = "launch_level"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ButtonPanel:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.2),
+"transitions": PackedFloat32Array(0.21022424, 1.8025012, 1),
+"update": 0,
+"values": [Vector2(1.04, 1.04), Vector2(0.9, 0.9), Vector2(1.3, 1.3)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s1d3e"]
+_data = {
+&"RESET": SubResource("Animation_j7lvc"),
+&"launch_level": SubResource("Animation_icd4v")
+}
+
 [node name="LevelButton" type="Control" unique_id=1822112030]
 custom_minimum_size = Vector2(1150, 200)
 layout_mode = 3
@@ -275,6 +312,9 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="LaunchAnimation" type="AnimationPlayer" parent="." unique_id=1252127416]
+libraries/ = SubResource("AnimationLibrary_s1d3e")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

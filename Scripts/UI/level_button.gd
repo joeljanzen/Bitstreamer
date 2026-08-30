@@ -24,6 +24,9 @@ extends Control
 @onready var _popup_panel = $PopupPanel
 @onready var _popup_label = $PopupPanel/MarginContainer/RichTextLabel
 
+@onready var _launch_animation = $LaunchAnimation
+
+
 ## This level has been focused by clicking on it.
 signal button_focused(button: LevelButton)
 
@@ -285,6 +288,9 @@ func _on_play_button_pressed() -> void:
 	else:
 		GameLevel.last_offset = 0
 	launch_button_pressed.emit(level_info)
+	
+	# Animation
+	_launch_animation.play("launch_level")
 
 
 func _on_play_button_mouse_entered() -> void:
