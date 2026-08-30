@@ -1,0 +1,39 @@
+song_name=Enters and Backs,song=Snowed Inn.wav,song_preview=5,version=Test,bpm=170,speed=5,diff=1,dmg=2,length=14.471,bit_count=34
+
+# 1 bits should always be on the last line, and zero bits should always be on the first
+# otherwise something is not lining up.
+
+8,enter
+1,enter
+1,enter
+1,back
+1,back
+1,back
+1,back
+1,1
+1,back
+1,back
+1,back
+1,enter
+1,enter
+1,enter
+1,enter
+1,0
+1,back
+1,1
+1,enter
+1,0
+1,enter
+1,back
+1,enter
+1,enter
+1,enter
+1,enter
+1,enter
+1,enter
+1,enter
+1,enter
+1,enter
+1,1
+1,enter
+1,0

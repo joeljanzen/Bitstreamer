@@ -158,7 +158,7 @@ func start_level(level_offset: float = 0) -> void:
 		if back_next:
 			curr_line -= 1
 			if curr_line < 1:
-				curr_line = 1
+				curr_line = _play_area.MAX_LINE_NUM
 			back_next = false
 		
 		total_time += delay_queue[event_index]

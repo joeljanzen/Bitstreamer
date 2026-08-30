@@ -45,9 +45,6 @@ var _starting_cursor_y
 ## The ending y position of the cursor (when it's on the last line).
 var _ending_cursor_y
 
-## Signifies when to reset the cursor back to the top.
-var _ready_for_line_clear := false
-
 ## The last bits have been sent, prepare to send the no_bits_left signal.
 var _last_bits_sent := false
 
@@ -133,16 +130,18 @@ func send_bit(value: Bit.Type, time_to_cursor: float, damage: int,
 			damage, conductor)
 	_bitstream.push_back(new_bit)
 	
-	# Increase line number for next bit when an enter is sent:
+	# Increase line number for next bit when an enter bit is sent.
 	if value == Bit.Type.ENTER:
 		if _bit_send_line_num < MAX_LINE_NUM:
 			_bit_send_line_num += 1
 		else:
-			_ready_for_line_clear = true
 			_bit_send_line_num = 1
+	# Decrease line number for next bit when a back bit is sent.
 	if value == Bit.Type.BACK:
 		if _bit_send_line_num > 1:
 			_bit_send_line_num -= 1
+		else:
+			_bit_send_line_num = MAX_LINE_NUM
 
 
 ## Notify the play area that the last bits have been sent.
@@ -306,16 +305,21 @@ func _new_line(move_down: bool) -> void:
 	# Check for the cursor to be at the right y position, to ensure the other 
 	# enter bits before the one on the last line have all been hit/missed 
 	# already.
-	if _ready_for_line_clear and _cursor.global_position.y == _ending_cursor_y and move_down:
+	if _cursor.global_position.y == _ending_cursor_y and move_down:
 		SoundManager.play_line_clear()
 		_cursor.position.y -= _line_height * (MAX_LINE_NUM - 1)
-		_ready_for_line_clear = false
 		_clear_bit_label_lines()
 		_line_num = 1
 	elif move_down:
 		_cursor.position.y += _line_height
 		_line_num += 1
-	elif _cursor.global_position.y != _starting_cursor_y: # Move up.
+	# We are on the top line and not moving down, so we do a reverse line clear.
+	elif _cursor.global_position.y == _starting_cursor_y:
+		SoundManager.play_line_clear()
+		_cursor.position.y += _line_height * (MAX_LINE_NUM - 1)
+		_clear_bit_label_lines()
+		_line_num = MAX_LINE_NUM
+	else: # Move up a line normally.
 		_cursor.position.y -= _line_height
 		_line_num -= 1
 
