@@ -121,7 +121,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				break
 		elif tag.begins_with("song="):
 			var check = tag.erase(0,5)
-			if FileAccess.file_exists(LEVEL_SONGS_DIR + check):
+			if check.is_valid_filename():
 				song_filename = check
 			else:
 				error_loading = true
@@ -130,7 +130,7 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		# This tag is optional (default is no image).
 		elif tag.begins_with("image="):
 			var check = tag.erase(0,"image=".length())
-			if FileAccess.file_exists(LEVEL_IMAGES_DIR + check):
+			if check.is_valid_filename():
 				image_filename = check
 			else:
 				push_error("Image file %s could not be found!" % check)
