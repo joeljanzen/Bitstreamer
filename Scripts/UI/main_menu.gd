@@ -31,7 +31,7 @@ const TITLE_PULSE_RATE: int = 1
 
 ## How much the title fades before it will pulse again. 1 means it fades 
 ## entirely, while 0 would mean it never fades at all.
-const TITLE_FADE_COEFFICIENT: float = 0.5
+const TITLE_FADE_COEFFICIENT: float = 0.7
 
 ## The strength of blur when in the game settings.
 const BACKGROUND_BLUR_STRENGTH: float = 0.5
