@@ -13,13 +13,15 @@ extends Control
 @onready var _speed_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/SpeedPanel/MarginContainer/SpeedLabel
 @onready var _damage_label = $ButtonPanel/MarginContainer/VBoxContainer/LevelDetailsContainer/DamagePanel/MarginContainer/DamageLabel
 
+@onready var _level_image = $ButtonPanel/LevelImage
+
 @onready var _play_practice_container = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer
 @onready var _play_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PlayButton
 @onready var _back_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/BackButton
 @onready var _practice_button = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeButton
-@onready var _practice_container = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer
-@onready var _time_slider_label = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSliderLabel
-@onready var _time_slider = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/PracticeContainer/TimeSlider
+@onready var _practice_container = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/SliderPanel
+@onready var _time_slider_label = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/SliderPanel/MarginContainer/PracticeContainer/TimeSliderLabel
+@onready var _time_slider = $ButtonPanel/MarginContainer/VBoxContainer/ButtonContainer/SliderPanel/MarginContainer/PracticeContainer/TimeSlider
 
 @onready var _popup_panel = $PopupPanel
 @onready var _popup_label = $PopupPanel/MarginContainer/RichTextLabel
@@ -56,6 +58,13 @@ const _MIN_Y_SIZE = 200
 
 ## The maximum size of the button when it is focused.
 const _MAX_Y_SIZE = 300
+
+## The alpha value of the level image when the level is unfocused.
+const _UNFOCUSED_IMAGE_TRANSPARENCY = 0.2
+
+## The alpha value of the level image when the level is hovered, but not yet
+## focused.
+const _HOVERED_IMAGE_TRANSPARENCY = 0.5
 
 ## The theme color to use for this LevelButton's title color.
 ## Alternates between true and false each time one is created.
@@ -124,6 +133,16 @@ func _ready() -> void:
 	if (LevelInfo.last_played != null 
 			and level_info.file_name == LevelInfo.last_played.file_name):
 		_time_slider.value = GameLevel.last_offset
+	
+	# If this level has an associated image, attach it.
+	if level_info.has_image():
+		_level_image.texture = level_info.get_image()
+		_level_image.self_modulate.a = _UNFOCUSED_IMAGE_TRANSPARENCY
+		_button_panel.self_modulate.a = 0 # Make the underlying panel invisible.
+	else:
+		_level_image.hide()
+		$ButtonPanel/TextureFade.hide()
+		$ButtonPanel/TextureFade2.hide()
 
 
 ## Set popup positions and time when it should show.
@@ -163,11 +182,8 @@ func focus_button() -> void:
 		button_focused.emit(self)
 		
 		custom_minimum_size.y = _MAX_Y_SIZE
-		_button_panel.scale = Vector2(1.04, 1.04)
-		
-		var style_box = StyleBoxFlat.new()
-		style_box.bg_color = Color.DIM_GRAY.darkened(0.7)
-		_button_panel.add_theme_stylebox_override("panel", style_box)
+		scale = Vector2(1.04, 1.04)
+		_level_image.self_modulate.a = 1
 		
 		_play_practice_container.show()
 
@@ -179,9 +195,8 @@ func defocus_button() -> void:
 		
 		size.y = _MIN_Y_SIZE
 		custom_minimum_size.y = _MIN_Y_SIZE
-		_button_panel.scale = Vector2(1, 1)
-		
-		_button_panel.remove_theme_stylebox_override("panel")
+		scale = Vector2(1, 1)
+		_level_image.self_modulate.a = _UNFOCUSED_IMAGE_TRANSPARENCY
 		
 		_play_practice_container.hide()
 
@@ -329,13 +344,16 @@ func _set_play_button_text_color() -> void:
 func _on_mouse_entered() -> void:
 	if !is_focused:
 		SoundManager.play_menu_focus()
-		_button_panel.scale = Vector2(1.015, 1.015)
+		scale = Vector2(1.015, 1.015)
+		_level_image.self_modulate.a = _HOVERED_IMAGE_TRANSPARENCY
 
 
 ## Return the button to its default size and rotation.
 func _on_mouse_exited() -> void:
 	if !is_focused:
-		_button_panel.scale = Vector2(1, 1)
+		scale = Vector2(1,1)
+		# Make the image somwhat transparent.
+		_level_image.self_modulate.a = _UNFOCUSED_IMAGE_TRANSPARENCY
 
 
 ## Call when a level attribute is being hovered over. If the cursor remains

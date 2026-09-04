@@ -4,7 +4,6 @@
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_2bsks"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="2_s2y41"]
 [ext_resource type="Texture2D" uid="uid://dy8kuus858fhd" path="res://icon.svg" id="2_slgek"]
-[ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="3_slgek"]
 
 [node name="ModButton" type="Control" unique_id=1693415256]
 custom_minimum_size = Vector2(523, 0)
@@ -25,7 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_slgek")
+theme = ExtResource("2_2bsks")
 toggle_mode = true
 
 [node name="MarginContainer" type="MarginContainer" parent="Button" unique_id=1652539215]

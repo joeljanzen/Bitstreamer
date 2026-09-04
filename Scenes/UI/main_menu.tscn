@@ -2,7 +2,6 @@
 
 [ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_i2xx2"]
 [ext_resource type="Script" uid="uid://dmhxr0lxqlsk6" path="res://Scripts/UI/main_menu.gd" id="1_mrfpk"]
-[ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="2_gih0s"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="2_wqme5"]
 [ext_resource type="Texture2D" uid="uid://dvtx834d5ab72" path="res://Resources/Sprites/UI/next_song_button.png" id="4_k33u3"]
 [ext_resource type="Texture2D" uid="uid://dml5ob2ulln2d" path="res://Resources/Sprites/UI/song_icon.png" id="4_lrjdf"]
@@ -170,7 +169,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("2_gih0s")
+theme = ExtResource("1_i2xx2")
 theme_override_constants/margin_top = 300
 theme_override_constants/margin_bottom = 100
 

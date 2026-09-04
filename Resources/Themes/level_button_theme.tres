@@ -1,5 +1,8 @@
 [gd_resource type="Theme" format=3 uid="uid://d1wnklovhiyfr"]
 
+[ext_resource type="StyleBox" uid="uid://c1d5tuwsju82p" path="res://Resources/Themes/Styleboxes/level_button_stylebox.tres" id="1_4c8jw"]
+[ext_resource type="StyleBox" uid="uid://ideckdvv1gad" path="res://Resources/Themes/Styleboxes/level_button_hover_stylebox.tres" id="1_hxpf7"]
+
 [sub_resource type="SystemFont" id="SystemFont_60xwf"]
 font_names = PackedStringArray("Consolas")
 
@@ -7,3 +10,7 @@ font_names = PackedStringArray("Consolas")
 default_base_scale = 1.0
 default_font = SubResource("SystemFont_60xwf")
 default_font_size = 25
+Button/styles/hover = ExtResource("1_hxpf7")
+Button/styles/normal = ExtResource("1_4c8jw")
+Panel/styles/panel = ExtResource("1_4c8jw")
+PanelContainer/styles/panel = ExtResource("1_4c8jw")
