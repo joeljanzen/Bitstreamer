@@ -2,6 +2,14 @@ class_name LevelInfo
 extends Node
 ## Stores information about a level.
 
+## The file directory for level images. If an image is not at this directory it 
+## will not be loaded properly.
+const LEVEL_IMAGES_DIR = "res://Resources/Images/Level/"
+
+## The file directory for level songs. If a song is not at this directory it 
+## will not be loaded properly.
+const LEVEL_SONGS_DIR = "res://Resources/Audio/LevelTracks/"
+
 ## The song preview for a level must be at least this long or it is invalid and
 ## the preview will resort to the default offset.
 const MINIMUM_SONG_PREVIEW_LENGTH = 5
@@ -38,6 +46,9 @@ var song_filename: String = ""
 var song_name: String = ""
 ## The actual audio stream for the song of the level.
 var song: AudioStream
+## The name of the image file for this level. Retrieve the image with get_image,
+## given that this level has an image associated with it (it may not).
+var image_filename: String = ""
 ## The offset from the start of the song in seconds to start the song preview.
 var song_preview: float = -1
 ## The beats per minute of the music (good luck if the song changes bpm bro).
@@ -110,12 +121,19 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 				break
 		elif tag.begins_with("song="):
 			var check = tag.erase(0,5)
-			if check.is_valid_filename():
+			if FileAccess.file_exists(LEVEL_SONGS_DIR + check):
 				song_filename = check
 			else:
 				error_loading = true
 				push_error("%s is not a valid song filename" % check)
 				break
+		# This tag is optional (default is no image).
+		elif tag.begins_with("image="):
+			var check = tag.erase(0,"image=".length())
+			if FileAccess.file_exists(LEVEL_IMAGES_DIR + check):
+				image_filename = check
+			else:
+				push_error("Image file %s could not be found!" % check)
 		# This tag is optional (default is halfway through the level's length).
 		elif tag.begins_with("song_preview="):
 			var check = tag.erase(0,"song_preview=".length())
@@ -240,9 +258,10 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 		else: # We calculated a valid bit count, save it to file.
 			_save_tag_to_file("bit_count", bit_count)
 	
-	if !error_loading: 
+	if !error_loading:
 		# Try to load the song file.
-		song = load("res://Resources/Audio/LevelTracks/%s" % song_filename)
+		var dir = LEVEL_SONGS_DIR + song_filename
+		song = load(dir)
 		
 		if song == null:
 			error_loading = true
@@ -481,3 +500,15 @@ func is_valid() -> bool:
 func get_filename_without_type() -> String:
 	var start_of_filetype = file_name.rfind(".")
 	return file_name.substr(0, start_of_filetype)
+
+
+## Check if the level has an image associated with it (this is not guaranteed).
+func has_image() -> bool:
+	return !image_filename.is_empty()
+
+
+## After calling has_image() to ensure the image exists, retrieve it with this
+## function, which loads the resource from file.
+func get_image() -> Texture2D:
+	var dir = LEVEL_IMAGES_DIR + image_filename
+	return load(dir)
