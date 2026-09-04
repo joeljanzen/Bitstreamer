@@ -1,4 +1,4 @@
-song_name=Crystalline,song=Crystalline.wav,song_preview=82.5,version=Easy,bpm=100,speed=3,diff=3,dmg=4,length=194.9,bit_count=199
+song_name=Crystalline,song=Crystalline.wav,image=Crystalline.jpg,song_preview=82.5,version=Easy,bpm=100,speed=3,diff=3,dmg=4,length=194.9,bit_count=199
 
 6,0
 6,0
