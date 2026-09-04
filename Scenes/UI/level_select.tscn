@@ -478,7 +478,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mod = 4
 mod_name = "Zeroed Out"
-description = "By a terrible mistake, all bits have become zeroes! How the program still runs is a great mystery."
+description = "By a terrible mistake, all 1 bits have become zeroes! How the program still runs is a great mystery."
 
 [node name="ModButton8" parent="CanvasLayer/ModsPanel/VBoxContainer/MarginContainer/ScrollContainer/ScrollbarMargin/ModButtonContainer" unique_id=181478866 instance=ExtResource("4_texu8")]
 layout_mode = 2
