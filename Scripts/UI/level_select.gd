@@ -451,7 +451,10 @@ func _get_level_scroll_position(button: LevelButton) -> int:
 ## Start the level that has been selected.
 func _level_launch_button_pressed(level_info: LevelInfo) -> void:
 	SoundManager.play_launch_level()
-	level_info.load_level_bits_and_delays()
+	
+	# Only if playing a new level it must load the bits and delays.
+	if level_info != LevelInfo.last_played:
+		level_info.load_level_bits_and_delays()
 	
 	if level_info.is_valid():
 		# Save the position of the button so it will be centered when we come back.
