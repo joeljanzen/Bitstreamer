@@ -121,6 +121,7 @@ func connect_conductor(conductor: Conductor) -> void:
 
 ## The player has pressed the play again button. Clearly.
 func _on_play_again_pressed() -> void:
+	SoundManager.stop_score_increase()
 	SoundManager.play_menu_click()
 	
 	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)
@@ -133,6 +134,7 @@ func _on_play_again_pressed() -> void:
 
 ## Return to the main menu.
 func _on_quit_pressed() -> void:
+	SoundManager.stop_score_increase()
 	SoundManager.play_menu_click()
 	
 	_conductor.fade_out(ArrowTransition.TRANSITION_FADE_SPEED)

@@ -77,6 +77,12 @@ func play_score_increase() -> void:
 	$GameplayBus/ScoreIncrease.play()
 
 
+## In the event that a level is quit as this sound is playing, you can stop it
+## early.
+func stop_score_increase() -> void:
+	$GameplayBus/ScoreIncrease.stop()
+
+
 ## Plays the score hit sound when the final score is revealed. Pass true to get
 ## the sound that plays for a perfect score (100% accuracy).
 func play_score_hit(full_combo: bool = false, perfect: bool = false) -> void:
