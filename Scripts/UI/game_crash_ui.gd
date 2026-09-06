@@ -15,7 +15,7 @@ extends Control
 const MOD_ICON_SIZE: int = 100
 
 ## How many seconds it should take for the music to fade away.
-const MUSIC_FADE_TIME: float = 12
+const MUSIC_FADE_TIME: float = 8
 
 ## How many seconds it should take for the music to stop decreasing pitch
 ## and speed.

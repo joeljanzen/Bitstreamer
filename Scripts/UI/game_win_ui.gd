@@ -15,6 +15,9 @@ extends Control
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 100
 
+## How many seconds it should take for the music to fade away.
+const MUSIC_FADE_TIME: float = 15
+
 ## How many seconds it should take for the score to reach its final value.
 const SCORE_ANIMATION_TIME: float = 1.5
 
@@ -64,6 +67,7 @@ func _ready() -> void:
 		SoundManager.play_score_increase()
 	
 	_arrow_transition.prep_for_fade_out()
+	_conductor.fade_out(MUSIC_FADE_TIME)
 
 
 ## For each active mod, display its icon on the crash screen.
