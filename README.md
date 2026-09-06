@@ -42,13 +42,13 @@ Despite that, a level's version can be called anything at all (there are no actu
 #### Standard Level Parameters by Version
 Though there are no strict restrictions on the parameters a particular standard version should have, some basic guidelines may be useful:
 
-- Easy: 0-3 difficulty, 1-3 speed
-- Normal: 4-5 difficulty and speed
-- Hard: 6 difficulty, 6 speed
-- Insane: 7-8 difficulty and speed
-- Expert: 9-10 difficulty, 8-10 speed
-- Extreme: 11 difficulty, 9-11 speed
-- Unreal: 12 difficulty, 10-12 speed
+- Easy: 0-3 difficulty, 1-5 speed
+- Normal: 4-5 difficulty, 5-6 speed
+- Hard: 6 difficulty, 7 speed
+- Insane: 7-8 difficulty, 8-9 speed
+- Expert: 9-10 difficulty and speed
+- Extreme: 11 difficulty, 10-11 speed
+- Unreal: 12 difficulty, 11-12 speed
 
 Damage is not standardized as it depends heavily on a level's mapping. Generally, it will be low (1-5 damage) for easy to normal levels, increase for hard to insane levels (6-10 damage), and remain similar or even decrease for levels of higher difficulty, to compensate for more frequently spawning bits. As a general rule, damage should never exceed 20 unless affected by mods.
 

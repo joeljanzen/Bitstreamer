@@ -1,4 +1,4 @@
-song_name=Last Dance,song=Last Dance.wav,image=LastDance.jpg,song_preview=109,version=Hard,bpm=128,speed=6,diff=6.5,dmg=6,length=214.805,bit_count=594
+song_name=Last Dance,song=Last Dance.wav,image=LastDance.jpg,song_preview=109,version=Hard,bpm=128,speed=7,diff=6.5,dmg=6,length=214.805,bit_count=594
 
 12,0
 2,0

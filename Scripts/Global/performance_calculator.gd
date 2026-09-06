@@ -85,9 +85,9 @@ func set_difficulty(difficulty: float) -> void:
 ## Get the approach time of bits given a speed, in seconds.
 func get_approach_time(speed: float) -> float:
 	if speed <= 10:
-		return 3 - 0.25 * (speed - 1)
+		return 3.25 - 0.25 * (speed - 1)
 	else:
-		return 0.75 - 0.125 * (speed - 10)
+		return 1 - 0.125 * (speed - 10)
 
 
 ## Sets and returns the approach time of bits given a speed.
@@ -99,10 +99,10 @@ func set_approach_time(speed: float) -> float:
 ## Get the speed value for a given approach time. Useful when you want the 
 ## speed increased/decreased by a certain factor for double/half time mods.
 func get_speed_from_approach_time(approach_time_: float) -> float:
-	if approach_time_ >= 0.75:
-		return (3 - approach_time_) / 0.25 + 1
+	if approach_time_ >= 1:
+		return (3.25 - approach_time_) / 0.25 + 1
 	else:
-		return (0.75 - approach_time_) / 0.125 + 10
+		return (1 - approach_time_) / 0.125 + 10
 
 
 ## Mods that change playback speed effectively change how long a second is.

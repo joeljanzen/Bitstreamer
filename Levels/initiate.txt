@@ -1,4 +1,4 @@
-song_name=Initiate,song=Initiate.wav,image=Initiate.jpg,song_preview=86.5,version=Normal,bpm=128,speed=4,diff=4,dmg=6,length=193.828,bit_count=281
+song_name=Initiate,song=Initiate.wav,image=Initiate.jpg,song_preview=86.5,version=Normal,bpm=128,speed=5,diff=4,dmg=6,length=193.828,bit_count=281
 
 6,0
 1,0

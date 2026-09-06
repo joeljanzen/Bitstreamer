@@ -1,4 +1,4 @@
-song_name=Quantum,song=Quantum.wav,image=Armageddon.jpg,song_preview=98.6,version=Expert,bpm=150,speed=9,diff=9,dmg=8,length=206.4,bit_count=918
+song_name=Quantum,song=Quantum.wav,image=Armageddon.jpg,song_preview=98.6,version=Expert,bpm=150,speed=10,diff=9,dmg=8,length=206.4,bit_count=918
 
 # Easy intro - 4s
 
