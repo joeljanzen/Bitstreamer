@@ -23,6 +23,7 @@ const SKIPPED_CHARS_FOR_TYPING_SOUND: int = 3
 @onready var typing_sound = $TypeText
 @onready var panel = $MarginContainer/Panel
 @onready var anim_player = $AnimationPlayer
+@onready var next_button = $MarginContainer/Panel/MarginContainer/NextButton
 
 ## True when a dialogue sequence is currently in progress.
 var sequence_active := false
@@ -42,7 +43,7 @@ var _curr_visible_chars: int
 
 func _ready() -> void:
 	_dialogue = _load_dialogue(DIALOGUE_PATH)
-	visible = false
+	#visible = false
 
 
 ## Play the typing sound for every next visible character.
@@ -55,11 +56,12 @@ func _process(_delta: float) -> void:
 
 ## Catch events to advance or skip dialogue.
 func _input(event: InputEvent) -> void:
-	if visible and (event.is_action_pressed("ui_accept") or event.is_action_pressed("click")):
+	if visible and sequence_active and (event.is_action_pressed("ui_accept") 
+			or event.is_action_pressed("click")):
 		if anim_player.is_playing():
 			anim_player.stop()
 			textbox.visible_ratio = 1
-		else:
+		elif textbox.visible_ratio == 1:
 			_next_dialogue()
 
 
@@ -70,6 +72,7 @@ func display_dialogue(passed_dialogue_sequence: String) -> void:
 	_next_dialogue()
 	visible = true
 	sequence_active = true
+	next_button.show()
 	dialogue_entered.emit()
 
 

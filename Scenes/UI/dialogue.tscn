@@ -93,6 +93,7 @@ vertical_alignment = 1
 visible_characters_behavior = 1
 
 [node name="NextButton" type="Button" parent="MarginContainer/Panel/MarginContainer" unique_id=1882756644]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8

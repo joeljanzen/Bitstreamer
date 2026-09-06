@@ -6,6 +6,9 @@ extends GameLevel
 @onready var tutorial_s2_music = preload("res://Resources/Audio/LevelTracks/Tutorial S2.wav")
 @onready var tutorial_s3_music = preload("res://Resources/Audio/LevelTracks/Tutorial S3.wav")
 
+## The section start delay when starting a section of the tutorial.
+const _SECTION_START_DELAY = 0.35
+
 ## Tells the tutorial how long each section is. The last section goes to the
 ## end of the bit and delay queues.
 const _SECTION_END_INDEX = [8, 17]
@@ -63,7 +66,6 @@ func _ready() -> void:
 	add_child(canvas)
 	_dialogue_box.dialogue_exited.connect(_start_section)
 	_dialogue_box.dialogue_event.connect(_dialogue_event)
-	_dialogue_box.display_dialogue("start")
 	
 	# Aesthetics.
 	_environment.environment.glow_blend_mode = Environment.GLOW_BLEND_MODE_SCREEN
@@ -71,11 +73,14 @@ func _ready() -> void:
 	
 	_arrow_transition.fade_in()
 	await _arrow_transition.animation_finished
+	
+	_dialogue_box.display_dialogue("start")
 
 
 ## Input handling.
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause") and !paused and !completed:
+	if (event.is_action_pressed("pause") and !paused and !completed
+		and (conductor.playing || _dialogue_box.sequence_active)):
 		_paused()
 	elif event.is_action_pressed("restart"):
 		_arrow_transition.fade_out()
@@ -127,6 +132,9 @@ func _start_section() -> void:
 			
 		3:
 			conductor.set_song(tutorial_s3_music)
+	
+	# Give the player a little time to get ready.
+	await get_tree().create_timer(_SECTION_START_DELAY).timeout
 	
 	conductor.play_with_offset(0, event_index)
 	conductor.set_timed_event(total_time)
