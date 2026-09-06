@@ -538,7 +538,7 @@ func show_UI():
 ## Returns if the UI is currently visible.
 func UI_is_visible() -> bool:
 	# This works cuz the only way this button is visible is if the rest is.
-	return _back_button.visible 
+	return _canvas_layer.visible 
 
 
 func _on_back_button_pressed() -> void:
@@ -783,6 +783,11 @@ func _on_plays_button_mouse_entered() -> void:
 func _open_mods_panel() -> void:
 	_mods_panel_open = true
 	_mods_animation.play("popup")
+	
+	# Hide the button to exit to main menu
+	# because people confuse it with the button
+	# to close the mod panel.
+	_back_button.hide()
 
 
 ## Pass a custom speed to change the animation speed by that factor.
@@ -790,6 +795,8 @@ func _close_mods_panel(custom_speed: float = 1) -> void:
 	if _mods_panel_open:
 		_mods_panel_open = false
 		_mods_animation.play("popup", -1, -custom_speed, true)
+		
+		_back_button.show()
 		
 		_apply_mods_to_level_buttons()
 		# Since tutorial isn't affected by mods we have to sort levels again.
