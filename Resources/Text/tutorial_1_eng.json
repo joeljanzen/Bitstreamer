@@ -14,7 +14,7 @@
 	],
 	"enter_bit": [
 		"Well done! The more accurately you receive bits, the smoother the program will run and as a reward you will receive more {perfect_click_color}score[/color]. Your score is displayed at the top of the screen.",
-		"Sometimes you will need to move down to a new line to receive more bits. I will send you a queue to do this, called an {perfect_click_color}enter bit[/color].",
+		"Sometimes you will need to move down to a new line to receive more bits. I will send you a cue to do this, called an {perfect_click_color}enter bit[/color].",
 		"If you miss an enter bit, I'll ensure you still move down the line, but you will not gain score and will lose your combo as a result.",
 		"*show_combo:Your {perfect_click_color}combo[/color] is displayed in the bottom right. When you receive bits correctly, your combo will increase.",
 		"The program runs best when your combo is high, granting you extra score. If you miss or incorrectly receive any bits it will drop back to zero, so be careful!",
@@ -22,19 +22,19 @@
 		"",
 	],
 	"fail_enter_bit": [
-		"If it wasn't clear, the {perfect_click_color}arrow pointing down[/color] is the enter bit! It is your queue to move down to the next line. Let's take another shot at it.",
+		"If it wasn't clear, the {perfect_click_color}arrow pointing down[/color] is the enter bit! It is your cue to move down to the next line. Let's take another shot at it.",
 		"",
 	],
 	"back_bit": [
 		"Excellent! When you start running real programs, you should be aware of its {perfect_click_color}health[/color], displayed in the bottom left. If you make too many errors the program will crash!",
 		"Missing or incorrectly receiving bits will {perfect_click_color}damage the program[/color]. Missing my enter bits will not, as they don't affect the program's data.",
 		"You can regain health by rebuilding your {perfect_click_color}combo[/color]. Receiving bits more accurately will restore the program faster.",
-		"One last thing! I may send you a different queue to switch lines, called a {perfect_click_color}back bit[/color]. It behaves just like the enter bit, but instead of moving down you move back {perfect_click_color}up[/color] a line.",
+		"One last thing! I may send you a different cue to switch lines, called a {perfect_click_color}back bit[/color]. It behaves just like the enter bit, but instead of moving down you move back {perfect_click_color}up[/color] a line.",
 		"To receive a back bit press {back_bit_keybind}. Don't worry about damaging the program for now, let's practice!",
 		"",
 	],
 	"fail_back_bit": [
-		"Sorry if there was any confusion, the {perfect_click_color}arrow pointing up[/color] is the back bit! It is your queue to move back up to the last line. Let's give it another go.",
+		"Sorry if there was any confusion, the {perfect_click_color}arrow pointing up[/color] is the back bit! It is your cue to move back up to the last line. Let's give it another go.",
 		"",
 	],
 	"finish": [
