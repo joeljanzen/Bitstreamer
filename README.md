@@ -61,7 +61,7 @@ The beats per minute of the song. Can be a fractional value, if for some reason 
 Determines how quickly the bits move across the screen towards the cursor. The minimum speed is 1 and the maximum speed is 12. 
 
 The speed value is converted into an approach time, i.e. the time it takes a bit to reach the cursor after being sent (in seconds). A higher speed value equates to a shorter approach time. 
-The approach time goes from 3 seconds at speed 1 to 0.5 seconds at speed 12.
+The approach time goes from 3.25 seconds at speed 1 to 0.75 seconds at speed 12.
 
 ### Difficulty
 
