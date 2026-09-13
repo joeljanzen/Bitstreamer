@@ -3,7 +3,6 @@
 [ext_resource type="Theme" uid="uid://d1wnklovhiyfr" path="res://Resources/Themes/level_button_theme.tres" id="1_bbr4g"]
 [ext_resource type="Script" uid="uid://c0dcx5ksg78n5" path="res://Scripts/UI/level_button.gd" id="1_iq6la"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_icd4v"]
-[ext_resource type="Texture2D" uid="uid://d18ta3si24gbm" path="res://Resources/Images/Level/LastDance.jpg" id="3_s1d3e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7lvc"]
 bg_color = Color(0.09239709, 0.09239706, 0.09239706, 1)
@@ -119,11 +118,11 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_j7lvc")
 [node name="LevelImage" type="TextureRect" parent="ButtonPanel" unique_id=1631248790]
 clip_contents = true
 layout_mode = 2
-texture = ExtResource("3_s1d3e")
 expand_mode = 1
 stretch_mode = 3
 
 [node name="TextureFade" type="TextureRect" parent="ButtonPanel" unique_id=221950645]
+visible = false
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_vertical = 8
@@ -132,6 +131,7 @@ texture = SubResource("GradientTexture2D_j7lvc")
 expand_mode = 1
 
 [node name="TextureFade2" type="TextureRect" parent="ButtonPanel" unique_id=546852716]
+visible = false
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_vertical = 0

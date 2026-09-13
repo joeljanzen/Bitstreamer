@@ -85,6 +85,9 @@ var practice_offset: float = 0
 ## This level button has been clicked and should be focused.
 var is_focused := false
 
+## Whether we should being waiting for an image in the level_info to load.
+var _load_image := false
+
 ## The initial y position a mouse drag is started from.
 ## Used to detect if a mouse click is for dragging vertically or just a click.
 var _initial_drag_y_pos := 0
@@ -136,9 +139,7 @@ func _ready() -> void:
 	
 	# If this level has an associated image, attach it.
 	if level_info.has_image():
-		_level_image.texture = level_info.get_image()
-		_level_image.self_modulate.a = _UNFOCUSED_IMAGE_TRANSPARENCY
-		_button_panel.self_modulate.a = 0 # Make the underlying panel invisible.
+		_load_image = true
 	else:
 		_level_image.hide()
 		$ButtonPanel/TextureFade.hide()
@@ -147,6 +148,18 @@ func _ready() -> void:
 
 ## Set popup positions and time when it should show.
 func _process(delta: float) -> void:
+	if _load_image:
+		if level_info.has_loaded_image():
+			_level_image.texture = level_info.get_image()
+			_level_image.self_modulate.a = _UNFOCUSED_IMAGE_TRANSPARENCY
+			_button_panel.self_modulate.a = 0 # Make the underlying panel invisible.
+			
+			# Show the gradients to fade the image edges out.
+			$ButtonPanel/TextureFade.show()
+			$ButtonPanel/TextureFade2.show()
+			
+			_load_image = false # Stop trying to load the image.
+	
 	if _popup_timer_on and !_popup_panel.visible:
 		_popup_time += delta
 		if _popup_time > _TIME_TO_SHOW_POPUP:

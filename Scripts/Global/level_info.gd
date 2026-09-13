@@ -132,6 +132,8 @@ func _parse_level_info(lines: PackedStringArray) -> bool:
 			var check = tag.erase(0,"image=".length())
 			if check.is_valid_filename():
 				image_filename = check
+				# Request the image to load on a background thread.
+				ResourceLoader.load_threaded_request(LEVEL_IMAGES_DIR + image_filename)
 			else:
 				push_error("Image file %s could not be found!" % check)
 		# This tag is optional (default is halfway through the level's length).
@@ -512,8 +514,18 @@ func has_image() -> bool:
 	return !image_filename.is_empty()
 
 
-## After calling has_image() to ensure the image exists, retrieve it with this
-## function, which loads the resource from file.
+## If the level has an image associated with it (check with has_image) and it
+## is loaded, return true. Otherwise return false.
+func has_loaded_image() -> bool:
+	if has_image():
+		var dir = LEVEL_IMAGES_DIR + image_filename
+		var status = ResourceLoader.load_threaded_get_status(dir)
+		return status == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_LOADED
+	else:
+		return false
+
+
+## After calling has_loaded_image() to ensure the image is ready, retrieve it.
 func get_image() -> Texture2D:
 	var dir = LEVEL_IMAGES_DIR + image_filename
-	return load(dir)
+	return ResourceLoader.load_threaded_get(dir)
