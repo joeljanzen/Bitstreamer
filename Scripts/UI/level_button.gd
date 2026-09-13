@@ -98,8 +98,6 @@ var _popup_timer_on := false
 var _popup_time: float = 0
 
 
-
-
 ## Setup the level button with all level details. Call this after instantiation 
 ## of the scene but before adding as a child to the current scene tree.
 func setup(level_information: LevelInfo) -> void:
@@ -108,10 +106,7 @@ func setup(level_information: LevelInfo) -> void:
 
 ## Fills all label text with level info.
 func _ready() -> void:
-	# For some reason duplication doesn't work at all (spent so long tryna 
-	# see why) so I legit uhhh parse the entire level info again ggs.
-	#modded_info = level_info.duplicate(DUPLICATE_INTERNAL_STATE) as LevelInfo
-	modded_info = LevelInfo.new(level_info.file_name)
+	modded_info = LevelInfo.clone_info(level_info)
 	
 	_name_label.text = level_info.song_name
 	_version_label.text = level_info.version

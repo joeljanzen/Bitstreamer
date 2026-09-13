@@ -36,6 +36,9 @@ static var last_played: LevelInfo
 ## Stores the level whose music was last played in the main menu.
 static var last_played_in_menu: LevelInfo
 
+## Stores loaded level info so they can be retrieved instead of reloaded.
+static var _level_info_cache: Dictionary[String, LevelInfo]
+
 ## The file storing the info for this level.
 var file_name: String
 ## The version of the level (used to distinguish levels that use the same song).
@@ -75,33 +78,67 @@ var delay_queue: Array[float]
 ## The delay between a bit being sent and it reaching the cursor, in seconds.
 var _bit_time_to_cursor: float
 
+## The image associated with this level (if there is one). It is loaded in a
+## background thread the first time get_image() is called, and stored here
+## afterwards.
+var _image: Texture2D
+
 ## Determines if the level information is valid after it's loaded.
 var _is_valid := false
 
 
+## Get the level info for the given level filename (treat it as a constructor). 
+## Use this instead of LevelInfo.new() to make use of cached level info.
+static func get_level_info(filename: String) -> LevelInfo:
+	if !_level_info_cache.has(filename):
+		_level_info_cache.set(filename, LevelInfo.new(filename))
+	return _level_info_cache.get(filename)
+
+
+## Create a copy of the level info given. I can't get the normal duplicate
+## function to work whatsoever. The song resource is the only property that is
+## not duplicated (this was not deemed useful).
+static func clone_info(info: LevelInfo) -> LevelInfo:
+	var clone = LevelInfo.new("EMPTY") # Give it no values to start.
+	clone.name = info.file_name + ".clone"
+	clone.file_name = info.file_name
+	clone.version = info.version
+	clone.song_filename = info.song_filename
+	clone.song_name = info.song_name
+	clone.song = info.song
+	clone.image_filename = info.image_filename
+	clone.song_preview = info.song_preview
+	clone.bpm = info.bpm
+	clone.speed = info.speed
+	clone.difficulty = info.difficulty
+	clone.damage = info.damage
+	clone.length = info.length
+	clone.bit_count = info.bit_count
+	clone._is_valid = true
+	return clone
+
+
 ## Initialize the level info, given its full filename.
+## Passing the filename "EMPTY" will not attempt to load anything.
 func _init(filename: String) -> void:
-	name = filename
-	file_name = filename
-	
-	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)
-	
-	if file == null:
-		push_error("Level file could not be found!")
-	else:
-		var content = file.get_as_text()
-		file.close()
+	if filename != "EMPTY":
+		name = filename
+		file_name = filename
 		
-		# Will contain empty lines, only so if something goes wrong the correct 
-		# line number with the error will be displayed.
-		var lines: PackedStringArray = content.split("\n") 
+		var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)
 		
-		if _parse_level_info(lines):
-			_is_valid = true
-		
-		# Uncomment this line to reload the level length and bit count of every 
-		# single level and write it back to file.
-		#update_level_length_and_bit_count()
+		if file == null:
+			push_error("Level file could not be found!")
+		else:
+			var content = file.get_as_text()
+			file.close()
+			
+			# Will contain empty lines, only so if something goes wrong the correct 
+			# line number with the error will be displayed.
+			var lines: PackedStringArray = content.split("\n") 
+			
+			if _parse_level_info(lines):
+				_is_valid = true
 
 
 ## Loads the info for a level, given the lines in the level file.
@@ -374,7 +411,7 @@ static func get_random_level_info() -> LevelInfo:
 			level_filenames.remove_at(random_index)
 			random_index = randi_range(0, level_filenames.size() - 1)
 	
-	last_played_in_menu = LevelInfo.new(level_filenames[random_index])
+	last_played_in_menu = get_level_info(level_filenames[random_index])
 	return last_played_in_menu
 
 
@@ -387,113 +424,116 @@ func update_level_length_and_bit_count() -> void:
 	_save_tag_to_file("bit_count", bit_count)
 
 
+## Returns true if the bit and delay queues for this level are already loaded.
+func bits_and_delays_are_loaded() -> bool:
+	return !delay_queue.is_empty() and !bit_queue.is_empty()
+
+
 ## Loads the required bit and delay queues to play a level. Returns true if 
 ## there were no issues, or false otherwise.
 func load_level_bits_and_delays() -> bool:
 	var error_loading := false
 	
-	if delay_queue.is_empty() and bit_queue.is_empty():
-		var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)
-		var lines: PackedStringArray
+	var file = FileAccess.open("res://Levels/%s" % file_name, FileAccess.READ)
+	var lines: PackedStringArray
+	
+	if file == null:
+		push_error("Level file could not be found!")
+		return false
+	else:
+		var content = file.get_as_text()
+		file.close()
 		
-		if file == null:
-			push_error("Level file could not be found!")
-			return false
-		else:
-			var content = file.get_as_text()
-			file.close()
-			
-			# Will contain empty lines, only so if something goes wrong the correct 
-			# line number with the error will be displayed.
-			lines = content.split("\n") 
+		# Will contain empty lines, only so if something goes wrong the correct 
+		# line number with the error will be displayed.
+		lines = content.split("\n") 
+	
+	delay_queue.clear()
+	bit_queue.clear()
+	
+	var seconds_per_beat: float = 60.0 / bpm
+	_bit_time_to_cursor = PerformanceCalculator.get_approach_time(speed)
+	
+	for line: int in range(1, lines.size()):
+		var line_num = line + 1
+		# Ignore commented lines entirely.
+		if lines[line].begins_with("#") || lines[line].is_empty():
+			continue # This skips to the next iteration of the loop.
 		
-		var seconds_per_beat: float = 60.0 / bpm
-		_bit_time_to_cursor = PerformanceCalculator.get_approach_time(speed)
+		var tokens := lines[line].split(",", false)
+		if tokens.size() != 2:
+			error_loading = true
+			push_error("Unexpected number of tokens on line %d: %s" % [line_num, lines[line]])
+			break
 		
-		for line: int in range(1, lines.size()):
-			var line_num = line + 1
-			# Ignore commented lines entirely.
-			if lines[line].begins_with("#") || lines[line].is_empty():
-				continue # This skips to the next iteration of the loop.
-			
-			var tokens := lines[line].split(",", false)
-			if tokens.size() != 2:
-				error_loading = true
-				push_error("Unexpected number of tokens on line %d: %s" % [line_num, lines[line]])
-				break
-			
-			var delay_token: String = tokens[0]
-			var bit_token = tokens[1]
-			
-			# Treat token as a raw float delay (in seconds).
-			if delay_token.begins_with("f"):
-				var delay_string = delay_token.erase(0,1)
-				if delay_string.is_valid_float():
-					delay_queue.push_back(float(delay_string))
-				else:
-					error_loading = true
+		var delay_token: String = tokens[0]
+		var bit_token = tokens[1]
+		
+		# Treat token as a raw float delay (in seconds).
+		if delay_token.begins_with("f"):
+			var delay_string = delay_token.erase(0,1)
+			if delay_string.is_valid_float():
+				delay_queue.push_back(float(delay_string))
 			else:
-				var fractional_delay = delay_token.split("/", false)
-				if fractional_delay.size() == 1:
-					# This is just a float, which is the number of beats
-					# the delay should be.
-					if fractional_delay[0].is_valid_float():
-						var delay_value = float(fractional_delay[0]) 
-						delay_queue.push_back(delay_value * seconds_per_beat)
-					else:
-						error_loading = true
-				elif fractional_delay.size() == 2:
-					# This is a fraction, containing a numerator and denominator
-					# indicating the number of beats the delay should be.
-					var delay_numerator: float
-					var delay_denominator: float
-					if fractional_delay[0].is_valid_int():
-						delay_numerator = float(fractional_delay[0])
-					else:
-						error_loading = true
-					
-					if !error_loading and fractional_delay[1].is_valid_int():
-						delay_denominator = float(fractional_delay[1])
-					else:
-						error_loading = true
-					
-					if !error_loading:
-						delay_queue.push_back(delay_numerator / delay_denominator * seconds_per_beat)
+				error_loading = true
+		else:
+			var fractional_delay = delay_token.split("/", false)
+			if fractional_delay.size() == 1:
+				# This is just a float, which is the number of beats
+				# the delay should be.
+				if fractional_delay[0].is_valid_float():
+					var delay_value = float(fractional_delay[0]) 
+					delay_queue.push_back(delay_value * seconds_per_beat)
 				else:
 					error_loading = true
-			
-			if error_loading:
-				push_error("Delay not recognized on line %d: %s" % [line_num, delay_token])
-				break
-			
-			if delay_queue.size() == 1:
-				var difference = delay_queue[0] - _bit_time_to_cursor
-				if difference < 0:
+			elif fractional_delay.size() == 2:
+				# This is a fraction, containing a numerator and denominator
+				# indicating the number of beats the delay should be.
+				var delay_numerator: float
+				var delay_denominator: float
+				if fractional_delay[0].is_valid_int():
+					delay_numerator = float(fractional_delay[0])
+				else:
 					error_loading = true
-					push_error("First delay of %.2f beats or %.2f seconds on line %d is not long enough due to the bit speed being too low. It should be at least %.2f beats or %.2f seconds long." % 
-							[(delay_queue[0] / seconds_per_beat), delay_queue[0], line_num, (_bit_time_to_cursor / seconds_per_beat), _bit_time_to_cursor])
-					break
-			
-			match bit_token:
-				"0":
-					bit_queue.push_back(Bit.Type.ZERO)
-				"1":
-					bit_queue.push_back(Bit.Type.ONE)
-				"enter":
-					bit_queue.push_back(Bit.Type.ENTER)
-				"back":
-					bit_queue.push_back(Bit.Type.BACK)
-				_:
+				
+				if !error_loading and fractional_delay[1].is_valid_int():
+					delay_denominator = float(fractional_delay[1])
+				else:
 					error_loading = true
-					push_error("Bit type not recognized on line %d: %s" % [line_num, bit_token])
-					break
+				
+				if !error_loading:
+					delay_queue.push_back(delay_numerator / delay_denominator * seconds_per_beat)
+			else:
+				error_loading = true
 		
 		if error_loading:
-			_is_valid = false
-	else:
-		# More of a warning than an error, since we already loaded the bits
-		# everything should still run properly.
-		push_error("Level bits and delays are already loaded!")
+			push_error("Delay not recognized on line %d: %s" % [line_num, delay_token])
+			break
+		
+		if delay_queue.size() == 1:
+			var difference = delay_queue[0] - _bit_time_to_cursor
+			if difference < 0:
+				error_loading = true
+				push_error("First delay of %.2f beats or %.2f seconds on line %d is not long enough due to the bit speed being too low. It should be at least %.2f beats or %.2f seconds long." % 
+						[(delay_queue[0] / seconds_per_beat), delay_queue[0], line_num, (_bit_time_to_cursor / seconds_per_beat), _bit_time_to_cursor])
+				break
+		
+		match bit_token:
+			"0":
+				bit_queue.push_back(Bit.Type.ZERO)
+			"1":
+				bit_queue.push_back(Bit.Type.ONE)
+			"enter":
+				bit_queue.push_back(Bit.Type.ENTER)
+			"back":
+				bit_queue.push_back(Bit.Type.BACK)
+			_:
+				error_loading = true
+				push_error("Bit type not recognized on line %d: %s" % [line_num, bit_token])
+				break
+	
+	if error_loading:
+		_is_valid = false
 	
 	return !error_loading
 
@@ -517,15 +557,18 @@ func has_image() -> bool:
 ## If the level has an image associated with it (check with has_image) and it
 ## is loaded, return true. Otherwise return false.
 func has_loaded_image() -> bool:
-	if has_image():
+	var loaded = _image != null
+	# If we do not have the image yet, check if the thread has loaded it.
+	if !loaded and has_image(): 
 		var dir = LEVEL_IMAGES_DIR + image_filename
 		var status = ResourceLoader.load_threaded_get_status(dir)
-		return status == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_LOADED
-	else:
-		return false
+		loaded = status == ResourceLoader.ThreadLoadStatus.THREAD_LOAD_LOADED
+	return loaded
 
 
 ## After calling has_loaded_image() to ensure the image is ready, retrieve it.
 func get_image() -> Texture2D:
-	var dir = LEVEL_IMAGES_DIR + image_filename
-	return ResourceLoader.load_threaded_get(dir)
+	if _image == null:
+		var dir = LEVEL_IMAGES_DIR + image_filename
+		_image = ResourceLoader.load_threaded_get(dir)
+	return _image 

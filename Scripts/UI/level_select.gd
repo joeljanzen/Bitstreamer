@@ -239,7 +239,7 @@ func _process(delta: float) -> void:
 			var level_file = _level_filenames[_level_load_index]
 			#print("Loading level %s" % [level_file])
 			
-			var level = LevelInfo.new(level_file)
+			var level = LevelInfo.get_level_info(level_file)
 			
 			if level.is_valid():
 				_load_level_and_add_button(level, false)
@@ -452,8 +452,7 @@ func _get_level_scroll_position(button: LevelButton) -> int:
 func _level_launch_button_pressed(level_info: LevelInfo) -> void:
 	SoundManager.play_launch_level()
 	
-	# Only if playing a new level it must load the bits and delays.
-	if level_info != LevelInfo.last_played:
+	if not level_info.bits_and_delays_are_loaded():
 		level_info.load_level_bits_and_delays()
 	
 	if level_info.is_valid():
