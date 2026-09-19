@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://3lxad050esl2"]
 
 [ext_resource type="Script" uid="uid://bps4r7xs057l3" path="res://Scripts/UI/level_select.gd" id="1_2wnai"]
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_2wnai"]
+[ext_resource type="Theme" uid="uid://fankwqd05seu" path="res://Resources/Themes/general_ui.tres" id="2_2wnai"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="3_40fl8"]
 [ext_resource type="PackedScene" uid="uid://dpi2oef3klh47" path="res://Scenes/UI/mod_button.tscn" id="4_texu8"]
 [ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="6_7vwlt"]
@@ -216,7 +216,7 @@ theme_override_constants/margin_bottom = 300
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-theme_override_constants/separation = 40
+theme_override_constants/separation = 50
 alignment = 1
 
 [node name="ScrollMarginModifier" type="AnimationPlayer" parent="CanvasLayer/LevelScrollMargin" unique_id=212686849]
@@ -649,7 +649,7 @@ grow_vertical = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 focus_mode = 0
-theme_override_font_sizes/font_size = 33
+theme_override_font_sizes/font_size = 30
 text = " < "
 
 [node name="PlaysAnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/PlaysPanel" unique_id=2139377303]

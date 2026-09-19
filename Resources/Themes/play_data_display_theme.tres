@@ -1,17 +1,16 @@
 [gd_resource type="Theme" format=3 uid="uid://dvm68fnrxg301"]
 
+[ext_resource type="FontFile" uid="uid://bdggjog2a3r1a" path="res://Resources/Themes/Fonts/Inconsolata-Regular.ttf" id="1_7i1rp"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8yvcs"]
 bg_color = Color(0.09239707, 0.09239706, 0.09239706, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njjef"]
 bg_color = Color(0.13725491, 0.13725491, 0.13725491, 1)
 
-[sub_resource type="SystemFont" id="SystemFont_60xwf"]
-font_names = PackedStringArray("Consolas")
-
 [resource]
 default_base_scale = 1.0
-default_font = SubResource("SystemFont_60xwf")
+default_font = ExtResource("1_7i1rp")
 default_font_size = 15
 Panel/styles/panel = SubResource("StyleBoxFlat_8yvcs")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_njjef")

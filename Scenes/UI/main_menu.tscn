@@ -1,12 +1,18 @@
 [gd_scene format=3 uid="uid://dnfywj5sxt1r3"]
 
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_i2xx2"]
+[ext_resource type="Theme" uid="uid://fankwqd05seu" path="res://Resources/Themes/general_ui.tres" id="1_i2xx2"]
 [ext_resource type="Script" uid="uid://dmhxr0lxqlsk6" path="res://Scripts/UI/main_menu.gd" id="1_mrfpk"]
+[ext_resource type="FontFile" uid="uid://bdggjog2a3r1a" path="res://Resources/Themes/Fonts/Inconsolata-Regular.ttf" id="2_lrjdf"]
 [ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="2_wqme5"]
 [ext_resource type="Texture2D" uid="uid://dvtx834d5ab72" path="res://Resources/Sprites/UI/next_song_button.png" id="4_k33u3"]
 [ext_resource type="Texture2D" uid="uid://dml5ob2ulln2d" path="res://Resources/Sprites/UI/song_icon.png" id="4_lrjdf"]
+[ext_resource type="Theme" uid="uid://du1we0ak4gm1u" path="res://Resources/Themes/title_font.tres" id="4_wqme5"]
 [ext_resource type="PackedScene" uid="uid://dq353n73b0cw4" path="res://Scenes/conductor.tscn" id="6_gih0s"]
 [ext_resource type="PackedScene" uid="uid://3lxad050esl2" path="res://Scenes/UI/level_select.tscn" id="7_cejvf"]
+
+[sub_resource type="Theme" id="Theme_p7tos"]
+default_font = ExtResource("2_lrjdf")
+default_font_size = 80
 
 [sub_resource type="Animation" id="Animation_wqme5"]
 length = 0.001
@@ -60,7 +66,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1.25),
 "transitions": PackedFloat32Array(0.35355264, 1),
 "update": 0,
-"values": [Vector2(0, 1080), Vector2(0, 700)]
+"values": [Vector2(0, 1080), Vector2(0, 680)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cejvf"]
@@ -109,7 +115,7 @@ theme_override_constants/margin_right = 20
 
 [node name="BitClickCounter" type="Label" parent="MarginContainerForCounter" unique_id=1395032865]
 layout_mode = 2
-theme = ExtResource("1_i2xx2")
+theme = SubResource("Theme_p7tos")
 theme_override_font_sizes/font_size = 35
 horizontal_alignment = 2
 
@@ -120,8 +126,8 @@ z_index = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_right = 566.0
-offset_bottom = 380.0067
+offset_right = 614.0
+offset_bottom = 400.0
 grow_vertical = 0
 mouse_filter = 2
 theme = ExtResource("2_wqme5")
@@ -136,7 +142,7 @@ theme_override_constants/margin_bottom = 20
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/CreditsPanel/MarginContainer" unique_id=268292896]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
+theme_override_constants/line_separation = -4
 theme_override_font_sizes/normal_font_size = 33
 bbcode_enabled = true
 text = "Bitstreamer
@@ -169,7 +175,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("1_i2xx2")
 theme_override_constants/margin_top = 300
 theme_override_constants/margin_bottom = 100
 
@@ -177,6 +182,7 @@ theme_override_constants/margin_bottom = 100
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme = ExtResource("1_i2xx2")
 theme_override_constants/separation = 30
 
 [node name="PlayButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1666786679]
@@ -187,21 +193,18 @@ focus_neighbor_top = NodePath("../../../../MarginContainer2/HBoxContainer/NextSo
 focus_neighbor_bottom = NodePath("../SettingsButton")
 focus_next = NodePath("../SettingsButton")
 focus_previous = NodePath("../../../../MarginContainer2/HBoxContainer/NextSongButton")
-theme = ExtResource("1_i2xx2")
 text = "Play"
 
 [node name="SettingsButton" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=1261688561]
 custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
 size_flags_horizontal = 4
-theme = ExtResource("1_i2xx2")
 text = "Settings"
 
 [node name="Credits" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer" unique_id=109601501]
 custom_minimum_size = Vector2(600, 150)
 layout_mode = 2
 size_flags_horizontal = 4
-theme = ExtResource("1_i2xx2")
 text = "Credits
 "
 
@@ -211,7 +214,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_bottom = NodePath("../../../../MarginContainer2/HBoxContainer/NextSongButton")
 focus_next = NodePath("../../../../MarginContainer2/HBoxContainer/NextSongButton")
-theme = ExtResource("1_i2xx2")
 text = "Shut down"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1644140178]
@@ -231,9 +233,8 @@ z_index = 1
 z_as_relative = false
 layout_mode = 2
 size_flags_horizontal = 4
-theme = ExtResource("1_i2xx2")
-theme_override_font_sizes/font_size = 120
-text = "Bitstreamer"
+theme = ExtResource("4_wqme5")
+text = "BITSTREAMER"
 
 [node name="SplashTextLabel" type="Label" parent="." unique_id=2052261070]
 z_index = 1
@@ -245,7 +246,7 @@ offset_right = 543.0
 offset_bottom = 500.0
 rotation = -0.06981317
 theme = ExtResource("1_i2xx2")
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 32
 text = "funny splash text"
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -269,6 +270,7 @@ theme_override_constants/margin_bottom = 20
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2" unique_id=912316431]
 layout_mode = 2
 size_flags_vertical = 8
+theme = ExtResource("1_i2xx2")
 theme_override_constants/separation = 20
 alignment = 2
 
@@ -281,7 +283,6 @@ stretch_mode = 3
 z_index = 1
 layout_mode = 2
 size_flags_vertical = 4
-theme = ExtResource("1_i2xx2")
 theme_override_font_sizes/normal_font_size = 35
 text = "song name"
 fit_content = true

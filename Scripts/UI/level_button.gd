@@ -137,8 +137,6 @@ func _ready() -> void:
 		_load_image = true
 	else:
 		_level_image.hide()
-		$ButtonPanel/TextureFade.hide()
-		$ButtonPanel/TextureFade2.hide()
 
 
 ## Set popup positions and time when it should show.
@@ -148,10 +146,6 @@ func _process(delta: float) -> void:
 			_level_image.texture = level_info.get_image()
 			_level_image.self_modulate.a = _UNFOCUSED_IMAGE_TRANSPARENCY
 			_button_panel.self_modulate.a = 0 # Make the underlying panel invisible.
-			
-			# Show the gradients to fade the image edges out.
-			$ButtonPanel/TextureFade.show()
-			$ButtonPanel/TextureFade2.show()
 			
 			_load_image = false # Stop trying to load the image.
 	

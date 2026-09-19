@@ -22,7 +22,7 @@ const PANEL_DARKEN_AMOUNT: float = 0.85
 
 # Some constants to ensure correct sizing, pretty bad implementation
 const MINIMUM_Y_SIZE_DEFAULT = 85
-const MINIMUM_Y_SIZE_EXPANDED = 135
+const MINIMUM_Y_SIZE_EXPANDED = 140
 
 ## The size of mod icons.
 const MOD_ICON_SIZE: int = 32

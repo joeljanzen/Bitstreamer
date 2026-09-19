@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://c0cfxinwdhxdr"]
 
 [ext_resource type="Script" uid="uid://d3chuwhhnot0" path="res://Scripts/UI/level_ui.gd" id="1_4mllq"]
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_gw16p"]
 [ext_resource type="Texture2D" uid="uid://cytythe5xeqtr" path="res://Resources/Sprites/UI/ProgressCircle/under.png" id="3_2qe5m"]
+[ext_resource type="Theme" uid="uid://dqtlq2yt32ssy" path="res://Resources/Themes/gameplay_bit_theme.tres" id="3_46n82"]
+[ext_resource type="Theme" uid="uid://fankwqd05seu" path="res://Resources/Themes/general_ui.tres" id="3_307ub"]
+[ext_resource type="FontFile" uid="uid://dthso5fggy28f" path="res://Resources/Themes/Fonts/Tengoku.ttf" id="4_307ub"]
 [ext_resource type="Texture2D" uid="uid://bhxbtam7q8gb6" path="res://Resources/Sprites/UI/ProgressCircle/over.png" id="4_ao4gj"]
 [ext_resource type="Texture2D" uid="uid://c3kaqq8o6a8py" path="res://Resources/Sprites/UI/ProgressCircle/progress.png" id="5_m0wgp"]
 
@@ -61,7 +63,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_gw16p")
+theme = ExtResource("3_307ub")
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -104,25 +106,27 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -508.0
+offset_left = -504.0
 offset_top = -73.0
-offset_right = -8.0
+offset_right = -4.0
 offset_bottom = 8.0
 grow_horizontal = 0
 grow_vertical = 0
-theme = ExtResource("1_gw16p")
+theme = ExtResource("3_46n82")
+theme_override_font_sizes/normal_font_size = 80
 text = "0x"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 2
 
 [node name="Score" type="RichTextLabel" parent="CanvasLayer" unique_id=926045344]
-custom_minimum_size = Vector2(1000, 93)
+custom_minimum_size = Vector2(1000, 0)
 offset_left = 460.0
 offset_top = -7.0
 offset_right = 1460.0
-offset_bottom = 86.0
-theme = ExtResource("1_gw16p")
+offset_bottom = 70.0
+theme_override_fonts/normal_font = ExtResource("4_307ub")
+theme_override_font_sizes/normal_font_size = 50
 text = "0"
 scroll_active = false
 autowrap_mode = 1
@@ -139,7 +143,7 @@ offset_top = -5.0
 offset_right = -25.0
 offset_bottom = 88.0
 grow_horizontal = 0
-theme = ExtResource("1_gw16p")
+theme = ExtResource("3_46n82")
 theme_override_font_sizes/normal_font_size = 40
 text = "Accuracy 100.00%"
 scroll_active = false
@@ -170,7 +174,6 @@ offset_top = -61.0
 offset_right = 1394.0
 offset_bottom = -22.0
 grow_vertical = 0
-theme = ExtResource("1_gw16p")
 theme_override_font_sizes/font_size = 35
 show_percentage = false
 

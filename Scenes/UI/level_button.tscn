@@ -7,16 +7,6 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7lvc"]
 bg_color = Color(0.09239709, 0.09239706, 0.09239706, 1)
 
-[sub_resource type="Gradient" id="Gradient_texu8"]
-offsets = PackedFloat32Array(0.0021367522, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_j7lvc"]
-gradient = SubResource("Gradient_texu8")
-width = 1150
-height = 50
-fill_from = Vector2(1, 1)
-
 [sub_resource type="Gradient" id="Gradient_j7lvc"]
 colors = PackedColorArray(0.0627451, 0.0627451, 0.0627451, 1, 0.0627451, 0.0627451, 0.0627451, 0)
 
@@ -121,25 +111,6 @@ layout_mode = 2
 expand_mode = 1
 stretch_mode = 3
 
-[node name="TextureFade" type="TextureRect" parent="ButtonPanel" unique_id=221950645]
-visible = false
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-size_flags_vertical = 8
-mouse_filter = 2
-texture = SubResource("GradientTexture2D_j7lvc")
-expand_mode = 1
-
-[node name="TextureFade2" type="TextureRect" parent="ButtonPanel" unique_id=546852716]
-visible = false
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-size_flags_vertical = 0
-mouse_filter = 2
-texture = SubResource("GradientTexture2D_j7lvc")
-expand_mode = 1
-flip_v = true
-
 [node name="MarginContainer" type="MarginContainer" parent="ButtonPanel" unique_id=1823341588]
 layout_mode = 2
 theme_override_constants/margin_left = 20
@@ -179,7 +150,7 @@ theme_override_constants/separation = 10
 custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 45
 text = "Title"
 horizontal_alignment = 1
 vertical_alignment = 1

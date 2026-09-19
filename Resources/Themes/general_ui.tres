@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://fankwqd05seu"]
+
+[ext_resource type="FontFile" uid="uid://ckkbkjb7wc4" path="res://Resources/Themes/Fonts/CourierPrime-Regular.ttf" id="1_l4wys"]
+
+[resource]
+default_font = ExtResource("1_l4wys")
+default_font_size = 80

@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://du1we0ak4gm1u"]
+
+[ext_resource type="FontFile" uid="uid://d0k0py8xtj6px" path="res://Resources/Themes/Fonts/Klaxon-Crunchy.otf" id="1_ju4j5"]
+
+[resource]
+default_font = ExtResource("1_ju4j5")
+default_font_size = 110

@@ -19,7 +19,7 @@ const MAX_LINE_NUM := 10
 
 ## The number of bits shown on the terminal before additional bits are ignored.
 ## It's good practice to move to the next line before this limit is reached.
-const MAX_BITS_DISPLAYED_PER_LINE := 32
+const MAX_BITS_DISPLAYED_PER_LINE := 31
 
 ## All bits have been clicked or missed.
 signal no_bits_left

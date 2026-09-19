@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://dpi2oef3klh47"]
 
 [ext_resource type="Script" uid="uid://dv4jqb3103c1v" path="res://Scripts/UI/mod_button.gd" id="1_8kq66"]
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_2bsks"]
-[ext_resource type="Theme" uid="uid://b40ptr23jqbik" path="res://Resources/Themes/popup_theme.tres" id="2_s2y41"]
+[ext_resource type="Theme" uid="uid://fankwqd05seu" path="res://Resources/Themes/general_ui.tres" id="2_2bsks"]
 [ext_resource type="Texture2D" uid="uid://dy8kuus858fhd" path="res://icon.svg" id="2_slgek"]
 
 [node name="ModButton" type="Control" unique_id=1693415256]
@@ -42,13 +41,13 @@ theme_override_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="Button/MarginContainer" unique_id=2067969723]
 layout_mode = 2
 size_flags_vertical = 0
+theme = ExtResource("2_2bsks")
 theme_override_constants/separation = 25
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Button/MarginContainer/VBoxContainer" unique_id=438803382]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
-theme = ExtResource("2_s2y41")
 theme_override_constants/separation = 25
 
 [node name="Icon" type="TextureRect" parent="Button/MarginContainer/VBoxContainer/HBoxContainer" unique_id=845793375]
@@ -62,7 +61,6 @@ stretch_mode = 5
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 1
-theme = ExtResource("2_2bsks")
 theme_override_font_sizes/font_size = 50
 text = "modname"
 horizontal_alignment = 1

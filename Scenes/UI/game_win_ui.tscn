@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cew6oygr25lcw" path="res://Scripts/UI/game_win_ui.gd" id="1_ied5b"]
 [ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="3_014sn"]
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="3_e04pd"]
+[ext_resource type="Theme" uid="uid://fankwqd05seu" path="res://Resources/Themes/general_ui.tres" id="3_e04pd"]
+[ext_resource type="FontFile" uid="uid://dthso5fggy28f" path="res://Resources/Themes/Fonts/Tengoku.ttf" id="3_w1sw5"]
+[ext_resource type="Theme" uid="uid://du1we0ak4gm1u" path="res://Resources/Themes/title_font.tres" id="3_wbtux"]
 
 [node name="GameWinUI" type="Control" unique_id=1755645710]
 layout_mode = 3
@@ -22,6 +24,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("3_e04pd")
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 100
@@ -36,8 +39,7 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
-theme = ExtResource("3_e04pd")
-theme_override_font_sizes/font_size = 120
+theme = ExtResource("3_wbtux")
 text = "Program Completed!"
 
 [node name="ScorePanel" type="PanelContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer" unique_id=1367470185]
@@ -48,13 +50,13 @@ size_flags_horizontal = 4
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 20
+theme_override_constants/margin_right = 12
 
 [node name="Score" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/ScorePanel/MarginContainer" unique_id=1884251460]
 layout_mode = 2
 size_flags_vertical = 8
-theme = ExtResource("3_e04pd")
-theme_override_font_sizes/normal_font_size = 100
+theme_override_fonts/normal_font = ExtResource("3_w1sw5")
+theme_override_font_sizes/normal_font_size = 90
 bbcode_enabled = true
 text = "0"
 fit_content = true
@@ -82,7 +84,6 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource("3_e04pd")
 theme_override_font_sizes/normal_font_size = 50
 text = "100% Accuracy"
 fit_content = true
@@ -93,7 +94,6 @@ horizontal_alignment = 1
 [node name="Combo" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer" unique_id=1974248813]
 layout_mode = 2
 size_flags_vertical = 4
-theme = ExtResource("3_e04pd")
 theme_override_font_sizes/normal_font_size = 50
 text = "0x Maximum Combo"
 fit_content = true
@@ -114,7 +114,6 @@ theme_override_constants/margin_right = 20
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_vertical = 0
-theme = ExtResource("3_e04pd")
 theme_override_constants/separation = 50
 alignment = 1
 
@@ -192,21 +191,20 @@ size_flags_vertical = 10
 focus_mode = 2
 
 [node name="PlayAgain" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=1823941811]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 6
 focus_neighbor_left = NodePath("../Quit")
 focus_previous = NodePath("../Quit")
-theme = ExtResource("3_e04pd")
 text = "Play again"
 
 [node name="Quit" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=603242436]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 6
 focus_neighbor_right = NodePath("../PlayAgain")
 focus_next = NodePath("../PlayAgain")
-theme = ExtResource("3_e04pd")
+theme_override_font_sizes/font_size = 80
 text = "Quit"
 
 [node name="ArrowTransition" parent="CanvasLayer" unique_id=161824251 instance=ExtResource("3_014sn")]

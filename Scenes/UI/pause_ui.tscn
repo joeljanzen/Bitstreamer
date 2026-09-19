@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c6eqexw0umdaj"]
 
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="1_bthaf"]
+[ext_resource type="Theme" uid="uid://fankwqd05seu" path="res://Resources/Themes/general_ui.tres" id="1_bthaf"]
 [ext_resource type="Script" uid="uid://dpvq8ox1q4rjb" path="res://Scripts/UI/pause_ui.gd" id="1_srqh7"]
 [ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="3_i0vfa"]
 
@@ -29,46 +29,42 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_mode = 2
+theme = ExtResource("1_bthaf")
 theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Resume" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=1245872889]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../Quit")
 focus_previous = NodePath("../Quit")
-theme = ExtResource("1_bthaf")
 text = "Resume"
 
 [node name="Reboot" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=353286288]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource("1_bthaf")
 text = "Restart"
 
 [node name="Settings" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=690275050]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource("1_bthaf")
 text = "Settings"
 
 [node name="Quit" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=873856400]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_bottom = NodePath("../Resume")
 focus_next = NodePath("../Resume")
-theme = ExtResource("1_bthaf")
 text = "Quit"
 
 [node name="Progress" type="Label" parent="CanvasLayer/VBoxContainer" unique_id=1540023217]
 layout_mode = 2
-theme = ExtResource("1_bthaf")
 theme_override_font_sizes/font_size = 40
 text = "Current Progress: 92.23%"
 

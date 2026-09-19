@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b2lfog7dafrx7" path="res://Scripts/Gameplay/play_area.gd" id="1_5dgnu"]
 [ext_resource type="Texture2D" uid="uid://cang3sh4d8huq" path="res://Resources/Sprites/UI/play_area_background.jpg" id="2_2f6dp"]
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="2_3d5pw"]
+[ext_resource type="Theme" uid="uid://dqtlq2yt32ssy" path="res://Resources/Themes/gameplay_bit_theme.tres" id="3_8vi7n"]
 [ext_resource type="Texture2D" uid="uid://kbqeqckojl7p" path="res://Resources/Sprites/Cursor/cursor_cannot_enter.png" id="3_27jp8"]
 [ext_resource type="Texture2D" uid="uid://ciucl04ht3bcx" path="res://Resources/Sprites/Cursor/cursor_click_inverted.png" id="3_hwaoc"]
 [ext_resource type="Texture2D" uid="uid://dhpg40av67qu2" path="res://Resources/Sprites/Cursor/cursor_click.png" id="4_hwaoc"]
@@ -96,10 +96,8 @@ offset_left = 50.0
 offset_top = 44.0
 offset_right = 1459.0
 offset_bottom = 871.0
-theme = ExtResource("2_3d5pw")
-theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme = ExtResource("3_8vi7n")
 theme_override_constants/line_separation = 3
-theme_override_font_sizes/normal_font_size = 80
 bbcode_enabled = true
 text = "10
 0

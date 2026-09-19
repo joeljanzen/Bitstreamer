@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dy2rtpl8ydwo1" path="res://Scripts/UI/game_crash_ui.gd" id="1_pwu0n"]
 [ext_resource type="Texture2D" uid="uid://ck0tbadym1fsj" path="res://Resources/Sprites/UI/Windows-BSOD-scaled.jpg" id="2_3m6g7"]
-[ext_resource type="Theme" uid="uid://c7c1pti6lqmg4" path="res://Resources/Themes/bit_font.tres" id="3_lbv4o"]
+[ext_resource type="Theme" uid="uid://fankwqd05seu" path="res://Resources/Themes/general_ui.tres" id="3_lbv4o"]
 [ext_resource type="PackedScene" uid="uid://b4vq2to42eqej" path="res://Scenes/UI/transitions_arrow.tscn" id="4_13xwp"]
+[ext_resource type="Theme" uid="uid://du1we0ak4gm1u" path="res://Resources/Themes/title_font.tres" id="4_bhx01"]
 
 [node name="GameCrashUI" type="Control" unique_id=1755645710]
 layout_mode = 3
@@ -38,6 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("3_lbv4o")
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 100
@@ -52,7 +54,7 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
-theme = ExtResource("3_lbv4o")
+theme = ExtResource("4_bhx01")
 theme_override_font_sizes/font_size = 120
 text = "Program Crashed!"
 
@@ -70,7 +72,6 @@ custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-theme = ExtResource("3_lbv4o")
 theme_override_font_sizes/normal_font_size = 50
 text = "92.32% Progress"
 fit_content = true
@@ -98,7 +99,6 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource("3_lbv4o")
 theme_override_font_sizes/normal_font_size = 50
 text = "9932 Score"
 fit_content = true
@@ -111,7 +111,6 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource("3_lbv4o")
 theme_override_font_sizes/normal_font_size = 50
 text = "100% Accuracy"
 fit_content = true
@@ -122,7 +121,6 @@ horizontal_alignment = 1
 [node name="Combo" type="RichTextLabel" parent="CanvasLayer/MarginContainer2/VBoxContainer/MainStatsPanel/MarginContainer/HBoxContainer" unique_id=984044590]
 layout_mode = 2
 size_flags_vertical = 4
-theme = ExtResource("3_lbv4o")
 theme_override_font_sizes/normal_font_size = 50
 text = "0x Maximum Combo"
 fit_content = true
@@ -143,7 +141,6 @@ theme_override_constants/margin_right = 20
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_vertical = 0
-theme = ExtResource("3_lbv4o")
 theme_override_constants/separation = 50
 alignment = 1
 
@@ -219,24 +216,23 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 10
 focus_mode = 2
+theme = ExtResource("3_lbv4o")
 alignment = 1
 
 [node name="Reboot" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=1823941811]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 6
 focus_neighbor_left = NodePath("../Quit")
 focus_previous = NodePath("../Quit")
-theme = ExtResource("3_lbv4o")
 text = "Restart"
 
 [node name="Quit" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" unique_id=603242436]
-custom_minimum_size = Vector2(500, 200)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 6
 focus_neighbor_right = NodePath("../Reboot")
 focus_next = NodePath("../Reboot")
-theme = ExtResource("3_lbv4o")
 text = "Quit"
 
 [node name="ArrowTransition" parent="CanvasLayer" unique_id=161824251 instance=ExtResource("4_13xwp")]

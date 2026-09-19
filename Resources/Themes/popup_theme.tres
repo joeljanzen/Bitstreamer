@@ -1,17 +1,16 @@
 [gd_resource type="Theme" format=3 uid="uid://b40ptr23jqbik"]
 
+[ext_resource type="FontFile" uid="uid://ckkbkjb7wc4" path="res://Resources/Themes/Fonts/CourierPrime-Regular.ttf" id="1_8yvcs"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8yvcs"]
 bg_color = Color(0.13682586, 0.13682568, 0.13682571, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njjef"]
 bg_color = Color(0.13725491, 0.13725491, 0.13725491, 1)
 
-[sub_resource type="SystemFont" id="SystemFont_60xwf"]
-font_names = PackedStringArray("Consolas")
-
 [resource]
 default_base_scale = 1.0
-default_font = SubResource("SystemFont_60xwf")
+default_font = ExtResource("1_8yvcs")
 default_font_size = 20
 Panel/styles/panel = SubResource("StyleBoxFlat_8yvcs")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_njjef")
