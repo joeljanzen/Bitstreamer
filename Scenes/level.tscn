@@ -26,7 +26,7 @@ position = Vector2(960, 540)
 light_mask = 3
 offset_right = 1920.0
 offset_bottom = 1080.0
-color = Color(0.038954537, 0.058708385, 0.06430844, 1)
+color = Color(0.039215688, 0.039215688, 0.05882353, 1)
 
 [node name="LevelBackground" type="TextureRect" parent="." unique_id=1056580082]
 visible = false

@@ -100,7 +100,7 @@ layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
-color = Color(0.038954537, 0.058708385, 0.06430844, 1)
+color = Color(0.038667087, 0.0382855, 0.057464756, 1)
 
 [node name="MarginContainerForCounter" type="MarginContainer" parent="." unique_id=853758896]
 layout_mode = 1
