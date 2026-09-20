@@ -17,9 +17,10 @@ const DEBUG_BIT_DAMAGE := 5
 ## clearing the bit_label.
 const MAX_LINE_NUM := 10
 
-## The number of bits shown on the terminal before additional bits are ignored.
-## It's good practice to move to the next line before this limit is reached.
-const MAX_BITS_DISPLAYED_PER_LINE := 31
+## The max number of bits that can be shown on a line of the terminal before a 
+## line clear is triggered. It's good practice to move to the next line before 
+## this limit is reached.
+const MAX_BITS_DISPLAYED_PER_LINE := 29
 
 ## All bits have been clicked or missed.
 signal no_bits_left

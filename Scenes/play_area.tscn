@@ -93,11 +93,11 @@ texture = ExtResource("2_2f6dp")
 
 [node name="BitLabel" type="RichTextLabel" parent="." unique_id=984305221]
 offset_left = 50.0
-offset_top = 44.0
+offset_top = 34.0
 offset_right = 1459.0
-offset_bottom = 871.0
+offset_bottom = 882.0
 theme = ExtResource("3_8vi7n")
-theme_override_constants/line_separation = 3
+theme_override_constants/line_separation = -5
 bbcode_enabled = true
 text = "10
 0

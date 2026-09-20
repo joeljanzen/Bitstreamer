@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://dqtlq2yt32ssy"]
 
-[ext_resource type="FontFile" uid="uid://cb032dt4d8x8o" path="res://Resources/Themes/Fonts/BrassMono-Regular.ttf" id="1_kw8sw"]
+[ext_resource type="FontFile" uid="uid://c0xjp4d84yhdv" path="res://Resources/Themes/Fonts/PTMono-Regular.ttf" id="1_kw8sw"]
 
 [resource]
 default_font = ExtResource("1_kw8sw")

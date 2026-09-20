@@ -11,10 +11,10 @@ radius = 80.0
 script = ExtResource("1_igqlm")
 
 [node name="BitLabel" type="Label" parent="." unique_id=1898413816]
-offset_left = -22.0
-offset_top = -34.0
-offset_right = 115.0
-offset_bottom = 47.0
+offset_left = -24.0
+offset_top = -43.0
+offset_right = 113.0
+offset_bottom = 64.0
 theme = ExtResource("2_bfqwx")
 text = "0"
 
