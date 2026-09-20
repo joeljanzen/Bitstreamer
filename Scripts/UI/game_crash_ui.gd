@@ -32,9 +32,9 @@ var _conductor: Conductor
 
 ## Display statistics for the play.
 func _ready() -> void:
-	_progress_label.text = "%.2f%% Progress" % _level_UI.get_current_progress()
+	_progress_label.text = _trim_decimals(_level_UI.get_current_progress()) + "% Progress"
 	_score_label.text = "%d Score" % _play_data.score
-	_accuracy_label.text = "%.2f%% Accuracy" % _play_data.accuracy
+	_accuracy_label.text = _trim_decimals(_play_data.accuracy) + "% Accuracy" 
 	_combo_label.text = "%dx Maximum Combo" % _play_data.max_combo
 	
 	var stat_label = _extra_stats_container.get_children()
@@ -116,3 +116,9 @@ func _on_quit_pressed() -> void:
 
 func _on_button_hovered() -> void:
 	SoundManager.play_menu_focus()
+
+
+## If the float has decimal places, it rounds up to 2 places. Otherwise, it 
+## includes no decimal places.
+func _trim_decimals(value: float) -> String:
+	return str(snappedf(value, 0.01)).rstrip("0").rstrip(".")
