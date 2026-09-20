@@ -15,9 +15,10 @@ extends Control
 @onready var _credits_text = $CanvasLayer/CreditsPanel/MarginContainer/RichTextLabel
 @onready var _credits_animation: AnimationPlayer = $CanvasLayer/CreditsPanel/CreditsAnimation
 
-## The number of pixels below the top of screen/above the bottom of screen that 
-## bits can spawn.
-const BIT_SPAWN_MARGIN: int = 75
+
+## The number of pixels above or below the title text that bits are allowed to
+## spawn. Also the margin above the next song button.
+const BIT_SPAWN_MARGIN: int = 40
 
 ## Multiplies itself with the beat speed (given by the song's bpm). A value of 2
 ## means the beat is registered at twice its normal speed. Bits are sent at this
@@ -165,11 +166,17 @@ func _on_beat() -> void:
 
 ## Sends a random bit across the screen, or an enter bit at regular intervals.
 func _send_random_bit() -> void:
+	# Used to ensure bits don't spawn overtop of the game title.
+	var title_top = _title.global_position.y
+	var title_bottom = _title.global_position.y + _title.size.y
+	var next_song_top = _next_song_button.global_position.y
+	
 	var new_bit: Bit = _bit.instantiate()
-	# Calculate y value based on the current line number offset from where the
-	# cursor started.
-	var viewport_height = ProjectSettings.get_setting("display/window/size/viewport_height")
-	var y_value = randi_range(BIT_SPAWN_MARGIN, viewport_height - BIT_SPAWN_MARGIN)
+	
+	var y_value = randi_range(BIT_SPAWN_MARGIN, next_song_top - BIT_SPAWN_MARGIN)
+	# Assign bit to new position above the title if it will overlap with it.
+	if y_value >= title_top - BIT_SPAWN_MARGIN and y_value <= title_bottom + BIT_SPAWN_MARGIN:
+		y_value = randi_range(BIT_SPAWN_MARGIN, title_top - BIT_SPAWN_MARGIN)
 	
 	var bit_type
 	if _bit_interval < _enter_back_bit_interval:
